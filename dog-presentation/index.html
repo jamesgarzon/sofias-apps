@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sofia's Dog Presentation 🐶</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Comic Sans MS", "Chalkboard SE", "Marker Felt", sans-serif;
+    background: linear-gradient(160deg, #ffd6e8 0%, #c8e7ff 50%, #d8ffd6 100%);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 16px; overflow-x: hidden;
+  }
+  h1 { color: #ff5da2; text-shadow: 2px 2px 0 #fff; font-size: 1.6rem; text-align: center; }
+  .screen { display: none; width: 100%; max-width: 620px; flex-direction: column; align-items: center; gap: 14px; }
+  .screen.active { display: flex; }
+  .card {
+    background: #fff; border-radius: 24px; padding: 24px; width: 100%;
+    box-shadow: 0 8px 0 rgba(0,0,0,.08); text-align: center;
+  }
+  .big-emoji { font-size: 4.5rem; line-height: 1.1; }
+  .line-text { font-size: 1.5rem; color: #333; margin-top: 10px; min-height: 3.5rem; }
+  .line-text .spoken { background: #ffe66d; border-radius: 6px; }
+  button {
+    font-family: inherit; font-size: 1.15rem; border: none; cursor: pointer;
+    border-radius: 18px; padding: 12px 22px; color: #fff;
+    box-shadow: 0 5px 0 rgba(0,0,0,.15); transition: transform .1s;
+  }
+  button:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.15); }
+  .btn-pink { background: #ff5da2; } .btn-blue { background: #4aa3ff; }
+  .btn-green { background: #3ecf6e; } .btn-purple { background: #a06bff; }
+  .btn-orange { background: #ff9f43; } .btn-gray { background: #b0b8c4; }
+  .btn-big { font-size: 1.4rem; padding: 18px 26px; width: 100%; }
+  .row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; width: 100%; }
+  .stars-total { font-size: 1.2rem; color: #b8860b; background: #fff8dc; padding: 8px 18px; border-radius: 999px; box-shadow: 0 3px 0 rgba(0,0,0,.08); }
+  .progress-dots { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+  .progress-dots span { font-size: 1.1rem; opacity: .25; }
+  .progress-dots span.done { opacity: 1; }
+  .chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+  .chip {
+    background: #4aa3ff; font-size: 1.1rem; padding: 10px 16px; border-radius: 14px;
+  }
+  .chip.used { visibility: hidden; }
+  .chip.shake { animation: shake .4s; background: #ff6b6b; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+  .blank { display: inline-block; min-width: 3ch; border-bottom: 3px dashed #ff9f43; margin: 0 3px; color: #3ecf6e; font-weight: bold; }
+  .feedback { font-size: 1.3rem; min-height: 2rem; }
+  .mic-btn {
+    width: 110px; height: 110px; border-radius: 50%; font-size: 3rem;
+    background: #ff5da2; display: flex; align-items: center; justify-content: center; margin: 0 auto;
+  }
+  .mic-btn.listening { background: #ff2d2d; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+  .stars-earned { font-size: 2.2rem; min-height: 2.6rem; }
+  .heard { font-style: italic; color: #888; font-size: 1rem; min-height: 1.4rem; }
+  .show-list { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+  .show-item {
+    background: #fff; border-radius: 16px; padding: 10px 16px; font-size: 1.6rem;
+    cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,.08); text-align: left;
+  }
+  .show-item .hint { font-size: 1.05rem; color: #444; margin-left: 8px; display: none; }
+  .show-item.revealed .hint { display: inline; }
+  .confetti-piece { position: fixed; top: -40px; font-size: 1.8rem; animation: fall linear forwards; z-index: 99; pointer-events: none; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+  .small-note { font-size: .85rem; color: #777; }
+  .voice-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+  .voice-row select {
+    font-family: inherit; font-size: .95rem; padding: 8px 12px; border: none;
+    border-radius: 14px; background: #fff; box-shadow: 0 3px 0 rgba(0,0,0,.08); max-width: 260px;
+  }
+  .home-btn { align-self: flex-start; }
+</style>
+</head>
+<body>
+
+<h1 id="title">🐶 Sofia's Dog Show! 🌟</h1>
+<div class="stars-total">⭐ <span id="totalStars">0</span> stars</div>
+<div class="voice-row">
+  <select id="voiceSelect" onchange="chooseVoice(this.value)"></select>
+  <button class="btn-blue" style="padding:8px 14px;font-size:1rem;" onclick="speak('Hello! My favorite animal is the dog!')">🔊 Test</button>
+</div>
+
+<!-- HOME -->
+<div class="screen active" id="home">
+  <div class="card">
+    <div class="big-emoji">🐕</div>
+    <p style="font-size:1.2rem; margin-top:8px;">Let's learn your presentation!</p>
+  </div>
+  <button class="btn-big btn-blue"   onclick="startLearn()">🎧 1. Listen &amp; Repeat</button>
+  <button class="btn-big btn-orange" onclick="startBlanks()">🧩 2. Missing Words</button>
+  <button class="btn-big btn-pink"   onclick="startSayIt()">🎤 3. Say It Yourself!</button>
+  <button class="btn-big btn-purple" onclick="startShow()">🏆 4. The Big Show</button>
+</div>
+
+<!-- LEARN -->
+<div class="screen" id="learn">
+  <button class="btn-gray home-btn" onclick="goHome()">🏠 Home</button>
+  <div class="progress-dots" id="learnDots"></div>
+  <div class="card">
+    <div class="big-emoji" id="learnEmoji"></div>
+    <div class="line-text" id="learnText"></div>
+  </div>
+  <div class="row">
+    <button class="btn-blue" onclick="learnHear()">🔊 Hear it</button>
+    <button class="btn-green" onclick="learnNext()">Next ➡️</button>
+  </div>
+  <div class="row">
+    <button class="btn-gray" onclick="learnPrev()">⬅️ Back</button>
+  </div>
+</div>
+
+<!-- MISSING WORDS -->
+<div class="screen" id="blanks">
+  <button class="btn-gray home-btn" onclick="goHome()">🏠 Home</button>
+  <div class="row" id="levelRow">
+    <button class="btn-green" onclick="setLevel(1)">😊 Easy</button>
+    <button class="btn-orange" onclick="setLevel(2)">🤔 Medium</button>
+    <button class="btn-pink" onclick="setLevel(3)">🤯 Super Hard</button>
+  </div>
+  <div class="progress-dots" id="blanksDots"></div>
+  <div class="card">
+    <div class="big-emoji" id="blanksEmoji"></div>
+    <div class="line-text" id="blanksText"></div>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div class="feedback" id="blanksFeedback"></div>
+</div>
+
+<!-- SAY IT -->
+<div class="screen" id="sayit">
+  <button class="btn-gray home-btn" onclick="goHome()">🏠 Home</button>
+  <div class="progress-dots" id="sayDots"></div>
+  <div class="card">
+    <div class="big-emoji" id="sayEmoji"></div>
+    <div class="line-text" id="sayText"></div>
+    <div class="stars-earned" id="sayStars"></div>
+    <div class="heard" id="sayHeard"></div>
+  </div>
+  <button class="mic-btn" id="micBtn" onclick="toggleMic()">🎤</button>
+  <div class="feedback" id="sayFeedback">Press the mic and say the line!</div>
+  <div class="row">
+    <button class="btn-blue" onclick="speak(LINES[sayIdx].text)">🔊 Hear it first</button>
+    <button class="btn-orange" onclick="sayHideToggle()" id="hideBtn">🙈 Hide words</button>
+    <button class="btn-green" onclick="sayNext()">Next ➡️</button>
+  </div>
+  <div class="small-note" id="micNote"></div>
+</div>
+
+<!-- BIG SHOW -->
+<div class="screen" id="show">
+  <button class="btn-gray home-btn" onclick="goHome()">🏠 Home</button>
+  <div class="card" style="padding:14px;">
+    <p style="font-size:1.1rem;">🎬 Say the whole presentation!<br>
+    <span class="small-note">Only pictures to help you. Tap a picture if you get stuck.</span></p>
+  </div>
+  <div class="show-list" id="showList"></div>
+  <button class="btn-big btn-purple" onclick="showDone()">🎉 I did it all!</button>
+</div>
+
+<script>
+const LINES = [
+  { emoji: "👋", text: "Hello, everyone!" },
+  { emoji: "🗣️", text: "Today I want to talk about my favorite animal." },
+  { emoji: "🐶", text: "My favorite animal is the dog." },
+  { emoji: "🏠", text: "It is a domestic animal." },
+  { emoji: "🖼️", text: "This is its habitat." },
+  { emoji: "🏡", text: "It lives in the house with a yard." },
+  { emoji: "☀️", text: "Its habitat is dry and warm." },
+  { emoji: "🌳", text: "There are trees, grass, rocks and water in its habitat." },
+  { emoji: "🍖", text: "It eats dog food, carrots and meat." },
+  { emoji: "🏃", text: "It can run and jump." },
+  { emoji: "💖", text: "I like this animal because it is cute, beautiful, friendly and playful." },
+  { emoji: "🙏", text: "Thank you for listening!" },
+];
+const PRAISE = ["Great job!", "Amazing!", "Super!", "You are a star!", "Wonderful!", "Fantastic!"];
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+function goHome() {
+  stopSpeaking(); stopMic();
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  $("home").classList.add("active");
+}
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  $(id).classList.add("active");
+}
+function words(text) { return text.toLowerCase().replace(/[^a-z' ]/g, "").split(/\s+/).filter(Boolean); }
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function dots(containerId, doneCount) {
+  $(containerId).innerHTML = LINES.map((l, i) =>
+    `<span class="${i < doneCount ? "done" : ""}">${l.emoji}</span>`).join("");
+}
+
+/* ---------- sounds ---------- */
+let audioCtx;
+function beep(freq, dur, type = "sine") {
+  audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+  o.type = type; o.frequency.value = freq; o.connect(g); g.connect(audioCtx.destination);
+  g.gain.setValueAtTime(0.15, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  o.start(); o.stop(audioCtx.currentTime + dur);
+}
+const dingGood = () => { beep(660, .15); setTimeout(() => beep(880, .25), 130); };
+const dingBad = () => beep(180, .3, "square");
+
+/* ---------- speech synthesis ---------- */
+const NATURAL = { jenny: "🌟 Jenny — natural voice", ana: "🌟 Ana — kid voice" };
+let naturalVoice = "jenny", currentAudio = null;
+function slug(text) { // must match slug() in gen_audio.py
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
+}
+let voice = null;
+function voiceRank(v) { // natural-sounding voices first
+  if (/premium|enhanced|natural|neural/i.test(v.name)) return 0;
+  if (/Samantha|Siri|Google US English|Ava|Zoe|Allison/i.test(v.name)) return 1;
+  if (/Google|Microsoft/i.test(v.name)) return 2;
+  return 3;
+}
+function pickVoice() {
+  const vs = speechSynthesis.getVoices()
+    .filter(v => v.lang.startsWith("en"))
+    .sort((a, b) => voiceRank(a) - voiceRank(b) || a.name.localeCompare(b.name));
+  const saved = localStorage.getItem("sofia-voice") || "natural:jenny";
+  naturalVoice = saved.startsWith("natural:") ? saved.slice(8) : null;
+  voice = vs.find(v => v.voiceURI === saved) || vs[0] || null;
+  $("voiceSelect").innerHTML =
+    Object.entries(NATURAL).map(([k, label]) =>
+      `<option value="natural:${k}" ${naturalVoice === k ? "selected" : ""}>${label}</option>`).join("") +
+    vs.map(v =>
+      `<option value="${v.voiceURI}" ${!naturalVoice && v === voice ? "selected" : ""}>` +
+      `${v.name} (${v.lang})</option>`).join("");
+}
+function chooseVoice(val) {
+  naturalVoice = val.startsWith("natural:") ? val.slice(8) : null;
+  if (!naturalVoice) voice = speechSynthesis.getVoices().find(v => v.voiceURI === val) || voice;
+  localStorage.setItem("sofia-voice", val);
+}
+speechSynthesis.onvoiceschanged = pickVoice; pickVoice();
+function speak(text, rate = 0.85, onend = null) {
+  stopSpeaking();
+  if (naturalVoice) {
+    const a = new Audio(`audio/${naturalVoice}/${slug(text)}.mp3`);
+    currentAudio = a;
+    a.onended = () => { if (onend) onend(); };
+    a.onerror = () => speakSystem(text, rate, onend); // missing clip -> system voice
+    a.play().catch(() => speakSystem(text, rate, onend));
+    return;
+  }
+  speakSystem(text, rate, onend);
+}
+function speakSystem(text, rate, onend) {
+  const u = new SpeechSynthesisUtterance(text);
+  if (voice) u.voice = voice;
+  u.lang = "en-US"; u.rate = rate;
+  u.onboundary = e => {
+    if (e.name !== "word") return;
+    const el = $("learnText");
+    if (!$("learn").classList.contains("active")) return;
+    const t = LINES[learnIdx].text;
+    let end = t.indexOf(" ", e.charIndex); if (end < 0) end = t.length;
+    el.innerHTML = t.slice(0, e.charIndex) + '<span class="spoken">' +
+      t.slice(e.charIndex, end) + "</span>" + t.slice(end);
+  };
+  u.onend = () => { if (onend) onend(); };
+  speechSynthesis.speak(u);
+}
+function stopSpeaking() {
+  speechSynthesis.cancel();
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+}
+function praise() { const p = PRAISE[Math.floor(Math.random() * PRAISE.length)]; speak(p, 1); return p; }
+
+/* ---------- stars ---------- */
+let stars = JSON.parse(localStorage.getItem("sofia-stars") || "{}");
+function addStars(key, n) {
+  stars[key] = Math.max(stars[key] || 0, n);
+  localStorage.setItem("sofia-stars", JSON.stringify(stars));
+  updateTotal();
+}
+function updateTotal() {
+  $("totalStars").textContent = Object.values(stars).reduce((a, b) => a + b, 0);
+}
+updateTotal();
+
+/* ---------- confetti ---------- */
+function confetti() {
+  const emojis = ["🎉", "⭐", "🐶", "💖", "🌟", "🎊"];
+  for (let i = 0; i < 40; i++) {
+    const d = document.createElement("div");
+    d.className = "confetti-piece";
+    d.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    d.style.left = Math.random() * 100 + "vw";
+    d.style.animationDuration = 2 + Math.random() * 2 + "s";
+    d.style.animationDelay = Math.random() * .8 + "s";
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 5000);
+  }
+}
+
+/* ---------- 1. LEARN ---------- */
+let learnIdx = 0;
+function startLearn() { learnIdx = 0; showScreen("learn"); renderLearn(); }
+function renderLearn() {
+  const l = LINES[learnIdx];
+  $("learnEmoji").textContent = l.emoji;
+  $("learnText").textContent = l.text;
+  dots("learnDots", learnIdx);
+  speak(l.text);
+}
+function learnHear() { speak(LINES[learnIdx].text); }
+function learnNext() {
+  if (learnIdx < LINES.length - 1) { learnIdx++; renderLearn(); }
+  else { dots("learnDots", LINES.length); confetti(); speak("You listened to everything!", 1, praise); }
+}
+function learnPrev() { if (learnIdx > 0) { learnIdx--; renderLearn(); } }
+function praiseText() { return PRAISE[Math.floor(Math.random() * PRAISE.length)]; }
+
+/* ---------- 2. MISSING WORDS ---------- */
+let blankIdx = 0, level = 1, targetSlots = [], nextSlot = 0;
+function startBlanks() { blankIdx = 0; showScreen("blanks"); renderBlanks(); }
+function setLevel(n) { level = n; renderBlanks(); }
+function renderBlanks() {
+  const l = LINES[blankIdx];
+  $("blanksEmoji").textContent = l.emoji;
+  $("blanksFeedback").textContent = "";
+  dots("blanksDots", blankIdx);
+  const tokens = l.text.split(" ");
+  const ratio = level === 1 ? 0.34 : level === 2 ? 0.67 : 1;
+  const nHide = Math.max(1, Math.round(tokens.length * ratio));
+  const hideIdx = shuffle(tokens.map((_, i) => i)).slice(0, nHide).sort((a, b) => a - b);
+  targetSlots = []; nextSlot = 0;
+  $("blanksText").innerHTML = tokens.map((t, i) => {
+    if (hideIdx.includes(t === "" ? -1 : i)) {
+      targetSlots.push({ word: t, el: null });
+      return `<span class="blank" data-slot="${targetSlots.length - 1}">&nbsp;</span>`;
+    }
+    return t;
+  }).join(" ");
+  document.querySelectorAll("#blanksText .blank").forEach(el => {
+    targetSlots[+el.dataset.slot].el = el;
+  });
+  const chipWords = shuffle(targetSlots.map(s => s.word));
+  $("chips").innerHTML = chipWords.map(w =>
+    `<button class="chip" onclick="pickChip(this)">${w}</button>`).join("");
+  speak(l.text);
+}
+function pickChip(btn) {
+  const want = targetSlots[nextSlot].word;
+  if (btn.textContent === want) {
+    btn.classList.add("used");
+    targetSlots[nextSlot].el.textContent = want;
+    nextSlot++;
+    beep(520 + nextSlot * 60, .12);
+    if (nextSlot >= targetSlots.length) {
+      dingGood();
+      addStars("blanks-" + blankIdx + "-l" + level, level);
+      $("blanksFeedback").textContent = "⭐ " + praise();
+      setTimeout(() => {
+        blankIdx++;
+        if (blankIdx < LINES.length) renderBlanks();
+        else { confetti(); speak("You finished all the missing words!"); goHomeSoon(); }
+      }, 1600);
+    }
+  } else {
+    dingBad();
+    btn.classList.add("shake");
+    setTimeout(() => btn.classList.remove("shake"), 450);
+  }
+}
+function goHomeSoon() { setTimeout(goHome, 2500); }
+
+/* ---------- 3. SAY IT ---------- */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recog = null, listening = false, sayIdx = 0, sayHidden = false;
+function startSayIt() {
+  sayIdx = 0; sayHidden = false; showScreen("sayit"); renderSay();
+  if (!SR) $("micNote").textContent = "Mic check needs Google Chrome. You can still practice: hear the line, say it out loud, then press Next!";
+}
+function renderSay() {
+  const l = LINES[sayIdx];
+  $("sayEmoji").textContent = l.emoji;
+  $("sayText").textContent = sayHidden ? "🙈 . . . say it from memory! . . ." : l.text;
+  $("sayStars").textContent = "";
+  $("sayHeard").textContent = "";
+  $("sayFeedback").textContent = "Press the mic and say the line!";
+  $("hideBtn").textContent = sayHidden ? "👀 Show words" : "🙈 Hide words";
+  dots("sayDots", sayIdx);
+}
+function sayHideToggle() { sayHidden = !sayHidden; renderSay(); }
+function sayNext() {
+  stopMic();
+  if (sayIdx < LINES.length - 1) { sayIdx++; renderSay(); }
+  else { confetti(); speak("You practiced every line!", 1, praise); goHomeSoon(); }
+}
+function toggleMic() {
+  if (!SR) { // ponytail: no SpeechRecognition -> honor-system fallback
+    $("sayStars").textContent = "⭐⭐⭐";
+    $("sayFeedback").textContent = praise();
+    dingGood();
+    return;
+  }
+  if (listening) { stopMic(); return; }
+  stopSpeaking();
+  recog = new SR();
+  recog.lang = "en-US"; recog.interimResults = false; recog.maxAlternatives = 3;
+  listening = true;
+  $("micBtn").classList.add("listening");
+  $("sayFeedback").textContent = "🔴 Listening... say the line!";
+  recog.onresult = e => {
+    let best = 0, heard = "";
+    for (const alt of e.results[0]) {
+      const score = matchScore(alt.transcript, LINES[sayIdx].text);
+      if (score >= best) { best = score; heard = alt.transcript; }
+    }
+    $("sayHeard").textContent = "I heard: “" + heard + "”";
+    gradeSay(best);
+  };
+  recog.onerror = e => {
+    stopMic();
+    $("sayFeedback").textContent = e.error === "not-allowed"
+      ? "Please allow the microphone 🎤" : "I didn't hear you — try again!";
+  };
+  recog.onend = () => stopMic(true);
+  recog.start();
+}
+function stopMic(keepUI) {
+  listening = false;
+  $("micBtn") && $("micBtn").classList.remove("listening");
+  if (recog) { try { recog.abort(); } catch (e) {} recog = null; }
+}
+function matchScore(saidText, targetText) {
+  const said = words(saidText), target = words(targetText);
+  let hit = 0; const pool = [...said];
+  for (const w of target) {
+    const i = pool.indexOf(w);
+    if (i >= 0) { hit++; pool.splice(i, 1); }
+  }
+  return hit / target.length;
+}
+function gradeSay(score) {
+  stopMic();
+  let s, msg;
+  if (score >= 0.85) { s = 3; msg = praise(); dingGood(); confetti(); }
+  else if (score >= 0.6) { s = 2; msg = "So close! Try once more!"; speak(msg, 1); }
+  else if (score >= 0.3) { s = 1; msg = "Good try! Listen and try again!"; speak(msg, 1); }
+  else { s = 0; msg = "Let's hear it together first! 🔊"; speak(LINES[sayIdx].text); }
+  $("sayStars").textContent = "⭐".repeat(s) || "💪";
+  $("sayFeedback").textContent = msg;
+  if (s > 0) addStars("say-" + sayIdx, s);
+}
+
+/* ---------- 4. BIG SHOW ---------- */
+function startShow() {
+  showScreen("show");
+  $("showList").innerHTML = LINES.map((l, i) =>
+    `<div class="show-item" onclick="revealShow(${i}, this)">${l.emoji}<span class="hint">${l.text}</span></div>`
+  ).join("");
+}
+function revealShow(i, el) { el.classList.add("revealed"); speak(LINES[i].text); }
+function showDone() {
+  confetti(); confetti();
+  addStars("big-show", 5);
+  speak("Wow! You did the whole presentation! You are ready! I am so proud of you, Sofia!", 1);
+}
+</script>
+</body>
+</html>
