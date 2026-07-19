@@ -193,7 +193,9 @@ function showScreen(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   $(id).classList.add("active");
 }
-function words(text) { return text.toLowerCase().replace(/[^a-z' ]/g, "").split(/\s+/).filter(Boolean); }
+function words(text) { // apostrophes stripped: recognizer's "it's" must equal "its"
+  return text.toLowerCase().replace(/[^a-z ]/g, "").split(/\s+/).filter(Boolean);
+}
 function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function dots(containerId, doneCount) {
   $(containerId).innerHTML = LINES.map((l, i) =>
