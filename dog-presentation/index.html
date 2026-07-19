@@ -23,6 +23,7 @@
   .big-emoji { font-size: 4.5rem; line-height: 1.1; }
   .line-text { font-size: 1.5rem; color: #333; margin-top: 10px; min-height: 3.5rem; }
   .line-text .spoken { background: #ffe66d; border-radius: 6px; }
+  .line-text .miss { background: #ffb3b3; border-radius: 6px; padding: 0 3px; text-decoration: underline wavy #ff2d2d; }
   button {
     font-family: inherit; font-size: 1.15rem; border: none; cursor: pointer;
     border-radius: 18px; padding: 12px 22px; color: #fff;
@@ -458,10 +459,8 @@ function sayNext() {
   else { confetti(); speak("You practiced every line!", 1, praise); goHomeSoon(); }
 }
 function toggleMic() {
-  if (!SR) { // ponytail: no SpeechRecognition -> honor-system fallback
-    $("sayStars").textContent = "⭐⭐⭐";
-    $("sayFeedback").textContent = praise();
-    dingGood();
+  if (!SR) {
+    $("sayFeedback").textContent = "This browser can't check your voice — open in Google Chrome, or record yourself with 🎙️ and compare!";
     return;
   }
   if (listening) { stopMic(); return; }
@@ -478,7 +477,7 @@ function toggleMic() {
       if (score >= best) { best = score; heard = alt.transcript; }
     }
     $("sayHeard").textContent = "I heard: “" + heard + "”";
-    gradeSay(best);
+    gradeSay(best, heard);
   };
   recog.onerror = e => {
     stopMic();
@@ -494,21 +493,46 @@ function stopMic(keepUI) {
   if (recog) { try { recog.abort(); } catch (e) {} recog = null; }
 }
 function matchScore(saidText, targetText) {
-  const said = words(saidText), target = words(targetText);
-  let hit = 0; const pool = [...said];
-  for (const w of target) {
-    const i = pool.indexOf(w);
-    if (i >= 0) { hit++; pool.splice(i, 1); }
-  }
-  return hit / target.length;
+  const a = words(saidText), b = words(targetText);
+  if (!b.length) return 0;
+  // word-level edit distance: wrong, extra, and out-of-order words all cost
+  const dp = Array.from({ length: a.length + 1 }, (_, i) => {
+    const row = Array(b.length + 1).fill(0); row[0] = i; return row;
+  });
+  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+  for (let i = 1; i <= a.length; i++)
+    for (let j = 1; j <= b.length; j++)
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1,
+                          dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+  return Math.max(0, 1 - dp[a.length][b.length] / b.length);
 }
-function gradeSay(score) {
+function targetMarks(saidText, targetText) {
+  const a = words(saidText), tokens = targetText.split(" ");
+  const b = tokens.map(t => words(t)[0] || "");
+  const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+  for (let i = 1; i <= a.length; i++)
+    for (let j = 1; j <= b.length; j++)
+      dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] + 1 : Math.max(dp[i - 1][j], dp[i][j - 1]);
+  const ok = Array(b.length).fill(false);
+  let i = a.length, j = b.length;
+  while (i > 0 && j > 0) {
+    if (a[i - 1] === b[j - 1] && dp[i][j] === dp[i - 1][j - 1] + 1) { ok[j - 1] = true; i--; j--; }
+    else if (dp[i - 1][j] >= dp[i][j - 1]) i--; else j--;
+  }
+  return tokens.map((t, k) => ({ token: t, ok: ok[k] }));
+}
+function gradeSay(score, heardText) {
   stopMic();
   let s, msg;
-  if (score >= 0.85) { s = 3; msg = praise(); dingGood(); confetti(); }
-  else if (score >= 0.6) { s = 2; msg = "So close! Try once more!"; speak(msg, 1); }
-  else if (score >= 0.3) { s = 1; msg = "Good try! Listen and try again!"; speak(msg, 1); }
+  if (score === 1) { s = 3; msg = praise(); dingGood(); confetti(); }   // 3 stars = word-perfect only
+  else if (score >= 0.7) { s = 2; msg = "So close! Try once more!"; speak(msg, 1); }
+  else if (score >= 0.4) { s = 1; msg = "Good try! Listen and try again!"; speak(msg, 1); }
   else { s = 0; msg = "Let's hear it together first! 🔊"; speak(LINES[sayIdx].text); }
+  if (score < 1 && heardText) { // show exactly which words she missed
+    $("sayText").innerHTML = targetMarks(heardText, LINES[sayIdx].text)
+      .map(m => m.ok ? m.token : `<span class="miss">${m.token}</span>`).join(" ");
+    if (s > 0) msg += " Look at the red words!";
+  }
   $("sayStars").textContent = "⭐".repeat(s) || "💪";
   $("sayFeedback").textContent = msg;
   if (s > 0) addStars("say-" + sayIdx, s);
