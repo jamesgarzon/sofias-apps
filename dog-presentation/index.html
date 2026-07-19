@@ -52,6 +52,7 @@
     background: #ff5da2; display: flex; align-items: center; justify-content: center; margin: 0 auto;
   }
   .mic-btn.listening { background: #ff2d2d; animation: pulse 1s infinite; }
+  .recording { background: #ff2d2d !important; animation: pulse 1s infinite; }
   @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
   .stars-earned { font-size: 2.2rem; min-height: 2.6rem; }
   .heard { font-style: italic; color: #888; font-size: 1rem; min-height: 1.4rem; }
@@ -142,8 +143,12 @@
   <div class="feedback" id="sayFeedback">Press the mic and say the line!</div>
   <div class="row">
     <button class="btn-blue" onclick="speak(LINES[sayIdx].text)">🔊 Hear it first</button>
-    <button class="btn-orange" onclick="sayHideToggle()" id="hideBtn">🙈 Hide words</button>
+    <button class="btn-orange" onclick="sayHideToggle()" id="hideBtn">🔤 First letters</button>
     <button class="btn-green" onclick="sayNext()">Next ➡️</button>
+  </div>
+  <div class="row">
+    <button class="btn-purple" onclick="toggleRecord()" id="recBtn">🎙️ Record me</button>
+    <button class="btn-pink" onclick="playMe()" id="playMeBtn" style="display:none;">▶️ Hear me</button>
   </div>
   <div class="small-note" id="micNote"></div>
 </div>
@@ -153,7 +158,7 @@
   <button class="btn-gray home-btn" onclick="goHome()">🏠 Home</button>
   <div class="card" style="padding:14px;">
     <p style="font-size:1.1rem;">🎬 Say the whole presentation!<br>
-    <span class="small-note">Only pictures to help you. Tap a picture if you get stuck.</span></p>
+    <span class="small-note">Only pictures to help you. Stuck? Tap once for letter hints, tap again for the words.</span></p>
   </div>
   <div class="show-list" id="showList"></div>
   <button class="btn-big btn-purple" onclick="showDone()">🎉 I did it all!</button>
@@ -179,7 +184,7 @@ const PRAISE = ["Great job!", "Amazing!", "Super!", "You are a star!", "Wonderfu
 /* ---------- helpers ---------- */
 const $ = id => document.getElementById(id);
 function goHome() {
-  stopSpeaking(); stopMic();
+  stopSpeaking(); stopMic(); stopRecord();
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   $("home").classList.add("active");
 }
@@ -375,24 +380,80 @@ function goHomeSoon() { setTimeout(goHome, 2500); }
 
 /* ---------- 3. SAY IT ---------- */
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recog = null, listening = false, sayIdx = 0, sayHidden = false;
+let recog = null, listening = false, sayIdx = 0, sayMode = 0; // 0 full text, 1 first letters, 2 hidden
+function firstLetters(text) {
+  return text.split(" ").map(w => {
+    let seen = false;
+    return w.split("").map(c => {
+      if (!/[a-zA-Z]/.test(c)) return c;
+      if (!seen) { seen = true; return c; }
+      return "·";
+    }).join("");
+  }).join(" ");
+}
 function startSayIt() {
-  sayIdx = 0; sayHidden = false; showScreen("sayit"); renderSay();
+  sayIdx = 0; sayMode = 0; showScreen("sayit"); renderSay();
   if (!SR) $("micNote").textContent = "Mic check needs Google Chrome. You can still practice: hear the line, say it out loud, then press Next!";
 }
 function renderSay() {
   const l = LINES[sayIdx];
   $("sayEmoji").textContent = l.emoji;
-  $("sayText").textContent = sayHidden ? "🙈 . . . say it from memory! . . ." : l.text;
+  $("sayText").textContent =
+    sayMode === 0 ? l.text :
+    sayMode === 1 ? firstLetters(l.text) :
+    "🙈 . . . say it from memory! . . .";
   $("sayStars").textContent = "";
   $("sayHeard").textContent = "";
   $("sayFeedback").textContent = "Press the mic and say the line!";
-  $("hideBtn").textContent = sayHidden ? "👀 Show words" : "🙈 Hide words";
+  $("hideBtn").textContent = sayMode === 0 ? "🔤 First letters" : sayMode === 1 ? "🙈 Hide words" : "👀 Show words";
+  $("playMeBtn").style.display = "none";
   dots("sayDots", sayIdx);
 }
-function sayHideToggle() { sayHidden = !sayHidden; renderSay(); }
+function sayHideToggle() { sayMode = (sayMode + 1) % 3; renderSay(); }
+
+/* ---------- record & hear yourself ---------- */
+let mediaRecorder = null, myClipUrl = null, discardRec = false;
+function stopRecord() {
+  if (mediaRecorder && mediaRecorder.state === "recording") { discardRec = true; mediaRecorder.stop(); }
+}
+async function toggleRecord() {
+  if (mediaRecorder && mediaRecorder.state === "recording") { mediaRecorder.stop(); return; }
+  stopSpeaking(); stopMic();
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+  catch (e) { $("sayFeedback").textContent = "Please allow the microphone 🎙️"; return; }
+  const chunks = [];
+  mediaRecorder = new MediaRecorder(stream);
+  mediaRecorder.ondataavailable = e => chunks.push(e.data);
+  mediaRecorder.onstop = () => {
+    stream.getTracks().forEach(t => t.stop());
+    const mime = mediaRecorder.mimeType;
+    mediaRecorder = null;
+    $("recBtn").textContent = "🎙️ Record me";
+    $("recBtn").classList.remove("recording");
+    if (discardRec) { discardRec = false; return; }
+    if (myClipUrl) URL.revokeObjectURL(myClipUrl);
+    myClipUrl = URL.createObjectURL(new Blob(chunks, { type: mime }));
+    $("playMeBtn").style.display = "";
+    $("sayFeedback").textContent = "Now listen to yourself! Then compare with 🔊";
+    playMe();
+  };
+  mediaRecorder.start();
+  $("recBtn").textContent = "⏹ Stop";
+  $("recBtn").classList.add("recording");
+  $("sayFeedback").textContent = "🔴 Recording... say the line, then press stop!";
+  const mr = mediaRecorder; // ponytail: 10s safety auto-stop
+  setTimeout(() => { if (mr === mediaRecorder && mr.state === "recording") mr.stop(); }, 10000);
+}
+function playMe() {
+  if (!myClipUrl) return;
+  stopSpeaking();
+  const a = new Audio(myClipUrl);
+  currentAudio = a;
+  a.play();
+}
 function sayNext() {
-  stopMic();
+  stopMic(); stopRecord();
   if (sayIdx < LINES.length - 1) { sayIdx++; renderSay(); }
   else { confetti(); speak("You practiced every line!", 1, praise); goHomeSoon(); }
 }
@@ -404,7 +465,7 @@ function toggleMic() {
     return;
   }
   if (listening) { stopMic(); return; }
-  stopSpeaking();
+  stopSpeaking(); stopRecord();
   recog = new SR();
   recog.lang = "en-US"; recog.interimResults = false; recog.maxAlternatives = 3;
   listening = true;
@@ -457,10 +518,19 @@ function gradeSay(score) {
 function startShow() {
   showScreen("show");
   $("showList").innerHTML = LINES.map((l, i) =>
-    `<div class="show-item" onclick="revealShow(${i}, this)">${l.emoji}<span class="hint">${l.text}</span></div>`
+    `<div class="show-item" onclick="revealShow(${i}, this)">${l.emoji}<span class="hint"></span></div>`
   ).join("");
 }
-function revealShow(i, el) { el.classList.add("revealed"); speak(LINES[i].text); }
+function revealShow(i, el) {
+  const hint = el.querySelector(".hint");
+  if (!el.classList.contains("revealed")) {        // tap 1: letter hints
+    el.classList.add("revealed");
+    hint.textContent = firstLetters(LINES[i].text);
+  } else {                                          // tap 2: full line + audio
+    hint.textContent = LINES[i].text;
+    speak(LINES[i].text);
+  }
+}
 function showDone() {
   confetti(); confetti();
   addStars("big-show", 5);
