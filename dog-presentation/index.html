@@ -398,13 +398,17 @@ function startSayIt() {
   sayIdx = 0; sayMode = 0; showScreen("sayit"); renderSay();
   if (!SR) $("micNote").textContent = "Mic check needs Google Chrome. You can still practice: hear the line, say it out loud, then press Next!";
 }
+function renderSayText() {
+  const t = LINES[sayIdx].text;
+  $("sayText").textContent =
+    sayMode === 0 ? t :
+    sayMode === 1 ? firstLetters(t) :
+    "🙈 . . . say it from memory! . . .";
+}
 function renderSay() {
   const l = LINES[sayIdx];
   $("sayEmoji").textContent = l.emoji;
-  $("sayText").textContent =
-    sayMode === 0 ? l.text :
-    sayMode === 1 ? firstLetters(l.text) :
-    "🙈 . . . say it from memory! . . .";
+  renderSayText();
   $("sayStars").textContent = "";
   $("sayHeard").textContent = "";
   $("sayFeedback").textContent = "Press the mic and say the line!";
@@ -525,6 +529,7 @@ function targetMarks(saidText, targetText) {
 }
 function gradeSay(score, heardText) {
   stopMic();
+  renderSayText(); // clear red marks from a previous try
   let s, msg;
   if (score === 1) { s = 3; msg = praise(); dingGood(); confetti(); }   // 3 stars = word-perfect only
   else if (score >= 0.7) { s = 2; msg = "So close! Try once more!"; speak(msg, 1); }
