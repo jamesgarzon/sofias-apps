@@ -4,92 +4,191 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>El Vitral del Espíritu ✨</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕊️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --night: #1b1140;
-    --night2: #2a1a5e;
+    --night: #10082a;
+    --night2: #1e1148;
+    --lead: #171027;
+    --wood: #4a2c17;
+    --wood-dark: #2e1a0c;
     --gold: #ffd166;
-    --ruby: #ef476f;
-    --emerald: #06d6a0;
+    --gold-deep: #c9971f;
+    --parch: #fdf3dc;
+    --ink: #3c2a12;
+    --ruby: #e94f6e;
+    --emerald: #2ec27e;
     --sapphire: #4cc9f0;
-    --amethyst: #b388ff;
-    --glass: rgba(255,255,255,.08);
+    --amethyst: #a78bfa;
+    --glass: rgba(255,255,255,.07);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html { font-size: 17px; }
   body {
     min-height: 100vh;
-    font-family: "Nunito", sans-serif;
-    color: #fff;
+    font-family: "Nunito", sans-serif; font-weight: 700;
+    color: #f3ecff;
     background:
-      radial-gradient(1200px 600px at 50% -10%, #4a2f8f 0%, transparent 60%),
-      radial-gradient(800px 500px at 90% 100%, #14304d 0%, transparent 55%),
+      radial-gradient(1100px 560px at 50% -8%, #45277c 0%, transparent 62%),
+      radial-gradient(760px 480px at 100% 104%, #13355a 0%, transparent 55%),
+      radial-gradient(700px 460px at 0% 100%, #401f4e 0%, transparent 55%),
       linear-gradient(180deg, var(--night2) 0%, var(--night) 70%);
     background-attachment: fixed;
     display: flex; flex-direction: column; align-items: center;
-    padding: 20px 14px 48px;
+    padding: 14px 14px 56px; overflow-x: hidden;
   }
-  h1, h2, h3, .btn, .bucket { font-family: "Fredoka", sans-serif; }
+  h1, h2, .archbtn b, .tab, .bucket b, .lesson-title, .group-chip { font-family: "Grenze Gotisch", serif; }
 
-  /* ---------- rose window ---------- */
-  .rose { width: min(230px, 60vw); margin: 6px auto 2px; display: block; filter: drop-shadow(0 0 24px rgba(255,209,102,.35)); }
+  /* ── rayos de luz ── */
+  .ray {
+    position: fixed; top: -20vh; width: 44vw; height: 140vh; pointer-events: none; z-index: 0;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,214,130,.09) 50%, transparent 70%);
+  }
+  .ray.l { left: -6vw; transform: rotate(14deg); }
+  .ray.r { right: -6vw; transform: rotate(-14deg); }
   @media (prefers-reduced-motion: no-preference) {
-    .rose { animation: glow 4s ease-in-out infinite alternate; }
-    @keyframes glow { from { filter: drop-shadow(0 0 12px rgba(255,209,102,.25)); } to { filter: drop-shadow(0 0 30px rgba(255,209,102,.55)); } }
+    .ray.l { animation: raypulse 7s ease-in-out infinite alternate; }
+    .ray.r { animation: raypulse 9s ease-in-out infinite alternate-reverse; }
+    @keyframes raypulse { from { opacity: .5; } to { opacity: 1; } }
   }
 
-  header { text-align: center; }
-  h1 { font-size: clamp(1.6rem, 6vw, 2.4rem); color: var(--gold); text-shadow: 0 2px 0 rgba(0,0,0,.35); letter-spacing: .5px; }
-  .subtitle { color: #cfc3ff; font-weight: 600; margin-top: 4px; }
-  .starbar { margin: 10px auto 18px; background: var(--glass); border: 1px solid rgba(255,255,255,.15); border-radius: 999px; padding: 8px 20px; font-weight: 800; font-size: 1.1rem; color: var(--gold); }
+  /* ── portones de iglesia ── */
+  .door {
+    position: fixed; top: 0; bottom: 0; width: 52vw; z-index: 60;
+    background:
+      radial-gradient(circle at 12px 12px, #d8a936 5px, #8a611c 7px, transparent 9px) 0 0 / 25% 20vh repeat,
+      repeating-linear-gradient(90deg, var(--wood-dark) 0 10px, var(--wood) 10px 52px, #5c3a1e 52px 62px),
+      var(--wood);
+    box-shadow: 0 0 46px rgba(0,0,0,.8);
+    transition: transform 1s cubic-bezier(.65,0,.35,1);
+  }
+  .door.l { left: 0; border-right: 6px solid var(--gold-deep); }
+  .door.r { right: 0; border-left: 6px solid var(--gold-deep); }
+  body.open .door.l { transform: translateX(-104%); }
+  body.open .door.r { transform: translateX(104%); }
+  .arch-top {
+    position: fixed; top: 0; left: 0; right: 0; height: 26px; z-index: 61; pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 0, var(--night2) 58%, transparent 60%) 0 10px / 42px 34px repeat-x,
+      linear-gradient(#0b0620, #241448 90%) 0 0 / 100% 12px no-repeat;
+    filter: drop-shadow(0 3px 4px rgba(0,0,0,.6));
+  }
 
-  .screen { width: 100%; max-width: 560px; display: none; flex-direction: column; gap: 14px; }
+  /* ── cabecera: rosetón ── */
+  header { text-align: center; position: relative; z-index: 1; margin-top: 20px; }
+  .rose { width: min(210px, 56vw); display: block; margin: 0 auto; filter: drop-shadow(0 0 22px rgba(255,209,102,.35)); }
+  @media (prefers-reduced-motion: no-preference) {
+    .rose { animation: roseglow 4s ease-in-out infinite alternate; }
+    @keyframes roseglow { from { filter: drop-shadow(0 0 10px rgba(255,209,102,.25)); } to { filter: drop-shadow(0 0 28px rgba(255,209,102,.6)); } }
+  }
+  h1 {
+    font-size: clamp(2.1rem, 8.5vw, 3.1rem); font-weight: 700; line-height: 1; margin-top: 6px;
+    background: linear-gradient(180deg, #ffe9a8, var(--gold) 55%, #c98f1b);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: 1px; text-shadow: 0 3px 0 rgba(0,0,0,.35);
+  }
+  .subtitle { color: #cfc0f5; font-size: .95rem; letter-spacing: 3px; text-transform: uppercase; margin-top: 2px; }
+  .starbar {
+    display: inline-block; margin: 12px auto 4px;
+    background: linear-gradient(#2d1c5c, #1d1140); border: 2px solid var(--gold-deep); border-radius: 999px;
+    padding: 7px 22px; font-weight: 800; font-size: 1.05rem; color: var(--gold);
+    box-shadow: 0 4px 0 rgba(0,0,0,.4), inset 0 0 14px rgba(255,209,102,.12);
+  }
+
+  main { position: relative; z-index: 1; width: 100%; max-width: 580px; }
+  .screen { display: none; flex-direction: column; gap: 15px; padding-top: 16px; }
   .screen.active { display: flex; }
 
-  /* ---------- buttons ---------- */
-  .btn {
-    display: flex; align-items: center; gap: 14px; width: 100%;
-    border: 2px solid rgba(255,255,255,.18); border-radius: 22px;
-    background: linear-gradient(160deg, rgba(255,255,255,.14), rgba(255,255,255,.05));
-    color: #fff; font-size: 1.25rem; font-weight: 600; text-align: left;
-    padding: 18px 20px; min-height: 64px; cursor: pointer;
-    box-shadow: 0 6px 0 rgba(0,0,0,.3);
-    transition: transform .1s;
+  /* ── ventanas ojivales (home) ── */
+  .archbtn {
+    display: flex; align-items: center; gap: 16px; width: 100%; text-align: left;
+    border: 3px solid var(--lead); border-radius: 20px; cursor: pointer;
+    color: #fff; padding: 14px 18px 14px 14px; min-height: 92px;
+    font-family: inherit;
+    box-shadow: 0 7px 0 rgba(0,0,0,.42), inset 0 0 34px rgba(255,255,255,.16), inset 0 0 0 3px rgba(255,232,170,.35);
+    text-shadow: 0 2px 3px rgba(0,0,0,.55);
+    transition: transform .12s;
   }
-  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
-  .btn .emoji { font-size: 2rem; }
-  .btn small { display: block; font-family: "Nunito", sans-serif; font-weight: 600; color: #cfc3ff; font-size: .85rem; }
-  .btn.gold { border-color: var(--gold); }
-  .btn.ruby { border-color: var(--ruby); }
-  .btn.emerald { border-color: var(--emerald); }
-  .btn.sapphire { border-color: var(--sapphire); }
+  .archbtn:active { transform: translateY(5px); box-shadow: 0 2px 0 rgba(0,0,0,.42), inset 0 0 34px rgba(255,255,255,.16), inset 0 0 0 3px rgba(255,232,170,.35); }
+  .archbtn .niche {
+    flex: none; width: 74px; height: 88px; display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; background: rgba(12,7,28,.35);
+    border: 3px solid var(--gold-deep); border-radius: 40px 40px 10px 10px;
+    box-shadow: inset 0 0 16px rgba(0,0,0,.5);
+  }
+  .archbtn b { display: block; font-size: 1.75rem; font-weight: 600; letter-spacing: 1px; line-height: 1.05; }
+  .archbtn span { font-size: .92rem; font-weight: 700; opacity: .92; }
+  .archbtn.w-gold { background: linear-gradient(155deg, #a3541d, #d99a25 55%, #8a6a10); }
+  .archbtn.w-sapphire { background: linear-gradient(155deg, #14476d, #2f9fc4 60%, #145d80); }
+  .archbtn.w-emerald { background: linear-gradient(155deg, #145d3c, #2ec27e 60%, #0f6b43); }
+  .home-note { text-align: center; color: #cfc0f5; font-size: .95rem; }
+  @media (prefers-reduced-motion: no-preference) {
+    .screen.active .reveal { animation: rise .55s ease backwards; }
+    .reveal:nth-child(2) { animation-delay: .08s; } .reveal:nth-child(3) { animation-delay: .16s; }
+    .reveal:nth-child(4) { animation-delay: .24s; } .reveal:nth-child(5) { animation-delay: .32s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+  }
 
-  .back { align-self: flex-start; width: auto; min-height: 48px; padding: 10px 18px; font-size: 1rem; border-radius: 999px; }
+  /* ── botones comunes ── */
+  button.btn {
+    font-family: inherit; font-weight: 800; font-size: 1.1rem; border: none; cursor: pointer;
+    border-radius: 16px; padding: 12px 22px; min-height: 48px; color: #fff;
+    box-shadow: 0 5px 0 rgba(0,0,0,.4); transition: transform .12s;
+  }
+  button.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.4); }
+  .btn-gold { background: linear-gradient(#f2c94c, #cf9b1d); color: #4a2b18; }
+  .btn-plain { background: #3d2f63; }
+  .row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .say-btn {
+    font-size: 1.1rem; border: none; cursor: pointer; vertical-align: middle;
+    background: linear-gradient(#f2c94c, #cf9b1d); border-radius: 50%;
+    width: 44px; height: 44px; box-shadow: 0 3px 0 rgba(0,0,0,.4); transition: transform .12s;
+  }
+  .say-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.4); }
 
-  /* ---------- learn: stained glass cards ---------- */
+  /* ── aprende ── */
   .tabs { display: flex; gap: 8px; }
   .tab {
-    flex: 1; min-height: 52px; border-radius: 16px; border: 2px solid rgba(255,255,255,.18);
-    background: var(--glass); color: #fff; font-family: "Fredoka", sans-serif;
-    font-size: 1rem; cursor: pointer; padding: 6px;
+    flex: 1; min-height: 54px; cursor: pointer; font-size: 1.25rem; font-weight: 600; color: #e8ddff;
+    background: var(--glass); border: 2px solid rgba(255,255,255,.2);
+    border-radius: 26px 26px 12px 12px; padding: 6px;
   }
-  .tab.active { background: var(--gold); border-color: var(--gold); color: #3a2500; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .tab.active { background: linear-gradient(#ffe9a8, var(--gold)); border-color: var(--gold-deep); color: #503200; box-shadow: 0 0 16px rgba(255,209,102,.35); }
+  .lesson {
+    background: linear-gradient(175deg, rgba(255,255,255,.1), rgba(255,255,255,.04));
+    border: 3px solid var(--gold-deep); border-radius: 34px 34px 20px 20px;
+    padding: 14px 14px 16px; text-align: center;
+    box-shadow: inset 0 0 26px rgba(0,0,0,.35), 0 6px 0 rgba(0,0,0,.35);
+  }
+  .lesson-img {
+    width: 100%; max-height: 215px; object-fit: cover; display: block;
+    border: 3px solid var(--gold-deep); border-radius: 26px 26px 12px 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.5);
+  }
+  .lesson-title { color: var(--gold); font-size: 1.7rem; font-weight: 600; margin: 8px 0 2px; letter-spacing: .5px; }
+  .lesson-text { font-size: 1.08rem; line-height: 1.45; }
+  .lesson-text b { color: var(--gold); }
+  .count-badge { text-align: center; color: #cfc0f5; font-weight: 800; }
+  .lesson-anim { animation: appear .45s ease; }
+  @keyframes appear { from { opacity: 0; transform: translateY(14px) scale(.97); } }
+  @media (prefers-reduced-motion: reduce) { .lesson-anim { animation: none; } }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 11px; }
   .card {
-    position: relative; border-radius: 18px 18px 50% 50% / 18px 18px 22% 22%;
-    border: 3px solid rgba(255,255,255,.35);
-    padding: 16px 10px 20px; text-align: center; cursor: pointer;
-    min-height: 118px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-    color: #fff; font-weight: 800; font-size: 1rem;
-    text-shadow: 0 1px 3px rgba(0,0,0,.5);
-    box-shadow: inset 0 0 30px rgba(255,255,255,.18), 0 5px 0 rgba(0,0,0,.3);
+    position: relative; cursor: pointer; font-family: inherit;
+    border: 3px solid var(--lead); border-radius: 60px 60px 14px 14px;
+    padding: 18px 10px 16px; text-align: center; min-height: 122px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    color: #fff; font-weight: 800; font-size: 1.02rem; line-height: 1.15;
+    text-shadow: 0 1px 3px rgba(0,0,0,.55);
+    box-shadow: inset 0 0 30px rgba(255,255,255,.2), inset 0 0 0 3px rgba(255,232,170,.3), 0 5px 0 rgba(0,0,0,.35);
     transition: transform .1s;
   }
   .card:active { transform: scale(.96); }
-  .card .emoji { font-size: 2.2rem; }
+  .card .emoji { font-size: 2.1rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,.4)); }
   .card.c0 { background: linear-gradient(160deg, #7b2d8b, #b23a8f); }
   .card.c1 { background: linear-gradient(160deg, #b3541e, #e07b2f); }
   .card.c2 { background: linear-gradient(160deg, #1e6f8b, #2f9fc4); }
@@ -97,227 +196,337 @@
   .card.c4 { background: linear-gradient(160deg, #8b1e3f, #c43a5c); }
   .card.c5 { background: linear-gradient(160deg, #4a3ab0, #7a5fe0); }
   .card.c6 { background: linear-gradient(160deg, #8a7a12, #c4ad2a); }
-  .lesson {
-    background: var(--glass); border: 2px solid rgba(255,255,255,.18); border-radius: 20px;
-    padding: 16px 18px; font-size: 1.05rem; line-height: 1.5; font-weight: 600;
-  }
-  .lesson b { color: var(--gold); }
-  .count-badge { text-align: center; color: #cfc3ff; font-weight: 800; }
 
-  /* ---------- quiz / sort ---------- */
-  .progress { display: flex; gap: 5px; justify-content: center; }
-  .progress span { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,.2); }
-  .progress span.ok { background: var(--emerald); }
-  .progress span.bad { background: var(--ruby); }
-  .question {
-    background: var(--glass); border: 2px solid rgba(255,255,255,.2); border-radius: 20px;
-    padding: 20px; text-align: center; font-size: 1.25rem; font-weight: 800; line-height: 1.4;
+  /* sacramentos con foto */
+  .sac-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sac-card {
+    cursor: pointer; font-family: inherit; text-align: center; color: #f3ecff; padding: 0 0 12px;
+    background: linear-gradient(175deg, rgba(255,255,255,.1), rgba(255,255,255,.03));
+    border: 3px solid var(--gold-deep); border-radius: 46px 46px 14px 14px; overflow: hidden;
+    box-shadow: 0 6px 0 rgba(0,0,0,.38); transition: transform .1s;
   }
-  .question .emoji { display: block; font-size: 2.6rem; margin-bottom: 8px; }
-  .options { display: flex; flex-direction: column; gap: 10px; }
+  .sac-card:active { transform: scale(.96); }
+  .sac-card img { width: 100%; height: 118px; object-fit: cover; display: block; border-bottom: 3px solid var(--gold-deep); }
+  .sac-card b { display: block; font-size: 1.05rem; font-weight: 800; margin: 8px 8px 2px; line-height: 1.15; }
+  .group-chip {
+    display: inline-block; font-size: .95rem; font-weight: 600; color: var(--gold); letter-spacing: .5px;
+  }
+
+  /* ── pergamino (quiz) ── */
+  .progress { display: flex; gap: 6px; justify-content: center; }
+  .progress span { width: 13px; height: 13px; border-radius: 50%; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.25); }
+  .progress span.ok { background: var(--emerald); border-color: var(--emerald); }
+  .progress span.bad { background: var(--ruby); border-color: var(--ruby); }
+  .qcard {
+    background: var(--parch); color: var(--ink); border-radius: 20px; padding: 18px;
+    border: 3px solid #d9bc80;
+    box-shadow: 0 8px 0 rgba(0,0,0,.4), inset 0 0 40px rgba(190,150,70,.18);
+  }
+  .qcount { font-size: .85rem; color: #a07830; font-weight: 800; letter-spacing: 1.5px; }
+  .qtext { font-size: 1.28rem; font-weight: 800; margin: 6px 0 14px; line-height: 1.3; }
+  .opts { display: flex; flex-direction: column; gap: 10px; }
   .opt {
-    min-height: 56px; border-radius: 16px; border: 2px solid rgba(255,255,255,.25);
-    background: rgba(255,255,255,.1); color: #fff; font-size: 1.1rem; font-weight: 700;
-    font-family: "Nunito", sans-serif; cursor: pointer; padding: 12px 16px;
+    font-family: inherit; font-size: 1.05rem; font-weight: 700; text-align: left; cursor: pointer;
+    background: #fff; border: 2px solid #e0c896; border-radius: 14px; padding: 12px 14px; min-height: 50px; color: var(--ink);
+    transition: transform .1s;
   }
-  .opt.correct { background: var(--emerald); border-color: var(--emerald); color: #04352a; }
-  .opt.wrong { background: var(--ruby); border-color: var(--ruby); }
-  .opt:disabled { opacity: .95; }
+  .opt:not(:disabled):hover { transform: scale(1.015); border-color: var(--gold-deep); }
+  .opt.good { background: #d9f7e4; border-color: var(--emerald); }
+  .opt.bad { background: #ffe0e0; border-color: var(--ruby); animation: shake .4s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-7px)} 75%{transform:translateX(7px)} }
+  .feedback { min-height: 1.8rem; font-size: 1.15rem; font-weight: 800; text-align: center; color: var(--gold); }
 
-  .buckets { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  /* ── clasificar ── */
+  .word-card {
+    background: var(--parch); color: var(--ink); border: 3px solid #d9bc80; border-radius: 20px;
+    padding: 20px; text-align: center; font-size: 1.5rem; font-weight: 800;
+    box-shadow: 0 8px 0 rgba(0,0,0,.4), inset 0 0 40px rgba(190,150,70,.18);
+  }
+  .word-card .emoji { display: block; font-size: 2.6rem; margin-bottom: 4px; }
+  .buckets { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
   .bucket {
-    min-height: 84px; border-radius: 18px; border: 3px dashed rgba(255,255,255,.35);
-    background: var(--glass); color: #fff; font-size: 1rem; cursor: pointer;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px;
+    min-height: 104px; cursor: pointer; font-family: inherit; color: #f3ecff; padding: 10px 6px;
+    background: var(--glass); border: 3px dashed rgba(255,255,255,.4); border-radius: 44px 44px 12px 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    transition: transform .1s;
   }
-  .bucket .emoji { font-size: 1.8rem; }
-  .bucket.correct { border-color: var(--emerald); background: rgba(6,214,160,.25); border-style: solid; }
-  .bucket.wrong { border-color: var(--ruby); background: rgba(239,71,111,.3); border-style: solid; }
+  .bucket b { font-size: 1.3rem; font-weight: 600; letter-spacing: .5px; }
+  .bucket .emoji { font-size: 1.9rem; }
+  .bucket:active { transform: scale(.96); }
+  .bucket.correct { border-style: solid; border-color: var(--emerald); background: rgba(46,194,126,.28); }
+  .bucket.wrong { border-style: solid; border-color: var(--ruby); background: rgba(233,79,110,.3); animation: shake .4s; }
 
-  .feedback { text-align: center; font-size: 1.15rem; font-weight: 800; min-height: 1.6em; color: var(--gold); }
-
+  /* ── resultado ── */
   .result {
-    text-align: center; background: var(--glass); border: 2px solid var(--gold); border-radius: 24px; padding: 26px 20px;
+    text-align: center; background: linear-gradient(175deg, rgba(255,255,255,.1), rgba(255,255,255,.04));
+    border: 3px solid var(--gold-deep); border-radius: 34px 34px 20px 20px; padding: 26px 20px;
+    box-shadow: inset 0 0 26px rgba(0,0,0,.35), 0 6px 0 rgba(0,0,0,.35);
   }
-  .result .big { font-size: 3rem; }
-  .result h2 { color: var(--gold); margin: 6px 0; }
-  .result p { font-weight: 700; }
+  .result .big { font-size: 3.4rem; }
+  .result h2 { font-size: 2rem; font-weight: 600; color: var(--gold); margin: 4px 0; letter-spacing: .5px; }
+  .stars-earned { font-size: 2.2rem; letter-spacing: 6px; min-height: 2.6rem; }
+  .result p { font-size: 1.1rem; }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .pop { animation: pop .35s ease; }
-    @keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
-    .shake { animation: shake .35s ease; }
-    @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
-  }
+  .pop { animation: pop .35s ease; }
+  @keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce) { .pop, .opt.bad, .bucket.wrong { animation: none; } }
 
-  .confetti { position: fixed; top: -20px; font-size: 1.6rem; pointer-events: none; z-index: 10; }
-  @media (prefers-reduced-motion: no-preference) {
-    .confetti { animation: fall 2.6s linear forwards; }
-    @keyframes fall { to { transform: translateY(105vh) rotate(540deg); } }
+  .confetti-bit { position: fixed; top: -30px; z-index: 70; font-size: 1.6rem; pointer-events: none; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(540deg); opacity: .85; } }
+
+  .credits { font-size: .78rem; color: #a99ac9; }
+  .credits summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+  .credits p { margin-top: 4px; line-height: 1.55; }
+
+  button:focus-visible, .tab:focus-visible { outline: 3px solid var(--sapphire); outline-offset: 2px; }
+
+  @media (max-width: 420px) {
+    .cards { grid-template-columns: 1fr 1fr; }
+    .archbtn b { font-size: 1.5rem; }
   }
 </style>
 </head>
 <body>
+  <div class="ray l"></div><div class="ray r"></div>
+  <div class="door l"></div><div class="door r"></div>
+  <div class="arch-top"></div>
 
-<header>
-  <svg class="rose" viewBox="0 0 200 200" aria-hidden="true">
-    <g stroke="#0d0824" stroke-width="4">
-      <circle cx="100" cy="100" r="96" fill="#2a1a5e"/>
-      <g id="petals"></g>
-      <circle cx="100" cy="100" r="34" fill="#ffd166"/>
-    </g>
-    <text x="100" y="112" font-size="34" text-anchor="middle">🕊️</text>
-  </svg>
-  <h1>El Vitral del Espíritu</h1>
-  <p class="subtitle">Dones · Frutos · Sacramentos</p>
-  <div class="starbar">⭐ <span id="stars">0</span> estrellas</div>
-</header>
+  <header>
+    <svg class="rose" viewBox="0 0 200 200" aria-hidden="true">
+      <g stroke="#0d0824" stroke-width="4">
+        <circle cx="100" cy="100" r="96" fill="#2a1a5e"/>
+        <g id="petals"></g>
+        <circle cx="100" cy="100" r="34" fill="#ffd166"/>
+      </g>
+      <text x="100" y="112" font-size="34" text-anchor="middle">🕊️</text>
+    </svg>
+    <h1>El Vitral del Espíritu</h1>
+    <p class="subtitle">Dones · Frutos · Sacramentos</p>
+    <div class="starbar">⭐ <span id="stars">0</span> estrellas</div>
+  </header>
 
-<!-- HOME -->
-<section class="screen active" id="scr-home">
-  <button class="btn gold" onclick="show('learn')"><span class="emoji">📖</span><span>Aprende<small>Descubre los dones, frutos y sacramentos</small></span></button>
-  <button class="btn sapphire" onclick="startQuiz()"><span class="emoji">❓</span><span>Quiz<small>Responde 8 preguntas y gana estrellas</small></span></button>
-  <button class="btn emerald" onclick="startSort()"><span class="emoji">🧺</span><span>¿Don, Fruto o Sacramento?<small>Clasifica cada palabra en su vitral</small></span></button>
-</section>
+  <main>
+    <!-- HOME -->
+    <section class="screen active" id="scr-home">
+      <button class="archbtn w-gold reveal" onclick="go('learn')">
+        <span class="niche">📖</span>
+        <span><b>Aprende</b><span>Descubre los dones, los frutos y los sacramentos</span></span>
+      </button>
+      <button class="archbtn w-sapphire reveal" onclick="go('quiz')">
+        <span class="niche">❓</span>
+        <span><b>Quiz</b><span>Responde 8 preguntas y gana estrellas</span></span>
+      </button>
+      <button class="archbtn w-emerald reveal" onclick="go('sort')">
+        <span class="niche">🧺</span>
+        <span><b>¿Don, Fruto o Sacramento?</b><span>Clasifica cada palabra en su vitral</span></span>
+      </button>
+      <p class="home-note reveal">🕯️ Toca una ventana para comenzar</p>
+      <details class="credits reveal"><summary>📷 Créditos de las fotos</summary>
+        <p>Fotos de Wikimedia Commons: Bautismo © Jon Peli Oleaga (CC BY-SA 3.0) ·
+        Confirmación — U.S. Air Force, Jamal D. Sutter (dominio público) ·
+        Eucaristía © John Snyder (CC BY-SA 3.0) · Confesionario © Kuc-kuc-Hm (CC BY-SA 4.0) ·
+        Matrimonio — Josh Applegate (CC0) · Ordenación © Frank1075 (CC BY-SA 4.0) ·
+        Unción — U.S. Navy, Bryan M. Ilyankoff (dominio público) ·
+        Vitral del Espíritu Santo — Wilfredor (CC0) · Manzanas © AS Photography (CC BY 4.0) ·
+        Rosetón de Laon © Uoaei1 (CC BY-SA 4.0)</p>
+      </details>
+    </section>
 
-<!-- LEARN -->
-<section class="screen" id="scr-learn">
-  <button class="btn back" onclick="show('home')">⬅️ Volver</button>
-  <div class="tabs">
-    <button class="tab active" data-t="dones" onclick="learnTab('dones')">🔥 Dones</button>
-    <button class="tab" data-t="frutos" onclick="learnTab('frutos')">🍎 Frutos</button>
-    <button class="tab" data-t="sacra" onclick="learnTab('sacra')">💧 Sacramentos</button>
-  </div>
-  <div class="lesson" id="lesson"></div>
-  <p class="count-badge" id="count"></p>
-  <div class="cards" id="cards"></div>
-</section>
+    <!-- APRENDE -->
+    <section class="screen" id="scr-learn">
+      <div class="tabs">
+        <button class="tab active" data-t="dones" onclick="learnTab('dones')">🔥 Dones</button>
+        <button class="tab" data-t="frutos" onclick="learnTab('frutos')">🍎 Frutos</button>
+        <button class="tab" data-t="sacra" onclick="learnTab('sacra')">💧 Sacramentos</button>
+      </div>
+      <div id="lessonBox"></div>
+      <p class="count-badge" id="count"></p>
+      <div id="cardsBox"></div>
+      <div class="row"><button class="btn btn-plain" onclick="go('home')">⛪ Volver al inicio</button></div>
+    </section>
 
-<!-- QUIZ -->
-<section class="screen" id="scr-quiz">
-  <button class="btn back" onclick="show('home')">⬅️ Volver</button>
-  <div class="progress" id="q-progress"></div>
-  <div class="question" id="q-text"></div>
-  <div class="options" id="q-opts"></div>
-  <p class="feedback" id="q-fb"></p>
-</section>
+    <!-- QUIZ -->
+    <section class="screen" id="scr-quiz">
+      <div class="progress" id="q-progress"></div>
+      <div class="qcard">
+        <div class="qcount" id="qCount"></div>
+        <div class="qtext" id="qText"></div>
+        <div class="opts" id="qOpts"></div>
+      </div>
+      <p class="feedback" id="qFeedback"></p>
+      <div class="row">
+        <button class="btn btn-gold" id="qNext" style="display:none" onclick="nextQuestion()">Siguiente ➡️</button>
+        <button class="btn btn-plain" onclick="go('home')">⛪ Volver al inicio</button>
+      </div>
+    </section>
 
-<!-- SORT -->
-<section class="screen" id="scr-sort">
-  <button class="btn back" onclick="show('home')">⬅️ Volver</button>
-  <div class="progress" id="s-progress"></div>
-  <div class="question" id="s-word"></div>
-  <p class="count-badge">¿A qué grupo pertenece?</p>
-  <div class="buckets">
-    <button class="bucket" data-g="don" onclick="answerSort('don',this)"><span class="emoji">🔥</span>Don</button>
-    <button class="bucket" data-g="fruto" onclick="answerSort('fruto',this)"><span class="emoji">🍎</span>Fruto</button>
-    <button class="bucket" data-g="sacra" onclick="answerSort('sacra',this)"><span class="emoji">💧</span>Sacramento</button>
-  </div>
-  <p class="feedback" id="s-fb"></p>
-</section>
+    <!-- CLASIFICAR -->
+    <section class="screen" id="scr-sort">
+      <div class="progress" id="s-progress"></div>
+      <div class="word-card" id="sWord"></div>
+      <p class="count-badge">¿A qué grupo pertenece?</p>
+      <div class="buckets">
+        <button class="bucket" data-g="don" onclick="answerSort('don',this)"><span class="emoji">🔥</span><b>Don</b></button>
+        <button class="bucket" data-g="fruto" onclick="answerSort('fruto',this)"><span class="emoji">🍎</span><b>Fruto</b></button>
+        <button class="bucket" data-g="sacra" onclick="answerSort('sacra',this)"><span class="emoji">💧</span><b>Sacramento</b></button>
+      </div>
+      <p class="feedback" id="sFeedback"></p>
+      <div class="row"><button class="btn btn-plain" onclick="go('home')">⛪ Volver al inicio</button></div>
+    </section>
 
-<!-- RESULT -->
-<section class="screen" id="scr-result">
-  <div class="result">
-    <div class="big" id="r-emoji">🎉</div>
-    <h2 id="r-title"></h2>
-    <p id="r-msg"></p>
-  </div>
-  <button class="btn gold" id="r-again"><span class="emoji">🔁</span>Jugar otra vez</button>
-  <button class="btn" onclick="show('home')"><span class="emoji">🏠</span>Menú</button>
-</section>
+    <!-- RESULTADO -->
+    <section class="screen" id="scr-result">
+      <div class="result">
+        <div class="big" id="rEmoji">🎉</div>
+        <h2 id="rTitle"></h2>
+        <div class="stars-earned" id="rStars"></div>
+        <p id="rMsg"></p>
+      </div>
+      <div class="row">
+        <button class="btn btn-gold" id="rAgain">🔁 Jugar otra vez</button>
+        <button class="btn btn-plain" onclick="go('home')">⛪ Volver al inicio</button>
+      </div>
+    </section>
+  </main>
 
 <script>
-/* ---------- datos (de los apuntes de Sofía) ---------- */
+/* ─────────── datos (de los apuntes de Sofía) ─────────── */
 const DONES = [
-  ['Sabiduría','🦉'], ['Entendimiento','💡'], ['Concejo','🧭'], ['Ciencia','🔬'],
-  ['Piedad','🙏'], ['Fortaleza','💪'], ['Temor de Dios','✨'],
+  ['Sabiduría','🦉','sabiduria'], ['Entendimiento','💡','entendimiento'], ['Concejo','🧭','concejo'],
+  ['Ciencia','🔬','ciencia'], ['Piedad','🙏','piedad'], ['Fortaleza','💪','fortaleza'],
+  ['Temor de Dios','✨','temor'],
 ];
 const FRUTOS = [
-  ['Caridad','❤️'], ['Gozo','😄'], ['Paz','🕊️'], ['Paciencia','🐢'],
-  ['Longanimidad','🌅'], ['Bondad','🤗'], ['Benignidad','🌷'], ['Mansedumbre','🐑'],
-  ['Fidelidad','🐕'], ['Modestia','🌸'], ['Continencia o Templanza','⚖️'], ['Castidad','🤍'],
+  ['Caridad','❤️','caridad'], ['Gozo','😄','gozo'], ['Paz','🕊️','paz'], ['Paciencia','🐢','paciencia'],
+  ['Longanimidad','🌅','longanimidad'], ['Bondad','🤗','bondad'], ['Benignidad','🌷','benignidad'],
+  ['Mansedumbre','🐑','mansedumbre'], ['Fidelidad','🐕','fidelidad'], ['Modestia','🌸','modestia'],
+  ['Continencia o Templanza','⚖️','templanza'], ['Castidad','🤍','castidad'],
 ];
 const SACRA = [
-  ['Bautismo','💧'], ['Confirmación','🕊️'], ['Eucaristía','🍞'], ['Confesión','🤲'],
-  ['Matrimonio','💍'], ['Orden sacerdotal','⛪'], ['Unción de los enfermos','🙌'],
+  ['Bautismo','💧','bautismo','Iniciación cristiana'],
+  ['Confirmación','🕊️','confirmacion','Iniciación cristiana'],
+  ['Eucaristía','🍞','eucaristia','Iniciación cristiana'],
+  ['Confesión','🤲','confesion','Curación'],
+  ['Matrimonio','💍','matrimonio',''],
+  ['Orden sacerdotal','⛪','orden',''],
+  ['Unción de los enfermos','🙌','uncion','Curación'],
 ];
 const DEF_SACRA = 'Son signos sensibles, instituidos por Jesucristo para comunicarnos la gracia divina.';
 const INICIACION = ['Bautismo','Confirmación','Eucaristía'];
 const CURACION = ['Reconciliación (Confesión)','Unción de los enfermos'];
 
 const LESSONS = {
-  dones: `Los <b>7 dones del Espíritu Santo</b> son regalos que Dios nos da para vivir bien. ¡Toca cada llama para escucharla! 🔥`,
-  frutos: `Los <b>12 frutos del Espíritu Santo</b> son lo que crece en nosotros cuando dejamos actuar a Dios, ¡como frutos en un árbol! 🌳`,
-  sacra: `<b>¿Qué son los sacramentos?</b> ${DEF_SACRA}<br><br>Son <b>7</b>. Los de <b>iniciación cristiana</b>: Bautismo, Confirmación y Eucaristía. Los de <b>curación</b>: Reconciliación y Unción de los enfermos.`,
+  dones: { img:'dones', title:'Los 7 dones', text:`Los <b>7 dones del Espíritu Santo</b> son regalos que Dios nos da para vivir bien. ¡Toca cada vitral para escucharlo! 🔥` },
+  frutos: { img:'frutos', title:'Los 12 frutos', text:`Los <b>12 frutos del Espíritu Santo</b> son lo que crece en nosotros cuando dejamos actuar a Dios, ¡como frutos en un árbol! 🌳` },
+  sacra: { img:'vitral', title:'Los 7 sacramentos', text:`<b>¿Qué son?</b> ${DEF_SACRA}<br>Los de <b>iniciación cristiana</b>: Bautismo, Confirmación y Eucaristía. Los de <b>curación</b>: Reconciliación y Unción de los enfermos.` },
 };
 
-/* ---------- sonido y voz ---------- */
-let AC;
-function tone(f, t, dur, type='sine', vol=.2) {
-  AC = AC || new (window.AudioContext || window.webkitAudioContext)();
-  const o = AC.createOscillator(), g = AC.createGain();
-  o.type = type; o.frequency.value = f;
-  g.gain.setValueAtTime(vol, AC.currentTime + t);
-  g.gain.exponentialRampToValueAtTime(.001, AC.currentTime + t + dur);
-  o.connect(g).connect(AC.destination);
-  o.start(AC.currentTime + t); o.stop(AC.currentTime + t + dur);
-}
-const ding = () => { tone(660, 0, .15); tone(880, .12, .25); };
-const buzz = () => tone(160, 0, .3, 'sawtooth', .12);
-const fanfare = () => [523,659,784,1047].forEach((f,i) => tone(f, i*.15, .3));
-
-function speak(text) {
-  if (!('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'es-ES'; u.rate = .95;
-  const v = speechSynthesis.getVoices().find(v => /^es/.test(v.lang));
-  if (v) u.voice = v;
-  speechSynthesis.speak(u);
-}
-if ('speechSynthesis' in window) speechSynthesis.getVoices();
-
-/* ---------- estrellas ---------- */
+/* ─────────── utilidades ─────────── */
 const $ = id => document.getElementById(id);
-const getStars = () => +localStorage.getItem('religion-stars') || 0;
-function addStars(n) {
-  localStorage.setItem('religion-stars', getStars() + n);
-  $('stars').textContent = getStars();
-}
-$('stars').textContent = getStars();
+const shuffle = a => a.map(x => [Math.random(), x]).sort((p,q) => p[0]-q[0]).map(p => p[1]);
+const pickN = (a, n) => shuffle(a).slice(0, n);
 
-/* ---------- navegación ---------- */
-function show(name) {
-  speechSynthesis?.cancel();
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  $('scr-' + name).classList.add('active');
-  if (name === 'learn') learnTab(currentTab);
+let totalStars = +localStorage.getItem('religion-stars') || 0;
+function renderStars() { $('stars').textContent = totalStars; }
+function addStars(n) { totalStars += n; localStorage.setItem('religion-stars', totalStars); renderStars(); }
+renderStars();
+
+/* sonidos (WebAudio, sin archivos) */
+let actx;
+function ctx() { return actx ??= new (window.AudioContext || window.webkitAudioContext)(); }
+function tone(freq, dur, type='sine', when=0, vol=.18) {
+  const c = ctx(), o = c.createOscillator(), g = c.createGain();
+  o.type = type; o.frequency.value = freq; o.connect(g); g.connect(c.destination);
+  const t = c.currentTime + when;
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+  o.start(t); o.stop(t + dur);
+}
+const ding = () => { tone(660, .18); tone(880, .3, 'sine', .1); };
+const buzz = () => tone(150, .3, 'sawtooth', 0, .12);
+function applause(dur=1.4) {
+  const c = ctx(), n = c.sampleRate * dur, buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) d[i] = (Math.random()*2-1) * Math.pow(1-i/n, 1.6) * (.4 + .6*Math.abs(Math.sin(i/900)));
+  const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+  f.type = 'bandpass'; f.frequency.value = 1800; f.Q.value = .6; g.gain.value = .5;
+  s.buffer = buf; s.connect(f); f.connect(g); g.connect(c.destination); s.start();
+}
+/* voz natural pregenerada con edge-tts (es-CO-SalomeNeural), ver gen_audio.py */
+const voz = new Audio();
+function say(name) { voz.src = 'audio/' + name + '.mp3'; voz.play().catch(() => {}); }
+
+function confetti(n=26) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const icons = ['⭐','✨','🕊️','🎉','💛','🌟'];
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('span');
+    s.className = 'confetti-bit';
+    s.textContent = icons[Math.floor(Math.random()*icons.length)];
+    s.style.left = Math.random()*100 + 'vw';
+    s.style.animationDuration = 1.4 + Math.random()*1.4 + 's';
+    s.style.animationDelay = Math.random()*.4 + 's';
+    document.body.appendChild(s);
+    s.addEventListener('animationend', () => s.remove());
+  }
 }
 
-/* ---------- aprende ---------- */
+/* ─────────── portones y navegación ─────────── */
+window.addEventListener('load', () => setTimeout(() => {
+  document.body.classList.add('open');
+  say('fb-bienvenida');
+}, 400));
+function go(id) {
+  voz.pause();
+  document.body.classList.remove('open');
+  setTimeout(() => {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    $('scr-' + id).classList.add('active');
+    if (id === 'learn') learnTab(currentTab);
+    if (id === 'quiz') startQuiz();
+    if (id === 'sort') startSort();
+    window.scrollTo(0, 0);
+    document.body.classList.add('open');
+  }, 1050);
+}
+
+/* ─────────── aprende ─────────── */
 let currentTab = 'dones';
 function learnTab(t) {
   currentTab = t;
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.t === t));
-  $('lesson').innerHTML = LESSONS[t];
-  const list = t === 'dones' ? DONES : t === 'frutos' ? FRUTOS : SACRA;
-  const label = t === 'dones' ? 'dones' : t === 'frutos' ? 'frutos' : 'sacramentos';
-  $('count').textContent = `Son ${list.length} ${label} — ¡tócalos todos!`;
-  $('cards').innerHTML = '';
-  list.forEach(([name, emoji], i) => {
-    const d = document.createElement('button');
-    d.className = `card c${i % 7}`;
-    d.innerHTML = `<span class="emoji">${emoji}</span>${name}`;
-    d.onclick = () => { d.classList.remove('pop'); void d.offsetWidth; d.classList.add('pop'); ding(); speak(name); };
-    $('cards').appendChild(d);
-  });
+  const l = LESSONS[t];
+  $('lessonBox').innerHTML =
+    `<div class="lesson lesson-anim"><img class="lesson-img" src="img/${l.img}.jpg" alt="${l.title}">
+     <div class="lesson-title">${l.title} <button class="say-btn" onclick="say('lesson-${t}')" aria-label="Escuchar">🔊</button></div>
+     <div class="lesson-text">${l.text}</div></div>`;
+  say('lesson-' + t);
+  const box = $('cardsBox');
+  box.innerHTML = '';
+  if (t === 'sacra') {
+    $('count').textContent = 'Son 7 sacramentos — ¡toca cada foto para escucharla!';
+    box.className = 'sac-cards';
+    SACRA.forEach(([name, emoji, slug, group]) => {
+      const d = document.createElement('button');
+      d.className = 'sac-card';
+      d.innerHTML = `<img src="img/${slug}.jpg" alt="${name}"><b>${emoji} ${name}</b>` +
+        (group ? `<span class="group-chip">${group}</span>` : '');
+      d.onclick = () => { d.classList.remove('pop'); void d.offsetWidth; d.classList.add('pop'); ding(); say('sac-' + slug); };
+      box.appendChild(d);
+    });
+  } else {
+    const list = t === 'dones' ? DONES : FRUTOS;
+    $('count').textContent = `Son ${list.length} ${t} — ¡tócalos todos!`;
+    box.className = 'cards';
+    list.forEach(([name, emoji, slug], i) => {
+      const d = document.createElement('button');
+      d.className = `card c${i % 7}`;
+      d.innerHTML = `<span class="emoji">${emoji}</span>${name}`;
+      d.onclick = () => { d.classList.remove('pop'); void d.offsetWidth; d.classList.add('pop'); ding(); say('item-' + slug); };
+      box.appendChild(d);
+    });
+  }
 }
 
-/* ---------- utilidades de juego ---------- */
-const shuffle = a => a.map(x => [Math.random(), x]).sort((p,q) => p[0]-q[0]).map(p => p[1]);
-const pick = (a, n) => shuffle(a).slice(0, n);
-
+/* ─────────── progreso y resultado ─────────── */
 function renderProgress(el, total, results) {
   el.innerHTML = '';
   for (let i = 0; i < total; i++) {
@@ -327,137 +536,146 @@ function renderProgress(el, total, results) {
     el.appendChild(s);
   }
 }
-
 function finish(score, total, again) {
   const stars = score === total ? 3 : score >= total * .7 ? 2 : score >= total * .5 ? 1 : 0;
   addStars(stars);
-  $('r-emoji').textContent = stars === 3 ? '🏆' : stars > 0 ? '🎉' : '💪';
-  $('r-title').textContent = stars === 3 ? '¡Perfecto!' : stars > 0 ? '¡Muy bien!' : '¡Sigue practicando!';
-  $('r-msg').textContent = `Acertaste ${score} de ${total}. ${'⭐'.repeat(stars) || 'Vuelve a intentarlo para ganar estrellas.'}`;
-  $('r-again').onclick = again;
-  show('result');
-  if (stars >= 2) { fanfare(); confetti(); }
+  $('rEmoji').textContent = stars === 3 ? '🏆' : stars > 0 ? '🎉' : '💪';
+  $('rTitle').textContent = stars === 3 ? '¡Perfecto!' : stars > 0 ? '¡Muy bien!' : '¡Sigue practicando!';
+  $('rStars').textContent = '⭐'.repeat(stars) || '☆';
+  $('rMsg').textContent = `Acertaste ${score} de ${total} a la primera.` +
+    (stars ? '' : ' Repasa en APRENDE y vuelve por tus estrellas.');
+  $('rAgain').onclick = again;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $('scr-result').classList.add('active');
+  window.scrollTo(0, 0);
+  if (stars >= 2) { applause(); confetti(40); }
+  say(stars === 3 ? 'fb-perfecta' : stars > 0 ? 'fb-estrella' : 'fb-intenta');
 }
 
-function confetti() {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const icons = ['⭐','✨','🕊️','🎉','💛'];
-  for (let i = 0; i < 24; i++) {
-    const c = document.createElement('div');
-    c.className = 'confetti';
-    c.textContent = icons[i % icons.length];
-    c.style.left = Math.random() * 100 + 'vw';
-    c.style.animationDelay = Math.random() * .8 + 's';
-    document.body.appendChild(c);
-    setTimeout(() => c.remove(), 3500);
-  }
-}
-
-/* ---------- quiz ---------- */
+/* ─────────── quiz ─────────── */
 const names = l => l.map(x => x[0]);
 function buildQuiz() {
-  const qs = [];
   const donN = names(DONES), fruN = names(FRUTOS), sacN = names(SACRA);
-  qs.push({ e:'📜', q:'¿Qué son los sacramentos?', a: DEF_SACRA, opts: shuffle([
-    DEF_SACRA,
-    'Son fiestas que celebramos en familia una vez al año.',
-    'Son oraciones que se rezan solo en Navidad.',
-  ])});
-  qs.push({ e:'🔥', q:'¿Cuántos dones del Espíritu Santo hay?', a:'7', opts: shuffle(['7','12','3']) });
-  qs.push({ e:'🍎', q:'¿Cuántos frutos del Espíritu Santo hay?', a:'12', opts: shuffle(['12','7','10']) });
-  const don = pick(donN,1)[0];
-  qs.push({ e:'🔥', q:'¿Cuál de estos es un DON del Espíritu Santo?', a: don, opts: shuffle([don, ...pick(fruN.filter(f=>!donN.includes(f)),1), ...pick(sacN,1)]) });
-  const fru = pick(fruN.filter(f=>!donN.includes(f)),1)[0];
-  qs.push({ e:'🍎', q:'¿Cuál de estos es un FRUTO del Espíritu Santo?', a: fru, opts: shuffle([fru, ...pick(donN,1), ...pick(sacN,1)]) });
-  const sac = pick(sacN,1)[0];
-  qs.push({ e:'💧', q:'¿Cuál de estos es un SACRAMENTO?', a: sac, opts: shuffle([sac, ...pick(donN,1), ...pick(fruN.filter(f=>!donN.includes(f)),1)]) });
-  qs.push({ e:'👶', q:'¿Cuáles son los sacramentos de INICIACIÓN cristiana?', a: INICIACION.join(', '), opts: shuffle([
+  const fru = () => pickN(fruN.filter(f => !donN.includes(f)), 1)[0];
+  const qs = [
+    { i:0, q:'¿Qué son los sacramentos?', a: DEF_SACRA, opts: shuffle([
+      DEF_SACRA,
+      'Son fiestas que celebramos en familia una vez al año.',
+      'Son oraciones que se rezan solo en Navidad.']) },
+    { i:1, q:'¿Cuántos dones del Espíritu Santo hay?', a:'7', opts: shuffle(['7','12','3']) },
+    { i:2, q:'¿Cuántos frutos del Espíritu Santo hay?', a:'12', opts: shuffle(['12','7','10']) },
+  ];
+  const don = pickN(donN,1)[0];
+  qs.push({ i:3, q:'¿Cuál de estos es un DON del Espíritu Santo?', a: don, opts: shuffle([don, fru(), ...pickN(sacN,1)]) });
+  const fr = fru();
+  qs.push({ i:4, q:'¿Cuál de estos es un FRUTO del Espíritu Santo?', a: fr, opts: shuffle([fr, ...pickN(donN,1), ...pickN(sacN,1)]) });
+  const sac = pickN(sacN,1)[0];
+  qs.push({ i:5, q:'¿Cuál de estos es un SACRAMENTO?', a: sac, opts: shuffle([sac, ...pickN(donN,1), fru()]) });
+  qs.push({ i:6, q:'¿Cuáles son los sacramentos de INICIACIÓN cristiana?', a: INICIACION.join(', '), opts: shuffle([
     INICIACION.join(', '),
     'Matrimonio, Orden sacerdotal y Confesión',
-    'Unción de los enfermos, Eucaristía y Matrimonio',
-  ])});
-  qs.push({ e:'🩹', q:'¿Cuáles son los sacramentos de CURACIÓN?', a: CURACION.join(' y '), opts: shuffle([
+    'Unción de los enfermos, Eucaristía y Matrimonio']) });
+  qs.push({ i:7, q:'¿Cuáles son los sacramentos de CURACIÓN?', a: CURACION.join(' y '), opts: shuffle([
     CURACION.join(' y '),
     'Bautismo y Confirmación',
-    'Matrimonio y Eucaristía',
-  ])});
+    'Matrimonio y Eucaristía']) });
   return shuffle(qs);
 }
 
-let quiz, qi, qResults;
+let quiz, qIdx, qResults, qFirstTry;
 function startQuiz() {
-  quiz = buildQuiz(); qi = 0; qResults = [];
-  show('quiz'); nextQ();
+  quiz = buildQuiz(); qIdx = 0; qResults = [];
+  showQuestion();
 }
-function nextQ() {
-  if (qi >= quiz.length) return finish(qResults.filter(Boolean).length, quiz.length, startQuiz);
+function showQuestion() {
+  qFirstTry = true;
+  const q = quiz[qIdx];
   renderProgress($('q-progress'), quiz.length, qResults);
-  const q = quiz[qi];
-  $('q-text').innerHTML = `<span class="emoji">${q.e}</span>${q.q}`;
-  $('q-fb').textContent = '';
-  $('q-opts').innerHTML = '';
-  speak(q.q);
-  q.opts.forEach(o => {
+  $('qCount').textContent = `PREGUNTA ${qIdx+1} DE ${quiz.length}`;
+  $('qText').textContent = '';
+  $('qText').append(q.q + ' ');
+  const sb = document.createElement('button');
+  sb.className = 'say-btn'; sb.textContent = '🔊'; sb.setAttribute('aria-label','Escuchar');
+  sb.onclick = () => say('q-' + q.i);
+  $('qText').appendChild(sb);
+  say('q-' + q.i);
+  $('qFeedback').textContent = ''; $('qNext').style.display = 'none';
+  $('qOpts').innerHTML = '';
+  q.opts.forEach(text => {
     const b = document.createElement('button');
-    b.className = 'opt'; b.textContent = o;
-    b.onclick = () => {
-      document.querySelectorAll('.opt').forEach(x => x.disabled = true);
-      const ok = o === q.a;
-      qResults.push(ok);
-      if (ok) { b.classList.add('correct','pop'); ding(); $('q-fb').textContent = '¡Correcto! 🎉'; }
-      else {
-        b.classList.add('wrong','shake'); buzz();
-        document.querySelectorAll('.opt').forEach(x => { if (x.textContent === q.a) x.classList.add('correct'); });
-        $('q-fb').textContent = 'La respuesta era: ' + q.a;
-      }
-      renderProgress($('q-progress'), quiz.length, qResults);
-      setTimeout(() => { qi++; nextQ(); }, ok ? 1100 : 2400);
-    };
-    $('q-opts').appendChild(b);
+    b.className = 'opt'; b.textContent = text;
+    b.onclick = () => answerQuiz(b, text === q.a);
+    $('qOpts').appendChild(b);
   });
 }
+function answerQuiz(btn, ok) {
+  if (ok) {
+    btn.classList.add('good','pop'); ding(); say(qFirstTry ? 'fb-bravo' : 'fb-esa-era');
+    qResults.push(qFirstTry);
+    if (qFirstTry) confetti(10);
+    $('qFeedback').textContent = qFirstTry ? '🎉 ¡Bravo! ¡Correcto!' : '✅ ¡Esa era!';
+    document.querySelectorAll('.opt').forEach(o => o.disabled = true);
+    renderProgress($('q-progress'), quiz.length, qResults);
+    $('qNext').style.display = '';
+    $('qNext').textContent = qIdx === quiz.length-1 ? 'Ver mi resultado 🏆' : 'Siguiente ➡️';
+  } else {
+    btn.classList.add('bad'); btn.disabled = true; buzz(); say('fb-intenta'); qFirstTry = false;
+    $('qFeedback').textContent = '🙈 Uy… ¡intenta otra vez!';
+  }
+}
+function nextQuestion() {
+  if (++qIdx < quiz.length) { showQuestion(); return; }
+  finish(qResults.filter(Boolean).length, quiz.length, startQuiz);
+}
 
-/* ---------- clasificar ---------- */
-let sortItems, si, sResults, sortLock;
+/* ─────────── clasificar ─────────── */
+let sortItems, sIdx, sResults, sortLock;
 function startSort() {
   const all = [
-    ...DONES.map(([n,e]) => ({ n, e, g:'don' })),
-    ...FRUTOS.map(([n,e]) => ({ n, e, g:'fruto' })),
-    ...SACRA.map(([n,e]) => ({ n, e, g:'sacra' })),
+    ...DONES.map(([n,e,slug]) => ({ n, e, slug, g:'don' })),
+    ...FRUTOS.map(([n,e,slug]) => ({ n, e, slug, g:'fruto' })),
+    ...SACRA.map(([n,e,slug]) => ({ n, e, slug, g:'sacra' })),
   ];
-  sortItems = pick(all, 10); si = 0; sResults = []; sortLock = false;
-  show('sort'); nextSort();
+  sortItems = pickN(all, 10); sIdx = 0; sResults = []; sortLock = false;
+  nextSort();
 }
 function nextSort() {
-  if (si >= sortItems.length) return finish(sResults.filter(Boolean).length, sortItems.length, startSort);
   sortLock = false;
   renderProgress($('s-progress'), sortItems.length, sResults);
   document.querySelectorAll('.bucket').forEach(b => b.classList.remove('correct','wrong'));
-  const it = sortItems[si];
-  $('s-word').innerHTML = `<span class="emoji">${it.e}</span>${it.n}`;
-  $('s-fb').textContent = '';
-  speak(it.n);
+  const it = sortItems[sIdx];
+  $('sWord').innerHTML = `<span class="emoji">${it.e}</span>${it.n} `;
+  const sb = document.createElement('button');
+  sb.className = 'say-btn'; sb.textContent = '🔊'; sb.setAttribute('aria-label','Escuchar');
+  sb.onclick = () => say('item-' + it.slug);
+  $('sWord').appendChild(sb);
+  $('sFeedback').textContent = '';
+  say('item-' + it.slug);
 }
 function answerSort(g, btn) {
   if (sortLock) return;
   sortLock = true;
-  const it = sortItems[si];
+  const it = sortItems[sIdx];
   const ok = g === it.g;
   sResults.push(ok);
   const groupName = { don:'un DON 🔥', fruto:'un FRUTO 🍎', sacra:'un SACRAMENTO 💧' }[it.g];
-  if (ok) { btn.classList.add('correct','pop'); ding(); $('s-fb').textContent = '¡Sí! Es ' + groupName; }
+  say('fb-es-' + it.g);
+  if (ok) { btn.classList.add('correct','pop'); ding(); $('sFeedback').textContent = '¡Sí! Es ' + groupName; }
   else {
-    btn.classList.add('wrong','shake'); buzz();
+    btn.classList.add('wrong'); buzz();
     document.querySelector(`.bucket[data-g="${it.g}"]`).classList.add('correct');
-    $('s-fb').textContent = it.n + ' es ' + groupName;
+    $('sFeedback').textContent = it.n + ' es ' + groupName;
   }
   renderProgress($('s-progress'), sortItems.length, sResults);
-  setTimeout(() => { si++; nextSort(); }, ok ? 1000 : 2200);
+  setTimeout(() => {
+    if (++sIdx >= sortItems.length) { finish(sResults.filter(Boolean).length, sortItems.length, startSort); return; }
+    nextSort();
+  }, ok ? 1300 : 2400);
 }
 
-/* ---------- rosetón (12 pétalos = 12 frutos) ---------- */
+/* ─────────── rosetón (12 pétalos = 12 frutos) ─────────── */
 (() => {
-  const colors = ['#ef476f','#4cc9f0','#06d6a0','#ffd166','#b388ff','#e07b2f'];
+  const colors = ['#e94f6e','#4cc9f0','#2ec27e','#ffd166','#a78bfa','#e07b2f'];
   let petals = '';
   for (let i = 0; i < 12; i++) {
     const a1 = (i * 30 - 90) * Math.PI / 180, a2 = ((i + 1) * 30 - 90) * Math.PI / 180;
