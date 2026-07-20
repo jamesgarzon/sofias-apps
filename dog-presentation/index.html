@@ -82,6 +82,7 @@
 <div class="voice-row">
   <select id="voiceSelect" onchange="chooseVoice(this.value)"></select>
   <button class="btn-blue" style="padding:8px 14px;font-size:1rem;" onclick="speak('Hello! My favorite animal is the dog!')">🔊 Test</button>
+  <button class="btn-blue" id="slowBtn" style="padding:8px 14px;font-size:1rem;" onclick="toggleSlow()">🐢 Slow</button>
 </div>
 
 <!-- HOME -->
@@ -248,10 +249,19 @@ function chooseVoice(val) {
   localStorage.setItem("sofia-voice", val);
 }
 speechSynthesis.onvoiceschanged = pickVoice; pickVoice();
+let slowMode = localStorage.getItem("sofia-slow") === "1";
+function toggleSlow() {
+  slowMode = !slowMode;
+  localStorage.setItem("sofia-slow", slowMode ? "1" : "0");
+  $("slowBtn").style.background = slowMode ? "#2e9e4f" : "";
+  $("slowBtn").textContent = slowMode ? "🐢 Slow ✓" : "🐢 Slow";
+}
+if (slowMode) { slowMode = false; toggleSlow(); }
 function speak(text, rate = 0.85, onend = null) {
   stopSpeaking();
   if (naturalVoice) {
     const a = new Audio(`audio/${naturalVoice}/${slug(text)}.mp3`);
+    a.playbackRate = slowMode ? 0.7 : 1; // pitch preserved by default
     currentAudio = a;
     a.onended = () => { if (onend) onend(); };
     a.onerror = () => speakSystem(text, rate, onend); // missing clip -> system voice
@@ -263,7 +273,7 @@ function speak(text, rate = 0.85, onend = null) {
 function speakSystem(text, rate, onend) {
   const u = new SpeechSynthesisUtterance(text);
   if (voice) u.voice = voice;
-  u.lang = "en-US"; u.rate = rate;
+  u.lang = "en-US"; u.rate = slowMode ? rate * 0.7 : rate;
   u.onboundary = e => {
     if (e.name !== "word") return;
     const el = $("learnText");
