@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Gran Teatro de Sofía 🎭</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎭</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #180a10;
+    --curtain: #a1122b;
+    --curtain-dark: #5f0916;
+    --gold: #f5c542;
+    --gold-light: #ffe9a8;
+    --cream: #fff3d6;
+    --ink: #4a2b18;
+    --green: #3ecf6e;
+    --red: #ff5a5a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { min-height: 100%; }
+  body {
+    font-family: "Baloo 2", "Comic Sans MS", sans-serif;
+    background:
+      radial-gradient(ellipse 120% 70% at 50% -10%, #33121f 0%, transparent 60%),
+      radial-gradient(ellipse 150% 60% at 50% 110%, #2a1508 0%, transparent 55%),
+      var(--bg);
+    color: var(--cream);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 10px 14px 40px; overflow-x: hidden; min-height: 100vh;
+  }
+
+  /* ── reflectores ── */
+  .spot {
+    position: fixed; top: -18vh; width: 60vw; height: 130vh; pointer-events: none; z-index: 0;
+    background: radial-gradient(ellipse 45% 50% at 50% 45%, rgba(255,235,180,.10), transparent 70%);
+  }
+  .spot.l { left: -12vw; animation: sway 9s ease-in-out infinite alternate; }
+  .spot.r { right: -12vw; animation: sway 11s ease-in-out infinite alternate-reverse; }
+  @keyframes sway { from { transform: rotate(-7deg); } to { transform: rotate(7deg); } }
+
+  /* ── telón ── */
+  .curtain {
+    position: fixed; top: 0; bottom: 0; width: 52vw; z-index: 60;
+    background: repeating-linear-gradient(90deg,
+      var(--curtain-dark) 0 14px, var(--curtain) 34px, #c22138 48px, var(--curtain) 62px, var(--curtain-dark) 76px);
+    box-shadow: 0 0 40px rgba(0,0,0,.7);
+    transition: transform 1s cubic-bezier(.65,0,.35,1);
+  }
+  .curtain.l { left: 0; } .curtain.r { right: 0; }
+  body.open .curtain.l { transform: translateX(-104%); }
+  body.open .curtain.r { transform: translateX(104%); }
+  .valance {
+    position: fixed; top: 0; left: 0; right: 0; height: 34px; z-index: 61; pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 0, var(--curtain) 62%, transparent 64%) 0 12px / 46px 44px repeat-x,
+      linear-gradient(var(--curtain-dark), var(--curtain) 12px) 0 0 / 100% 14px no-repeat;
+    filter: drop-shadow(0 4px 5px rgba(0,0,0,.55));
+  }
+
+  /* ── marquesina ── */
+  .marquee {
+    position: relative; z-index: 1; width: 100%; max-width: 640px; text-align: center;
+    background: linear-gradient(#2a1017, #1d0b10);
+    border: 3px solid var(--gold); border-radius: 18px;
+    box-shadow: 0 0 24px rgba(245,197,66,.25), inset 0 0 30px rgba(0,0,0,.6);
+    padding: 10px 14px 12px; margin-top: 40px;
+  }
+  .bulbs {
+    height: 12px; margin: 2px 6px;
+    background: radial-gradient(circle at 6px 6px, var(--gold-light) 3.2px, #b8860b 4.2px, transparent 5.5px);
+    background-size: 24px 12px;
+    animation: chase 1s steps(2) infinite;
+  }
+  @keyframes chase { to { background-position-x: 48px; } }
+  h1 {
+    font-family: "Alfa Slab One", serif; font-size: clamp(1.5rem, 6vw, 2.4rem); line-height: 1.05;
+    background: linear-gradient(180deg, #ffe9a8, #f5c542 55%, #c98f1b);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: 0 3px 0 rgba(0,0,0,.4); letter-spacing: 1px; padding: 4px 0 2px;
+  }
+  h1 small { display: block; font-size: .42em; letter-spacing: 4px; }
+  .stars-total {
+    position: absolute; top: -16px; right: 12px; background: var(--cream); color: #b8860b;
+    font-weight: 700; border-radius: 999px; padding: 4px 14px; font-size: 1rem;
+    box-shadow: 0 3px 0 rgba(0,0,0,.3);
+  }
+
+  main { position: relative; z-index: 1; width: 100%; max-width: 640px; }
+  .screen { display: none; flex-direction: column; align-items: center; gap: 16px; padding-top: 20px; }
+  .screen.active { display: flex; }
+
+  /* ── boletos (home) ── */
+  .ticket {
+    display: flex; align-items: center; width: 100%; background: var(--cream); color: var(--ink);
+    border: none; border-radius: 16px; cursor: pointer; text-align: left;
+    font-family: inherit; padding: 0; overflow: hidden; position: relative;
+    box-shadow: 0 7px 0 rgba(0,0,0,.35); transition: transform .12s;
+  }
+  .ticket:active { transform: translateY(5px); box-shadow: 0 2px 0 rgba(0,0,0,.35); }
+  .ticket::before, .ticket::after {
+    content: ""; position: absolute; left: 74px; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--bg); transform: translateX(-50%);
+  }
+  .ticket::before { top: -13px; } .ticket::after { bottom: -13px; }
+  .ticket .stub {
+    align-self: stretch; width: 74px; display: flex; align-items: center; justify-content: center;
+    border-right: 3px dashed #c9a86d; font-size: 2.2rem;
+    background: repeating-linear-gradient(-45deg, #f7e3b8 0 8px, var(--cream) 8px 16px);
+  }
+  .ticket .info { padding: 14px 16px; }
+  .ticket .info b { display: block; font-size: 1.35rem; font-family: "Alfa Slab One", serif; letter-spacing: .5px; color: #8c1d2f; }
+  .ticket .info span { font-size: .95rem; color: #7a5c3e; }
+  .home-note { font-size: .95rem; color: #d9b98c; text-align: center; }
+
+  /* ── escenario (aprende) ── */
+  .stage {
+    width: 100%; background: linear-gradient(#241019, #150a0e 70%, #0e0609);
+    border: 3px solid var(--gold); border-radius: 20px; overflow: hidden; position: relative;
+    box-shadow: 0 0 30px rgba(0,0,0,.6), 0 0 18px rgba(245,197,66,.15);
+  }
+  .stage::before, .stage::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 34px; z-index: 2;
+    background: repeating-linear-gradient(90deg, var(--curtain-dark) 0 6px, var(--curtain) 12px, var(--curtain-dark) 18px);
+  }
+  .stage::before { left: 0; border-radius: 0 8px 8px 0; }
+  .stage::after { right: 0; border-radius: 8px 0 0 8px; }
+  .stage-inner { padding: 26px 48px 20px; text-align: center; position: relative; z-index: 1; }
+  .stage-inner::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 55% 60% at 50% 30%, rgba(255,235,180,.14), transparent 70%);
+    pointer-events: none;
+  }
+  .actors { font-size: 4.2rem; line-height: 1.1; filter: drop-shadow(0 10px 10px rgba(0,0,0,.5)); }
+  .lesson-title { font-family: "Alfa Slab One", serif; color: var(--gold); font-size: 1.5rem; margin: 8px 0 6px; letter-spacing: .5px; }
+  .lesson-text { font-size: 1.2rem; line-height: 1.45; }
+  .lesson-tip { margin-top: 10px; font-size: 1rem; color: #ffd970; font-style: italic; }
+  .stage .floor { height: 16px; background: repeating-linear-gradient(90deg, #4a2b16 0 34px, #3a2110 34px 68px); border-top: 2px solid #6b4423; }
+  .lesson-anim { animation: appear .45s ease; }
+  @keyframes appear { from { opacity: 0; transform: translateY(14px) scale(.96); } }
+
+  .progress-dots { display: flex; gap: 7px; justify-content: center; flex-wrap: wrap; }
+  .progress-dots i {
+    width: 11px; height: 11px; border-radius: 50%; background: #543; cursor: pointer;
+    border: 1px solid #806040;
+  }
+  .progress-dots i.here { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+  .progress-dots i.seen { background: #a5843c; }
+
+  /* ── botones ── */
+  button.btn {
+    font-family: inherit; font-weight: 700; font-size: 1.15rem; border: none; cursor: pointer;
+    border-radius: 16px; padding: 12px 24px; color: #fff;
+    box-shadow: 0 5px 0 rgba(0,0,0,.35); transition: transform .12s;
+  }
+  button.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.35); }
+  .btn-gold { background: linear-gradient(#f5c542, #d4a021); color: #4a2b18; }
+  .btn-red { background: linear-gradient(#c22138, #8c1d2f); }
+  .btn-plain { background: #55404a; }
+  .row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; width: 100%; }
+
+  /* ── quiz ── */
+  .qcard { width: 100%; background: var(--cream); color: var(--ink); border-radius: 20px; padding: 20px; box-shadow: 0 8px 0 rgba(0,0,0,.35); }
+  .qcount { font-size: .9rem; color: #a07840; font-weight: 700; letter-spacing: 1px; }
+  .qtext { font-size: 1.3rem; font-weight: 700; margin: 6px 0 14px; }
+  .opts { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    font-family: inherit; font-size: 1.08rem; text-align: left; cursor: pointer;
+    background: #fff; border: 2px solid #e0c896; border-radius: 14px; padding: 12px 14px; color: var(--ink);
+    transition: transform .1s;
+  }
+  .opt:not(:disabled):hover { transform: scale(1.015); border-color: var(--gold); }
+  .opt.good { background: #d9f7e4; border-color: var(--green); }
+  .opt.bad { background: #ffe0e0; border-color: var(--red); animation: shake .4s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-7px)} 75%{transform:translateX(7px)} }
+  .feedback { min-height: 1.8rem; font-size: 1.2rem; text-align: center; }
+
+  /* ── emparejar ── */
+  .match-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 10px; width: 100%; }
+  .mcard {
+    font-family: inherit; font-size: 1rem; cursor: pointer; border-radius: 12px; padding: 11px 10px;
+    border: 2px solid transparent; transition: transform .1s, opacity .3s; line-height: 1.25;
+  }
+  .mcard.term { background: linear-gradient(#f5c542, #e0ac2a); color: #4a2b18; font-weight: 700; font-size: 1.1rem; }
+  .mcard.def { background: var(--cream); color: var(--ink); text-align: left; }
+  .mcard.sel { border-color: #4aa3ff; transform: scale(1.04); box-shadow: 0 0 10px rgba(74,163,255,.6); }
+  .mcard.ok { background: #d9f7e4; color: #1c7a40; border-color: var(--green); pointer-events: none; opacity: .75; }
+  .mcard.err { animation: shake .4s; border-color: var(--red); }
+
+  /* ── resultado ── */
+  .big-result { font-size: 3.6rem; text-align: center; }
+  .stars-earned { font-size: 2.6rem; letter-spacing: 6px; text-align: center; min-height: 3rem; }
+  .result-text { font-size: 1.25rem; text-align: center; }
+
+  .confetti-bit { position: fixed; top: -30px; z-index: 70; font-size: 1.6rem; pointer-events: none; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(540deg); opacity: .8; } }
+
+  @media (max-width: 480px) {
+    .stage-inner { padding: 22px 40px 16px; }
+    .actors { font-size: 3.4rem; }
+    .mcard { font-size: .9rem; } .mcard.term { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="spot l"></div><div class="spot r"></div>
+  <div class="curtain l"></div><div class="curtain r"></div>
+  <div class="valance"></div>
+
+  <header class="marquee">
+    <div class="stars-total">⭐ <span id="totalStars">0</span></div>
+    <div class="bulbs"></div>
+    <h1>EL GRAN TEATRO <small>✦ DE SOFÍA ✦</small></h1>
+    <div class="bulbs"></div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="screen active">
+      <button class="ticket" onclick="go('learn')">
+        <span class="stub">🎭</span>
+        <span class="info"><b>APRENDE</b><span>La función empieza: descubre los secretos del teatro</span></span>
+      </button>
+      <button class="ticket" onclick="go('quiz')">
+        <span class="stub">🌟</span>
+        <span class="info"><b>QUIZ</b><span>Responde y gana estrellas para tu marquesina</span></span>
+      </button>
+      <button class="ticket" onclick="go('match')">
+        <span class="stub">🎪</span>
+        <span class="info"><b>EMPAREJA</b><span>Une cada palabra del teatro con su significado</span></span>
+      </button>
+      <p class="home-note">🎟️ Toca un boleto para entrar a la función</p>
+    </section>
+
+    <!-- APRENDE -->
+    <section id="learn" class="screen">
+      <div class="stage">
+        <div class="stage-inner" id="lessonBox"></div>
+        <div class="floor"></div>
+      </div>
+      <div class="progress-dots" id="lessonDots"></div>
+      <div class="row">
+        <button class="btn btn-plain" id="prevBtn" onclick="moveLesson(-1)">⬅️ Anterior</button>
+        <button class="btn btn-gold" id="nextBtn" onclick="moveLesson(1)">Siguiente ➡️</button>
+      </div>
+      <button class="btn btn-red" onclick="go('home')">🏠 Volver al teatro</button>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz" class="screen">
+      <div id="quizPlay" style="width:100%; display:flex; flex-direction:column; gap:14px; align-items:center;">
+        <div class="qcard">
+          <div class="qcount" id="qCount"></div>
+          <div class="qtext" id="qText"></div>
+          <div class="opts" id="qOpts"></div>
+        </div>
+        <div class="feedback" id="qFeedback"></div>
+        <button class="btn btn-gold" id="qNext" style="display:none" onclick="nextQuestion()">Siguiente pregunta ➡️</button>
+      </div>
+      <div id="quizEnd" style="display:none; flex-direction:column; gap:14px; align-items:center; width:100%;">
+        <div class="big-result" id="qEmoji"></div>
+        <div class="stars-earned" id="qStars"></div>
+        <div class="result-text" id="qResult"></div>
+        <div class="row">
+          <button class="btn btn-gold" onclick="startQuiz()">🔁 Jugar otra vez</button>
+          <button class="btn btn-red" onclick="go('home')">🏠 Volver al teatro</button>
+        </div>
+      </div>
+      <button class="btn btn-red" id="qHome" onclick="go('home')">🏠 Volver al teatro</button>
+    </section>
+
+    <!-- EMPAREJA -->
+    <section id="match" class="screen">
+      <div class="result-text" id="mTitle"></div>
+      <div class="match-grid" id="mGrid"></div>
+      <div class="feedback" id="mFeedback"></div>
+      <div class="row" id="mDone" style="display:none">
+        <button class="btn btn-gold" id="mNextBtn"></button>
+        <button class="btn btn-red" onclick="go('home')">🏠 Volver al teatro</button>
+      </div>
+      <button class="btn btn-red" id="mHome" onclick="go('home')">🏠 Volver al teatro</button>
+    </section>
+  </main>
+
+<script>
+/* ─────────── contenido (de los apuntes de Sofía) ─────────── */
+const LESSONS = [
+  { e:"🎭", t:"El teatro", d:"El teatro es una forma de contar historias usando personajes que actúan frente a un público.", tip:"¡Tú eres la actriz y el público te mira! 👏" },
+  { e:"🎬", t:"La escena", d:"Es una parte de la historia donde participan algunos personajes.", tip:"Cuando cambian los personajes o el lugar… ¡comienza otra escena!" },
+  { e:"📚", t:"El acto", d:"Un acto está formado por varias escenas.", tip:"¡Es como un capítulo de la historia!" },
+  { e:"💬", t:"Los parlamentos", d:"Son las intervenciones de los personajes: todo lo que dicen en la obra.", tip:"Se clasifican en diálogos, apartes y monólogos." },
+  { e:"👩‍🤝‍👨", t:"El diálogo", d:"Cuando dos o más personajes hablan entre ellos.", tip:"DI-Á-LO-GO = dos o más voces conversando 🗣️🗣️" },
+  { e:"🤫", t:"El aparte", d:"Cuando un personaje se dirige al público.", tip:"¡Es como contarle un secreto solo a ti!" },
+  { e:"🎤", t:"El monólogo", d:"Cuando un personaje actúa solo en escena.", tip:"MONO = uno solo. ¡Un solo personaje hablando!" },
+  { e:"🤐", t:"La pantomima", d:"Los actores no pueden hablar: todo se cuenta con gestos y con el cuerpo.", tip:"¡Como un mimo! 🤍🖤" },
+  { e:"🖐️🌑", t:"Teatro de sombras", d:"Hacen figuras con las manos detrás de una luz.", tip:"¡Un perrito, un pájaro… con tus propias manos!" },
+  { e:"🪑", t:"Teatro de sala", d:"Los actores actúan normalmente, en un escenario frente al público.", tip:"El teatro clásico de toda la vida." },
+  { e:"🚶‍♀️", t:"Teatro callejero", d:"Actúan caminando, en un lugar abierto como una plaza o la calle.", tip:"¡El escenario es la ciudad entera!" },
+  { e:"🎶", t:"La ópera", d:"Los personajes dicen sus frases cantando.", tip:"¡Toooodo se canta! 🎵" },
+];
+
+const QUESTIONS = [
+  { q:"¿Qué es el teatro?", a:"Una forma de contar historias con personajes que actúan frente a un público", w:["Un libro de cuentos con dibujos","Una película que se ve en casa"] },
+  { q:"¿Cuándo comienza una nueva escena?", a:"Cuando cambian los personajes o el lugar", w:["Cuando termina la obra","Cuando el público aplaude"] },
+  { q:"¿Qué es un acto?", a:"Una parte grande formada por varias escenas, como un capítulo", w:["Un aplauso muy largo","El vestuario de los actores"] },
+  { q:"¿Qué son los parlamentos?", a:"Las intervenciones de los personajes", w:["Las luces del escenario","Los asientos del público"] },
+  { q:"¿Qué es un diálogo?", a:"Cuando dos o más personajes hablan entre ellos", w:["Cuando un personaje canta una canción","Cuando el público habla"] },
+  { q:"¿Qué es un aparte?", a:"Cuando un personaje se dirige al público", w:["Cuando un actor se va del teatro","Cuando dos personajes hablan entre ellos"] },
+  { q:"¿Qué es un monólogo?", a:"Cuando un personaje actúa solo en escena", w:["Cuando todos los personajes hablan a la vez","Una obra sin personajes"] },
+  { q:"En la pantomima, los actores…", a:"No pueden hablar", w:["Cantan todas sus frases","Hacen figuras con las manos"] },
+  { q:"¿Qué hacen en el teatro de sombras?", a:"Hacen figuras con las manos", w:["Actúan caminando por la calle","Hablan muy fuerte"] },
+  { q:"En el teatro callejero, los actores…", a:"Actúan caminando en un lugar abierto", w:["Actúan sentados en una sala","Nunca salen del escenario"] },
+  { q:"En la ópera, los personajes…", a:"Dicen sus frases cantando", w:["No pueden moverse","Solo usan las manos"] },
+  { q:"En el teatro de sala, los actores…", a:"Actúan normalmente en un escenario", w:["Hacen sombras con las manos","Actúan en la calle"] },
+];
+
+const MATCH_ROUNDS = [
+  { title:"🎪 Ronda 1: Tipos de teatro", pairs:[
+    ["Pantomima","No pueden hablar"],
+    ["De sombras","Hacen figuras con las manos"],
+    ["De sala","Actúan normalmente"],
+    ["Callejero","Actúan caminando en un lugar abierto"],
+    ["Ópera","Dicen sus frases cantando"],
+  ]},
+  { title:"💬 Ronda 2: Palabras del teatro", pairs:[
+    ["Escena","Parte de la historia donde participan algunos personajes"],
+    ["Acto","Está formado por varias escenas"],
+    ["Diálogo","Dos o más personajes hablan entre ellos"],
+    ["Aparte","Un personaje se dirige al público"],
+    ["Monólogo","Un personaje actúa solo en escena"],
+  ]},
+];
+
+/* ─────────── utilidades ─────────── */
+const $ = id => document.getElementById(id);
+const shuffle = a => a.map(x => [Math.random(), x]).sort((p,q) => p[0]-q[0]).map(p => p[1]);
+
+let totalStars = +localStorage.getItem("teatro-stars") || 0;
+function renderStars() { $("totalStars").textContent = totalStars; }
+function addStars(n) { totalStars += n; localStorage.setItem("teatro-stars", totalStars); renderStars(); }
+renderStars();
+
+/* sonidos (WebAudio, sin archivos) */
+let actx;
+function ctx() { return actx ??= new (window.AudioContext || window.webkitAudioContext)(); }
+function tone(freq, dur, type="sine", when=0, vol=.18) {
+  const c = ctx(), o = c.createOscillator(), g = c.createGain();
+  o.type = type; o.frequency.value = freq; o.connect(g); g.connect(c.destination);
+  const t = c.currentTime + when;
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+  o.start(t); o.stop(t + dur);
+}
+const ding = () => { tone(660, .18); tone(880, .3, "sine", .1); };
+const buzz = () => tone(150, .3, "sawtooth", 0, .12);
+function applause(dur=1.4) {
+  const c = ctx(), n = c.sampleRate * dur, buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) d[i] = (Math.random()*2-1) * Math.pow(1-i/n, 1.6) * (.4 + .6*Math.abs(Math.sin(i/900)));
+  const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+  f.type = "bandpass"; f.frequency.value = 1800; f.Q.value = .6; g.gain.value = .5;
+  s.buffer = buf; s.connect(f); f.connect(g); g.connect(c.destination); s.start();
+}
+function confetti(n=26) {
+  const icons = ["🎉","⭐","🎊","✨","🌟","🎭"];
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement("span");
+    s.className = "confetti-bit";
+    s.textContent = icons[Math.floor(Math.random()*icons.length)];
+    s.style.left = Math.random()*100 + "vw";
+    s.style.animationDuration = 1.4 + Math.random()*1.4 + "s";
+    s.style.animationDelay = Math.random()*.4 + "s";
+    document.body.appendChild(s);
+    s.addEventListener("animationend", () => s.remove());
+  }
+}
+
+/* ─────────── telón y navegación ─────────── */
+window.addEventListener("load", () => setTimeout(() => document.body.classList.add("open"), 400));
+function go(id) {
+  document.body.classList.remove("open");
+  setTimeout(() => {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    $(id).classList.add("active");
+    if (id === "learn") showLesson(lessonIdx);
+    if (id === "quiz") startQuiz();
+    if (id === "match") startMatch(0);
+    window.scrollTo(0, 0);
+    document.body.classList.add("open");
+  }, 1050);
+}
+
+/* ─────────── aprende ─────────── */
+let lessonIdx = 0;
+function showLesson(i) {
+  lessonIdx = Math.max(0, Math.min(LESSONS.length-1, i));
+  const l = LESSONS[lessonIdx];
+  $("lessonBox").innerHTML =
+    `<div class="lesson-anim"><div class="actors">${l.e}</div>
+     <div class="lesson-title">${l.t}</div>
+     <div class="lesson-text">${l.d}</div>
+     <div class="lesson-tip">💡 ${l.tip}</div></div>`;
+  $("lessonDots").innerHTML = LESSONS.map((_, k) =>
+    `<i class="${k === lessonIdx ? "here" : k < lessonIdx ? "seen" : ""}" onclick="showLesson(${k})"></i>`).join("");
+  $("prevBtn").style.visibility = lessonIdx === 0 ? "hidden" : "visible";
+  $("nextBtn").textContent = lessonIdx === LESSONS.length-1 ? "🎉 ¡Fin de la función!" : "Siguiente ➡️";
+}
+function moveLesson(d) {
+  if (lessonIdx === LESSONS.length-1 && d === 1) { applause(); confetti(); go("home"); return; }
+  showLesson(lessonIdx + d);
+}
+
+/* ─────────── quiz ─────────── */
+let qOrder = [], qIdx = 0, qScore = 0, qFirstTry = true;
+function startQuiz() {
+  qOrder = shuffle(QUESTIONS); qIdx = 0; qScore = 0;
+  $("quizPlay").style.display = "flex"; $("quizEnd").style.display = "none"; $("qHome").style.display = "";
+  showQuestion();
+}
+function showQuestion() {
+  qFirstTry = true;
+  const q = qOrder[qIdx];
+  $("qCount").textContent = `PREGUNTA ${qIdx+1} DE ${qOrder.length} · ⭐ ${qScore}`;
+  $("qText").textContent = q.q;
+  $("qFeedback").textContent = ""; $("qNext").style.display = "none";
+  $("qOpts").innerHTML = "";
+  shuffle([q.a, ...q.w]).forEach(text => {
+    const b = document.createElement("button");
+    b.className = "opt"; b.textContent = text;
+    b.onclick = () => answer(b, text === q.a);
+    $("qOpts").appendChild(b);
+  });
+}
+function answer(btn, ok) {
+  if (ok) {
+    btn.classList.add("good"); ding();
+    if (qFirstTry) { qScore++; confetti(10); }
+    $("qFeedback").textContent = qFirstTry ? "🎉 ¡Bravo! ¡Correcto!" : "✅ ¡Esa era!";
+    document.querySelectorAll(".opt").forEach(o => o.disabled = true);
+    $("qNext").style.display = "";
+    $("qNext").textContent = qIdx === qOrder.length-1 ? "Ver mi resultado 🏆" : "Siguiente pregunta ➡️";
+  } else {
+    btn.classList.add("bad"); btn.disabled = true; buzz(); qFirstTry = false;
+    $("qFeedback").textContent = "🙈 Uy… ¡intenta otra vez!";
+  }
+}
+function nextQuestion() {
+  if (++qIdx < qOrder.length) { showQuestion(); return; }
+  const total = qOrder.length;
+  const stars = qScore === total ? 3 : qScore >= total-3 ? 2 : qScore >= total-6 ? 1 : 0;
+  addStars(stars);
+  $("quizPlay").style.display = "none"; $("quizEnd").style.display = "flex"; $("qHome").style.display = "none";
+  $("qEmoji").textContent = stars === 3 ? "🏆" : stars === 2 ? "🎭" : stars === 1 ? "💪" : "📚";
+  $("qStars").textContent = "⭐".repeat(stars) || "☆";
+  $("qResult").textContent = `Acertaste ${qScore} de ${total} a la primera. ` +
+    (stars === 3 ? "¡Función perfecta! ¡El público está de pie! 👏👏👏"
+     : stars === 2 ? "¡Casi perfecto! ¡Gran actuación!"
+     : stars === 1 ? "¡Buen ensayo! Repasa en APRENDE y vuelve por más estrellas."
+     : "Vamos a repasar juntas en APRENDE… ¡y luego a por el aplauso!");
+  if (stars >= 2) { applause(); confetti(40); }
+}
+
+/* ─────────── empareja ─────────── */
+let mRound = 0, mSel = null, mLeft = 0;
+function startMatch(round) {
+  mRound = round; mSel = null;
+  const r = MATCH_ROUNDS[round];
+  mLeft = r.pairs.length;
+  $("mTitle").textContent = r.title;
+  $("mFeedback").textContent = "Toca una palabra dorada y luego su significado";
+  $("mDone").style.display = "none"; $("mHome").style.display = "";
+  const terms = shuffle(r.pairs.map(p => p[0]));
+  const defs = shuffle(r.pairs.map(p => p[1]));
+  const defOf = Object.fromEntries(r.pairs);
+  $("mGrid").innerHTML = "";
+  for (let i = 0; i < terms.length; i++) {
+    $("mGrid").appendChild(mcard(terms[i], "term"));
+    $("mGrid").appendChild(mcard(defs[i], "def"));
+  }
+  function mcard(text, kind) {
+    const b = document.createElement("button");
+    b.className = "mcard " + kind; b.textContent = text; b.dataset.kind = kind;
+    b.onclick = () => pick(b, defOf);
+    return b;
+  }
+}
+function pick(btn, defOf) {
+  if (btn.classList.contains("ok")) return;
+  if (!mSel) { mSel = btn; btn.classList.add("sel"); return; }
+  if (mSel === btn) { btn.classList.remove("sel"); mSel = null; return; }
+  if (mSel.dataset.kind === btn.dataset.kind) { mSel.classList.remove("sel"); mSel = btn; btn.classList.add("sel"); return; }
+  const term = btn.dataset.kind === "term" ? btn : mSel;
+  const def = btn.dataset.kind === "def" ? btn : mSel;
+  mSel.classList.remove("sel"); mSel = null;
+  if (defOf[term.textContent] === def.textContent) {
+    term.classList.add("ok"); def.classList.add("ok"); ding();
+    if (--mLeft === 0) roundDone();
+  } else {
+    term.classList.add("err"); def.classList.add("err"); buzz();
+    setTimeout(() => { term.classList.remove("err"); def.classList.remove("err"); }, 450);
+  }
+}
+function roundDone() {
+  applause(); confetti(30); addStars(1);
+  $("mFeedback").textContent = "🎉 ¡Ronda completa! +1 ⭐";
+  $("mDone").style.display = "flex"; $("mHome").style.display = "none";
+  const last = mRound === MATCH_ROUNDS.length-1;
+  $("mNextBtn").textContent = last ? "🔁 Jugar de nuevo" : "Siguiente ronda ➡️";
+  $("mNextBtn").onclick = () => startMatch(last ? 0 : mRound+1);
+}
+</script>
+</body>
+</html>
