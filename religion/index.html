@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Vitral del Espíritu ✨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #1b1140;
+    --night2: #2a1a5e;
+    --gold: #ffd166;
+    --ruby: #ef476f;
+    --emerald: #06d6a0;
+    --sapphire: #4cc9f0;
+    --amethyst: #b388ff;
+    --glass: rgba(255,255,255,.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { font-size: 17px; }
+  body {
+    min-height: 100vh;
+    font-family: "Nunito", sans-serif;
+    color: #fff;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #4a2f8f 0%, transparent 60%),
+      radial-gradient(800px 500px at 90% 100%, #14304d 0%, transparent 55%),
+      linear-gradient(180deg, var(--night2) 0%, var(--night) 70%);
+    background-attachment: fixed;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 20px 14px 48px;
+  }
+  h1, h2, h3, .btn, .bucket { font-family: "Fredoka", sans-serif; }
+
+  /* ---------- rose window ---------- */
+  .rose { width: min(230px, 60vw); margin: 6px auto 2px; display: block; filter: drop-shadow(0 0 24px rgba(255,209,102,.35)); }
+  @media (prefers-reduced-motion: no-preference) {
+    .rose { animation: glow 4s ease-in-out infinite alternate; }
+    @keyframes glow { from { filter: drop-shadow(0 0 12px rgba(255,209,102,.25)); } to { filter: drop-shadow(0 0 30px rgba(255,209,102,.55)); } }
+  }
+
+  header { text-align: center; }
+  h1 { font-size: clamp(1.6rem, 6vw, 2.4rem); color: var(--gold); text-shadow: 0 2px 0 rgba(0,0,0,.35); letter-spacing: .5px; }
+  .subtitle { color: #cfc3ff; font-weight: 600; margin-top: 4px; }
+  .starbar { margin: 10px auto 18px; background: var(--glass); border: 1px solid rgba(255,255,255,.15); border-radius: 999px; padding: 8px 20px; font-weight: 800; font-size: 1.1rem; color: var(--gold); }
+
+  .screen { width: 100%; max-width: 560px; display: none; flex-direction: column; gap: 14px; }
+  .screen.active { display: flex; }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    display: flex; align-items: center; gap: 14px; width: 100%;
+    border: 2px solid rgba(255,255,255,.18); border-radius: 22px;
+    background: linear-gradient(160deg, rgba(255,255,255,.14), rgba(255,255,255,.05));
+    color: #fff; font-size: 1.25rem; font-weight: 600; text-align: left;
+    padding: 18px 20px; min-height: 64px; cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,.3);
+    transition: transform .1s;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+  .btn .emoji { font-size: 2rem; }
+  .btn small { display: block; font-family: "Nunito", sans-serif; font-weight: 600; color: #cfc3ff; font-size: .85rem; }
+  .btn.gold { border-color: var(--gold); }
+  .btn.ruby { border-color: var(--ruby); }
+  .btn.emerald { border-color: var(--emerald); }
+  .btn.sapphire { border-color: var(--sapphire); }
+
+  .back { align-self: flex-start; width: auto; min-height: 48px; padding: 10px 18px; font-size: 1rem; border-radius: 999px; }
+
+  /* ---------- learn: stained glass cards ---------- */
+  .tabs { display: flex; gap: 8px; }
+  .tab {
+    flex: 1; min-height: 52px; border-radius: 16px; border: 2px solid rgba(255,255,255,.18);
+    background: var(--glass); color: #fff; font-family: "Fredoka", sans-serif;
+    font-size: 1rem; cursor: pointer; padding: 6px;
+  }
+  .tab.active { background: var(--gold); border-color: var(--gold); color: #3a2500; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .card {
+    position: relative; border-radius: 18px 18px 50% 50% / 18px 18px 22% 22%;
+    border: 3px solid rgba(255,255,255,.35);
+    padding: 16px 10px 20px; text-align: center; cursor: pointer;
+    min-height: 118px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    color: #fff; font-weight: 800; font-size: 1rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,.5);
+    box-shadow: inset 0 0 30px rgba(255,255,255,.18), 0 5px 0 rgba(0,0,0,.3);
+    transition: transform .1s;
+  }
+  .card:active { transform: scale(.96); }
+  .card .emoji { font-size: 2.2rem; }
+  .card.c0 { background: linear-gradient(160deg, #7b2d8b, #b23a8f); }
+  .card.c1 { background: linear-gradient(160deg, #b3541e, #e07b2f); }
+  .card.c2 { background: linear-gradient(160deg, #1e6f8b, #2f9fc4); }
+  .card.c3 { background: linear-gradient(160deg, #1e8b52, #35b46f); }
+  .card.c4 { background: linear-gradient(160deg, #8b1e3f, #c43a5c); }
+  .card.c5 { background: linear-gradient(160deg, #4a3ab0, #7a5fe0); }
+  .card.c6 { background: linear-gradient(160deg, #8a7a12, #c4ad2a); }
+  .lesson {
+    background: var(--glass); border: 2px solid rgba(255,255,255,.18); border-radius: 20px;
+    padding: 16px 18px; font-size: 1.05rem; line-height: 1.5; font-weight: 600;
+  }
+  .lesson b { color: var(--gold); }
+  .count-badge { text-align: center; color: #cfc3ff; font-weight: 800; }
+
+  /* ---------- quiz / sort ---------- */
+  .progress { display: flex; gap: 5px; justify-content: center; }
+  .progress span { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,.2); }
+  .progress span.ok { background: var(--emerald); }
+  .progress span.bad { background: var(--ruby); }
+  .question {
+    background: var(--glass); border: 2px solid rgba(255,255,255,.2); border-radius: 20px;
+    padding: 20px; text-align: center; font-size: 1.25rem; font-weight: 800; line-height: 1.4;
+  }
+  .question .emoji { display: block; font-size: 2.6rem; margin-bottom: 8px; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    min-height: 56px; border-radius: 16px; border: 2px solid rgba(255,255,255,.25);
+    background: rgba(255,255,255,.1); color: #fff; font-size: 1.1rem; font-weight: 700;
+    font-family: "Nunito", sans-serif; cursor: pointer; padding: 12px 16px;
+  }
+  .opt.correct { background: var(--emerald); border-color: var(--emerald); color: #04352a; }
+  .opt.wrong { background: var(--ruby); border-color: var(--ruby); }
+  .opt:disabled { opacity: .95; }
+
+  .buckets { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .bucket {
+    min-height: 84px; border-radius: 18px; border: 3px dashed rgba(255,255,255,.35);
+    background: var(--glass); color: #fff; font-size: 1rem; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px;
+  }
+  .bucket .emoji { font-size: 1.8rem; }
+  .bucket.correct { border-color: var(--emerald); background: rgba(6,214,160,.25); border-style: solid; }
+  .bucket.wrong { border-color: var(--ruby); background: rgba(239,71,111,.3); border-style: solid; }
+
+  .feedback { text-align: center; font-size: 1.15rem; font-weight: 800; min-height: 1.6em; color: var(--gold); }
+
+  .result {
+    text-align: center; background: var(--glass); border: 2px solid var(--gold); border-radius: 24px; padding: 26px 20px;
+  }
+  .result .big { font-size: 3rem; }
+  .result h2 { color: var(--gold); margin: 6px 0; }
+  .result p { font-weight: 700; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pop { animation: pop .35s ease; }
+    @keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
+    .shake { animation: shake .35s ease; }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+  }
+
+  .confetti { position: fixed; top: -20px; font-size: 1.6rem; pointer-events: none; z-index: 10; }
+  @media (prefers-reduced-motion: no-preference) {
+    .confetti { animation: fall 2.6s linear forwards; }
+    @keyframes fall { to { transform: translateY(105vh) rotate(540deg); } }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="rose" viewBox="0 0 200 200" aria-hidden="true">
+    <g stroke="#0d0824" stroke-width="4">
+      <circle cx="100" cy="100" r="96" fill="#2a1a5e"/>
+      <g id="petals"></g>
+      <circle cx="100" cy="100" r="34" fill="#ffd166"/>
+    </g>
+    <text x="100" y="112" font-size="34" text-anchor="middle">🕊️</text>
+  </svg>
+  <h1>El Vitral del Espíritu</h1>
+  <p class="subtitle">Dones · Frutos · Sacramentos</p>
+  <div class="starbar">⭐ <span id="stars">0</span> estrellas</div>
+</header>
+
+<!-- HOME -->
+<section class="screen active" id="scr-home">
+  <button class="btn gold" onclick="show('learn')"><span class="emoji">📖</span><span>Aprende<small>Descubre los dones, frutos y sacramentos</small></span></button>
+  <button class="btn sapphire" onclick="startQuiz()"><span class="emoji">❓</span><span>Quiz<small>Responde 8 preguntas y gana estrellas</small></span></button>
+  <button class="btn emerald" onclick="startSort()"><span class="emoji">🧺</span><span>¿Don, Fruto o Sacramento?<small>Clasifica cada palabra en su vitral</small></span></button>
+</section>
+
+<!-- LEARN -->
+<section class="screen" id="scr-learn">
+  <button class="btn back" onclick="show('home')">⬅️ Volver</button>
+  <div class="tabs">
+    <button class="tab active" data-t="dones" onclick="learnTab('dones')">🔥 Dones</button>
+    <button class="tab" data-t="frutos" onclick="learnTab('frutos')">🍎 Frutos</button>
+    <button class="tab" data-t="sacra" onclick="learnTab('sacra')">💧 Sacramentos</button>
+  </div>
+  <div class="lesson" id="lesson"></div>
+  <p class="count-badge" id="count"></p>
+  <div class="cards" id="cards"></div>
+</section>
+
+<!-- QUIZ -->
+<section class="screen" id="scr-quiz">
+  <button class="btn back" onclick="show('home')">⬅️ Volver</button>
+  <div class="progress" id="q-progress"></div>
+  <div class="question" id="q-text"></div>
+  <div class="options" id="q-opts"></div>
+  <p class="feedback" id="q-fb"></p>
+</section>
+
+<!-- SORT -->
+<section class="screen" id="scr-sort">
+  <button class="btn back" onclick="show('home')">⬅️ Volver</button>
+  <div class="progress" id="s-progress"></div>
+  <div class="question" id="s-word"></div>
+  <p class="count-badge">¿A qué grupo pertenece?</p>
+  <div class="buckets">
+    <button class="bucket" data-g="don" onclick="answerSort('don',this)"><span class="emoji">🔥</span>Don</button>
+    <button class="bucket" data-g="fruto" onclick="answerSort('fruto',this)"><span class="emoji">🍎</span>Fruto</button>
+    <button class="bucket" data-g="sacra" onclick="answerSort('sacra',this)"><span class="emoji">💧</span>Sacramento</button>
+  </div>
+  <p class="feedback" id="s-fb"></p>
+</section>
+
+<!-- RESULT -->
+<section class="screen" id="scr-result">
+  <div class="result">
+    <div class="big" id="r-emoji">🎉</div>
+    <h2 id="r-title"></h2>
+    <p id="r-msg"></p>
+  </div>
+  <button class="btn gold" id="r-again"><span class="emoji">🔁</span>Jugar otra vez</button>
+  <button class="btn" onclick="show('home')"><span class="emoji">🏠</span>Menú</button>
+</section>
+
+<script>
+/* ---------- datos (de los apuntes de Sofía) ---------- */
+const DONES = [
+  ['Sabiduría','🦉'], ['Entendimiento','💡'], ['Concejo','🧭'], ['Ciencia','🔬'],
+  ['Piedad','🙏'], ['Fortaleza','💪'], ['Temor de Dios','✨'],
+];
+const FRUTOS = [
+  ['Caridad','❤️'], ['Gozo','😄'], ['Paz','🕊️'], ['Paciencia','🐢'],
+  ['Longanimidad','🌅'], ['Bondad','🤗'], ['Benignidad','🌷'], ['Mansedumbre','🐑'],
+  ['Fidelidad','🐕'], ['Modestia','🌸'], ['Continencia o Templanza','⚖️'], ['Castidad','🤍'],
+];
+const SACRA = [
+  ['Bautismo','💧'], ['Confirmación','🕊️'], ['Eucaristía','🍞'], ['Confesión','🤲'],
+  ['Matrimonio','💍'], ['Orden sacerdotal','⛪'], ['Unción de los enfermos','🙌'],
+];
+const DEF_SACRA = 'Son signos sensibles, instituidos por Jesucristo para comunicarnos la gracia divina.';
+const INICIACION = ['Bautismo','Confirmación','Eucaristía'];
+const CURACION = ['Reconciliación (Confesión)','Unción de los enfermos'];
+
+const LESSONS = {
+  dones: `Los <b>7 dones del Espíritu Santo</b> son regalos que Dios nos da para vivir bien. ¡Toca cada llama para escucharla! 🔥`,
+  frutos: `Los <b>12 frutos del Espíritu Santo</b> son lo que crece en nosotros cuando dejamos actuar a Dios, ¡como frutos en un árbol! 🌳`,
+  sacra: `<b>¿Qué son los sacramentos?</b> ${DEF_SACRA}<br><br>Son <b>7</b>. Los de <b>iniciación cristiana</b>: Bautismo, Confirmación y Eucaristía. Los de <b>curación</b>: Reconciliación y Unción de los enfermos.`,
+};
+
+/* ---------- sonido y voz ---------- */
+let AC;
+function tone(f, t, dur, type='sine', vol=.2) {
+  AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+  const o = AC.createOscillator(), g = AC.createGain();
+  o.type = type; o.frequency.value = f;
+  g.gain.setValueAtTime(vol, AC.currentTime + t);
+  g.gain.exponentialRampToValueAtTime(.001, AC.currentTime + t + dur);
+  o.connect(g).connect(AC.destination);
+  o.start(AC.currentTime + t); o.stop(AC.currentTime + t + dur);
+}
+const ding = () => { tone(660, 0, .15); tone(880, .12, .25); };
+const buzz = () => tone(160, 0, .3, 'sawtooth', .12);
+const fanfare = () => [523,659,784,1047].forEach((f,i) => tone(f, i*.15, .3));
+
+function speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'es-ES'; u.rate = .95;
+  const v = speechSynthesis.getVoices().find(v => /^es/.test(v.lang));
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+if ('speechSynthesis' in window) speechSynthesis.getVoices();
+
+/* ---------- estrellas ---------- */
+const $ = id => document.getElementById(id);
+const getStars = () => +localStorage.getItem('religion-stars') || 0;
+function addStars(n) {
+  localStorage.setItem('religion-stars', getStars() + n);
+  $('stars').textContent = getStars();
+}
+$('stars').textContent = getStars();
+
+/* ---------- navegación ---------- */
+function show(name) {
+  speechSynthesis?.cancel();
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $('scr-' + name).classList.add('active');
+  if (name === 'learn') learnTab(currentTab);
+}
+
+/* ---------- aprende ---------- */
+let currentTab = 'dones';
+function learnTab(t) {
+  currentTab = t;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.t === t));
+  $('lesson').innerHTML = LESSONS[t];
+  const list = t === 'dones' ? DONES : t === 'frutos' ? FRUTOS : SACRA;
+  const label = t === 'dones' ? 'dones' : t === 'frutos' ? 'frutos' : 'sacramentos';
+  $('count').textContent = `Son ${list.length} ${label} — ¡tócalos todos!`;
+  $('cards').innerHTML = '';
+  list.forEach(([name, emoji], i) => {
+    const d = document.createElement('button');
+    d.className = `card c${i % 7}`;
+    d.innerHTML = `<span class="emoji">${emoji}</span>${name}`;
+    d.onclick = () => { d.classList.remove('pop'); void d.offsetWidth; d.classList.add('pop'); ding(); speak(name); };
+    $('cards').appendChild(d);
+  });
+}
+
+/* ---------- utilidades de juego ---------- */
+const shuffle = a => a.map(x => [Math.random(), x]).sort((p,q) => p[0]-q[0]).map(p => p[1]);
+const pick = (a, n) => shuffle(a).slice(0, n);
+
+function renderProgress(el, total, results) {
+  el.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const s = document.createElement('span');
+    if (results[i] === true) s.className = 'ok';
+    if (results[i] === false) s.className = 'bad';
+    el.appendChild(s);
+  }
+}
+
+function finish(score, total, again) {
+  const stars = score === total ? 3 : score >= total * .7 ? 2 : score >= total * .5 ? 1 : 0;
+  addStars(stars);
+  $('r-emoji').textContent = stars === 3 ? '🏆' : stars > 0 ? '🎉' : '💪';
+  $('r-title').textContent = stars === 3 ? '¡Perfecto!' : stars > 0 ? '¡Muy bien!' : '¡Sigue practicando!';
+  $('r-msg').textContent = `Acertaste ${score} de ${total}. ${'⭐'.repeat(stars) || 'Vuelve a intentarlo para ganar estrellas.'}`;
+  $('r-again').onclick = again;
+  show('result');
+  if (stars >= 2) { fanfare(); confetti(); }
+}
+
+function confetti() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const icons = ['⭐','✨','🕊️','🎉','💛'];
+  for (let i = 0; i < 24; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.textContent = icons[i % icons.length];
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.animationDelay = Math.random() * .8 + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3500);
+  }
+}
+
+/* ---------- quiz ---------- */
+const names = l => l.map(x => x[0]);
+function buildQuiz() {
+  const qs = [];
+  const donN = names(DONES), fruN = names(FRUTOS), sacN = names(SACRA);
+  qs.push({ e:'📜', q:'¿Qué son los sacramentos?', a: DEF_SACRA, opts: shuffle([
+    DEF_SACRA,
+    'Son fiestas que celebramos en familia una vez al año.',
+    'Son oraciones que se rezan solo en Navidad.',
+  ])});
+  qs.push({ e:'🔥', q:'¿Cuántos dones del Espíritu Santo hay?', a:'7', opts: shuffle(['7','12','3']) });
+  qs.push({ e:'🍎', q:'¿Cuántos frutos del Espíritu Santo hay?', a:'12', opts: shuffle(['12','7','10']) });
+  const don = pick(donN,1)[0];
+  qs.push({ e:'🔥', q:'¿Cuál de estos es un DON del Espíritu Santo?', a: don, opts: shuffle([don, ...pick(fruN.filter(f=>!donN.includes(f)),1), ...pick(sacN,1)]) });
+  const fru = pick(fruN.filter(f=>!donN.includes(f)),1)[0];
+  qs.push({ e:'🍎', q:'¿Cuál de estos es un FRUTO del Espíritu Santo?', a: fru, opts: shuffle([fru, ...pick(donN,1), ...pick(sacN,1)]) });
+  const sac = pick(sacN,1)[0];
+  qs.push({ e:'💧', q:'¿Cuál de estos es un SACRAMENTO?', a: sac, opts: shuffle([sac, ...pick(donN,1), ...pick(fruN.filter(f=>!donN.includes(f)),1)]) });
+  qs.push({ e:'👶', q:'¿Cuáles son los sacramentos de INICIACIÓN cristiana?', a: INICIACION.join(', '), opts: shuffle([
+    INICIACION.join(', '),
+    'Matrimonio, Orden sacerdotal y Confesión',
+    'Unción de los enfermos, Eucaristía y Matrimonio',
+  ])});
+  qs.push({ e:'🩹', q:'¿Cuáles son los sacramentos de CURACIÓN?', a: CURACION.join(' y '), opts: shuffle([
+    CURACION.join(' y '),
+    'Bautismo y Confirmación',
+    'Matrimonio y Eucaristía',
+  ])});
+  return shuffle(qs);
+}
+
+let quiz, qi, qResults;
+function startQuiz() {
+  quiz = buildQuiz(); qi = 0; qResults = [];
+  show('quiz'); nextQ();
+}
+function nextQ() {
+  if (qi >= quiz.length) return finish(qResults.filter(Boolean).length, quiz.length, startQuiz);
+  renderProgress($('q-progress'), quiz.length, qResults);
+  const q = quiz[qi];
+  $('q-text').innerHTML = `<span class="emoji">${q.e}</span>${q.q}`;
+  $('q-fb').textContent = '';
+  $('q-opts').innerHTML = '';
+  speak(q.q);
+  q.opts.forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'opt'; b.textContent = o;
+    b.onclick = () => {
+      document.querySelectorAll('.opt').forEach(x => x.disabled = true);
+      const ok = o === q.a;
+      qResults.push(ok);
+      if (ok) { b.classList.add('correct','pop'); ding(); $('q-fb').textContent = '¡Correcto! 🎉'; }
+      else {
+        b.classList.add('wrong','shake'); buzz();
+        document.querySelectorAll('.opt').forEach(x => { if (x.textContent === q.a) x.classList.add('correct'); });
+        $('q-fb').textContent = 'La respuesta era: ' + q.a;
+      }
+      renderProgress($('q-progress'), quiz.length, qResults);
+      setTimeout(() => { qi++; nextQ(); }, ok ? 1100 : 2400);
+    };
+    $('q-opts').appendChild(b);
+  });
+}
+
+/* ---------- clasificar ---------- */
+let sortItems, si, sResults, sortLock;
+function startSort() {
+  const all = [
+    ...DONES.map(([n,e]) => ({ n, e, g:'don' })),
+    ...FRUTOS.map(([n,e]) => ({ n, e, g:'fruto' })),
+    ...SACRA.map(([n,e]) => ({ n, e, g:'sacra' })),
+  ];
+  sortItems = pick(all, 10); si = 0; sResults = []; sortLock = false;
+  show('sort'); nextSort();
+}
+function nextSort() {
+  if (si >= sortItems.length) return finish(sResults.filter(Boolean).length, sortItems.length, startSort);
+  sortLock = false;
+  renderProgress($('s-progress'), sortItems.length, sResults);
+  document.querySelectorAll('.bucket').forEach(b => b.classList.remove('correct','wrong'));
+  const it = sortItems[si];
+  $('s-word').innerHTML = `<span class="emoji">${it.e}</span>${it.n}`;
+  $('s-fb').textContent = '';
+  speak(it.n);
+}
+function answerSort(g, btn) {
+  if (sortLock) return;
+  sortLock = true;
+  const it = sortItems[si];
+  const ok = g === it.g;
+  sResults.push(ok);
+  const groupName = { don:'un DON 🔥', fruto:'un FRUTO 🍎', sacra:'un SACRAMENTO 💧' }[it.g];
+  if (ok) { btn.classList.add('correct','pop'); ding(); $('s-fb').textContent = '¡Sí! Es ' + groupName; }
+  else {
+    btn.classList.add('wrong','shake'); buzz();
+    document.querySelector(`.bucket[data-g="${it.g}"]`).classList.add('correct');
+    $('s-fb').textContent = it.n + ' es ' + groupName;
+  }
+  renderProgress($('s-progress'), sortItems.length, sResults);
+  setTimeout(() => { si++; nextSort(); }, ok ? 1000 : 2200);
+}
+
+/* ---------- rosetón (12 pétalos = 12 frutos) ---------- */
+(() => {
+  const colors = ['#ef476f','#4cc9f0','#06d6a0','#ffd166','#b388ff','#e07b2f'];
+  let petals = '';
+  for (let i = 0; i < 12; i++) {
+    const a1 = (i * 30 - 90) * Math.PI / 180, a2 = ((i + 1) * 30 - 90) * Math.PI / 180;
+    const x1 = 100 + 96 * Math.cos(a1), y1 = 100 + 96 * Math.sin(a1);
+    const x2 = 100 + 96 * Math.cos(a2), y2 = 100 + 96 * Math.sin(a2);
+    petals += `<path d="M100 100 L${x1} ${y1} A96 96 0 0 1 ${x2} ${y2} Z" fill="${colors[i % 6]}" opacity=".85"/>`;
+  }
+  document.getElementById('petals').innerHTML = petals;
+})();
+</script>
+</body>
+</html>
