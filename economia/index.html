@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Ciudad Económica 🏙️</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏙️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky1: #8fd3ff;
+    --sky2: #d9f2ff;
+    --grass: #6bcb77;
+    --sun: #ffd23f;
+    --ink: #2b2140;
+    --ink-soft: #5b4c76;
+    --paper: #fffdf6;
+    --card: #ffffff;
+    --brick: #ff6b5e;
+    --s1: #35a84c;
+    --s2: #f2801d;
+    --s3: #2f80ed;
+    --s4: #8b5cf6;
+    --s5: #ec4899;
+    --bien: #f2801d;
+    --serv: #2f80ed;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { font-size: 17px; }
+  body {
+    min-height: 100vh;
+    font-family: "Nunito", system-ui, sans-serif; font-weight: 700; color: var(--ink);
+    background:
+      radial-gradient(900px 420px at 78% -6%, rgba(255,210,63,.55) 0%, transparent 60%),
+      linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 46%, #fdf6e6 100%);
+    background-attachment: fixed;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 0 14px 56px; overflow-x: hidden;
+  }
+  h1, h2, h3, .btn, .tab, .chip, .card-name, .sec-title { font-family: "Fredoka", system-ui, sans-serif; }
+
+  /* ───────── cabecera ───────── */
+  header { width: 100%; max-width: 620px; text-align: center; }
+  .skyline { display: block; width: 100%; height: auto; margin: 0 -14px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .sun { transform-origin: 368px 34px; animation: spin 40s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .cloud { animation: drift 26s ease-in-out infinite alternate; }
+    @keyframes drift { from { transform: translateX(0); } to { transform: translateX(26px); } }
+    .smoke { animation: puff 3.2s ease-in-out infinite; }
+    @keyframes puff { 0% { opacity: .0; transform: translateY(4px) scale(.7); } 40% { opacity: .75; } 100% { opacity: 0; transform: translateY(-16px) scale(1.25); } }
+  }
+  h1 {
+    font-size: clamp(2rem, 8.6vw, 2.9rem); font-weight: 700; line-height: 1;
+    color: #fff; letter-spacing: .5px; margin-top: 4px;
+    text-shadow: 0 3px 0 #2f80ed, 0 5px 0 rgba(0,0,0,.18), 0 8px 18px rgba(0,0,0,.22);
+  }
+  .subtitle { color: #3b5d84; font-size: .82rem; letter-spacing: 2.6px; text-transform: uppercase; margin-top: 7px; }
+  .starbar {
+    display: inline-block; margin: 12px auto 2px; background: var(--paper);
+    border: 3px solid var(--ink); border-radius: 999px; padding: 6px 20px;
+    font-weight: 800; font-size: 1.02rem; box-shadow: 0 4px 0 var(--ink);
+  }
+
+  main { position: relative; z-index: 1; width: 100%; max-width: 620px; }
+  .screen { display: none; flex-direction: column; gap: 14px; padding-top: 16px; }
+  .screen.active { display: flex; }
+
+  /* ───────── botones tienda (home) ───────── */
+  .shop {
+    position: relative; display: flex; align-items: center; gap: 15px; width: 100%; text-align: left;
+    background: var(--paper); border: 3px solid var(--ink); border-radius: 20px;
+    padding: 16px 18px 15px; padding-top: 26px; cursor: pointer; font-family: inherit;
+    color: var(--ink); box-shadow: 0 7px 0 var(--ink); transition: transform .12s, box-shadow .12s;
+    overflow: hidden;
+  }
+  .shop::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 14px;
+    background: repeating-linear-gradient(90deg, var(--awn) 0 18px, #fff 18px 36px);
+    border-bottom: 3px solid var(--ink);
+  }
+  .shop:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--ink); }
+  .shop .ico {
+    flex: none; width: 62px; height: 62px; display: grid; place-items: center; font-size: 2.1rem;
+    background: var(--awn); border: 3px solid var(--ink); border-radius: 16px; box-shadow: inset 0 -4px 0 rgba(0,0,0,.14);
+  }
+  .shop b { display: block; font-size: 1.24rem; font-family: "Fredoka", sans-serif; font-weight: 600; }
+  .shop small { display: block; font-size: .84rem; color: var(--ink-soft); font-weight: 700; margin-top: 2px; }
+
+  /* ───────── botones genéricos ───────── */
+  .row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+  .btn {
+    border: 3px solid var(--ink); border-radius: 16px; padding: 13px 20px; min-height: 50px;
+    font-size: 1.02rem; font-weight: 600; cursor: pointer; color: var(--ink);
+    background: var(--paper); box-shadow: 0 5px 0 var(--ink); transition: transform .1s, box-shadow .1s;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+  .btn-go { background: var(--sun); }
+  .btn-home { background: #fff; }
+
+  /* ───────── pestañas ───────── */
+  .tabs { display: flex; gap: 7px; }
+  .tab {
+    flex: 1; border: 3px solid var(--ink); border-radius: 14px; background: #fff; color: var(--ink);
+    padding: 11px 5px; font-size: .84rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 0 var(--ink);
+    line-height: 1.15;
+  }
+  .tab.active { background: var(--sun); transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+
+  /* ───────── lección ───────── */
+  .lesson {
+    background: var(--card); border: 3px solid var(--ink); border-radius: 20px; padding: 16px 17px;
+    box-shadow: 0 6px 0 var(--ink); position: relative;
+  }
+  .lesson.tint { background: var(--tint, #fff); }
+  .lesson h2 {
+    font-size: 1.3rem; font-weight: 600; display: flex; align-items: center; gap: 9px; margin-bottom: 7px;
+  }
+  .lesson p { font-size: 1rem; line-height: 1.5; font-weight: 700; color: #3d3358; }
+  .speak {
+    position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%;
+    border: 3px solid var(--ink); background: var(--sun); font-size: 1.15rem; cursor: pointer;
+    box-shadow: 0 4px 0 var(--ink); display: grid; place-items: center;
+  }
+  .speak:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+  .lesson h2 { padding-right: 52px; }
+  .note {
+    margin-top: 10px; background: #fff5cf; border: 2px dashed #d9a400; border-radius: 12px;
+    padding: 9px 12px; font-size: .9rem; color: #6b4e00;
+  }
+
+  /* ───────── rejilla de fotos ───────── */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 11px; }
+  .grid.wide { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .card {
+    background: var(--card); border: 3px solid var(--ink); border-radius: 16px; overflow: hidden;
+    box-shadow: 0 5px 0 var(--ink); cursor: pointer; text-align: left;
+    font-family: inherit; color: var(--ink); padding: 0; transition: transform .12s, box-shadow .12s;
+  }
+  .card:active, .card.pop { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+  .ph {
+    position: relative; width: 100%; aspect-ratio: 4/3; background: var(--ph, #e8e3f5);
+    display: grid; place-items: center; font-size: 2.6rem; border-bottom: 3px solid var(--ink);
+  }
+  .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /* fotos verticales cuyo sujeto queda abajo */
+  .ph img[src$="oso-peluche.jpg"] { object-position: center bottom; }
+  .card-body { padding: 8px 10px 10px; }
+  .card-name { font-size: .98rem; font-weight: 600; line-height: 1.15; display: flex; gap: 5px; align-items: baseline; }
+  .card-name .sp { font-size: .8rem; opacity: .55; }
+  .card-desc { font-size: .78rem; color: var(--ink-soft); line-height: 1.3; margin-top: 3px; }
+
+  /* ───────── cadena de producción ───────── */
+  .chain { display: flex; align-items: stretch; gap: 8px; }
+  .chain .card { flex: 1; }
+  .arrow { align-self: center; font-size: 1.6rem; flex: none; }
+
+  /* ───────── bloques de sector ───────── */
+  .sec { border: 3px solid var(--ink); border-radius: 20px; overflow: hidden; box-shadow: 0 6px 0 var(--ink); background: #fff; }
+  .sec-head {
+    background: var(--c); color: #fff; padding: 12px 15px; display: flex; align-items: center; gap: 10px;
+    text-shadow: 0 2px 2px rgba(0,0,0,.22);
+  }
+  .sec-num {
+    flex: none; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%;
+    background: rgba(255,255,255,.28); border: 2.5px solid #fff; font-weight: 800; font-size: 1.1rem;
+  }
+  .sec-title { font-size: 1.18rem; font-weight: 600; line-height: 1.1; }
+  .sec-title small { display: block; font-size: .74rem; font-weight: 600; opacity: .92; letter-spacing: .4px; }
+  .sec-body { padding: 13px 14px 15px; }
+  .sec-body > p { font-size: .96rem; line-height: 1.45; color: #3d3358; margin-bottom: 11px; padding-right: 46px; position: relative; }
+  .sec-body .speak { top: -2px; }
+
+  /* ───────── quiz / juegos ───────── */
+  .progress { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
+  .dot { width: 13px; height: 13px; border-radius: 50%; background: #fff; border: 2.5px solid var(--ink); }
+  .dot.ok { background: var(--s1); } .dot.no { background: var(--brick); } .dot.now { background: var(--sun); }
+  .qcard {
+    background: var(--card); border: 3px solid var(--ink); border-radius: 20px; padding: 16px;
+    box-shadow: 0 6px 0 var(--ink);
+  }
+  .qcount { font-size: .78rem; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-soft); }
+  .qtext { font-size: 1.2rem; font-family: "Fredoka", sans-serif; font-weight: 600; margin: 7px 0 13px; line-height: 1.25; padding-right: 50px; }
+  .qcard { position: relative; }
+  .opts { display: flex; flex-direction: column; gap: 9px; }
+  .opt {
+    border: 3px solid var(--ink); border-radius: 14px; background: #fff; color: var(--ink);
+    padding: 12px 14px; font-size: .98rem; font-weight: 700; font-family: inherit; text-align: left;
+    cursor: pointer; box-shadow: 0 4px 0 var(--ink); line-height: 1.3; min-height: 48px;
+  }
+  .opt:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+  .opt.good { background: #bdf0c6; }
+  .opt.bad { background: #ffc9c4; }
+  .opt[disabled] { cursor: default; }
+  .feedback { text-align: center; font-size: 1.12rem; font-family: "Fredoka", sans-serif; font-weight: 600; min-height: 28px; }
+
+  .item-card {
+    background: var(--card); border: 3px solid var(--ink); border-radius: 20px; overflow: hidden;
+    box-shadow: 0 6px 0 var(--ink); text-align: center;
+  }
+  .item-card .ph { aspect-ratio: 16/9; font-size: 3.4rem; }
+  .item-card .name { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 1.24rem; padding: 11px 12px 13px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .big-btn {
+    border: 3px solid var(--ink); border-radius: 18px; padding: 16px 8px; min-height: 78px;
+    font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 1.1rem; color: #fff; cursor: pointer;
+    box-shadow: 0 6px 0 var(--ink); text-shadow: 0 2px 2px rgba(0,0,0,.2); line-height: 1.2;
+  }
+  .big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
+  .big-btn small { display: block; font-size: .72rem; font-weight: 600; opacity: .95; margin-top: 3px; }
+  .chips { display: flex; flex-direction: column; gap: 8px; }
+  .chip {
+    display: flex; align-items: center; gap: 10px; text-align: left;
+    border: 3px solid var(--ink); border-radius: 15px; padding: 11px 14px; min-height: 52px;
+    background: var(--c); color: #fff; font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 1.02rem;
+    cursor: pointer; box-shadow: 0 4px 0 var(--ink); text-shadow: 0 2px 2px rgba(0,0,0,.22);
+  }
+  .chip:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+  .chip .e { font-size: 1.4rem; }
+  .chip small { font-weight: 600; font-size: .74rem; opacity: .95; display: block; }
+  .chip.dim, .big-btn.dim { opacity: .38; }
+  .chip.hit, .big-btn.hit { outline: 4px solid var(--sun); outline-offset: 2px; }
+
+  /* ───────── resultado ───────── */
+  .result { background: var(--card); border: 3px solid var(--ink); border-radius: 22px; padding: 24px 18px; text-align: center; box-shadow: 0 7px 0 var(--ink); }
+  .result .big { font-size: 4rem; line-height: 1; }
+  .result h2 { font-size: 1.7rem; font-weight: 600; margin: 6px 0; }
+  .stars-earned { font-size: 1.9rem; margin: 6px 0 4px; line-height: 1.15; overflow-wrap: anywhere; }
+
+  /* ───────── créditos ───────── */
+  .credits { background: rgba(255,255,255,.62); border: 2px solid rgba(43,33,64,.25); border-radius: 14px; padding: 10px 14px; font-size: .78rem; color: #4b3f66; font-weight: 600; }
+  .credits summary { cursor: pointer; font-weight: 800; }
+  .credits p { margin-top: 7px; line-height: 1.5; }
+
+  /* ───────── confeti ───────── */
+  .confetti { position: fixed; top: -12px; width: 11px; height: 15px; z-index: 99; pointer-events: none; border-radius: 2px; }
+  @keyframes fall { to { transform: translateY(105vh) rotate(720deg); opacity: 0; } }
+  .pulse { animation: pulse .45s ease; }
+  @keyframes pulse { 50% { transform: scale(1.06); } }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="skyline" viewBox="0 0 420 150" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+    <g class="cloud" opacity=".92">
+      <ellipse cx="62" cy="26" rx="25" ry="11" fill="#fff"/>
+      <ellipse cx="84" cy="30" rx="17" ry="9" fill="#fff"/>
+      <ellipse cx="44" cy="31" rx="15" ry="8" fill="#fff"/>
+    </g>
+    <g class="sun">
+      <circle cx="368" cy="34" r="19" fill="#ffd23f"/>
+      <g stroke="#ffd23f" stroke-width="4" stroke-linecap="round">
+        <line x1="368" y1="5" x2="368" y2="-2"/><line x1="368" y1="63" x2="368" y2="70"/>
+        <line x1="339" y1="34" x2="332" y2="34"/><line x1="397" y1="34" x2="404" y2="34"/>
+        <line x1="347" y1="13" x2="342" y2="8"/><line x1="389" y1="55" x2="394" y2="60"/>
+        <line x1="389" y1="13" x2="394" y2="8"/><line x1="347" y1="55" x2="342" y2="60"/>
+      </g>
+    </g>
+    <!-- cerros -->
+    <path d="M0 128 Q46 86 96 128 Z" fill="#4fae5d"/>
+    <path d="M62 128 Q112 92 160 128 Z" fill="#5cbd6a"/>
+    <!-- granja (primario) -->
+    <g>
+      <rect x="10" y="104" width="30" height="24" fill="#35a84c" stroke="#2b2140" stroke-width="3"/>
+      <path d="M6 104 L25 90 L44 104 Z" fill="#2f8a3f" stroke="#2b2140" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="20" y="114" width="10" height="14" fill="#fffdf6" stroke="#2b2140" stroke-width="2.5"/>
+    </g>
+    <!-- fábrica (secundario) -->
+    <g>
+      <circle class="smoke" cx="72" cy="80" r="7" fill="#fff"/>
+      <rect x="66" y="84" width="11" height="20" fill="#d96b12" stroke="#2b2140" stroke-width="3"/>
+      <rect x="56" y="100" width="46" height="28" fill="#f2801d" stroke="#2b2140" stroke-width="3"/>
+      <path d="M56 100 L68 88 L68 100 L80 88 L80 100 L92 88 L92 100" fill="none" stroke="#2b2140" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="64" y="112" width="9" height="9" fill="#fffdf6" stroke="#2b2140" stroke-width="2"/>
+      <rect x="80" y="112" width="9" height="9" fill="#fffdf6" stroke="#2b2140" stroke-width="2"/>
+    </g>
+    <!-- tienda (terciario) -->
+    <g>
+      <rect x="112" y="92" width="52" height="36" fill="#2f80ed" stroke="#2b2140" stroke-width="3"/>
+      <path d="M108 92 h60 v-8 h-60 z" fill="#ff6b5e" stroke="#2b2140" stroke-width="3"/>
+      <rect x="120" y="104" width="16" height="24" fill="#fffdf6" stroke="#2b2140" stroke-width="2.5"/>
+      <rect x="144" y="104" width="14" height="13" fill="#cfe6ff" stroke="#2b2140" stroke-width="2.5"/>
+    </g>
+    <!-- torre tecnológica (cuaternario) -->
+    <g>
+      <rect x="178" y="58" width="40" height="70" fill="#8b5cf6" stroke="#2b2140" stroke-width="3"/>
+      <line x1="198" y1="58" x2="198" y2="44" stroke="#2b2140" stroke-width="3"/>
+      <circle cx="198" cy="41" r="5" fill="#ffd23f" stroke="#2b2140" stroke-width="2.5"/>
+      <g fill="#e9deff" stroke="#2b2140" stroke-width="2">
+        <rect x="185" y="68" width="11" height="11"/><rect x="201" y="68" width="11" height="11"/>
+        <rect x="185" y="86" width="11" height="11"/><rect x="201" y="86" width="11" height="11"/>
+        <rect x="185" y="104" width="11" height="11"/><rect x="201" y="104" width="11" height="11"/>
+      </g>
+    </g>
+    <!-- hospital / ONG (quinario) -->
+    <g>
+      <rect x="232" y="80" width="46" height="48" fill="#ec4899" stroke="#2b2140" stroke-width="3"/>
+      <path d="M250 88 h10 v7 h7 v10 h-7 v7 h-10 v-7 h-7 v-10 h7 z" fill="#fffdf6" stroke="#2b2140" stroke-width="2.5" stroke-linejoin="round"/>
+      <rect x="248" y="114" width="14" height="14" fill="#fffdf6" stroke="#2b2140" stroke-width="2.5"/>
+    </g>
+    <!-- edificios de fondo -->
+    <rect x="290" y="96" width="28" height="32" fill="#5aa9e6" stroke="#2b2140" stroke-width="3"/>
+    <rect x="322" y="84" width="24" height="44" fill="#7ec4f0" stroke="#2b2140" stroke-width="3"/>
+    <rect x="350" y="100" width="30" height="28" fill="#5aa9e6" stroke="#2b2140" stroke-width="3"/>
+    <rect x="384" y="90" width="26" height="38" fill="#7ec4f0" stroke="#2b2140" stroke-width="3"/>
+    <!-- suelo -->
+    <rect x="0" y="128" width="420" height="22" fill="#6bcb77"/>
+    <rect x="0" y="128" width="420" height="4" fill="#2b2140"/>
+    <!-- camión (distribución) -->
+    <g>
+      <rect x="300" y="112" width="34" height="16" fill="#fffdf6" stroke="#2b2140" stroke-width="3"/>
+      <path d="M334 118 h10 l7 6 v4 h-17 z" fill="#ff6b5e" stroke="#2b2140" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="310" cy="130" r="5" fill="#2b2140"/><circle cx="342" cy="130" r="5" fill="#2b2140"/>
+    </g>
+  </svg>
+  <h1>La Ciudad Económica</h1>
+  <p class="subtitle">Bienes · Servicios · Sectores</p>
+  <div class="starbar">⭐ <span id="stars">0</span> <span id="starWord">estrellas</span></div>
+</header>
+
+<main>
+  <!-- ══════════ INICIO ══════════ -->
+  <section class="screen active" id="scr-home">
+    <button class="shop" style="--awn:#ffd23f" onclick="openLearn()">
+      <span class="ico">📖</span>
+      <span><b>Aprende</b><small>Definiciones, fotos y los 5 sectores</small></span>
+    </button>
+    <button class="shop" style="--awn:#2f80ed" onclick="startQuiz()">
+      <span class="ico">❓</span>
+      <span><b>Quiz del examen</b><small>12 preguntas de todo el tema</small></span>
+    </button>
+    <button class="shop" style="--awn:#f2801d" onclick="startBS()">
+      <span class="ico">🤔</span>
+      <span><b>¿Bien o Servicio?</b><small>¿Se puede tocar o no?</small></span>
+    </button>
+    <button class="shop" style="--awn:#ec4899" onclick="startSec()">
+      <span class="ico">🕵️</span>
+      <span><b>Detective de Sectores</b><small>¿A qué sector pertenece este trabajo?</small></span>
+    </button>
+    <details class="credits">
+      <summary>📷 Créditos de las fotos</summary>
+      <p>Fotos de Wikimedia Commons:
+      Bicicleta © Dakota Corbin (CC0) · Manzana © Santeri Viinamäki (CC BY-SA 4.0) ·
+      Oso de peluche © Chenspec (CC BY-SA 4.0) · Casa © Boereck (dominio público) ·
+      Libros © Abhi Sharma (CC BY 2.0) · Aula de clase © Angie, Sawara, Japón (CC BY 2.0) ·
+      Enfermera y paciente © Linda Bartlett (dominio público) ·
+      Bus TransMilenio © Mariordo — Mario Roberto Durán Ortiz (CC BY-SA 4.0) ·
+      Bomberos © Chrisklee18 (CC BY-SA 3.0) · Campo de trigo © Nupur Dasgupta (CC BY 2.0) ·
+      Pan © FotoDawg (CC BY 2.0) · Troncos © Shixart1985 (CC BY 2.0) · Mesa © Shixart1985 (CC BY 2.0) ·
+      Camión © Bahnfrend (CC BY-SA 4.0) · Supermercado © Husskeyy (CC BY-SA 4.0) ·
+      Frutas y verduras © PattayaPatrol (CC BY-SA 4.0) · Tienda de ropa © WMboeOO PPYEE (CC0) ·
+      Bombillas © Thomas Vimare (CC0) · Rueda de la fortuna © Luz V., Medellín (CC BY 2.0) ·
+      Vendedora en el mercado © Pedro M. Martinez Corada (CC BY-SA 4.0) · Agricultura © USDAgov (CC BY 2.0) ·
+      Ganadería © Alan Murray-Rust (CC BY-SA 2.0) · Pesca © Bernard Spragg (CC0) ·
+      Minería © Raimond Spekking (CC BY-SA 4.0) · Industria textil © YeraC (CC BY-SA 4.0) ·
+      Construcción © Tiia Monto (CC BY-SA 4.0) · Galletas © Rdsmith4 (CC BY-SA 2.5) ·
+      Carpintería © Jorge Royan (CC BY-SA 3.0) · Robótica © Phasmatisnox (CC BY 3.0) ·
+      Laboratorio © Rhoda Baer (dominio público) · Universidad © Dennis Ludlow — Sharkshock (CC BY-SA 4.0) ·
+      Cohete © Bill Ingalls / NASA (dominio público) · Voluntarios (ONG) © Diario de Madrid (CC BY 4.0)</p>
+    </details>
+  </section>
+
+  <!-- ══════════ APRENDE ══════════ -->
+  <section class="screen" id="scr-learn">
+    <div class="tabs">
+      <button class="tab active" data-t="bs" onclick="learnTab('bs')">📦 Bienes y<br>Servicios</button>
+      <button class="tab" data-t="pdc" onclick="learnTab('pdc')">🔄 Producción<br>Distr. · Consumo</button>
+      <button class="tab" data-t="sec" onclick="learnTab('sec')">🏙️ Los 5<br>Sectores</button>
+    </div>
+    <div id="learnBox"></div>
+    <div class="row"><button class="btn btn-home" onclick="go('home')">🏠 Volver al inicio</button></div>
+  </section>
+
+  <!-- ══════════ QUIZ ══════════ -->
+  <section class="screen" id="scr-quiz">
+    <div class="progress" id="qProgress"></div>
+    <div class="qcard">
+      <button class="speak" onclick="say('q-' + QUIZ[qOrder[qi]].a)" aria-label="Escuchar">🔊</button>
+      <div class="qcount" id="qCount"></div>
+      <div class="qtext" id="qText"></div>
+      <div class="opts" id="qOpts"></div>
+    </div>
+    <p class="feedback" id="qFeedback"></p>
+    <div class="row">
+      <button class="btn btn-go" id="qNext" style="display:none" onclick="nextQuiz()">Siguiente ➡️</button>
+      <button class="btn btn-home" onclick="go('home')">🏠 Inicio</button>
+    </div>
+  </section>
+
+  <!-- ══════════ BIEN O SERVICIO ══════════ -->
+  <section class="screen" id="scr-bs">
+    <div class="progress" id="bProgress"></div>
+    <div class="item-card">
+      <div class="ph" id="bPh"></div>
+      <div class="name" id="bName"></div>
+    </div>
+    <div class="two">
+      <button class="big-btn" style="background:var(--bien)" onclick="answerBS('bien', this)">📦 BIEN<small>se puede tocar</small></button>
+      <button class="big-btn" style="background:var(--serv)" onclick="answerBS('servicio', this)">🤝 SERVICIO<small>no se puede tocar</small></button>
+    </div>
+    <p class="feedback" id="bFeedback"></p>
+    <div class="row">
+      <button class="btn btn-go" id="bNext" style="display:none" onclick="nextBS()">Siguiente ➡️</button>
+      <button class="btn btn-home" onclick="go('home')">🏠 Inicio</button>
+    </div>
+  </section>
+
+  <!-- ══════════ DETECTIVE DE SECTORES ══════════ -->
+  <section class="screen" id="scr-sec">
+    <div class="progress" id="sProgress"></div>
+    <div class="item-card">
+      <div class="ph" id="sPh"></div>
+      <div class="name" id="sName"></div>
+    </div>
+    <div class="chips" id="sChips"></div>
+    <p class="feedback" id="sFeedback"></p>
+    <div class="row">
+      <button class="btn btn-go" id="sNext" style="display:none" onclick="nextSec()">Siguiente ➡️</button>
+      <button class="btn btn-home" onclick="go('home')">🏠 Inicio</button>
+    </div>
+  </section>
+
+  <!-- ══════════ RESULTADO ══════════ -->
+  <section class="screen" id="scr-result">
+    <div class="result">
+      <div class="big" id="rEmoji">🎉</div>
+      <h2 id="rTitle"></h2>
+      <div class="stars-earned" id="rStars"></div>
+      <p id="rMsg"></p>
+    </div>
+    <div class="row">
+      <button class="btn btn-go" id="rAgain">🔁 Jugar otra vez</button>
+      <button class="btn btn-home" onclick="go('home')">🏠 Inicio</button>
+    </div>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(p => p[1]);
+
+/* ═══════════ DATOS ═══════════ */
+const SECTORS = {
+  p: { n: 'Primario',     sub: 'la naturaleza',        e: '🌱', c: 'var(--s1)' },
+  s: { n: 'Secundario',   sub: 'las fábricas',         e: '🏭', c: 'var(--s2)' },
+  t: { n: 'Terciario',    sub: 'los servicios',        e: '🚌', c: 'var(--s3)' },
+  c: { n: 'Cuaternario',  sub: 'nuevas tecnologías',   e: '🤖', c: 'var(--s4)' },
+  q: { n: 'Quinario',     sub: 'servicios humanos',    e: '🤝', c: 'var(--s5)' },
+};
+
+const LESSON = {
+  actividades: { t: 'Actividades económicas', e: '🏙️', tint: '#eaf4ff', x:
+    'Son todas las <b>acciones y trabajos</b> que hacen las personas para <b>producir, distribuir y consumir</b> los <b>bienes</b> (cosas que se pueden tocar, como juguetes o comida) y <b>servicios</b> (educación o salud) que necesitamos.' },
+  bienes: { t: 'Los bienes', e: '📦', tint: '#fff3e6', x:
+    'Son todas las <b>cosas u objetos materiales</b> que podemos <b>ver, tocar y usar</b>. Nos sirven para <b>satisfacer una necesidad o un deseo</b> y se caracterizan por tener un <b>valor económico</b>.' },
+  servicios: { t: 'Los servicios', e: '🤝', tint: '#eaf4ff', x:
+    'Es una actividad, acción o trabajo <b>intangible</b> que alguien o una institución realiza para <b>satisfacer las necesidades de otras personas</b>. A diferencia de los objetos físicos <b>no se pueden tocar ni almacenar</b>, sino que <b>se consumen en el momento</b> en que se presentan.' },
+  produccion: { t: 'La producción', e: '🏭', tint: '#fff3e6', x:
+    'Es el proceso de <b>crear o fabricar cosas útiles</b>, ya sean objetos (juguetes y ropa) o servicios (cortar el cabello). Consiste en tomar las <b>materias primas</b> y, mediante el <b>trabajo y las herramientas</b>, transformarlas en algo <b>nuevo y valioso</b> que la gente pueda usar.' },
+  distribucion: { t: 'La distribución', e: '🚚', tint: '#f1e9ff', x:
+    'Es el proceso de <b>repartir, organizar o colocar</b> cosas de manera que <b>lleguen a su destino</b> o estén <b>al alcance de todos</b>. Ejemplo: es la forma en que los juguetes, la ropa o los alimentos <b>viajan desde la fábrica hasta el supermercado</b>, tienda o almacén, para que puedan comprarlos.' },
+  consumo: { t: 'El consumo', e: '🍽️', tint: '#ffeaf3', x:
+    'Es la acción de <b>usar, comer, gastar o comprar</b> cosas (bienes y servicios) para <b>satisfacer nuestras necesidades</b>. Significa utilizar lo que necesitamos para <b>vivir, aprender y divertirnos</b>: como comer alimentos, usar ropa o encender la luz.' },
+  sectores: { t: 'Los sectores económicos', e: '🏙️', tint: '#eaf4ff', x:
+    'Son <b>grupos en los que se dividen todos los trabajos y actividades</b> que hacen las personas para <b>producir bienes</b> o <b>brindar servicios</b>. Son <b>cinco</b>.' },
+  s1: { x: 'Son los trabajos que se encargan de <b>obtener los recursos directamente de la naturaleza</b>. Son la <b>base</b>, porque de aquí salen las <b>materias primas</b> para crear otras cosas.' },
+  s2: { x: 'Son los trabajos que <b>transforman lo que nos da la naturaleza</b> (las materias primas) en <b>productos terminados</b> o listos para usar.' },
+  s3: { x: 'Son trabajos que <b>no producen cosas materiales</b>, sino que <b>prestan un servicio</b> para <b>ayudar y cuidar</b> a las personas.' },
+  s4: { x: 'Se vincula con el <b>desarrollo tecnológico</b>, la <b>investigación científica</b>, la informática, la electrónica, la educación avanzada y el desarrollo.' },
+  s5: { x: 'Es una subdivisión de la economía enfocada en la <b>prestación de servicios sin ánimo de lucro</b>, el <b>cuidado social</b> y la toma de decisiones de alto nivel. A diferencia de otros sectores, <b>no busca generar riqueza material</b>, sino <b>garantizar el bienestar ciudadano</b>.' },
+};
+
+// id → [nombre, emoji, archivo de foto (o null), descripción corta]
+const C = {
+  'b-bicicleta':   ['Bicicleta', '🚲', 'bicicleta.jpg', 'La puedes tocar y usar'],
+  'b-manzana':     ['Manzana', '🍎', 'manzana.jpg', 'Satisface una necesidad'],
+  'b-oso':         ['Oso de peluche', '🧸', 'oso-peluche.jpg', 'Objeto material'],
+  'b-casa':        ['Casa', '🏠', 'casa.jpg', 'Necesidad de vivienda'],
+  'b-libro':       ['Libro', '📚', 'libro.jpg', 'Lo puedes tocar y leer'],
+  'b-edificio':    ['Edificio', '🏢', null, 'Tiene valor económico'],
+  'sv-educacion':  ['Educación y aprendizaje', '👩‍🏫', 'educacion.jpg', 'El maestro te enseña'],
+  'sv-salud':      ['Salud y bienestar', '🩺', 'salud.jpg', 'El médico te cuida'],
+  'sv-transporte': ['Transporte', '🚌', 'transporte.jpg', 'Te lleva de un lugar a otro'],
+  'sv-seguridad':  ['Seguridad y emergencias', '🚒', 'seguridad.jpg', 'Bomberos y policía'],
+  'p-trigo':       ['Cultivar el trigo', '🌾', 'trigo.jpg', 'Materia prima'],
+  'p-pan':         ['Hornear el pan', '🍞', 'pan.jpg', 'Producto terminado'],
+  'p-madera':      ['Cortar la madera', '🪵', 'madera.jpg', 'Materia prima'],
+  'p-mesa':        ['Fabricar la mesa', '🪑', 'mesa.jpg', 'Producto terminado'],
+  'd-camion':      ['Sale de la fábrica', '🚚', 'camion.jpg', 'El camión la reparte'],
+  'd-supermercado':['Llega a la tienda', '🛒', 'supermercado.jpg', 'Al alcance de todos'],
+  'c-alimentacion':['Alimentación', '🍽️', 'alimentacion.jpg', 'Consumo de bienes'],
+  'c-juguetes':    ['Juguetes', '🧸', 'oso-peluche.jpg', 'Consumo de bienes'],
+  'c-vestimenta':  ['Vestimenta', '👕', 'vestimenta.jpg', 'Consumo de bienes'],
+  'c-energia':     ['Energía', '💡', 'energia.jpg', 'Consumo de servicios'],
+  'c-transporte':  ['Transporte', '🚌', 'transporte.jpg', 'Consumo de servicios'],
+  'c-entretenimiento':['Entretenimiento', '🎡', 'entretenimiento.jpg', 'Consumo de servicios'],
+  'pr-agricultura':['La agricultura', '🌱', 'agricultura.jpg', 'Cultivar tomate, papa, arroz'],
+  'pr-ganaderia':  ['La ganadería', '🐄', 'ganaderia.jpg', 'Vacas y gallinas: leche, carne, huevos'],
+  'pr-pesca':      ['La pesca', '🐟', 'pesca.jpg', 'Peces del mar o los ríos'],
+  'pr-mineria':    ['La minería', '⛏️', 'mineria.jpg', 'Oro, carbón o sal de la tierra'],
+  'se-textil':     ['Industria textil', '👕', 'textil.jpg', 'El algodón se vuelve camiseta'],
+  'se-construccion':['La construcción', '🏗️', 'construccion.jpg', 'Madera, cemento y ladrillos'],
+  'se-galletas':   ['Fabricación de alimentos', '🍪', 'galletas.jpg', 'Trigo y leche → galletas'],
+  'se-carpinteria':['La carpintería', '🔨', 'carpinteria.jpg', 'La madera se vuelve mueble'],
+  'te-educacion':  ['La educación', '👩‍🏫', 'educacion.jpg', 'Los maestros del colegio'],
+  'te-salud':      ['La salud', '🏥', 'salud.jpg', 'Médicos y enfermeras'],
+  'te-transporte': ['El transporte', '🚌', 'transporte.jpg', 'Conductores de buses y aviones'],
+  'te-comercio':   ['El comercio', '🏪', 'comercio.jpg', 'Atienden en la tienda'],
+  'cu-tecnologia': ['Tecnología e información', '🤖', 'robotica.jpg', 'IA, robótica, software'],
+  'cu-biotecnologia':['Salud y biotecnología', '🧬', 'laboratorio.jpg', 'Investigación farmacéutica'],
+  'cu-universidad':['Educación superior', '🎓', 'universidad.jpg', 'Investigación científica'],
+  'cu-aeroespacial':['Industria aeroespacial', '🚀', 'aeroespacial.jpg', 'Exploración espacial'],
+  'qu-educacion':  ['Educación pública', '🏫', 'educacion.jpg', 'Gratuita, la da el gobierno'],
+  'qu-ong':        ['Las ONG', '🤝', 'ong.jpg', 'Sin ánimo de lucro'],
+  'qu-salud':      ['Servicios de salud', '💊', 'salud.jpg', 'Medicina y odontología públicas'],
+};
+
+const PH_TINT = { b: '#ffe4c9', sv: '#d5e8ff', p: '#ffe9c2', d: '#e4d9ff', c: '#ffdcec',
+                  pr: '#d6f2da', se: '#ffe0c4', te: '#d5e8ff', cu: '#e6dcff', qu: '#ffd9ea' };
+
+/* ── quiz: el índice `a` debe coincidir con QUESTIONS en gen_audio.py ── */
+const QUIZ = [
+  { a: 0, q: '¿Qué son las actividades económicas?', o: [
+    ['Todas las acciones y trabajos para producir, distribuir y consumir bienes y servicios', 1],
+    ['Solo las cosas que se compran en la tienda', 0],
+    ['Los juegos que hacemos en el colegio', 0]] },
+  { a: 1, q: '¿Qué son los bienes?', o: [
+    ['Objetos materiales que podemos ver, tocar y usar', 1],
+    ['Acciones que no se pueden tocar', 0],
+    ['Los trabajos que hacen los maestros', 0]] },
+  { a: 2, q: '¿Cuál de estos es un bien?', o: [
+    ['🚲 La bicicleta', 1], ['👩‍🏫 La educación', 0], ['🚌 El transporte', 0], ['🚒 La seguridad', 0]] },
+  { a: 3, q: '¿Qué son los servicios?', o: [
+    ['Actividades intangibles que no se pueden tocar ni almacenar', 1],
+    ['Objetos que podemos guardar en la casa', 0],
+    ['Materiales que salen de la naturaleza', 0]] },
+  { a: 4, q: '¿Cuál de estos es un servicio?', o: [
+    ['🩺 La salud', 1], ['🍎 La manzana', 0], ['🏠 La casa', 0], ['📚 El libro', 0]] },
+  { a: 5, q: '¿Se pueden almacenar los servicios?', o: [
+    ['No: se consumen en el momento en que se presentan', 1],
+    ['Sí, se guardan en una bodega', 0],
+    ['Sí, se guardan en el supermercado', 0]] },
+  { a: 6, q: '¿Qué es la producción?', o: [
+    ['Crear o fabricar cosas útiles transformando las materias primas', 1],
+    ['Llevar los productos hasta la tienda', 0],
+    ['Comprar y usar las cosas', 0]] },
+  { a: 7, q: '¿Qué son las materias primas?', o: [
+    ['Los materiales que salen de la naturaleza y se transforman', 1],
+    ['Los productos que ya están listos para usar', 0],
+    ['El dinero que se paga en la tienda', 0]] },
+  { a: 8, q: 'Para hacer pan, ¿cuál es la materia prima?', o: [
+    ['🌾 El trigo', 1], ['🍞 El pan', 0], ['🪵 La madera', 0], ['🚚 El camión', 0]] },
+  { a: 9, q: '¿Qué es la distribución?', o: [
+    ['Repartir los productos para que lleguen a su destino y estén al alcance de todos', 1],
+    ['Transformar la madera en una mesa', 0],
+    ['Comer y gastar lo que compramos', 0]] },
+  { a: 10, q: '¿Qué es el consumo?', o: [
+    ['Usar, comer, gastar o comprar bienes y servicios', 1],
+    ['Sacar los recursos de la naturaleza', 0],
+    ['Llevar la ropa desde la fábrica hasta la tienda', 0]] },
+  { a: 11, q: '¿Cuántos sectores económicos hay?', o: [
+    ['5', 1], ['3', 0], ['7', 0], ['2', 0]] },
+  { a: 12, q: '¿Qué hace el sector primario?', o: [
+    ['Obtiene los recursos directamente de la naturaleza', 1],
+    ['Transforma las materias primas en productos', 0],
+    ['Presta servicios para cuidar a las personas', 0]] },
+  { a: 13, q: 'La minería y la pesca, ¿de qué sector son?', o: [
+    ['🌱 Primario', 1], ['🏭 Secundario', 0], ['🚌 Terciario', 0], ['🤖 Cuaternario', 0]] },
+  { a: 14, q: '¿Qué hace el sector secundario?', o: [
+    ['Transforma las materias primas en productos terminados', 1],
+    ['Saca el oro y el carbón de la tierra', 0],
+    ['Cuida a las personas sin ánimo de lucro', 0]] },
+  { a: 15, q: 'La construcción y la carpintería, ¿de qué sector son?', o: [
+    ['🏭 Secundario', 1], ['🌱 Primario', 0], ['🚌 Terciario', 0], ['🤝 Quinario', 0]] },
+  { a: 16, q: '¿Qué hace el sector terciario?', o: [
+    ['No produce cosas materiales: presta servicios para ayudar y cuidar a las personas', 1],
+    ['Fabrica galletas y camisetas', 0],
+    ['Cultiva tomate, papa y arroz', 0]] },
+  { a: 17, q: 'Los médicos y los maestros, ¿de qué sector son?', o: [
+    ['🚌 Terciario', 1], ['🌱 Primario', 0], ['🏭 Secundario', 0], ['🚀 Cuaternario', 0]] },
+  { a: 18, q: '¿Con qué se relaciona el sector cuaternario?', o: [
+    ['Con la tecnología, la informática y la investigación científica', 1],
+    ['Con la agricultura y la ganadería', 0],
+    ['Con vender cosas en la tienda', 0]] },
+  { a: 19, q: '¿Qué busca el sector quinario?', o: [
+    ['Garantizar el bienestar ciudadano, sin ánimo de lucro', 1],
+    ['Generar mucha riqueza material', 0],
+    ['Sacar minerales de la tierra', 0]] },
+  { a: 20, q: 'Una ONG, ¿de qué sector es?', o: [
+    ['🤝 Quinario', 1], ['🏭 Secundario', 0], ['🌱 Primario', 0], ['🚌 Terciario', 0]] },
+  { a: 21, q: '¿De qué sector es convertir el algodón en camisetas?', o: [
+    ['🏭 Secundario', 1], ['🌱 Primario', 0], ['🚌 Terciario', 0], ['🤖 Cuaternario', 0]] },
+];
+
+const BS_ITEMS = [
+  { v: 'bien', n: 'La bicicleta', e: '🚲', img: 'bicicleta.jpg', s: 'n-bicicleta' },
+  { v: 'bien', n: 'La manzana', e: '🍎', img: 'manzana.jpg', s: 'n-manzana' },
+  { v: 'bien', n: 'El oso de peluche', e: '🧸', img: 'oso-peluche.jpg', s: 'n-oso' },
+  { v: 'bien', n: 'La casa', e: '🏠', img: 'casa.jpg', s: 'n-casa' },
+  { v: 'bien', n: 'El libro', e: '📚', img: 'libro.jpg', s: 'n-libro' },
+  { v: 'bien', n: 'El edificio', e: '🏢', img: null, s: 'n-edificio' },
+  { v: 'servicio', n: 'La clase de la maestra', e: '👩‍🏫', img: 'educacion.jpg', s: 'n-educacion' },
+  { v: 'servicio', n: 'La consulta del médico', e: '🩺', img: 'salud.jpg', s: 'n-salud' },
+  { v: 'servicio', n: 'El viaje en bus', e: '🚌', img: 'transporte.jpg', s: 'n-transporte' },
+  { v: 'servicio', n: 'Los bomberos apagando un incendio', e: '🚒', img: 'seguridad.jpg', s: 'n-seguridad' },
+  { v: 'servicio', n: 'Cortar el cabello', e: '✂️', img: null, s: 'n-cabello' },
+  { v: 'servicio', n: 'La luz de la casa', e: '💡', img: 'energia.jpg', s: 'n-energia' },
+];
+
+const SEC_ITEMS = [
+  ['pr-agricultura','p'], ['pr-ganaderia','p'], ['pr-pesca','p'], ['pr-mineria','p'],
+  ['se-textil','s'], ['se-construccion','s'], ['se-galletas','s'], ['se-carpinteria','s'],
+  ['te-educacion','t'], ['te-salud','t'], ['te-transporte','t'], ['te-comercio','t'],
+  ['cu-tecnologia','c'], ['cu-biotecnologia','c'], ['cu-universidad','c'], ['cu-aeroespacial','c'],
+  ['qu-educacion','q'], ['qu-ong','q'], ['qu-salud','q'],
+];
+
+/* ═══════════ ESTRELLAS ═══════════ */
+let totalStars = +localStorage.getItem('economia-stars') || 0;
+const renderStars = () => { $('stars').textContent = totalStars; $('starWord').textContent = totalStars === 1 ? 'estrella' : 'estrellas'; };
+function addStars(n) { totalStars += n; localStorage.setItem('economia-stars', totalStars); renderStars(); $('stars').parentElement.classList.remove('pulse'); void $('stars').offsetWidth; $('stars').parentElement.classList.add('pulse'); }
+renderStars();
+
+/* ═══════════ SONIDO ═══════════ */
+let actx;
+const ctx = () => actx ??= new (window.AudioContext || window.webkitAudioContext)();
+function tone(freq, dur, type = 'sine', when = 0, vol = .18) {
+  const a = ctx(), o = a.createOscillator(), g = a.createGain();
+  o.type = type; o.frequency.value = freq; o.connect(g); g.connect(a.destination);
+  const t = a.currentTime + when;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .01);
+  g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  o.start(t); o.stop(t + dur + .02);
+}
+const ding = () => { tone(784, .16, 'sine', 0); tone(1047, .28, 'sine', .1); };
+const buzz = () => { tone(180, .22, 'sawtooth', 0, .12); tone(120, .28, 'sawtooth', .09, .1); };
+function applause(dur = 1.5) {
+  const a = ctx(), n = a.sampleRate * dur, buf = a.createBuffer(1, n, a.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 1.6) * (Math.random() > .55 ? 1 : .25);
+  const src = a.createBufferSource(), g = a.createGain(), f = a.createBiquadFilter();
+  f.type = 'bandpass'; f.frequency.value = 2100; src.buffer = buf;
+  src.connect(f); f.connect(g); g.connect(a.destination); g.gain.value = .3; src.start();
+}
+
+const voz = new Audio();
+function say(name) { voz.pause(); voz.src = 'audio/' + name + '.mp3'; voz.play().catch(() => {}); }
+
+function confetti(n = 28) {
+  const cols = ['#ffd23f', '#ff6b5e', '#35a84c', '#2f80ed', '#8b5cf6', '#ec4899'];
+  for (let i = 0; i < n; i++) {
+    const d = document.createElement('div');
+    d.className = 'confetti';
+    d.style.left = Math.random() * 100 + 'vw';
+    d.style.background = cols[i % cols.length];
+    d.style.animation = `fall ${1.5 + Math.random() * 1.4}s linear ${Math.random() * .5}s forwards`;
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 3600);
+  }
+}
+
+/* ═══════════ NAVEGACIÓN ═══════════ */
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $('scr-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ═══════════ HELPERS DE RENDER ═══════════ */
+function phHTML(emoji, img, tint) {
+  const bg = tint ? ` style="--ph:${tint}"` : '';
+  const pic = img ? `<img src="img/${img}" alt="" loading="lazy" onerror="this.remove()">` : '';
+  return `<div class="ph"${bg}><span>${emoji}</span>${pic}</div>`;
+}
+function cardHTML(id) {
+  const [n, e, img, d] = C[id];
+  const tint = PH_TINT[id.split('-')[0]];
+  return `<button class="card" onclick="tapCard(this,'${id}')">${phHTML(e, img, tint)}
+    <div class="card-body"><div class="card-name">${n}<span class="sp">🔊</span></div>
+    <div class="card-desc">${d}</div></div></button>`;
+}
+function tapCard(el, id) { say(id); el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+function gridHTML(ids, wide) { return `<div class="grid${wide ? ' wide' : ''}">${ids.map(cardHTML).join('')}</div>`; }
+function lessonHTML(key, extra = '') {
+  const l = LESSON[key];
+  return `<div class="lesson tint" style="--tint:${l.tint}">
+    <button class="speak" onclick="say('${key}')" aria-label="Escuchar">🔊</button>
+    <h2><span>${l.e}</span>${l.t}</h2><p>${l.x}</p>${extra}</div>`;
+}
+
+/* ═══════════ APRENDE ═══════════ */
+let curTab = 'bs';
+function openLearn() { go('learn'); learnTab(curTab); }
+function learnTab(t) {
+  curTab = t;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.t === t));
+  const box = $('learnBox');
+  if (t === 'bs') {
+    box.innerHTML = lessonHTML('actividades')
+      + lessonHTML('bienes') + gridHTML(['b-bicicleta','b-manzana','b-oso','b-casa','b-libro','b-edificio'])
+      + lessonHTML('servicios') + gridHTML(['sv-educacion','sv-salud','sv-transporte','sv-seguridad']);
+    say('actividades');
+  } else if (t === 'pdc') {
+    const chain = (a, b) => `<div class="chain">${cardHTML(a)}<span class="arrow">➡️</span>${cardHTML(b)}</div>`;
+    box.innerHTML = lessonHTML('produccion', '<div class="note">🌾 <b>Materias primas:</b> los materiales que se sacan de la naturaleza y se transforman con el trabajo y las herramientas.</div>')
+      + chain('p-trigo', 'p-pan') + chain('p-madera', 'p-mesa')
+      + lessonHTML('distribucion') + `<div class="chain">${cardHTML('d-camion')}<span class="arrow">➡️</span>${cardHTML('d-supermercado')}</div>`
+      + lessonHTML('consumo', '<div class="note">📦 <b>Consumo de bienes</b> (cosas que se pueden tocar) &nbsp;·&nbsp; 🤝 <b>Consumo de servicios</b> (cosas que otros hacen por ti)</div>')
+      + gridHTML(['c-alimentacion','c-juguetes','c-vestimenta','c-energia','c-transporte','c-entretenimiento']);
+    say('produccion');
+  } else {
+    const ITEMS = { p: ['pr-agricultura','pr-ganaderia','pr-pesca','pr-mineria'],
+                    s: ['se-textil','se-construccion','se-galletas','se-carpinteria'],
+                    t: ['te-educacion','te-salud','te-transporte','te-comercio'],
+                    c: ['cu-tecnologia','cu-biotecnologia','cu-universidad','cu-aeroespacial'],
+                    q: ['qu-educacion','qu-ong','qu-salud'] };
+    const NUM = { p: 1, s: 2, t: 3, c: 4, q: 5 };
+    box.innerHTML = lessonHTML('sectores') + Object.keys(SECTORS).map(k => {
+      const S = SECTORS[k];
+      return `<div class="sec" style="--c:${S.c}">
+        <div class="sec-head"><span class="sec-num">${NUM[k]}</span>
+          <span class="sec-title">${S.e} Sector ${S.n}<small>${S.sub.toUpperCase()}</small></span></div>
+        <div class="sec-body">
+          <p><button class="speak" onclick="say('s${NUM[k]}')" aria-label="Escuchar">🔊</button>${LESSON['s' + NUM[k]].x}</p>
+          ${gridHTML(ITEMS[k], true)}
+        </div></div>`;
+    }).join('');
+    say('sectores');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ═══════════ MOTOR DE JUEGO ═══════════ */
+function renderProgress(el, total, results) {
+  el.innerHTML = Array.from({ length: total }, (_, i) => {
+    const r = results[i];
+    return `<span class="dot ${r === true ? 'ok' : r === false ? 'no' : i === results.length ? 'now' : ''}"></span>`;
+  }).join('');
+}
+function finish(score, total, again) {
+  const pct = score / total;
+  $('rEmoji').textContent = pct === 1 ? '🏆' : pct >= .7 ? '🎉' : '💪';
+  $('rTitle').textContent = pct === 1 ? '¡Perfecto!' : pct >= .7 ? '¡Muy bien!' : '¡Sigue practicando!';
+  const bonus = pct === 1 ? 3 : 0;
+  $('rStars').textContent = '⭐'.repeat(Math.min(score, 12)) + (bonus ? ' +3🌟' : '');
+  $('rMsg').textContent = `Acertaste ${score} de ${total}.` + (bonus ? ' ¡Bonus por ronda perfecta!' : '');
+  if (bonus) addStars(bonus);
+  $('rAgain').onclick = again;
+  go('result');
+  if (pct >= .7) { confetti(pct === 1 ? 50 : 28); applause(); say(pct === 1 ? 'fb-perfecta' : 'fb-ronda'); }
+}
+
+/* ═══════════ QUIZ ═══════════ */
+let qOrder = [], qi = 0, qScore = 0, qRes = [];
+function startQuiz() {
+  qOrder = shuffle(QUIZ.map((_, i) => i)).slice(0, 12);
+  qi = 0; qScore = 0; qRes = [];
+  go('quiz'); showQuiz();
+}
+function showQuiz() {
+  const q = QUIZ[qOrder[qi]];
+  renderProgress($('qProgress'), qOrder.length, qRes);
+  $('qCount').textContent = `Pregunta ${qi + 1} de ${qOrder.length}`;
+  $('qText').textContent = q.q;
+  $('qFeedback').textContent = '';
+  $('qNext').style.display = 'none';
+  $('qOpts').innerHTML = shuffle(q.o).map(([txt, ok]) =>
+    `<button class="opt" onclick="answerQuiz(this,${ok})">${txt}</button>`).join('');
+  say('q-' + q.a);
+}
+function answerQuiz(btn, ok) {
+  document.querySelectorAll('#qOpts .opt').forEach(b => b.disabled = true);
+  if (ok) { btn.classList.add('good'); qScore++; qRes.push(true); ding(); addStars(1); $('qFeedback').textContent = '¡Muy bien! ✅'; say('fb-bravo'); }
+  else {
+    btn.classList.add('bad'); qRes.push(false); buzz(); $('qFeedback').textContent = 'Uy… esta era 👇'; say('fb-intenta');
+    const good = [...document.querySelectorAll('#qOpts .opt')].find(b => b.getAttribute('onclick').includes(',1)'));
+    if (good) good.classList.add('good');
+  }
+  renderProgress($('qProgress'), qOrder.length, qRes);
+  $('qNext').style.display = '';
+}
+function nextQuiz() {
+  if (++qi >= qOrder.length) finish(qScore, qOrder.length, startQuiz);
+  else showQuiz();
+}
+
+/* ═══════════ ¿BIEN O SERVICIO? ═══════════ */
+let bOrder = [], bi = 0, bScore = 0, bRes = [];
+function startBS() { bOrder = shuffle(BS_ITEMS); bi = 0; bScore = 0; bRes = []; go('bs'); showBS(); }
+function showBS() {
+  const it = bOrder[bi];
+  renderProgress($('bProgress'), bOrder.length, bRes);
+  $('bPh').outerHTML = phHTML(it.e, it.img, '#f0ecff').replace('class="ph"', 'class="ph" id="bPh"');
+  $('bName').textContent = it.n;
+  $('bFeedback').textContent = '';
+  $('bNext').style.display = 'none';
+  document.querySelectorAll('#scr-bs .big-btn').forEach(b => { b.disabled = false; b.classList.remove('hit', 'dim'); });
+  say(it.s);
+}
+function answerBS(v, btn) {
+  const it = bOrder[bi];
+  document.querySelectorAll('#scr-bs .big-btn').forEach(b => {
+    b.disabled = true;
+    b.classList.add(b.getAttribute('onclick').includes(`'${it.v}'`) ? 'hit' : 'dim');
+  });
+  if (v === it.v) { bScore++; bRes.push(true); ding(); addStars(1); $('bFeedback').textContent = '¡Correcto! ✅'; say(it.v === 'bien' ? 'fb-es-bien' : 'fb-es-servicio'); }
+  else { bRes.push(false); buzz(); $('bFeedback').textContent = it.v === 'bien' ? 'Era un BIEN 📦 (se puede tocar)' : 'Era un SERVICIO 🤝 (no se puede tocar)'; say(it.v === 'bien' ? 'fb-es-bien' : 'fb-es-servicio'); }
+  renderProgress($('bProgress'), bOrder.length, bRes);
+  $('bNext').style.display = '';
+}
+function nextBS() { if (++bi >= bOrder.length) finish(bScore, bOrder.length, startBS); else showBS(); }
+
+/* ═══════════ DETECTIVE DE SECTORES ═══════════ */
+let sOrder = [], si = 0, sScore = 0, sRes = [];
+function startSec() { sOrder = shuffle(SEC_ITEMS).slice(0, 12); si = 0; sScore = 0; sRes = []; go('sec'); showSec(); }
+function showSec() {
+  const [id] = sOrder[si];
+  const [n, e, img] = C[id];
+  renderProgress($('sProgress'), sOrder.length, sRes);
+  $('sPh').outerHTML = phHTML(e, img, '#f0ecff').replace('class="ph"', 'class="ph" id="sPh"');
+  $('sName').textContent = n;
+  $('sFeedback').textContent = '';
+  $('sNext').style.display = 'none';
+  $('sChips').innerHTML = Object.keys(SECTORS).map(k => {
+    const S = SECTORS[k];
+    return `<button class="chip" data-k="${k}" style="--c:${S.c}" onclick="answerSec('${k}',this)">
+      <span class="e">${S.e}</span><span>Sector ${S.n}<small>${S.sub}</small></span></button>`;
+  }).join('');
+  say(id);
+}
+function answerSec(k, btn) {
+  const [, correct] = sOrder[si];
+  document.querySelectorAll('#sChips .chip').forEach(b => {
+    b.disabled = true;
+    if (b.dataset.k === correct) b.classList.add('hit'); else b.classList.add('dim');
+  });
+  if (k === correct) { sScore++; sRes.push(true); ding(); addStars(1); $('sFeedback').textContent = '¡Correcto! ✅'; say('fb-bravo'); }
+  else { sRes.push(false); buzz(); $('sFeedback').textContent = `Era el sector ${SECTORS[correct].n} ${SECTORS[correct].e}`; say('fb-esa-era'); }
+  renderProgress($('sProgress'), sOrder.length, sRes);
+  $('sNext').style.display = '';
+}
+function nextSec() { if (++si >= sOrder.length) finish(sScore, sOrder.length, startSec); else showSec(); }
+
+/* ═══════════ BIENVENIDA ═══════════ */
+document.body.addEventListener('pointerdown', () => { ctx().resume?.(); }, { once: true });
+window.addEventListener('load', () => { setTimeout(() => say('fb-bienvenida'), 500); });
+</script>
+</body>
+</html>
