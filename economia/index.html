@@ -349,7 +349,7 @@
       Enfermera y paciente © Linda Bartlett (dominio público) ·
       Bus TransMilenio © Mariordo — Mario Roberto Durán Ortiz (CC BY-SA 4.0) ·
       Bomberos © Chrisklee18 (CC BY-SA 3.0) · Campo de trigo © Nupur Dasgupta (CC BY 2.0) ·
-      Pan © FotoDawg (CC BY 2.0) · Troncos © Shixart1985 (CC BY 2.0) · Mesa © Shixart1985 (CC BY 2.0) ·
+      Pan © FotoDawg (CC BY 2.0) · Troncos © Julian Paren (CC BY-SA 2.0) · Mesa © Shixart1985 (CC BY 2.0) ·
       Camión © Bahnfrend (CC BY-SA 4.0) · Supermercado © Husskeyy (CC BY-SA 4.0) ·
       Frutas y verduras © PattayaPatrol (CC BY-SA 4.0) · Tienda de ropa © WMboeOO PPYEE (CC0) ·
       Bombillas © Thomas Vimare (CC0) · Rueda de la fortuna © Luz V., Medellín (CC BY 2.0) ·
@@ -844,8 +844,8 @@ function answerSec(k, btn) {
 function nextSec() { if (++si >= sOrder.length) finish(sScore, sOrder.length, startSec); else showSec(); }
 
 /* ═══════════ BIENVENIDA ═══════════ */
-document.body.addEventListener('pointerdown', () => { ctx().resume?.(); }, { once: true });
-window.addEventListener('load', () => { setTimeout(() => say('fb-bienvenida'), 500); });
+// móvil: el audio sólo arranca tras un gesto, así que la bienvenida espera al primer toque
+document.body.addEventListener('pointerdown', () => { ctx().resume?.(); say('fb-bienvenida'); }, { once: true });
 </script>
 </body>
 </html>
