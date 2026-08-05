@@ -157,6 +157,17 @@ h1{
 @keyframes pop{50%{transform:scale(1.06)}}
 @keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 
+.opts.two{grid-template-columns:1fr 1fr}
+.opts.two .opt{min-height:104px;font-size:1.5rem;line-height:1.25}
+.opts.two .opt span{display:block;font-size:.95rem;font-weight:500;opacity:.8;margin-top:2px}
+.opt.reg{border-color:rgba(95,224,232,.5)} .opt.irr{border-color:rgba(255,217,138,.5)}
+.rule{
+  font-size:.98rem;line-height:1.5;padding:14px 16px;border-radius:16px;margin-bottom:16px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+}
+.rule em{font-style:normal;font-weight:600;color:var(--gold)}
+.reg{color:var(--cyan)} .irr{color:var(--gold)}
+
 .typing{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:24px}
 input[type=text]{
   font:inherit;font-size:1.7rem;font-weight:600;text-align:center;color:#2a1a00;
@@ -202,6 +213,7 @@ footer a{color:inherit}
       <button class="lever" data-go="learn"><span class="ic">🔮</span><span><b>Aprende</b><span>Mira cómo viaja cada verbo al pasado</span></span></button>
       <button class="lever" data-go="quiz"><span class="ic">🎯</span><span><b>Elige el pasado</b><span>4 opciones · 10 preguntas</span></span></button>
       <button class="lever" data-go="write"><span class="ic">⌨️</span><span><b>Escríbelo</b><span>Teclea la forma en pasado</span></span></button>
+      <button class="lever" data-go="sort"><span class="ic">🔀</span><span><b>¿Regular o irregular?</b><span>Clasifica los 10 verbos</span></span></button>
       <button class="lever" data-go="table"><span class="ic">📋</span><span><b>La tabla</b><span>Los 10 verbos de un vistazo</span></span></button>
     </div>
   </section>
@@ -260,6 +272,32 @@ footer a{color:inherit}
       <div class="hint" id="wHint"></div>
       <button class="btn gold" type="submit" style="width:min(100%,340px)">Comprobar</button>
     </form>
+  </section>
+
+  <!-- ¿REGULAR O IRREGULAR? -->
+  <section class="screen" id="sort">
+    <div class="bar">
+      <button class="btn" data-go="home">← Salir</button>
+      <span class="progress" id="sProg"></span>
+    </div>
+    <div class="rule">
+      <b>La regla:</b> si el pasado se forma añadiendo <em>-ed</em> es <b class="reg">regular</b>;
+      si la palabra cambia de forma es <b class="irr">irregular</b>.
+      <button class="spk" onclick="say('fb-regla')" aria-label="Escuchar la regla">🔊</button>
+    </div>
+    <div class="machine">
+      <div class="rivets"></div>
+      <p class="prompt">¿Cómo viaja este verbo al pasado?</p>
+      <div class="word now" id="sWord">—<button class="spk" aria-label="Escuchar">🔊</button></div>
+      <div class="slot" style="min-height:0;margin-top:10px">
+        <div class="word past" style="font-size:clamp(1.5rem,7vw,2.3rem)" id="sPast"></div>
+      </div>
+    </div>
+    <div class="opts two" id="sOpts">
+      <button class="opt reg" data-t="reg">➕ed<br><span>regular</span></button>
+      <button class="opt irr" data-t="irr">🌀<br><span>irregular</span></button>
+    </div>
+    <div class="hint" id="sHint" style="margin-top:14px"></div>
   </section>
 
   <!-- FIN DE RONDA -->
@@ -348,6 +386,7 @@ function show(id){
   if(id==="learn") startLearn();
   if(id==="quiz")  startQuiz();
   if(id==="write") startWrite();
+  if(id==="sort")  startSort();
 }
 document.addEventListener("click", e=>{
   const b = e.target.closest("[data-go]");
@@ -482,14 +521,41 @@ $("wForm").onsubmit = e=>{
   }
 };
 
+/* ============ ¿REGULAR O IRREGULAR? ============ */
+let sList=[], si=0, sHits=0, sWrong=[];
+function startSort(){ sList=shuffle(VERBS.slice()); si=0; sHits=0; sWrong=[]; say("fb-regla"); paintSort(); }
+function paintSort(){
+  const v = sList[si];
+  $("sProg").textContent = `${si+1} / ${sList.length}`;
+  $("sWord").innerHTML = `${v.inf}<button class="spk" aria-label="Escuchar">🔊</button>`;
+  $("sWord").querySelector(".spk").onclick = ()=>say(`${v.s}-inf`);
+  $("sPast").textContent = `→ ${v.past}`;
+  $("sHint").className="hint"; $("sHint").textContent="";
+  [...$("sOpts").children].forEach(b=>{ b.disabled=false; b.classList.remove("ok","bad") });
+}
+$("sOpts").onclick = e=>{
+  const b = e.target.closest(".opt"); if(!b || b.disabled) return;
+  const v = sList[si], good = b.dataset.t === v.type;
+  [...$("sOpts").children].forEach(x=>x.disabled=true);
+  b.classList.add(good?"ok":"bad");
+  if(!good) [...$("sOpts").children].find(x=>x.dataset.t===v.type).classList.add("ok");
+  $("sHint").className = "hint " + (good?"ok":"bad");
+  $("sHint").innerHTML = v.type==="reg"
+    ? `<b>${v.inf}</b> + ${v.inf.endsWith("e")?"d":"ed"} → <b>${v.past}</b> · es <b class="reg">regular</b>`
+    : `<b>${v.inf}</b> cambia a <b>${v.past}</b> · es <b class="irr">irregular</b> (hay que aprenderlo de memoria)`;
+  if(good){ sHits++; beep("ok"); say("fb-bien") } else { sWrong.push(v); beep("bad"); say("fb-esa") }
+  setTimeout(()=>{ si++; si<sList.length ? paintSort() : finish("sort"); }, good?1500:2600);
+};
+
 /* ================= FIN ================= */
 let lastMode="quiz";
 function finish(mode){
   lastMode = mode;
   const learn = mode==="learn";
-  const hits  = learn ? 0 : mode==="quiz" ? qHits : wHits;
-  const total = learn ? VERBS.length : mode==="quiz" ? qList.length : wList.length;
-  const wrong = learn ? [] : mode==="quiz" ? qWrong : wWrong;
+  const R = {quiz:[qHits,qList,qWrong], write:[wHits,wList,wWrong], sort:[sHits,sList,sWrong]}[mode];
+  const hits  = learn ? 0 : R[0];
+  const total = learn ? VERBS.length : R[1].length;
+  const wrong = learn ? [] : R[2];
 
   const perfect = !learn && hits===total;
   addStar(perfect?2:1);

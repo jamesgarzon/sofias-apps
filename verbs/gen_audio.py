@@ -29,6 +29,7 @@ FEEDBACK = {
     "ronda": "¡Ronda completa! ¡Ganaste una estrella!",
     "perfecto": "¡Perfecto! ¡Dominas los verbos en pasado!",
     "bienvenida": "¡Bienvenida a la Máquina del Tiempo! Aquí los verbos viajan del presente al pasado. Toca una palanca para empezar.",
+    "regla": "La regla: un verbo es regular si su pasado se forma añadiendo e de, como cook, cooked. Es irregular si la palabra cambia de forma, como eat, ate.",
 }
 
 jobs = []
