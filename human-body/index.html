@@ -157,6 +157,8 @@ body.es-on .sense .tr{display:block}
 .opt.ok{background:#c9f2d8;box-shadow:0 4px 0 #1f7a45}
 .opt.bad{background:#ffd4da;box-shadow:0 4px 0 #93233a}
 .opt[disabled]{opacity:.62}
+.opt .tr{display:none;font-size:.75rem;font-weight:700;color:#8f6b21}
+body.es-on .opt .tr{display:block}
 .msg{text-align:center;min-height:2rem;margin-top:14px;font-family:"Fredoka";font-size:1.1rem}
 
 /* ---------- match ---------- */
@@ -174,21 +176,62 @@ body.es-on .sense .tr{display:block}
 .sense.bad{background:#d1495b;border-color:#d1495b;color:#fff}
 
 /* ---------- timeline ---------- */
+.hearts{text-align:center;font-size:1.5rem;letter-spacing:4px;margin-bottom:10px}
+.legend{
+  display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;
+  padding:9px 12px;border-radius:14px;background:rgba(201,154,63,.14);
+  border:1px solid rgba(201,154,63,.34);font-family:"Fredoka";color:#f2d089;
+}
+.legend .ar{font-size:1.5rem;letter-spacing:2px}
 .slots{display:flex;gap:6px;margin-bottom:16px}
 .slot{flex:1;height:64px;border-radius:14px;border:2px dashed rgba(201,154,63,.4);
   display:grid;place-items:center;font-size:1.6rem;background:rgba(253,247,236,.05)}
 .slot.f{border-style:solid;border-color:var(--brass);background:rgba(201,154,63,.18)}
+.slot.ok{border-color:#2f9e5f;background:rgba(47,158,95,.3)}
+.slot.bad{border-color:#d1495b;background:rgba(209,73,91,.28)}
 .pool{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
 .chip{
   display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;
   background:var(--paper);color:var(--ink);font-weight:800;box-shadow:0 4px 0 rgba(0,0,0,.3);
 }
 .chip .e{font-size:1.6rem}
-.chip .sub{display:block;font-size:.72rem;font-weight:700;opacity:.6}
 .chip .tr{display:none;font-size:.72rem;font-weight:700;color:#8f6b21}
 body.es-on .chip .tr{display:block}
 .chip.used{visibility:hidden}
 .chip:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.3)}
+.cta[disabled]{opacity:.4;box-shadow:0 5px 0 #7d5b17}
+.ask{
+  background:var(--paper);color:var(--ink);border-radius:20px;padding:22px 16px;text-align:center;
+  font-family:"Fredoka";font-size:1.35rem;box-shadow:0 8px 20px rgba(0,0,0,.35);margin-bottom:14px;
+}
+
+/* ---------- exam ---------- */
+.extag{
+  display:block;margin:0 auto 10px;width:max-content;padding:4px 12px;border-radius:20px;
+  background:rgba(201,154,63,.18);border:1px solid rgba(201,154,63,.4);
+  font-family:"Fredoka";font-size:.78rem;letter-spacing:1px;color:#f2d089;text-transform:uppercase;
+}
+.gap{
+  display:inline-block;min-width:74px;padding:0 8px;border-bottom:3px solid var(--brass);
+  color:var(--brass);text-align:center;
+}
+.gap.gok{color:#2f9e5f;border-bottom-color:#2f9e5f}
+.gap.gbad{color:#ff8a9c;border-bottom-color:#ff8a9c}
+.diploma{
+  background:linear-gradient(160deg,#fdf7ec,#f3e4c6);color:var(--ink);border-radius:22px;
+  padding:24px 18px;text-align:center;border:3px double #c99a3f;box-shadow:0 10px 26px rgba(0,0,0,.4);
+}
+.diploma .seal{font-size:3.8rem;line-height:1}
+.diploma .dlabel{font-family:"Fredoka";font-size:.78rem;letter-spacing:3px;text-transform:uppercase;color:#8f6b21}
+.diploma h2{font-family:"Fredoka";font-size:1.8rem;margin:6px 0 2px}
+.diploma .dscore{font-size:1.25rem;font-weight:800}
+.diploma .earn{font-size:2.1rem;letter-spacing:5px;margin:6px 0 0;min-height:2.4rem}
+.diploma .dstats{font-size:.85rem;color:#6d5a33;margin-top:6px}
+.review{margin-top:18px}
+.review h3{font-family:"Fredoka";font-size:1.05rem;color:#f2d089;margin-bottom:10px;text-align:center}
+.rev{background:rgba(253,247,236,.08);border-left:4px solid var(--brass);border-radius:0 12px 12px 0;
+  padding:10px 12px;margin-bottom:8px;font-size:.92rem;color:#e6dcc8}
+.rev b{display:block;margin-top:4px;color:#8ff0b8}
 
 /* ---------- results ---------- */
 .result{text-align:center;padding:14px 0}
@@ -1190,38 +1233,50 @@ body.es-on .chip .tr{display:block}
   ],
   "timeline": [
     {
+      "a": "t-birth",
       "n": "Birth",
       "age": "0",
+      "ask": "Who is 0 years old?",
       "e": "👶",
       "es": "Nacimiento"
     },
     {
+      "a": "t-toddler",
       "n": "Toddler",
       "age": "2–4 years",
+      "ask": "Who is 2 to 4 years old?",
       "e": "🧸",
       "es": "Niña pequeña"
     },
     {
+      "a": "t-child",
       "n": "Child",
       "age": "5–12 years",
+      "ask": "Who is 5 to 12 years old?",
       "e": "🧒",
       "es": "Niña"
     },
     {
+      "a": "t-teen",
       "n": "Teenager",
       "age": "13 years",
+      "ask": "Who is 13 years old?",
       "e": "🧑",
       "es": "Adolescente"
     },
     {
+      "a": "t-adult",
       "n": "Adult",
       "age": "18 years",
+      "ask": "Who is 18 years old?",
       "e": "🧑‍💼",
       "es": "Adulta"
     },
     {
+      "a": "t-elder",
       "n": "Elderly",
       "age": "65 or older",
+      "ask": "Who is 65 years old or older?",
       "e": "🧓",
       "es": "Persona mayor"
     }
@@ -1238,8 +1293,412 @@ body.es-on .chip .tr{display:block}
     "fb-order": "Perfect! That is the order of life.",
     "m-quiz": "Museum quiz! Choose the correct answer.",
     "m-match": "Sense match! Which sense does this belong to?",
-    "m-time": "Life timeline! Put the stages in the right order."
-  }
+    "t-r1-young": "Life challenge! You have three hearts. Round one: place all six stages in order, youngest first, then press check.",
+    "t-r1-old": "Life challenge! You have three hearts. Round one: place all six stages in order, oldest first, then press check.",
+    "t-some": "Some are in the right place. The others came back. Look again.",
+    "t-out": "No hearts left! Let's see how you did.",
+    "m-exam": "This is the final exam. Twenty questions from the whole museum, and no help in Spanish. Read carefully, Sofia. You can do it!"
+  },
+  "exam": [
+    {
+      "a": "ex-01",
+      "hall": "needs",
+      "type": "mc",
+      "q": "Why does our body need air?",
+      "o": [
+        "To grow taller and stronger",
+        "To feel safe and secure",
+        "To function and to maintain all internal systems",
+        "To stay hydrated all day"
+      ],
+      "c": 2,
+      "src": "Our body needs air to function and to maintain all internal systems."
+    },
+    {
+      "a": "ex-02",
+      "hall": "needs",
+      "type": "tf",
+      "q": "Our body uses water as our systems function, so it is important to stay hydrated.",
+      "o": [
+        "True",
+        "False"
+      ],
+      "c": 0,
+      "src": "as our systems function, the body uses water. That is why it is important to stay hydrated."
+    },
+    {
+      "a": "ex-03",
+      "hall": "needs",
+      "type": "mc",
+      "q": "With no food, the body uses fat first. What does it use next for energy?",
+      "o": [
+        "The organs",
+        "The bones",
+        "The muscles"
+      ],
+      "c": 2,
+      "src": "First, it uses fat, then it uses muscles for energy."
+    },
+    {
+      "a": "ex-04",
+      "hall": "needs",
+      "type": "tf",
+      "q": "Sleep is good for a healthy life, but a human can survive without sleep.",
+      "o": [
+        "True",
+        "False"
+      ],
+      "c": 1,
+      "src": "Sleep is necessary for survival, as well as for a healthy life."
+    },
+    {
+      "a": "ex-05",
+      "hall": "needs",
+      "type": "blank",
+      "q": "Shelter helps us to feel safe and ___.",
+      "o": [
+        "secure",
+        "warm",
+        "strong",
+        "calm"
+      ],
+      "c": 0,
+      "src": "Shelter helps us to feel safe and secure"
+    },
+    {
+      "a": "ex-06",
+      "hall": "needs",
+      "type": "blank",
+      "q": "A human can survive 3 ___ without air.",
+      "o": [
+        "hours",
+        "minutes",
+        "days",
+        "weeks"
+      ],
+      "c": 1,
+      "src": "A human can survive 3 minutes without air"
+    },
+    {
+      "a": "ex-07",
+      "hall": "repro",
+      "type": "mc",
+      "q": "When a sperm connects with the ovum, what does it do?",
+      "o": [
+        "It fertilizes it",
+        "It releases it",
+        "It carries it in the body",
+        "It turns into an ovum"
+      ],
+      "c": 0,
+      "src": "A sperm is a male (boy) cell that looks like tiny tadpoles that connects with the ovum and fertilize it."
+    },
+    {
+      "a": "ex-08",
+      "hall": "repro",
+      "type": "mc",
+      "q": "Once the ovum is fertilized, what is created?",
+      "o": [
+        "The first cell of a new baby",
+        "A fully grown baby",
+        "A new ovum cell",
+        "A new sperm cell"
+      ],
+      "c": 0,
+      "src": "Once fertilized, the first cell of a new baby is created."
+    },
+    {
+      "a": "ex-09",
+      "hall": "repro",
+      "type": "tf",
+      "q": "A female releases an ovum cell once a week.",
+      "o": [
+        "True",
+        "False"
+      ],
+      "c": 1,
+      "src": "A female (girl) releases an ovum cell (egg) once a month."
+    },
+    {
+      "a": "ex-10",
+      "hall": "repro",
+      "type": "tf",
+      "q": "A female can create a baby without a male.",
+      "o": [
+        "True",
+        "False"
+      ],
+      "c": 1,
+      "src": "But a female needs a male to create a baby."
+    },
+    {
+      "a": "ex-11",
+      "hall": "repro",
+      "type": "blank",
+      "q": "Without procreation, families would only have one ___.",
+      "o": [
+        "generation",
+        "baby",
+        "month",
+        "cell"
+      ],
+      "c": 0,
+      "src": "Without procreation, families would only have one generation, and humans would die out."
+    },
+    {
+      "a": "ex-12",
+      "hall": "repro",
+      "type": "mc",
+      "q": "For fertilization, which cells are needed?",
+      "o": [
+        "Only the female cell",
+        "Only the male cell",
+        "Both male and female cells"
+      ],
+      "c": 2,
+      "src": "For fertilization, both male and female cells are needed."
+    },
+    {
+      "a": "ex-13",
+      "hall": "gest",
+      "type": "mc",
+      "q": "What does the word \"gestation\" mean?",
+      "o": [
+        "How old a mother is when her baby is born",
+        "How long a baby is inside the female body before it is born",
+        "How long a baby takes to learn to walk",
+        "How many babies a family has"
+      ],
+      "c": 1,
+      "src": "Gestation is how long a baby is inside the female body before it is born."
+    },
+    {
+      "a": "ex-14",
+      "hall": "gest",
+      "type": "mc",
+      "q": "What does the fetus start to do in the second trimester?",
+      "o": [
+        "It develops a heartbeat",
+        "It grows bigger and stronger",
+        "It starts to move around",
+        "It is born"
+      ],
+      "c": 2,
+      "src": "In the second trimester, the fetus starts to move around."
+    },
+    {
+      "a": "ex-15",
+      "hall": "gest",
+      "type": "mc",
+      "q": "During which trimester does the baby keep growing bigger and stronger?",
+      "o": [
+        "The first trimester",
+        "The second trimester",
+        "The third trimester"
+      ],
+      "c": 2,
+      "src": "In the third trimester, the baby continues to grow bigger and stronger."
+    },
+    {
+      "a": "ex-16",
+      "hall": "gest",
+      "type": "tf",
+      "q": "The fetus develops a heartbeat in the third trimester.",
+      "o": [
+        "True",
+        "False"
+      ],
+      "c": 1,
+      "src": "In the first trimester, the fetus (baby) develops a heartbeat."
+    },
+    {
+      "a": "ex-17",
+      "hall": "gest",
+      "type": "tf",
+      "q": "Gestation is divided into three trimesters.",
+      "o": [
+        "True",
+        "False"
+      ],
+      "c": 0,
+      "src": "Gestation is divided into three trimesters."
+    },
+    {
+      "a": "ex-18",
+      "hall": "gest",
+      "type": "blank",
+      "q": "Gestation usually lasts for ___ months.",
+      "o": [
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
+      "c": 2,
+      "src": "It usually lasts for 9 months."
+    },
+    {
+      "a": "ex-19",
+      "hall": "stages",
+      "type": "mc",
+      "q": "Which stage comes right after childhood?",
+      "o": [
+        "Toddler",
+        "Teenager",
+        "Adult",
+        "Elderly"
+      ],
+      "c": 1,
+      "src": "When you turn 13, you become a teenager."
+    },
+    {
+      "a": "ex-20",
+      "hall": "stages",
+      "type": "mc",
+      "q": "Emma is 66 years old. Which stage is she in?",
+      "o": [
+        "Adult",
+        "Elderly",
+        "Teenager",
+        "Child"
+      ],
+      "c": 1,
+      "src": "This is any age from 65 or older."
+    },
+    {
+      "a": "ex-21",
+      "hall": "stages",
+      "type": "tf",
+      "q": "You are still a toddler when you turn 5.",
+      "o": [
+        "True",
+        "False"
+      ],
+      "c": 1,
+      "src": "Toddler is when you are between 2 and 4 years old."
+    },
+    {
+      "a": "ex-22",
+      "hall": "stages",
+      "type": "blank",
+      "q": "A person who is 20 years old is in the ___ stage.",
+      "o": [
+        "adult",
+        "elderly",
+        "teenager",
+        "toddler"
+      ],
+      "c": 0,
+      "src": "Once you finish school at 18, you become an adult."
+    },
+    {
+      "a": "ex-23",
+      "hall": "stages",
+      "type": "blank",
+      "q": "A toddler is when you take your first ___.",
+      "o": [
+        "steps",
+        "words",
+        "friends",
+        "birthday"
+      ],
+      "c": 0,
+      "src": "This is when you take your first steps."
+    },
+    {
+      "a": "ex-24",
+      "hall": "stages",
+      "type": "mc",
+      "q": "Childhood is between which ages?",
+      "o": [
+        "Between 2 and 4",
+        "Between 5 and 12",
+        "Between 13 and 18"
+      ],
+      "c": 1,
+      "src": "Your childhood is between the ages of 5 and 12."
+    },
+    {
+      "a": "ex-25",
+      "hall": "senses",
+      "type": "mc",
+      "q": "The cornea and the retina belong to which sense?",
+      "o": [
+        "Sight",
+        "Hear",
+        "Smell",
+        "Touch"
+      ],
+      "c": 0,
+      "src": "Sight: crystalline, cornea, iris, retina and optical nerve."
+    },
+    {
+      "a": "ex-26",
+      "hall": "senses",
+      "type": "mc",
+      "q": "Which nerve helps you hear sounds?",
+      "o": [
+        "Optical nerve",
+        "Auditory nerve",
+        "Smelling nerve",
+        "Touching nerve"
+      ],
+      "c": 1,
+      "src": "Hear: ear, ear bones, eardrum, cochlea and auditory nerve."
+    },
+    {
+      "a": "ex-27",
+      "hall": "senses",
+      "type": "tf",
+      "q": "Hair is a part of the sense of touch.",
+      "o": [
+        "True",
+        "False"
+      ],
+      "c": 0,
+      "src": "Touch: hair, pores and touching nerve."
+    },
+    {
+      "a": "ex-28",
+      "hall": "senses",
+      "type": "tf",
+      "q": "Salty and tangy are parts of the sense of touch.",
+      "o": [
+        "True",
+        "False"
+      ],
+      "c": 1,
+      "src": "Taste: bitter, sweet, salty and tangy."
+    },
+    {
+      "a": "ex-29",
+      "hall": "senses",
+      "type": "blank",
+      "q": "Senses are a collection of sensory ___ or cells in the body.",
+      "o": [
+        "organs",
+        "nerves",
+        "bones",
+        "muscles"
+      ],
+      "c": 0,
+      "src": "Senses are a collection of sensory organs or cells in the body that respond to particular physical happenings."
+    },
+    {
+      "a": "ex-30",
+      "hall": "senses",
+      "type": "blank",
+      "q": "The nose has nostrils and nasal ___ that help you smell.",
+      "o": [
+        "receptors",
+        "pores",
+        "bones",
+        "muscles"
+      ],
+      "c": 0,
+      "src": "Smell: nostrils, nasal receptors and smelling nerve."
+    }
+  ]
 }
 </script>
 
@@ -1314,10 +1773,60 @@ body.es-on .chip .tr{display:block}
 
   <!-- TIMELINE -->
   <section class="screen" id="s-time">
-    <div class="sect">Tap the stages in the right order</div>
-    <div class="slots" id="tSlots"></div>
-    <div class="pool" id="tPool"></div>
+    <div class="hearts" id="tHearts" aria-live="polite"></div>
+
+    <div id="tOrder">
+      <div class="legend" id="tLegend"></div>
+      <div class="slots" id="tSlots"></div>
+      <div class="pool" id="tPool"></div>
+      <button class="cta" id="tCheck" disabled>✓ Check my order</button>
+    </div>
+
+    <div id="tAges" hidden>
+      <div class="sect" id="tAgeCount"></div>
+      <div class="ask" id="tAsk"></div>
+      <div class="opts" id="tAgeOpts"></div>
+    </div>
+
     <div class="msg" id="tMsg"></div>
+  </section>
+
+  <!-- EXAM INTRO -->
+  <section class="screen" id="s-exam-intro">
+    <div class="hero">
+      <div class="mark">🎓</div>
+      <h1>Final Exam</h1>
+      <p>20 questions from all 5 rooms · one try per question · no Spanish help</p>
+    </div>
+    <button class="cta" id="exStart">Start the exam</button>
+  </section>
+
+  <!-- EXAM -->
+  <section class="screen" id="s-exam">
+    <div class="qbar"><i id="exBarFill"></i></div>
+    <div class="rowbtns" style="margin:0 0 4px">
+      <button class="rnd speak" id="exSpeak" aria-label="Listen again">🔊</button>
+      <div style="flex:1;text-align:right;color:#8fb3c1;font-weight:800" id="exCount"></div>
+    </div>
+    <span class="extag" id="exTag"></span>
+    <div class="qtext" id="exText"></div>
+    <div class="opts" id="exOpts"></div>
+    <div class="msg" id="exMsg"></div>
+  </section>
+
+  <!-- DIPLOMA -->
+  <section class="screen" id="s-diploma">
+    <div class="diploma">
+      <div class="seal" id="dSeal"></div>
+      <div class="dlabel">The Body Museum</div>
+      <h2 id="dGrade"></h2>
+      <div class="dscore" id="dScore"></div>
+      <div class="earn" id="dStars"></div>
+      <div class="dstats" id="dStats"></div>
+    </div>
+    <div class="review" id="dReview"></div>
+    <button class="cta" id="dAgain">Take the exam again</button>
+    <button class="cta ghost" id="dHome">Back to the museum</button>
   </section>
 
   <!-- RESULT -->
@@ -1420,6 +1929,7 @@ function show(id, push = true) {
   document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id));
   if (push) stack.push(id);
   $("back").classList.toggle("on", id !== "s-home");
+  $("esBtn").style.visibility = id === "s-exam" ? "hidden" : "";   // no help during the exam
   window.scrollTo({ top: 0, behavior: "instant" });
 }
 function goHome() {
@@ -1445,8 +1955,10 @@ const MODES = [
     es: "Concurso · 12 preguntas, hasta 3 estrellas", c1: "#ffd782", c2: "#f7a531" },
   { id: "match", e: "🔎", n: "Sense Match", s: "Which sense does it belong to?",
     es: "Empareja · ¿a qué sentido pertenece?", c1: "#a9f0c4", c2: "#43c67f" },
-  { id: "time", e: "⏳", n: "Life Timeline", s: "Put the 6 stages in order",
-    es: "Línea de la vida · ordena las 6 etapas", c1: "#d3c4ff", c2: "#a78bfa" },
+  { id: "time", e: "⏳", n: "Life Challenge", s: "Order the stages, then match the ages · 3 ❤️",
+    es: "Reto de la vida · ordena las etapas y acierta las edades", c1: "#d3c4ff", c2: "#a78bfa" },
+  { id: "exam", e: "🎓", n: "Final Exam", s: "20 questions · no help · win your diploma",
+    es: "Examen final · 20 preguntas, sin ayuda en español", c1: "#ffc2c2", c2: "#e2585b" },
 ];
 function renderModes() {
   $("modeTiles").innerHTML = "";
@@ -1466,6 +1978,7 @@ function startMode(id) {
   if (id === "quiz") startQuiz();
   if (id === "match") startMatch();
   if (id === "time") startTime();
+  if (id === "exam") { show("s-exam-intro"); say("m-exam"); }
 }
 renderModes();
 
@@ -1643,43 +2156,218 @@ function answerM(btn, id) {
   }, good ? 900 : 1900);
 }
 
-/* ---------- life timeline ---------- */
-let tPlaced = 0, tWrong = 0;
+/* ---------- life challenge: round 1 order (blind), round 2 ages ---------- */
+const TSTAGES = 6, TN = 12;
+let tHearts, tScore, tDir, tSlotOf, tChips, tScored, tOver, tAgeList, tAgeI;
+
+const tWant = i => tDir === 1 ? i : TSTAGES - 1 - i;
+const tDrawHearts = () => $("tHearts").textContent = "❤️".repeat(tHearts) + "🖤".repeat(3 - tHearts);
+
 function startTime() {
   replay = startTime;
-  tPlaced = 0; tWrong = 0;
-  $("tSlots").innerHTML = DATA.timeline.map(() => `<div class="slot">?</div>`).join("");
+  tHearts = 3; tScore = 0; tScored = false; tOver = false;
+  tDir = Math.random() < .5 ? 1 : -1;
+  tSlotOf = Array(TSTAGES).fill(null);
+  tChips = new Map();
+  tDrawHearts();
+  $("tOrder").hidden = false; $("tAges").hidden = true;
   $("tMsg").textContent = "";
+  $("tLegend").innerHTML = tDir === 1
+    ? `<span class="ar">👶 ➜ 🧓</span> Youngest first`
+    : `<span class="ar">🧓 ➜ 👶</span> Oldest first`;
+  $("tSlots").innerHTML = DATA.timeline.map(() => `<div class="slot">?</div>`).join("");
   $("tPool").innerHTML = "";
   shuffle(DATA.timeline.map((s, i) => ({ ...s, i }))).forEach(s => {
     const b = document.createElement("button");
     b.className = "chip";
-    b.innerHTML = `<span class="e">${s.e}</span><span>${s.n}<span class="sub">${s.age}</span>` +
-      `<span class="tr">${s.es}</span></span>`;
-    b.onclick = () => placeT(b, s);
+    b.innerHTML = `<span class="e">${s.e}</span><span>${s.n}<span class="tr">${s.es}</span></span>`;
+    b.onclick = () => tPlace(s);
+    tChips.set(s.i, b);
     $("tPool").appendChild(b);
   });
+  tRender();
   show("s-time");
-  say("m-time");
+  say(tDir === 1 ? "t-r1-young" : "t-r1-old");
 }
-function placeT(btn, s) {
-  if (s.i !== tPlaced) {
-    tWrong++; buzz(); nudge();
-    $("tMsg").textContent = "Not yet — what comes first?";
-    btn.animate([{ transform: "translateX(-6px)" }, { transform: "translateX(6px)" }, { transform: "none" }], 220);
-    return;
-  }
-  const slot = $("tSlots").children[tPlaced];
-  slot.classList.add("f");
-  slot.textContent = s.e;
-  btn.classList.add("used");
-  tPlaced++; ding();
-  $("tMsg").textContent = esOn ? `${s.n} (${s.es}) · ${s.age}` : `${s.n} · ${s.age}`;
-  if (tPlaced === DATA.timeline.length) {
-    say("fb-order");
-    setTimeout(() => result(Math.max(0, 6 - tWrong), 6, "⏳"), 1200);
-  }
+function tRender() {
+  [...$("tSlots").children].forEach((el, i) => {
+    if (el.classList.contains("ok")) return;
+    const s = tSlotOf[i];
+    el.textContent = s ? s.e : "?";
+    el.classList.toggle("f", !!s);
+    el.onclick = s ? () => tPull(i) : null;
+  });
+  $("tCheck").disabled = tSlotOf.some(s => !s);
 }
+function tPlace(s) {
+  const i = tSlotOf.findIndex(x => !x);
+  if (i < 0 || tSlotOf.some(x => x && x.i === s.i)) return;
+  tSlotOf[i] = s;
+  tChips.get(s.i).classList.add("used");
+  tone(680, 0, .09, "triangle", .12);
+  tRender();
+}
+function tPull(i) {
+  const s = tSlotOf[i];
+  if (!s || tOver) return;
+  tSlotOf[i] = null;
+  tChips.get(s.i).classList.remove("used");
+  tRender();
+}
+function tLoseHeart() {
+  tHearts--; tDrawHearts();
+  if (tHearts > 0) return false;
+  tOver = true;
+  say("t-out");
+  setTimeout(() => result(tScore, TN, "⏳"), 1500);
+  return true;
+}
+$("tCheck").onclick = () => {
+  if (tOver || tSlotOf.some(s => !s)) return;
+  const slots = [...$("tSlots").children];
+  const correct = tSlotOf.filter((s, i) => s.i === tWant(i)).length;
+  if (!tScored) { tScore += correct; tScored = true; }
+  tSlotOf.forEach((s, i) => {
+    if (s.i === tWant(i)) {
+      slots[i].classList.add("ok"); slots[i].classList.remove("f"); slots[i].onclick = null;
+    } else {
+      slots[i].classList.add("bad");
+      setTimeout(() => {
+        slots[i].classList.remove("bad");
+        tSlotOf[i] = null;
+        tChips.get(s.i).classList.remove("used");
+        tRender();
+      }, 800);
+    }
+  });
+  $("tCheck").disabled = true;
+  if (correct === TSTAGES) {
+    ding(); confetti(22); say("fb-order");
+    $("tMsg").textContent = "🎉 The whole life in order!";
+    setTimeout(startAges, 2000);
+  } else {
+    buzz();
+    $("tMsg").textContent = `${correct} of ${TSTAGES} in the right place`;
+    if (!tLoseHeart()) setTimeout(() => say("t-some"), 400);
+  }
+};
+function startAges() {
+  if (tOver) return;
+  $("tOrder").hidden = true; $("tAges").hidden = false;
+  tAgeList = shuffle(DATA.timeline.slice());
+  tAgeI = 0;
+  drawAge();
+}
+function drawAge() {
+  const s = tAgeList[tAgeI];
+  $("tAgeCount").textContent = `Round 2 · Who is that old? · ${tAgeI + 1} / ${TSTAGES}`;
+  $("tAsk").textContent = s.ask;
+  $("tMsg").textContent = "";
+  $("tAgeOpts").innerHTML = "";
+  const wrong = shuffle(DATA.timeline.filter(x => x.n !== s.n)).slice(0, 3);
+  shuffle([s, ...wrong]).forEach(o => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.dataset.n = o.n;
+    b.innerHTML = `${o.e} ${o.n}<span class="tr">${o.es}</span>`;
+    b.onclick = () => answerAge(b, o.n === s.n, s);
+    $("tAgeOpts").appendChild(b);
+  });
+  say(s.a);
+}
+function answerAge(btn, good, s) {
+  if (tOver) return;
+  [...$("tAgeOpts").children].forEach(b => {
+    b.disabled = true;
+    if (b.dataset.n === s.n) b.classList.add("ok");
+  });
+  if (good) {
+    tScore++; btn.classList.add("ok"); ding(); praise();
+    $("tMsg").textContent = esOn ? `✅ ${s.n} · ${s.es}` : "✅ Correct!";
+  } else {
+    btn.classList.add("bad"); buzz(); nudge();
+    $("tMsg").textContent = `That was: ${s.n} · ${s.age}`;
+    if (tLoseHeart()) return;
+  }
+  setTimeout(() => {
+    tAgeI++;
+    if (tAgeI < tAgeList.length) drawAge();
+    else result(tScore, TN, "⏳");
+  }, good ? 1000 : 2000);
+}
+
+/* ---------- final exam (English only, one try per question) ---------- */
+const EXN = 20, EX_PER_HALL = 4;
+let exList = [], exi = 0, exScore = 0, exWrong = [], exT0 = 0;
+
+$("exStart").onclick = startExam;
+function startExam() {
+  replay = startExam;
+  const byHall = {};
+  DATA.exam.forEach(q => (byHall[q.hall] ??= []).push(q));
+  exList = shuffle(Object.values(byHall).flatMap(qs => shuffle(qs).slice(0, EX_PER_HALL)))
+    .map(q => ({ ...q, o: shuffle(q.o), correct: q.o[q.c] }));
+  exi = 0; exScore = 0; exWrong = []; exT0 = Date.now();
+  show("s-exam");
+  drawEx();
+}
+function drawEx() {
+  const q = exList[exi];
+  $("exBarFill").style.width = (exi / EXN * 100) + "%";
+  $("exCount").textContent = `${exi + 1} / ${EXN}`;
+  $("exTag").textContent = q.type === "tf" ? "True or false?" : q.type === "blank" ? "Fill the gap" : "Choose the answer";
+  $("exText").innerHTML = q.type === "blank"
+    ? q.q.replace("___", '<span class="gap" id="exGap">?</span>')
+    : q.q;
+  $("exMsg").textContent = "";
+  $("exOpts").innerHTML = "";
+  q.o.forEach(opt => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.textContent = opt;
+    b.onclick = () => answerEx(b, opt);
+    $("exOpts").appendChild(b);
+  });
+  say(q.a);
+}
+$("exSpeak").onclick = () => say(exList[exi].a);
+function answerEx(btn, opt) {
+  const q = exList[exi], good = opt === q.correct;
+  [...$("exOpts").children].forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("ok");
+  });
+  if ($("exGap")) { $("exGap").textContent = opt; $("exGap").classList.add(good ? "gok" : "gbad"); }
+  if (good) { exScore++; btn.classList.add("ok"); ding(); praise(); $("exMsg").textContent = "✅ Correct!"; }
+  else { btn.classList.add("bad"); buzz(); nudge(); $("exMsg").textContent = "Answer: " + q.correct; exWrong.push(q); }
+  setTimeout(() => {
+    exi++;
+    if (exi < EXN) drawEx();
+    else { $("exBarFill").style.width = "100%"; diploma(); }
+  }, good ? 1000 : 2100);
+}
+function diploma() {
+  const pct = Math.round(exScore / EXN * 100);
+  const stars = pct >= 90 ? 3 : pct >= 75 ? 2 : pct >= 60 ? 1 : 0;
+  addStars(stars);
+  $("dSeal").textContent = stars === 3 ? "🏆" : stars ? "🎓" : "📚";
+  $("dGrade").textContent = pct >= 90 ? "Excellent!" : pct >= 75 ? "Very good!" : pct >= 60 ? "Good job!" : "Keep studying!";
+  $("dScore").textContent = `${exScore} / ${EXN} · ${pct}%`;
+  $("dStars").textContent = "⭐".repeat(stars) || "☆";
+  const secs = Math.round((Date.now() - exT0) / 1000);
+  $("dStats").textContent = `Time: ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
+  $("dReview").innerHTML = exWrong.length
+    ? `<h3>Study these ${exWrong.length} again</h3>` + exWrong.map(q =>
+        `<div class="rev">${q.q.replace("___", "______")}<b>${q.correct}</b></div>`).join("")
+    : `<h3>Nothing to review — a perfect exam! 🎉</h3>`;
+  if (stars >= 2) { applause(); confetti(50); }
+  if (stars === 3) { fanfare(); say("fb-perfect"); }
+  else say(stars ? "fb-round" : "fb-try");
+  stack.length = 0;
+  show("s-diploma");
+}
+$("dAgain").onclick = () => { stack.pop(); startExam(); };
+$("dHome").onclick = goHome;
 
 /* ---------- photo credits ---------- */
 fetch("img/credits.json")

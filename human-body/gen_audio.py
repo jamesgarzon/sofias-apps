@@ -30,6 +30,10 @@ def jobs():
             out[c["a"]] = speakable(f'{c["h"]}. {c["t"]}')
     for q in d["quiz"]:
         out[q["a"]] = speakable(q["q"])
+    for s in d["timeline"]:
+        out[s["a"]] = speakable(s["ask"])
+    for e in d.get("exam", []):
+        out[e["a"]] = speakable(e["q"].replace("___", "blank"))
     out.update({k: speakable(v) for k, v in d["voice"].items()})
     return out
 
