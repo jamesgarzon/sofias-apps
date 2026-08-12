@@ -15,7 +15,7 @@
   --ok:#2f9e5f; --bad:#d1495b;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;background:#081a22}
 body{
   min-height:100svh; color:var(--paper);
   font-family:"Nunito",system-ui,sans-serif;
@@ -72,8 +72,10 @@ header{
 }
 .tile:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.28)}
 .tile .e{font-size:2.2rem;line-height:1;flex:none}
-.tile .n{font-family:"Fredoka";font-weight:600;font-size:1.2rem}
-.tile .s{font-size:.82rem;opacity:.72;font-weight:700}
+.tile .n{display:block;font-family:"Fredoka";font-weight:600;font-size:1.2rem}
+.tile .s{display:block;font-size:.82rem;opacity:.72;font-weight:700}
+.tile .tr{display:none;font-size:.82rem;font-weight:700;opacity:.62;font-style:italic}
+body.es-on .tile .tr{display:block}
 .tile.done .n::after{content:" ✓"}
 
 .sect{margin:22px 0 10px;color:#8fb3c1;font-size:.8rem;letter-spacing:2px;text-transform:uppercase}
@@ -114,6 +116,32 @@ header{
 .vocab h3{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--brass);margin-bottom:8px}
 .vocab li{list-style:none;font-size:.95rem;color:#dcefe6;margin:5px 0}
 .vocab li b{color:#fff}
+.vocab li .tr{color:var(--brass);font-weight:700}
+
+/* ---------- spanish help ---------- */
+#esBtn{
+  flex:none;height:40px;min-width:44px;padding:0 12px;border-radius:20px;
+  font-family:"Fredoka";font-weight:600;font-size:.9rem;letter-spacing:1px;
+  background:rgba(253,247,236,.1);border:1px solid rgba(201,154,63,.4);color:#c1d6df;
+}
+#esBtn.on{background:linear-gradient(180deg,#f2d089,#c99a3f);color:#412d05;
+  border-color:transparent;box-shadow:0 3px 0 #7d5b17}
+.es{display:none;margin-top:11px;padding-top:11px;font-size:.95rem;line-height:1.5;
+  border-top:1px dashed rgba(18,49,59,.2);color:#5a7480}
+.es::before{
+  content:"ES";display:inline-block;font-family:"Fredoka";font-size:.6rem;font-weight:600;
+  letter-spacing:1px;background:#12313b;color:#fdf7ec;padding:2px 7px;border-radius:6px;
+  margin-right:8px;vertical-align:2px;
+}
+body.es-on .es{display:block}
+.es.dark{border-top-color:rgba(253,247,236,.18);color:#9dbecb;text-align:center}
+.es.dark::before{background:var(--brass);color:#2a1c02}
+.es.plain{border-top:none;padding-top:6px;margin-top:6px}
+.es.inline{margin:0;padding:0;border:none;color:var(--brass);font-weight:700}
+.es.inline::before{content:none}
+body.es-on .es.inline{display:inline}
+.sense .tr{display:none;font-size:.74rem;font-weight:700;opacity:.75}
+body.es-on .sense .tr{display:block}
 
 /* ---------- quiz ---------- */
 .qbar{height:8px;border-radius:6px;background:rgba(253,247,236,.14);overflow:hidden;margin-bottom:14px}
@@ -157,6 +185,8 @@ header{
 }
 .chip .e{font-size:1.6rem}
 .chip .sub{display:block;font-size:.72rem;font-weight:700;opacity:.6}
+.chip .tr{display:none;font-size:.72rem;font-weight:700;color:#8f6b21}
+body.es-on .chip .tr{display:block}
 .chip.used{visibility:hidden}
 .chip:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.3)}
 
@@ -197,28 +227,86 @@ header{
       "color": "#2ec4d9",
       "c2": "#7fe3d2",
       "vocab": [
-        ["survival", "staying alive"],
-        ["security", "feeling safe and protected"],
-        ["esteem", "feeling good about yourself"]
+        [
+          "survival",
+          "staying alive",
+          "supervivencia"
+        ],
+        [
+          "security",
+          "feeling safe and protected",
+          "seguridad"
+        ],
+        [
+          "esteem",
+          "feeling good about yourself",
+          "autoestima"
+        ]
       ],
       "cards": [
-        { "a": "needs-1", "icon": "🌍", "h": "Basic Human Needs",
-          "t": "Just like plants and animals, humans have basic needs to stay alive. Our body is incredible, but it still needs to be taken care of." },
-        { "a": "needs-2", "icon": "5️⃣", "h": "The five basic needs",
-          "t": "The five basic human needs that a human can't live without are air, water, food, sleep, and shelter." },
-        { "a": "needs-3", "img": "air.jpg", "icon": "💨", "h": "1. Air",
-          "t": "Air is oxygen. It is the most important need of the human body. Our body needs air to function and to maintain all internal systems. Just five minutes without air can cause brain damage." },
-        { "a": "needs-4", "img": "water.jpg", "icon": "💧", "h": "2. Water",
-          "t": "Water is the second most important need of every human. The human body is made up of 70% water and as our systems function, the body uses water. That is why it is important to stay hydrated." },
-        { "a": "needs-5", "img": "food.jpg", "icon": "🥗", "h": "3. Food",
-          "t": "The body can go without food for some time, but this has some negative effects. First, it uses fat, then it uses muscles for energy. And if there is nothing left, the organs start to shut down because of the lack of energy. This can cause death." },
-        { "a": "needs-6", "img": "sleep.jpg", "icon": "😴", "h": "4. Sleep",
-          "t": "Sleep is necessary for survival, as well as for a healthy life. Lack of sleep can cause problems with body temperature, headaches, memory loss, and your ability to concentrate and perform tasks." },
-        { "a": "needs-7", "img": "shelter.jpg", "icon": "🏠", "h": "5. Shelter",
-          "t": "Shelter is a place to live. Shelter helps us to feel safe and secure because it gives us protection from the elements outside." },
-        { "a": "needs-8", "icon": "💡", "h": "Did you know?",
-          "t": "A human can survive 3 minutes without air, 3 days without water and 3 weeks without food." }
-      ]
+        {
+          "a": "needs-1",
+          "icon": "🌍",
+          "h": "Basic Human Needs",
+          "t": "Just like plants and animals, humans have basic needs to stay alive. Our body is incredible, but it still needs to be taken care of.",
+          "es": "Necesidades básicas del ser humano. Igual que las plantas y los animales, los humanos tienen necesidades básicas para seguir vivos. Nuestro cuerpo es increíble, pero aun así hay que cuidarlo."
+        },
+        {
+          "a": "needs-2",
+          "icon": "5️⃣",
+          "h": "The five basic needs",
+          "t": "The five basic human needs that a human can't live without are air, water, food, sleep, and shelter.",
+          "es": "Las cinco necesidades básicas. Las cinco necesidades básicas sin las que un ser humano no puede vivir son: aire, agua, comida, sueño y refugio."
+        },
+        {
+          "a": "needs-3",
+          "img": "air.jpg",
+          "icon": "💨",
+          "h": "1. Air",
+          "t": "Air is oxygen. It is the most important need of the human body. Our body needs air to function and to maintain all internal systems. Just five minutes without air can cause brain damage.",
+          "es": "1. El aire. El aire es oxígeno. Es la necesidad más importante del cuerpo humano. Nuestro cuerpo necesita aire para funcionar y para mantener todos los sistemas internos. Solo cinco minutos sin aire pueden causar daño cerebral."
+        },
+        {
+          "a": "needs-4",
+          "img": "water.jpg",
+          "icon": "💧",
+          "h": "2. Water",
+          "t": "Water is the second most important need of every human. The human body is made up of 70% water and as our systems function, the body uses water. That is why it is important to stay hydrated.",
+          "es": "2. El agua. El agua es la segunda necesidad más importante de todo ser humano. El cuerpo humano está formado por un 70% de agua y, como nuestros sistemas funcionan, el cuerpo usa agua. Por eso es importante mantenerse hidratada."
+        },
+        {
+          "a": "needs-5",
+          "img": "food.jpg",
+          "icon": "🥗",
+          "h": "3. Food",
+          "t": "The body can go without food for some time, but this has some negative effects. First, it uses fat, then it uses muscles for energy. And if there is nothing left, the organs start to shut down because of the lack of energy. This can cause death.",
+          "es": "3. La comida. El cuerpo puede pasar un tiempo sin comida, pero eso tiene efectos negativos. Primero usa la grasa, después usa los músculos para obtener energía. Y si no queda nada, los órganos empiezan a apagarse por falta de energía. Esto puede causar la muerte."
+        },
+        {
+          "a": "needs-6",
+          "img": "sleep.jpg",
+          "icon": "😴",
+          "h": "4. Sleep",
+          "t": "Sleep is necessary for survival, as well as for a healthy life. Lack of sleep can cause problems with body temperature, headaches, memory loss, and your ability to concentrate and perform tasks.",
+          "es": "4. El sueño. Dormir es necesario para sobrevivir y también para tener una vida sana. La falta de sueño puede causar problemas con la temperatura del cuerpo, dolores de cabeza, pérdida de memoria y afectar tu capacidad de concentrarte y hacer tareas."
+        },
+        {
+          "a": "needs-7",
+          "img": "shelter.jpg",
+          "icon": "🏠",
+          "h": "5. Shelter",
+          "t": "Shelter is a place to live. Shelter helps us to feel safe and secure because it gives us protection from the elements outside.",
+          "es": "5. El refugio. El refugio es un lugar donde vivir. El refugio nos ayuda a sentirnos seguras y protegidas porque nos da protección de los elementos de afuera."
+        },
+        {
+          "a": "needs-8",
+          "icon": "💡",
+          "h": "Did you know?",
+          "t": "A human can survive 3 minutes without air, 3 days without water and 3 weeks without food.",
+          "es": "¿Sabías que…? Un ser humano puede sobrevivir 3 minutos sin aire, 3 días sin agua y 3 semanas sin comida."
+        }
+      ],
+      "esTitle": "Las necesidades básicas del ser humano"
     },
     {
       "id": "repro",
@@ -228,22 +316,61 @@ header{
       "color": "#ff6b8a",
       "c2": "#ffb3a7",
       "vocab": [
-        ["ovum", "the egg cell from a female"],
-        ["sperm", "the cell from a male, like a tiny tadpole"],
-        ["baby", "the new human that is created"]
+        [
+          "ovum",
+          "the egg cell from a female",
+          "óvulo"
+        ],
+        [
+          "sperm",
+          "the cell from a male, like a tiny tadpole",
+          "espermatozoide"
+        ],
+        [
+          "baby",
+          "the new human that is created",
+          "bebé"
+        ]
       ],
       "cards": [
-        { "a": "repro-1", "icon": "🤔", "h": "Where do babies come from?",
-          "t": "Have you ever wondered where babies come from? You were once a small baby. Then you grew up to where you are now, and you will keep on growing." },
-        { "a": "repro-2", "img": "fertilization.jpg", "icon": "🥚", "h": "Ovum and Sperm",
-          "t": "A female (girl) releases an ovum cell (egg) once a month. A sperm is a male (boy) cell that looks like tiny tadpoles that connects with the ovum and fertilize it." },
-        { "a": "repro-3", "icon": "✨", "h": "Fertilization",
-          "t": "Once fertilized, the first cell of a new baby is created. For fertilization, both male and female cells are needed." },
-        { "a": "repro-4", "icon": "💡", "h": "Did you know?",
-          "t": "Only females can carry a baby in their bodies. But a female needs a male to create a baby." },
-        { "a": "repro-5", "icon": "👨‍👩‍👧", "h": "Procreation",
-          "t": "Procreation is to create new human life. Without procreation, families would only have one generation, and humans would die out." }
-      ]
+        {
+          "a": "repro-1",
+          "icon": "🤔",
+          "h": "Where do babies come from?",
+          "t": "Have you ever wondered where babies come from? You were once a small baby. Then you grew up to where you are now, and you will keep on growing.",
+          "es": "¿De dónde vienen los bebés? ¿Alguna vez te has preguntado de dónde vienen los bebés? Tú fuiste una vez un bebé pequeño. Después creciste hasta donde estás ahora, y vas a seguir creciendo."
+        },
+        {
+          "a": "repro-2",
+          "img": "fertilization.jpg",
+          "icon": "🥚",
+          "h": "Ovum and Sperm",
+          "t": "A female (girl) releases an ovum cell (egg) once a month. A sperm is a male (boy) cell that looks like tiny tadpoles that connects with the ovum and fertilize it.",
+          "es": "El óvulo y el espermatozoide. Una mujer (niña) libera una célula llamada óvulo una vez al mes. El espermatozoide es la célula del hombre (niño), parecida a un renacuajo diminuto, que se une al óvulo y lo fecunda."
+        },
+        {
+          "a": "repro-3",
+          "icon": "✨",
+          "h": "Fertilization",
+          "t": "Once fertilized, the first cell of a new baby is created. For fertilization, both male and female cells are needed.",
+          "es": "La fecundación. Una vez fecundado, se crea la primera célula de un nuevo bebé. Para la fecundación se necesitan tanto las células masculinas como las femeninas."
+        },
+        {
+          "a": "repro-4",
+          "icon": "💡",
+          "h": "Did you know?",
+          "t": "Only females can carry a baby in their bodies. But a female needs a male to create a baby.",
+          "es": "¿Sabías que…? Solo las mujeres pueden llevar un bebé dentro de su cuerpo. Pero una mujer necesita un hombre para crear un bebé."
+        },
+        {
+          "a": "repro-5",
+          "icon": "👨‍👩‍👧",
+          "h": "Procreation",
+          "t": "Procreation is to create new human life. Without procreation, families would only have one generation, and humans would die out.",
+          "es": "La procreación. Procrear es crear nueva vida humana. Sin la procreación, las familias solo tendrían una generación y los seres humanos desaparecerían."
+        }
+      ],
+      "esTitle": "La reproducción humana"
     },
     {
       "id": "gest",
@@ -253,22 +380,62 @@ header{
       "color": "#a78bfa",
       "c2": "#d3c4ff",
       "vocab": [
-        ["gestation", "the time the baby grows inside the mother"],
-        ["trimester", "one of the three parts of gestation"],
-        ["fetus", "the baby while it grows inside the body"]
+        [
+          "gestation",
+          "the time the baby grows inside the mother",
+          "gestación"
+        ],
+        [
+          "trimester",
+          "one of the three parts of gestation",
+          "trimestre"
+        ],
+        [
+          "fetus",
+          "the baby while it grows inside the body",
+          "feto"
+        ]
       ],
       "cards": [
-        { "a": "gest-1", "img": "pregnant.jpg", "icon": "🤰", "h": "What is gestation?",
-          "t": "Gestation is how long a baby is inside the female body before it is born. It usually lasts for 9 months." },
-        { "a": "gest-2", "icon": "3️⃣", "h": "Three trimesters",
-          "t": "Gestation is divided into three trimesters." },
-        { "a": "gest-3", "img": "ultrasound.jpg", "icon": "💓", "h": "First trimester",
-          "t": "In the first trimester, the fetus (baby) develops a heartbeat." },
-        { "a": "gest-4", "icon": "🤸", "h": "Second trimester",
-          "t": "In the second trimester, the fetus starts to move around." },
-        { "a": "gest-5", "icon": "📈", "h": "Third trimester",
-          "t": "In the third trimester, the baby continues to grow bigger and stronger." }
-      ]
+        {
+          "a": "gest-1",
+          "img": "pregnant.jpg",
+          "icon": "🤰",
+          "h": "What is gestation?",
+          "t": "Gestation is how long a baby is inside the female body before it is born. It usually lasts for 9 months.",
+          "es": "¿Qué es la gestación? La gestación es el tiempo que un bebé está dentro del cuerpo de la mujer antes de nacer. Normalmente dura 9 meses."
+        },
+        {
+          "a": "gest-2",
+          "icon": "3️⃣",
+          "h": "Three trimesters",
+          "t": "Gestation is divided into three trimesters.",
+          "es": "Tres trimestres. La gestación se divide en tres trimestres."
+        },
+        {
+          "a": "gest-3",
+          "img": "ultrasound.jpg",
+          "icon": "💓",
+          "h": "First trimester",
+          "t": "In the first trimester, the fetus (baby) develops a heartbeat.",
+          "es": "Primer trimestre. En el primer trimestre, el feto (el bebé) desarrolla el latido del corazón."
+        },
+        {
+          "a": "gest-4",
+          "icon": "🤸",
+          "h": "Second trimester",
+          "t": "In the second trimester, the fetus starts to move around.",
+          "es": "Segundo trimestre. En el segundo trimestre, el feto empieza a moverse."
+        },
+        {
+          "a": "gest-5",
+          "icon": "📈",
+          "h": "Third trimester",
+          "t": "In the third trimester, the baby continues to grow bigger and stronger.",
+          "es": "Tercer trimestre. En el tercer trimestre, el bebé sigue creciendo más grande y más fuerte."
+        }
+      ],
+      "esTitle": "El periodo de gestación"
     },
     {
       "id": "stages",
@@ -278,28 +445,87 @@ header{
       "color": "#f7a531",
       "c2": "#ffd782",
       "vocab": [
-        ["birth", "when you are born"],
-        ["toddler", "a child between 2 and 4 years old"],
-        ["teenager", "a person from 13 years old"]
+        [
+          "birth",
+          "when you are born",
+          "nacimiento"
+        ],
+        [
+          "toddler",
+          "a child between 2 and 4 years old",
+          "niña pequeña (2–4 años)"
+        ],
+        [
+          "teenager",
+          "a person from 13 years old",
+          "adolescente"
+        ]
       ],
       "cards": [
-        { "a": "stages-1", "icon": "🪞", "h": "You keep changing",
-          "t": "Have a good look at yourself in a mirror. Did you know you didn't always look like this? And you won't keep looking like this. From the moment you're born, the way you look changes." },
-        { "a": "stages-2", "img": "birth.jpg", "icon": "👶", "h": "Birth",
-          "t": "Birth is when you're born from your mother's body. You are still a baby." },
-        { "a": "stages-3", "img": "toddler.jpg", "icon": "🧸", "h": "Toddler · 2 to 4 years",
-          "t": "Toddler is when you are between 2 and 4 years old. This is when you take your first steps." },
-        { "a": "stages-4", "img": "child.jpg", "icon": "🧒", "h": "Child · 5 to 12 years",
-          "t": "Your childhood is between the ages of 5 and 12. You are called a child." },
-        { "a": "stages-5", "img": "teenager.jpg", "icon": "🧑", "h": "Teenager · 13 years",
-          "t": "When you turn 13, you become a teenager." },
-        { "a": "stages-6", "img": "adult.jpg", "icon": "🧑‍💼", "h": "Adult · 18 years",
-          "t": "Once you finish school at 18, you become an adult." },
-        { "a": "stages-7", "img": "elderly.jpg", "icon": "🧓", "h": "Elderly · 65 or older",
-          "t": "You are elderly when you can no longer work and your body does not work as well. This is any age from 65 or older." },
-        { "a": "stages-8", "icon": "🕊️", "h": "The process of life",
-          "t": "The process of life is that in the end we will all die." }
-      ]
+        {
+          "a": "stages-1",
+          "icon": "🪞",
+          "h": "You keep changing",
+          "t": "Have a good look at yourself in a mirror. Did you know you didn't always look like this? And you won't keep looking like this. From the moment you're born, the way you look changes.",
+          "es": "Siempre estás cambiando. Mírate bien en un espejo. ¿Sabías que no siempre te viste así? Y tampoco vas a seguir viéndote así. Desde el momento en que naces, tu aspecto va cambiando."
+        },
+        {
+          "a": "stages-2",
+          "img": "birth.jpg",
+          "icon": "👶",
+          "h": "Birth",
+          "t": "Birth is when you're born from your mother's body. You are still a baby.",
+          "es": "El nacimiento. El nacimiento (birth) es cuando naces del cuerpo de tu mamá. Todavía eres un bebé."
+        },
+        {
+          "a": "stages-3",
+          "img": "toddler.jpg",
+          "icon": "🧸",
+          "h": "Toddler · 2 to 4 years",
+          "t": "Toddler is when you are between 2 and 4 years old. This is when you take your first steps.",
+          "es": "Niña pequeña · de 2 a 4 años. Toddler es cuando tienes entre 2 y 4 años. Es cuando das tus primeros pasos."
+        },
+        {
+          "a": "stages-4",
+          "img": "child.jpg",
+          "icon": "🧒",
+          "h": "Child · 5 to 12 years",
+          "t": "Your childhood is between the ages of 5 and 12. You are called a child.",
+          "es": "Niña · de 5 a 12 años. Tu niñez va desde los 5 hasta los 12 años. Te llaman niña (child)."
+        },
+        {
+          "a": "stages-5",
+          "img": "teenager.jpg",
+          "icon": "🧑",
+          "h": "Teenager · 13 years",
+          "t": "When you turn 13, you become a teenager.",
+          "es": "Adolescente · 13 años. Cuando cumples 13 años, te conviertes en adolescente (teenager)."
+        },
+        {
+          "a": "stages-6",
+          "img": "adult.jpg",
+          "icon": "🧑‍💼",
+          "h": "Adult · 18 years",
+          "t": "Once you finish school at 18, you become an adult.",
+          "es": "Adulta · 18 años. Cuando terminas el colegio a los 18, te conviertes en adulta (adult)."
+        },
+        {
+          "a": "stages-7",
+          "img": "elderly.jpg",
+          "icon": "🧓",
+          "h": "Elderly · 65 or older",
+          "t": "You are elderly when you can no longer work and your body does not work as well. This is any age from 65 or older.",
+          "es": "Persona mayor · 65 años o más. Eres una persona mayor (elderly) cuando ya no puedes trabajar y tu cuerpo no funciona tan bien. Es cualquier edad desde los 65 en adelante."
+        },
+        {
+          "a": "stages-8",
+          "icon": "🕊️",
+          "h": "The process of life",
+          "t": "The process of life is that in the end we will all die.",
+          "es": "El proceso de la vida. El proceso de la vida es que al final todos vamos a morir."
+        }
+      ],
+      "esTitle": "Las etapas del desarrollo humano"
     },
     {
       "id": "senses",
@@ -309,99 +535,697 @@ header{
       "color": "#43c67f",
       "c2": "#a9f0c4",
       "vocab": [
-        ["senses", "a collection of sensory organs or cells in the body that respond to particular physical happenings"],
-        ["sensory organ", "the body part you use for a sense"],
-        ["nerve", "the part that carries the message to the brain"]
+        [
+          "senses",
+          "a collection of sensory organs or cells in the body that respond to particular physical happenings",
+          "los sentidos"
+        ],
+        [
+          "sensory organ",
+          "the body part you use for a sense",
+          "órgano sensorial"
+        ],
+        [
+          "nerve",
+          "the part that carries the message to the brain",
+          "nervio"
+        ]
       ],
       "cards": [
-        { "a": "senses-1", "icon": "🧠", "h": "What are senses?",
-          "t": "Senses are a collection of sensory organs or cells in the body that respond to particular physical happenings." },
-        { "a": "senses-2", "img": "eye.jpg", "icon": "👁️", "h": "Eyes · Sight",
-          "t": "Eyes: You use your eyes to see objects around you. Sight: crystalline, cornea, iris, retina and optical nerve." },
-        { "a": "senses-3", "img": "ear.jpg", "icon": "👂", "h": "Ears · Hear",
-          "t": "Ears: You use your ears to listen and hear sounds. Hear: ear, ear bones, eardrum, cochlea and auditory nerve." },
-        { "a": "senses-4", "img": "nose.jpg", "icon": "👃", "h": "Nose · Smell",
-          "t": "Nose: You use your nose to smell. Smell: nostrils, nasal receptors and smelling nerve." },
-        { "a": "senses-5", "img": "tongue.jpg", "icon": "👅", "h": "Tongue · Taste",
-          "t": "Tongue: Your tongue helps you to taste the food you eat. Taste: bitter, sweet, salty and tangy." },
-        { "a": "senses-6", "img": "skin.jpg", "icon": "✋", "h": "Skin · Touch",
-          "t": "Skin: If something touches your skin, you will be able to feel it. Touch: hair, pores and touching nerve." }
-      ]
+        {
+          "a": "senses-1",
+          "icon": "🧠",
+          "h": "What are senses?",
+          "t": "Senses are a collection of sensory organs or cells in the body that respond to particular physical happenings.",
+          "es": "¿Qué son los sentidos? Los sentidos son un conjunto de órganos sensoriales o células del cuerpo que responden a determinados sucesos físicos."
+        },
+        {
+          "a": "senses-2",
+          "img": "eye.jpg",
+          "icon": "👁️",
+          "h": "Eyes · Sight",
+          "t": "Eyes: You use your eyes to see objects around you. Sight: crystalline, cornea, iris, retina and optical nerve.",
+          "es": "Los ojos · La vista. Ojos: usas los ojos para ver los objetos que te rodean. Vista: cristalino, córnea, iris, retina y nervio óptico."
+        },
+        {
+          "a": "senses-3",
+          "img": "ear.jpg",
+          "icon": "👂",
+          "h": "Ears · Hear",
+          "t": "Ears: You use your ears to listen and hear sounds. Hear: ear, ear bones, eardrum, cochlea and auditory nerve.",
+          "es": "Los oídos · El oído. Oídos: usas los oídos para escuchar y oír sonidos. Oído: oreja, huesos del oído, tímpano, cóclea y nervio auditivo."
+        },
+        {
+          "a": "senses-4",
+          "img": "nose.jpg",
+          "icon": "👃",
+          "h": "Nose · Smell",
+          "t": "Nose: You use your nose to smell. Smell: nostrils, nasal receptors and smelling nerve.",
+          "es": "La nariz · El olfato. Nariz: usas la nariz para oler. Olfato: fosas nasales, receptores nasales y nervio olfativo."
+        },
+        {
+          "a": "senses-5",
+          "img": "tongue.jpg",
+          "icon": "👅",
+          "h": "Tongue · Taste",
+          "t": "Tongue: Your tongue helps you to taste the food you eat. Taste: bitter, sweet, salty and tangy.",
+          "es": "La lengua · El gusto. Lengua: tu lengua te ayuda a saborear la comida que comes. Gusto: amargo, dulce, salado y ácido."
+        },
+        {
+          "a": "senses-6",
+          "img": "skin.jpg",
+          "icon": "✋",
+          "h": "Skin · Touch",
+          "t": "Skin: If something touches your skin, you will be able to feel it. Touch: hair, pores and touching nerve.",
+          "es": "La piel · El tacto. Piel: si algo toca tu piel, vas a poder sentirlo. Tacto: vello, poros y nervio táctil."
+        }
+      ],
+      "esTitle": "Los cinco sentidos"
     }
   ],
-
   "quiz": [
-    { "a": "q-01", "q": "How many basic human needs are there?", "o": ["Five", "Three", "Seven"], "c": 0 },
-    { "a": "q-02", "q": "Which is the most important need of the human body?", "o": ["Air", "Water", "Food"], "c": 0 },
-    { "a": "q-03", "q": "Which is the second most important need of every human?", "o": ["Water", "Sleep", "Shelter"], "c": 0 },
-    { "a": "q-04", "q": "Air is…", "o": ["oxygen", "water", "energy"], "c": 0 },
-    { "a": "q-05", "q": "How long without air can cause brain damage?", "o": ["Five minutes", "Five hours", "Five days"], "c": 0 },
-    { "a": "q-06", "q": "The human body is made up of how much water?", "o": ["70%", "30%", "100%"], "c": 0 },
-    { "a": "q-07", "q": "A human can survive how long without water?", "o": ["3 days", "3 minutes", "3 weeks"], "c": 0 },
-    { "a": "q-08", "q": "A human can survive how long without food?", "o": ["3 weeks", "3 days", "3 months"], "c": 0 },
-    { "a": "q-09", "q": "When there is no food, what does the body use first?", "o": ["Fat", "Muscles", "Organs"], "c": 0 },
-    { "a": "q-10", "q": "Lack of sleep can cause…", "o": ["headaches and memory loss", "stronger muscles", "more energy"], "c": 0 },
-    { "a": "q-11", "q": "Shelter gives us…", "o": ["protection from the elements outside", "oxygen", "vitamins"], "c": 0 },
-    { "a": "q-12", "q": "Which one is NOT a basic human need?", "o": ["Television", "Sleep", "Shelter"], "c": 0 },
-    { "a": "q-13", "q": "Who releases an ovum cell once a month?", "o": ["A female", "A male", "Both"], "c": 0 },
-    { "a": "q-14", "q": "Which cell looks like tiny tadpoles?", "o": ["Sperm", "Ovum", "Baby"], "c": 0 },
-    { "a": "q-15", "q": "What is needed for fertilization?", "o": ["Both male and female cells", "Only female cells", "Only male cells"], "c": 0 },
-    { "a": "q-16", "q": "To create new human life is called…", "o": ["Procreation", "Gestation", "Survival"], "c": 0 },
-    { "a": "q-17", "q": "Who would die out if we didn't procreate?", "o": ["Humans", "Families", "Trimesters"], "c": 0 },
-    { "a": "q-18", "q": "How long does gestation usually last?", "o": ["9 months", "9 weeks", "3 months"], "c": 0 },
-    { "a": "q-19", "q": "How many trimesters are there?", "o": ["Three", "Two", "Nine"], "c": 0 },
-    { "a": "q-20", "q": "When does the baby develop a heartbeat?", "o": ["First trimester", "Second trimester", "Third trimester"], "c": 0 },
-    { "a": "q-21", "q": "When does the fetus start to move around?", "o": ["Second trimester", "First trimester", "Third trimester"], "c": 0 },
-    { "a": "q-22", "q": "In the third trimester, the baby…", "o": ["continues to grow bigger and stronger", "develops a heartbeat", "starts to move around"], "c": 0 },
-    { "a": "q-23", "q": "Birth is when…", "o": ["you're born from your mother's body", "you take your first steps", "you turn 13"], "c": 0 },
-    { "a": "q-24", "q": "A toddler is between…", "o": ["2 and 4 years old", "5 and 12 years old", "13 and 18 years old"], "c": 0 },
-    { "a": "q-25", "q": "When do you take your first steps?", "o": ["When you are a toddler", "At birth", "When you are a teenager"], "c": 0 },
-    { "a": "q-26", "q": "Your childhood is between the ages of…", "o": ["5 and 12", "2 and 4", "13 and 18"], "c": 0 },
-    { "a": "q-27", "q": "When you turn 13, you become…", "o": ["a teenager", "an adult", "a toddler"], "c": 0 },
-    { "a": "q-28", "q": "You become an adult when you finish school at…", "o": ["18", "13", "21"], "c": 0 },
-    { "a": "q-29", "q": "You are elderly from any age…", "o": ["65 or older", "50 or older", "80 or older"], "c": 0 },
-    { "a": "q-30", "q": "You use your eyes to…", "o": ["see objects around you", "hear sounds", "taste food"], "c": 0 },
-    { "a": "q-31", "q": "Your tongue helps you to…", "o": ["taste the food you eat", "smell flowers", "feel things"], "c": 0 },
-    { "a": "q-32", "q": "You use your ears to…", "o": ["listen and hear sounds", "see objects", "smell"], "c": 0 },
-    { "a": "q-33", "q": "Which organ do you use to smell?", "o": ["The nose", "The tongue", "The skin"], "c": 0 },
-    { "a": "q-34", "q": "If something touches your skin, you will be able to…", "o": ["feel it", "hear it", "see it"], "c": 0 },
-    { "a": "q-35", "q": "Which one is a characteristic of TOUCH?", "o": ["Pores", "Nasal receptors", "Ear bones"], "c": 0 },
-    { "a": "q-36", "q": "Which one is a characteristic of SMELL?", "o": ["Smelling nerve", "Pores", "Bitter"], "c": 0 },
-    { "a": "q-37", "q": "Which one is a characteristic of HEAR?", "o": ["Cochlea", "Salty", "Smelling nerve"], "c": 0 },
-    { "a": "q-38", "q": "Which one is a characteristic of SIGHT?", "o": ["Iris", "Eardrum", "Nostrils"], "c": 0 },
-    { "a": "q-39", "q": "Which one is a characteristic of TASTE?", "o": ["Tangy", "Touching nerve", "Ear bones"], "c": 0 }
+    {
+      "a": "q-01",
+      "q": "How many basic human needs are there?",
+      "o": [
+        "Five",
+        "Three",
+        "Seven"
+      ],
+      "c": 0,
+      "es": "¿Cuántas necesidades básicas humanas hay?"
+    },
+    {
+      "a": "q-02",
+      "q": "Which is the most important need of the human body?",
+      "o": [
+        "Air",
+        "Water",
+        "Food"
+      ],
+      "c": 0,
+      "es": "¿Cuál es la necesidad más importante del cuerpo humano?"
+    },
+    {
+      "a": "q-03",
+      "q": "Which is the second most important need of every human?",
+      "o": [
+        "Water",
+        "Sleep",
+        "Shelter"
+      ],
+      "c": 0,
+      "es": "¿Cuál es la segunda necesidad más importante de todo ser humano?"
+    },
+    {
+      "a": "q-04",
+      "q": "Air is…",
+      "o": [
+        "oxygen",
+        "water",
+        "energy"
+      ],
+      "c": 0,
+      "es": "El aire es…"
+    },
+    {
+      "a": "q-05",
+      "q": "How long without air can cause brain damage?",
+      "o": [
+        "Five minutes",
+        "Five hours",
+        "Five days"
+      ],
+      "c": 0,
+      "es": "¿Cuánto tiempo sin aire puede causar daño cerebral?"
+    },
+    {
+      "a": "q-06",
+      "q": "The human body is made up of how much water?",
+      "o": [
+        "70%",
+        "30%",
+        "100%"
+      ],
+      "c": 0,
+      "es": "¿De cuánta agua está formado el cuerpo humano?"
+    },
+    {
+      "a": "q-07",
+      "q": "A human can survive how long without water?",
+      "o": [
+        "3 days",
+        "3 minutes",
+        "3 weeks"
+      ],
+      "c": 0,
+      "es": "¿Cuánto tiempo puede sobrevivir una persona sin agua?"
+    },
+    {
+      "a": "q-08",
+      "q": "A human can survive how long without food?",
+      "o": [
+        "3 weeks",
+        "3 days",
+        "3 months"
+      ],
+      "c": 0,
+      "es": "¿Cuánto tiempo puede sobrevivir una persona sin comida?"
+    },
+    {
+      "a": "q-09",
+      "q": "When there is no food, what does the body use first?",
+      "o": [
+        "Fat",
+        "Muscles",
+        "Organs"
+      ],
+      "c": 0,
+      "es": "Cuando no hay comida, ¿qué usa primero el cuerpo?"
+    },
+    {
+      "a": "q-10",
+      "q": "Lack of sleep can cause…",
+      "o": [
+        "headaches and memory loss",
+        "stronger muscles",
+        "more energy"
+      ],
+      "c": 0,
+      "es": "La falta de sueño puede causar…"
+    },
+    {
+      "a": "q-11",
+      "q": "Shelter gives us…",
+      "o": [
+        "protection from the elements outside",
+        "oxygen",
+        "vitamins"
+      ],
+      "c": 0,
+      "es": "El refugio nos da…"
+    },
+    {
+      "a": "q-12",
+      "q": "Which one is NOT a basic human need?",
+      "o": [
+        "Television",
+        "Sleep",
+        "Shelter"
+      ],
+      "c": 0,
+      "es": "¿Cuál NO es una necesidad básica humana?"
+    },
+    {
+      "a": "q-13",
+      "q": "Who releases an ovum cell once a month?",
+      "o": [
+        "A female",
+        "A male",
+        "Both"
+      ],
+      "c": 0,
+      "es": "¿Quién libera un óvulo una vez al mes?"
+    },
+    {
+      "a": "q-14",
+      "q": "Which cell looks like tiny tadpoles?",
+      "o": [
+        "Sperm",
+        "Ovum",
+        "Baby"
+      ],
+      "c": 0,
+      "es": "¿Qué célula parece un renacuajo diminuto?"
+    },
+    {
+      "a": "q-15",
+      "q": "What is needed for fertilization?",
+      "o": [
+        "Both male and female cells",
+        "Only female cells",
+        "Only male cells"
+      ],
+      "c": 0,
+      "es": "¿Qué se necesita para la fecundación?"
+    },
+    {
+      "a": "q-16",
+      "q": "To create new human life is called…",
+      "o": [
+        "Procreation",
+        "Gestation",
+        "Survival"
+      ],
+      "c": 0,
+      "es": "Crear nueva vida humana se llama…"
+    },
+    {
+      "a": "q-17",
+      "q": "Who would die out if we didn't procreate?",
+      "o": [
+        "Humans",
+        "Families",
+        "Trimesters"
+      ],
+      "c": 0,
+      "es": "¿Quiénes desaparecerían si no procreáramos?"
+    },
+    {
+      "a": "q-18",
+      "q": "How long does gestation usually last?",
+      "o": [
+        "9 months",
+        "9 weeks",
+        "3 months"
+      ],
+      "c": 0,
+      "es": "¿Cuánto dura normalmente la gestación?"
+    },
+    {
+      "a": "q-19",
+      "q": "How many trimesters are there?",
+      "o": [
+        "Three",
+        "Two",
+        "Nine"
+      ],
+      "c": 0,
+      "es": "¿Cuántos trimestres hay?"
+    },
+    {
+      "a": "q-20",
+      "q": "When does the baby develop a heartbeat?",
+      "o": [
+        "First trimester",
+        "Second trimester",
+        "Third trimester"
+      ],
+      "c": 0,
+      "es": "¿Cuándo desarrolla el bebé el latido del corazón?"
+    },
+    {
+      "a": "q-21",
+      "q": "When does the fetus start to move around?",
+      "o": [
+        "Second trimester",
+        "First trimester",
+        "Third trimester"
+      ],
+      "c": 0,
+      "es": "¿Cuándo empieza el feto a moverse?"
+    },
+    {
+      "a": "q-22",
+      "q": "In the third trimester, the baby…",
+      "o": [
+        "continues to grow bigger and stronger",
+        "develops a heartbeat",
+        "starts to move around"
+      ],
+      "c": 0,
+      "es": "En el tercer trimestre, el bebé…"
+    },
+    {
+      "a": "q-23",
+      "q": "Birth is when…",
+      "o": [
+        "you're born from your mother's body",
+        "you take your first steps",
+        "you turn 13"
+      ],
+      "c": 0,
+      "es": "El nacimiento (birth) es cuando…"
+    },
+    {
+      "a": "q-24",
+      "q": "A toddler is between…",
+      "o": [
+        "2 and 4 years old",
+        "5 and 12 years old",
+        "13 and 18 years old"
+      ],
+      "c": 0,
+      "es": "Un toddler tiene entre…"
+    },
+    {
+      "a": "q-25",
+      "q": "When do you take your first steps?",
+      "o": [
+        "When you are a toddler",
+        "At birth",
+        "When you are a teenager"
+      ],
+      "c": 0,
+      "es": "¿Cuándo das tus primeros pasos?"
+    },
+    {
+      "a": "q-26",
+      "q": "Your childhood is between the ages of…",
+      "o": [
+        "5 and 12",
+        "2 and 4",
+        "13 and 18"
+      ],
+      "c": 0,
+      "es": "Tu niñez va entre las edades de…"
+    },
+    {
+      "a": "q-27",
+      "q": "When you turn 13, you become…",
+      "o": [
+        "a teenager",
+        "an adult",
+        "a toddler"
+      ],
+      "c": 0,
+      "es": "Cuando cumples 13 años, te conviertes en…"
+    },
+    {
+      "a": "q-28",
+      "q": "You become an adult when you finish school at…",
+      "o": [
+        "18",
+        "13",
+        "21"
+      ],
+      "c": 0,
+      "es": "Te conviertes en adulta cuando terminas el colegio a los…"
+    },
+    {
+      "a": "q-29",
+      "q": "You are elderly from any age…",
+      "o": [
+        "65 or older",
+        "50 or older",
+        "80 or older"
+      ],
+      "c": 0,
+      "es": "Eres una persona mayor desde cualquier edad…"
+    },
+    {
+      "a": "q-30",
+      "q": "You use your eyes to…",
+      "o": [
+        "see objects around you",
+        "hear sounds",
+        "taste food"
+      ],
+      "c": 0,
+      "es": "Usas los ojos para…"
+    },
+    {
+      "a": "q-31",
+      "q": "Your tongue helps you to…",
+      "o": [
+        "taste the food you eat",
+        "smell flowers",
+        "feel things"
+      ],
+      "c": 0,
+      "es": "Tu lengua te ayuda a…"
+    },
+    {
+      "a": "q-32",
+      "q": "You use your ears to…",
+      "o": [
+        "listen and hear sounds",
+        "see objects",
+        "smell"
+      ],
+      "c": 0,
+      "es": "Usas los oídos para…"
+    },
+    {
+      "a": "q-33",
+      "q": "Which organ do you use to smell?",
+      "o": [
+        "The nose",
+        "The tongue",
+        "The skin"
+      ],
+      "c": 0,
+      "es": "¿Qué órgano usas para oler?"
+    },
+    {
+      "a": "q-34",
+      "q": "If something touches your skin, you will be able to…",
+      "o": [
+        "feel it",
+        "hear it",
+        "see it"
+      ],
+      "c": 0,
+      "es": "Si algo toca tu piel, vas a poder…"
+    },
+    {
+      "a": "q-35",
+      "q": "Which one is a characteristic of TOUCH?",
+      "o": [
+        "Pores",
+        "Nasal receptors",
+        "Ear bones"
+      ],
+      "c": 0,
+      "es": "¿Cuál es una característica del TACTO?"
+    },
+    {
+      "a": "q-36",
+      "q": "Which one is a characteristic of SMELL?",
+      "o": [
+        "Smelling nerve",
+        "Pores",
+        "Bitter"
+      ],
+      "c": 0,
+      "es": "¿Cuál es una característica del OLFATO?"
+    },
+    {
+      "a": "q-37",
+      "q": "Which one is a characteristic of HEAR?",
+      "o": [
+        "Cochlea",
+        "Salty",
+        "Smelling nerve"
+      ],
+      "c": 0,
+      "es": "¿Cuál es una característica del OÍDO?"
+    },
+    {
+      "a": "q-38",
+      "q": "Which one is a characteristic of SIGHT?",
+      "o": [
+        "Iris",
+        "Eardrum",
+        "Nostrils"
+      ],
+      "c": 0,
+      "es": "¿Cuál es una característica de la VISTA?"
+    },
+    {
+      "a": "q-39",
+      "q": "Which one is a characteristic of TASTE?",
+      "o": [
+        "Tangy",
+        "Touching nerve",
+        "Ear bones"
+      ],
+      "c": 0,
+      "es": "¿Cuál es una característica del GUSTO?"
+    }
   ],
-
   "senses": [
-    { "id": "sight", "name": "Sight", "e": "👁️" },
-    { "id": "hear", "name": "Hear", "e": "👂" },
-    { "id": "smell", "name": "Smell", "e": "👃" },
-    { "id": "taste", "name": "Taste", "e": "👅" },
-    { "id": "touch", "name": "Touch", "e": "✋" }
+    {
+      "id": "sight",
+      "name": "Sight",
+      "e": "👁️",
+      "es": "Vista"
+    },
+    {
+      "id": "hear",
+      "name": "Hear",
+      "e": "👂",
+      "es": "Oído"
+    },
+    {
+      "id": "smell",
+      "name": "Smell",
+      "e": "👃",
+      "es": "Olfato"
+    },
+    {
+      "id": "taste",
+      "name": "Taste",
+      "e": "👅",
+      "es": "Gusto"
+    },
+    {
+      "id": "touch",
+      "name": "Touch",
+      "e": "✋",
+      "es": "Tacto"
+    }
   ],
-
   "match": [
-    { "w": "Eyes", "s": "sight" }, { "w": "Crystalline", "s": "sight" }, { "w": "Cornea", "s": "sight" },
-    { "w": "Iris", "s": "sight" }, { "w": "Retina", "s": "sight" }, { "w": "Optical nerve", "s": "sight" },
-    { "w": "Ears", "s": "hear" }, { "w": "Ear bones", "s": "hear" }, { "w": "Eardrum", "s": "hear" },
-    { "w": "Cochlea", "s": "hear" }, { "w": "Auditory nerve", "s": "hear" },
-    { "w": "Nose", "s": "smell" }, { "w": "Nostrils", "s": "smell" }, { "w": "Nasal receptors", "s": "smell" },
-    { "w": "Smelling nerve", "s": "smell" },
-    { "w": "Tongue", "s": "taste" }, { "w": "Bitter", "s": "taste" }, { "w": "Sweet", "s": "taste" },
-    { "w": "Salty", "s": "taste" }, { "w": "Tangy", "s": "taste" },
-    { "w": "Skin", "s": "touch" }, { "w": "Hair", "s": "touch" }, { "w": "Pores", "s": "touch" },
-    { "w": "Touching nerve", "s": "touch" }
+    {
+      "w": "Eyes",
+      "s": "sight",
+      "es": "los ojos"
+    },
+    {
+      "w": "Crystalline",
+      "s": "sight",
+      "es": "el cristalino"
+    },
+    {
+      "w": "Cornea",
+      "s": "sight",
+      "es": "la córnea"
+    },
+    {
+      "w": "Iris",
+      "s": "sight",
+      "es": "el iris"
+    },
+    {
+      "w": "Retina",
+      "s": "sight",
+      "es": "la retina"
+    },
+    {
+      "w": "Optical nerve",
+      "s": "sight",
+      "es": "el nervio óptico"
+    },
+    {
+      "w": "Ears",
+      "s": "hear",
+      "es": "los oídos"
+    },
+    {
+      "w": "Ear bones",
+      "s": "hear",
+      "es": "los huesos del oído"
+    },
+    {
+      "w": "Eardrum",
+      "s": "hear",
+      "es": "el tímpano"
+    },
+    {
+      "w": "Cochlea",
+      "s": "hear",
+      "es": "la cóclea"
+    },
+    {
+      "w": "Auditory nerve",
+      "s": "hear",
+      "es": "el nervio auditivo"
+    },
+    {
+      "w": "Nose",
+      "s": "smell",
+      "es": "la nariz"
+    },
+    {
+      "w": "Nostrils",
+      "s": "smell",
+      "es": "las fosas nasales"
+    },
+    {
+      "w": "Nasal receptors",
+      "s": "smell",
+      "es": "los receptores nasales"
+    },
+    {
+      "w": "Smelling nerve",
+      "s": "smell",
+      "es": "el nervio olfativo"
+    },
+    {
+      "w": "Tongue",
+      "s": "taste",
+      "es": "la lengua"
+    },
+    {
+      "w": "Bitter",
+      "s": "taste",
+      "es": "amargo"
+    },
+    {
+      "w": "Sweet",
+      "s": "taste",
+      "es": "dulce"
+    },
+    {
+      "w": "Salty",
+      "s": "taste",
+      "es": "salado"
+    },
+    {
+      "w": "Tangy",
+      "s": "taste",
+      "es": "ácido"
+    },
+    {
+      "w": "Skin",
+      "s": "touch",
+      "es": "la piel"
+    },
+    {
+      "w": "Hair",
+      "s": "touch",
+      "es": "el vello"
+    },
+    {
+      "w": "Pores",
+      "s": "touch",
+      "es": "los poros"
+    },
+    {
+      "w": "Touching nerve",
+      "s": "touch",
+      "es": "el nervio táctil"
+    }
   ],
-
   "timeline": [
-    { "n": "Birth", "age": "0", "e": "👶" },
-    { "n": "Toddler", "age": "2–4 years", "e": "🧸" },
-    { "n": "Child", "age": "5–12 years", "e": "🧒" },
-    { "n": "Teenager", "age": "13 years", "e": "🧑" },
-    { "n": "Adult", "age": "18 years", "e": "🧑‍💼" },
-    { "n": "Elderly", "age": "65 or older", "e": "🧓" }
+    {
+      "n": "Birth",
+      "age": "0",
+      "e": "👶",
+      "es": "Nacimiento"
+    },
+    {
+      "n": "Toddler",
+      "age": "2–4 years",
+      "e": "🧸",
+      "es": "Niña pequeña"
+    },
+    {
+      "n": "Child",
+      "age": "5–12 years",
+      "e": "🧒",
+      "es": "Niña"
+    },
+    {
+      "n": "Teenager",
+      "age": "13 years",
+      "e": "🧑",
+      "es": "Adolescente"
+    },
+    {
+      "n": "Adult",
+      "age": "18 years",
+      "e": "🧑‍💼",
+      "es": "Adulta"
+    },
+    {
+      "n": "Elderly",
+      "age": "65 or older",
+      "e": "🧓",
+      "es": "Persona mayor"
+    }
   ],
-
   "voice": {
     "welcome": "Welcome to the Body Museum! Choose a room and let's explore your amazing body.",
     "fb-great": "Great job! That's correct!",
@@ -423,6 +1247,7 @@ header{
   <header>
     <button id="back" aria-label="Back">←</button>
     <div class="brand f">🏛️ The Body <b>Museum</b></div>
+    <button id="esBtn" aria-pressed="false" title="Ayuda en español">ES</button>
     <div class="stars" aria-live="polite">⭐ <span id="totalStars">0</span></div>
   </header>
 
@@ -454,6 +1279,7 @@ header{
         <span class="tag" id="cardTag"></span>
         <h2 id="cardH"></h2>
         <p id="cardT"></p>
+        <p class="es" id="cardEs"></p>
       </div>
     </div>
     <div class="rowbtns">
@@ -473,6 +1299,7 @@ header{
       <div style="flex:1;text-align:right;color:#8fb3c1;font-weight:800" id="qCount"></div>
     </div>
     <div class="qtext" id="qText"></div>
+    <p class="es dark plain" id="qEs"></p>
     <div class="opts" id="qOpts"></div>
     <div class="msg" id="qMsg"></div>
   </section>
@@ -480,7 +1307,7 @@ header{
   <!-- MATCH -->
   <section class="screen" id="s-match">
     <div class="qbar"><i id="mbarFill"></i></div>
-    <div class="word" id="mWord"></div>
+    <div class="word" id="mWord"><span id="mWordEn"></span><span class="es" id="mEs"></span></div>
     <div class="senses" id="mSenses"></div>
     <div class="msg" id="mMsg"></div>
   </section>
@@ -523,6 +1350,20 @@ function addStars(n) {
   renderStars();
 }
 renderStars();
+
+/* ---------- spanish help toggle ---------- */
+let esOn = localStorage.getItem("human-body-es") === "1";
+function renderEs() {
+  document.body.classList.toggle("es-on", esOn);
+  $("esBtn").classList.toggle("on", esOn);
+  $("esBtn").setAttribute("aria-pressed", esOn);
+}
+$("esBtn").onclick = () => {
+  esOn = !esOn;
+  localStorage.setItem("human-body-es", esOn ? "1" : "0");
+  renderEs();
+};
+renderEs();
 
 /* ---------- sound (WebAudio, no files) ---------- */
 let actx;
@@ -598,10 +1439,14 @@ $("back").onclick = () => {
 
 /* ---------- home ---------- */
 const MODES = [
-  { id: "learn", e: "🏛️", n: "Learn", s: "5 museum rooms with photos and audio", c1: "#7fe3d2", c2: "#2ec4d9" },
-  { id: "quiz", e: "❓", n: "Quiz", s: "12 questions · win up to 3 stars", c1: "#ffd782", c2: "#f7a531" },
-  { id: "match", e: "🔎", n: "Sense Match", s: "Which sense does it belong to?", c1: "#a9f0c4", c2: "#43c67f" },
-  { id: "time", e: "⏳", n: "Life Timeline", s: "Put the 6 stages in order", c1: "#d3c4ff", c2: "#a78bfa" },
+  { id: "learn", e: "🏛️", n: "Learn", s: "5 museum rooms with photos and audio",
+    es: "Aprende · 5 salas con fotos y audio", c1: "#7fe3d2", c2: "#2ec4d9" },
+  { id: "quiz", e: "❓", n: "Quiz", s: "12 questions · win up to 3 stars",
+    es: "Concurso · 12 preguntas, hasta 3 estrellas", c1: "#ffd782", c2: "#f7a531" },
+  { id: "match", e: "🔎", n: "Sense Match", s: "Which sense does it belong to?",
+    es: "Empareja · ¿a qué sentido pertenece?", c1: "#a9f0c4", c2: "#43c67f" },
+  { id: "time", e: "⏳", n: "Life Timeline", s: "Put the 6 stages in order",
+    es: "Línea de la vida · ordena las 6 etapas", c1: "#d3c4ff", c2: "#a78bfa" },
 ];
 function renderModes() {
   $("modeTiles").innerHTML = "";
@@ -609,7 +1454,8 @@ function renderModes() {
     const b = document.createElement("button");
     b.className = "tile";
     b.style.setProperty("--c1", m.c1); b.style.setProperty("--c2", m.c2);
-    b.innerHTML = `<span class="e">${m.e}</span><span><span class="n">${m.n}</span><br><span class="s">${m.s}</span></span>`;
+    b.innerHTML = `<span class="e">${m.e}</span><span><span class="n">${m.n}</span>` +
+      `<span class="s">${m.s}</span><span class="tr">${m.es}</span></span>`;
     b.onclick = () => startMode(m.id);
     $("modeTiles").appendChild(b);
   });
@@ -631,7 +1477,9 @@ function renderHalls() {
     b.className = "tile";
     b.style.setProperty("--c1", h.c2); b.style.setProperty("--c2", h.color);
     if (localStorage.getItem("human-body-read-" + h.id)) b.classList.add("done");
-    b.innerHTML = `<span class="e">${h.emoji}</span><span><span class="n">${h.title}</span><br><span class="s">${h.lesson} · ${h.cards.length} exhibits</span></span>`;
+    b.innerHTML = `<span class="e">${h.emoji}</span><span><span class="n">${h.title}</span>` +
+      `<span class="s">${h.lesson} · ${h.cards.length} exhibits</span>` +
+      `<span class="tr">${h.esTitle}</span></span>`;
     b.onclick = () => openHall(i);
     $("hallTiles").appendChild(b);
   });
@@ -640,7 +1488,8 @@ let hall = null, cardIdx = 0;
 function openHall(i) {
   hall = DATA.halls[i]; cardIdx = 0;
   document.documentElement.style.setProperty("--accent", hall.color);
-  $("vocabBox").innerHTML = `<h3>Vocabulary</h3><ul>${hall.vocab.map(v => `<li><b>${v[0]}</b> — ${v[1]}</li>`).join("")}</ul>`;
+  $("vocabBox").innerHTML = `<h3>Vocabulary</h3><ul>${hall.vocab.map(v =>
+    `<li><b>${v[0]}</b> — ${v[1]}<span class="es inline"> · ${v[2]}</span></li>`).join("")}</ul>`;
   $("dots").innerHTML = hall.cards.map(() => `<span class="dot"></span>`).join("");
   show("s-learn");
   drawCard();
@@ -651,6 +1500,7 @@ function drawCard() {
   $("cardTag").style.background = hall.color;
   $("cardH").textContent = c.h;
   $("cardT").textContent = c.t;
+  $("cardEs").textContent = c.es;
   const pic = $("pic"), img = $("picImg");
   $("picIco").textContent = c.icon || hall.emoji;
   if (c.img) {
@@ -719,6 +1569,7 @@ function drawQ() {
   $("qbarFill").style.width = (qi / QN * 100) + "%";
   $("qCount").textContent = `${qi + 1} / ${QN}`;
   $("qText").textContent = q.q;
+  $("qEs").textContent = q.es;
   $("qMsg").textContent = "";
   $("qOpts").innerHTML = "";
   q.o.forEach(opt => {
@@ -756,7 +1607,7 @@ function startMatch() {
   DATA.senses.forEach(s => {
     const b = document.createElement("button");
     b.className = "sense"; b.dataset.id = s.id;
-    b.innerHTML = `<span class="e">${s.e}</span>${s.name}`;
+    b.innerHTML = `<span class="e">${s.e}</span>${s.name}<span class="tr">${s.es}</span>`;
     b.onclick = () => answerM(b, s.id);
     $("mSenses").appendChild(b);
   });
@@ -767,7 +1618,8 @@ function startMatch() {
 function drawM() {
   mLock = false;
   $("mbarFill").style.width = (mi / MN * 100) + "%";
-  $("mWord").textContent = mList[mi].w;
+  $("mWordEn").textContent = mList[mi].w;
+  $("mEs").textContent = mList[mi].es;
   $("mMsg").textContent = "";
   [...$("mSenses").children].forEach(b => b.className = "sense");
 }
@@ -781,7 +1633,8 @@ function answerM(btn, id) {
   else {
     btn.classList.add("bad"); buzz(); nudge();
     [...$("mSenses").children].find(b => b.dataset.id === item.s).classList.add("ok");
-    $("mMsg").textContent = `"${item.w}" belongs to ${right.name}`;
+    $("mMsg").textContent = esOn ? `"${item.w}" (${item.es}) → ${right.name} / ${right.es}`
+                                   : `"${item.w}" belongs to ${right.name}`;
   }
   setTimeout(() => {
     mi++;
@@ -801,7 +1654,8 @@ function startTime() {
   shuffle(DATA.timeline.map((s, i) => ({ ...s, i }))).forEach(s => {
     const b = document.createElement("button");
     b.className = "chip";
-    b.innerHTML = `<span class="e">${s.e}</span><span>${s.n}<span class="sub">${s.age}</span></span>`;
+    b.innerHTML = `<span class="e">${s.e}</span><span>${s.n}<span class="sub">${s.age}</span>` +
+      `<span class="tr">${s.es}</span></span>`;
     b.onclick = () => placeT(b, s);
     $("tPool").appendChild(b);
   });
@@ -820,7 +1674,7 @@ function placeT(btn, s) {
   slot.textContent = s.e;
   btn.classList.add("used");
   tPlaced++; ding();
-  $("tMsg").textContent = `${s.n} · ${s.age}`;
+  $("tMsg").textContent = esOn ? `${s.n} (${s.es}) · ${s.age}` : `${s.n} · ${s.age}`;
   if (tPlaced === DATA.timeline.length) {
     say("fb-order");
     setTimeout(() => result(Math.max(0, 6 - tWrong), 6, "⏳"), 1200);
