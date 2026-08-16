@@ -202,6 +202,8 @@ details li{margin:6px 0 6px 18px;line-height:1.55;font-size:.95rem}
     </div>
     <div class="barra"><i id="barraTotal" style="width:0%"></i></div>
     <button class="btn grande" style="margin-top:16px" onclick="empezarPractica()">🌿 Practicar 5 minutos</button>
+    <div class="fila" id="nivelTabs" style="margin-top:14px;gap:6px"></div>
+    <div class="suave" style="text-align:center;font-size:.85rem;margin-top:6px" id="nivelSub"></div>
   </div>
 
   <div class="fila" style="margin-bottom:10px">
@@ -370,10 +372,20 @@ const FACTS = [];
 for (let a=1;a<=10;a++) for (let b=a;b<=10;b++) FACTS.push(a+'x'+b);
 const partes = k => k.split('x').map(Number);
 
+/* ═══════════ NIVEL ═══════════ */
+/* El nivel no prohíbe tablas: pesa el sorteo. Las difíciles siguen apareciendo
+   (≈1 de cada 5 en Fácil), para que no se le olviden mientras afianza las otras. */
+const NIVELES = [
+  { nom:'🌱 Fácil', tablas:[1,2,5,10],             fuera:.11, sub:'sobre todo 1, 2, 5 y 10' },
+  { nom:'🌿 Medio', tablas:[1,2,3,4,5,9,10],       fuera:.6,  sub:'añade 3, 4 y 9' },
+  { nom:'🌸 Todas', tablas:[1,2,3,4,5,6,7,8,9,10], fuera:1,   sub:'las 55 por igual' },
+];
+
 /* ═══════════ ESTADO ═══════════ */
 const KEY = 'tablas-estado';
-let S = { cajas:{}, estrellas:0, sesion:0, onboard:false };
-function cargar(){ try{ Object.assign(S, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){} }
+let S = { cajas:{}, estrellas:0, sesion:0, onboard:false, nivel:2 };
+function cargar(){ try{ Object.assign(S, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){}
+  if (!NIVELES[S.nivel]) S.nivel = 2; }
 function guardar(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 const bx = k => S.cajas[k] || 0;
 function setBx(k,v){ S.cajas[k] = Math.max(0, Math.min(3, v)); guardar(); }
@@ -519,6 +531,19 @@ function pintarInicio(){
   $('hoyTexto').textContent = RUTA[i].nom.replace(/^La tabla/,'la tabla').replace(/^Los/,'los');
   $('hoyFlores').textContent = f + ' de 55 flores 🌸';
   $('barraTotal').style.width = pct + '%';
+  pintarNivel();
+}
+function pintarNivel(){
+  const cont = $('nivelTabs'); cont.innerHTML='';
+  NIVELES.forEach((n,i)=>{
+    const b=document.createElement('button');
+    b.className='tab'+(i===S.nivel?' on':''); b.style.flex='1'; b.style.fontSize='.9rem';
+    b.textContent = n.nom;
+    b.setAttribute('aria-pressed', i===S.nivel);
+    b.onclick = () => { S.nivel=i; guardar(); tono(660,.1); pintarInicio(); };
+    cont.appendChild(b);
+  });
+  $('nivelSub').textContent = NIVELES[S.nivel].sub;
 }
 
 /* ═══════════ ONBOARDING (Semana 0) ═══════════ */
@@ -628,15 +653,20 @@ function practicarEtapa(){ empezarPractica(lecI); }
 
 /* ═══════════ MOTOR DE PRÁCTICA (repaso incremental) ═══════════ */
 const mezclar = arr => { const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[a[i],a[j]]=[a[j],a[i]];} return a; };
+const peso = k => { const n = NIVELES[S.nivel] || NIVELES[2], [a,b] = partes(k);
+  return n.tablas.includes(a) && n.tablas.includes(b) ? 1 : n.fuera; };
+/* Barajado ponderado (Efraimidis–Spirakis): más peso, más arriba, pero nadie queda fuera. */
+const mezclarPeso = arr => arr.map(k => [k, Math.random() ** (1/peso(k))])
+  .sort((x,y) => y[1]-x[1]).map(x => x[0]);
 /* Plantilla de repaso incremental: el hecho 0 (nuevo) reaparece con huecos crecientes,
    intercalado entre hechos ya dominados. K = conocido. */
 const PLANTILLA = ['0','K','0','K','1','K','0','2','K','K','1','K','0','K','2','K','K'];
 
 function construirMazo(etapa){
   const intro = FACTS.filter(k=>bx(k)>0);
-  const conocidos = mezclar(intro.filter(k=>bx(k)>=2));
-  const aprendiendo = mezclar(intro.filter(k=>bx(k)===1));
-  const nuevos = mezclar(factsEtapa(etapa).filter(k=>bx(k)===0));
+  const conocidos = mezclarPeso(intro.filter(k=>bx(k)>=2));
+  const aprendiendo = mezclarPeso(intro.filter(k=>bx(k)===1));
+  const nuevos = mezclarPeso(factsEtapa(etapa).filter(k=>bx(k)===0));
 
   const focos = [];
   if (nuevos.length && aprendiendo.length < 3) focos.push(nuevos[0]);
@@ -645,7 +675,7 @@ function construirMazo(etapa){
   if (!focos.length) focos.push(...mezclar(factsEtapa(etapa)).slice(0,3));
 
   let pozo = conocidos.length >= 4 ? conocidos : (intro.length >= 4 ? intro : factsEtapa(etapa));
-  pozo = mezclar(pozo.filter(k => !focos.includes(k)));
+  pozo = mezclarPeso(pozo.filter(k => !focos.includes(k)));
   if (!pozo.length) pozo = focos.slice();
 
   let pi = 0;
@@ -823,7 +853,7 @@ function lanzar(){
   dEntrada=''; dBloqueo=false;
   const intro = FACTS.filter(k=>bx(k)>0);
   const pozo = intro.length ? intro : factsEtapa(etapaSugerida());
-  const k = pozo[(Math.random()*pozo.length)|0];
+  const k = mezclarPeso(pozo)[0];
   let [a,b] = partes(k); if (Math.random()<.5) [a,b]=[b,a];
   dadoFact = {k,a,b};
   $('d1').classList.add('rueda'); $('d2').classList.add('rueda');
@@ -967,6 +997,30 @@ function pruebas(){
   dadoComprobar();
   chk('dados: fallar baja flor → hoja', bx('4x7')===2);
   go('inicio', false);
+
+  // nivel: pesa el sorteo, no prohíbe nada
+  const dificil = k => partes(k).some(n => n>=6 && n<=8);
+  const nivelPrevio = S.nivel;
+  S.cajas={}; FACTS.forEach(k=>S.cajas[k]=2);
+  const proporcion = niv => {
+    S.nivel = niv;
+    const m = [].concat(...Array.from({length:40}, ()=>construirMazo(9)));
+    return m.filter(x=>dificil(x.k)).length / m.length;
+  };
+  const pFacil = proporcion(0), pMedio = proporcion(1), pTodas = proporcion(2);
+  chk('nivel Fácil: ~1 de cada 5 es difícil ('+Math.round(pFacil*100)+'%)', pFacil > .12 && pFacil < .30);
+  chk('nivel Medio queda entre Fácil y Todas ('+Math.round(pMedio*100)+'%)', pMedio > pFacil && pMedio < pTodas);
+  chk('nivel Todas no sesga ('+Math.round(pTodas*100)+'%)', pTodas > .40);
+  chk('ningún hecho tiene peso cero en ningún nivel',
+      NIVELES.every((_,i)=>{ S.nivel=i; return FACTS.every(k=>peso(k)>0); }));
+  chk('el mazo nunca queda vacío en ningún nivel',
+      NIVELES.every((_,i)=>{ S.nivel=i; return construirMazo(9).length>=12 && construirMazo(1).length>=12; }));
+  // entrar por la lección del 7 practica el 7, aunque el nivel sea Fácil
+  S.cajas={}; FACTS.forEach(k=>S.cajas[k]=2); factsEtapa(9).forEach(k=>delete S.cajas[k]);
+  S.nivel = 0;
+  chk('la lección elegida a mano manda sobre el nivel',
+      Array.from({length:10}, ()=>construirMazo(9)).every(m=>m.some(x=>partes(x.k).includes(7))));
+  S.nivel = nivelPrevio;
 
   S = JSON.parse(backup); guardar();
   const msg = fallos.length ? `❌ ${fallos.length} fallo(s): ${fallos.join(' | ')}` : `✅ ${ok.length} comprobaciones OK`;
