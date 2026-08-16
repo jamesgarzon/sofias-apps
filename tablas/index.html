@@ -655,6 +655,9 @@ function construirMazo(etapa){
 }
 
 let mazo=[], idx=0, entrada='', fallada=false, usoPista=false, reencolada=new Set(), aciertos=0, modo='practica', qAudio='';
+/* Tras responder el teclado queda muerto hasta la siguiente pregunta: sin esto, un toque
+   de más durante la animación de acierto convertía la respuesta buena en fallo. */
+let bloqueo=false;
 
 function empezarPractica(etapa){
   modo='practica';
@@ -667,7 +670,7 @@ function empezarPractica(etapa){
 function mostrar(){
   if (idx >= mazo.length) return finSesion(true);
   const it = mazo[idx];
-  entrada=''; fallada=false; usoPista=false;
+  entrada=''; fallada=false; usoPista=false; bloqueo=false;
   $('preg').textContent = `${it.a} × ${it.b}`;
   $('pistaBox').innerHTML='';
   $('zonaPregunta').style.display=''; $('zonaRevela').style.display='none';
@@ -689,11 +692,13 @@ function pintarPantalla(){
   p.className = 'pantalla' + (entrada ? '' : ' vacia');
   p.textContent = entrada || '?';
 }
-function tecla(d){ if(entrada.length<3){ entrada+=d; tono(620,.06,'sine',0,.08); pintarPantalla(); } }
-function borrar(){ entrada=entrada.slice(0,-1); tono(300,.06,'sine',0,.08); pintarPantalla(); }
+function tecla(d){ if(!bloqueo && entrada.length<3){ entrada+=d; tono(620,.06,'sine',0,.08); pintarPantalla(); } }
+function borrar(){ if(bloqueo) return; entrada=entrada.slice(0,-1); tono(300,.06,'sine',0,.08); pintarPantalla(); }
 
 function comprobar(){
+  if (bloqueo) return;
   if (!entrada) { say('fb-sin-prisa'); return; }
+  bloqueo = true;
   const it = mazo[idx];
   if (+entrada === it.a*it.b) return acierto();
   fallo();
@@ -815,6 +820,7 @@ let dadoFact=null, dadoRiego=0;
 function empezarDados(){ dadoRiego=0; $('dadosZona').innerHTML=''; $('d1').textContent='?'; $('d2').textContent='?';
   $('dadosMarcador').textContent=''; $('btnLanzar').style.display=''; go('dados'); say('fb-dados'); }
 function lanzar(){
+  dEntrada=''; dBloqueo=false;
   const intro = FACTS.filter(k=>bx(k)>0);
   const pozo = intro.length ? intro : factsEtapa(etapaSugerida());
   const k = pozo[(Math.random()*pozo.length)|0];
@@ -846,8 +852,9 @@ function lanzar(){
     say(`q-${a}-${b}`);
   },520);
 }
-let dEntrada='';
+let dEntrada='', dBloqueo=false;
 function dadoTecla(t){
+  if(dBloqueo) return;
   if(t==='⌫') dEntrada=dEntrada.slice(0,-1);
   else if(t==='✓') return dadoComprobar();
   else if(dEntrada.length<3) dEntrada+=t;
@@ -855,7 +862,8 @@ function dadoTecla(t){
   const p=$('dPant'); p.textContent=dEntrada||'?'; p.className='pantalla'+(dEntrada?'':' vacia');
 }
 function dadoComprobar(){
-  if(!dEntrada) return;
+  if(dBloqueo || !dEntrada) return;
+  dBloqueo = true;
   const {a,b,k}=dadoFact;
   if(+dEntrada === a*b){
     ding(); dadoRiego++;
@@ -880,7 +888,7 @@ function dadoRevela(erroneo){
   say(erroneo===true?'fb-casi':'fb-dificil', `r-${a}-${b}`, p.s);
 }
 function siguienteDado(){
-  dEntrada=''; $('dadosZona').innerHTML=''; $('btnLanzar').style.display='';
+  dEntrada=''; dBloqueo=false; $('dadosZona').innerHTML=''; $('btnLanzar').style.display='';
   $('d1').textContent='?'; $('d2').textContent='?';
   /* El juego no da estrellas: las estrellas se ganan practicando, no jugando rápido. */
   if(dadoRiego && dadoRiego%6===0){ aplausos(); confeti(18); tostada('🌷 ¡Seis flores regadas!'); }
@@ -941,6 +949,15 @@ function pruebas(){
   S.cajas={}; chk('etapa sugerida en frío = la del 2', etapaSugerida()===1);
   FACTS.forEach(k=>S.cajas[k]=3); chk('todo dominado → última etapa', etapaSugerida()===RUTA.length-1);
   chk('mazo con todo dominado sigue funcionando', construirMazo(3).length>=12);
+
+  // un toque de más tras acertar no puede convertir el acierto en fallo
+  S.cajas={}; empezarPractica(1);
+  const it0 = mazo[idx];
+  String(it0.a*it0.b).split('').forEach(tecla); comprobar();
+  tecla('7'); comprobar();
+  chk('tras acertar, el teclado queda bloqueado',
+      entrada===String(it0.a*it0.b) && $('zonaRevela').style.display==='none');
+  go('inicio', false);
 
   S = JSON.parse(backup); guardar();
   const msg = fallos.length ? `❌ ${fallos.length} fallo(s): ${fallos.join(' | ')}` : `✅ ${ok.length} comprobaciones OK`;
