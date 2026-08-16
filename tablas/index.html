@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>El Jardín de las Tablas 🌻</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --crema:#fdf6e8; --crema2:#f6eedd; --verde:#2e6b4f; --hoja:#5aa870; --hoja2:#8fcf9b;
+  --tierra:#e6dac6; --tierra2:#c9b48f; --sol:#f2b93b; --terra:#d9793f; --flor:#e8709b;
+  --tinta:#33402f; --suave:#7a8676;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overflow-x:hidden}
+body{
+  min-height:100dvh; font-family:'Nunito',system-ui,sans-serif; color:var(--tinta);
+  background:
+    radial-gradient(1200px 500px at 50% -10%, #fff8e6 0%, transparent 60%),
+    linear-gradient(180deg,var(--crema) 0%, var(--crema2) 55%, #e8f2e0 100%);
+  background-attachment:fixed;
+  padding:0 14px calc(28px + env(safe-area-inset-bottom));
+}
+h1,h2,h3,.num,button{font-family:'Fredoka',sans-serif}
+
+/* ── barra superior ── */
+.top{
+  position:sticky; top:0; z-index:30; display:flex; align-items:center; gap:10px;
+  padding:10px 4px; margin:0 -14px; padding-left:18px; padding-right:18px;
+  background:linear-gradient(180deg,rgba(253,246,232,.97),rgba(253,246,232,.75));
+  backdrop-filter:blur(8px);
+}
+.top .marca{font-family:'Fredoka';font-weight:600;color:var(--verde);font-size:1.05rem;flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--tierra);
+  border-radius:999px;padding:5px 12px;font-weight:800;font-size:.95rem;color:var(--verde)}
+.chip.pulse{animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+.volver{background:none;border:none;font-size:1.5rem;color:var(--verde);cursor:pointer;padding:4px 6px;min-height:44px}
+
+/* ── layout ── */
+.screen{display:none;max-width:560px;margin:0 auto;animation:in .28s ease}
+.screen.active{display:block}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:#fff;border-radius:24px;padding:20px;box-shadow:0 6px 0 rgba(90,120,80,.12),0 12px 30px rgba(90,120,80,.10);margin-bottom:16px}
+.card.tierra{background:linear-gradient(180deg,#fff,#fdf9f0)}
+
+/* ── botones ── */
+button{font-family:'Fredoka';cursor:pointer;border:none}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:60px;
+  border-radius:20px;font-size:1.2rem;font-weight:600;color:#fff;background:var(--hoja);
+  box-shadow:0 5px 0 #3f8a58;transition:transform .08s, box-shadow .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #3f8a58}
+.btn.grande{min-height:78px;font-size:1.45rem;background:linear-gradient(160deg,#6bbb80,#3f8a58);box-shadow:0 6px 0 #2e6b4f}
+.btn.grande:active{box-shadow:0 1px 0 #2e6b4f}
+.btn.sol{background:var(--sol);box-shadow:0 5px 0 #c9901f;color:#5a4108}
+.btn.sol:active{box-shadow:0 1px 0 #c9901f}
+.btn.suave{background:#fff;color:var(--verde);border:2px solid var(--tierra2);box-shadow:0 4px 0 #ded0b6}
+.btn.suave:active{box-shadow:0 1px 0 #ded0b6}
+.btn.mini{min-height:48px;font-size:1rem;border-radius:16px}
+.fila{display:flex;gap:10px}
+.fila>*{flex:1}
+
+/* ── inicio ── */
+.hero{text-align:center;padding:26px 20px 22px;background:
+  radial-gradient(300px 140px at 50% 0%, #fff6d9, transparent 70%),
+  linear-gradient(180deg,#fff,#f4fbef); border-radius:28px;margin-bottom:16px;
+  box-shadow:0 6px 0 rgba(90,120,80,.12)}
+.hero h1{font-size:1.9rem;color:var(--verde);line-height:1.15}
+.hero .sub{color:var(--suave);margin-top:8px;font-weight:600;font-size:.98rem}
+.macetas{font-size:2rem;letter-spacing:2px;margin-bottom:6px}
+.hoy{display:flex;align-items:center;gap:12px;background:#fffaf0;border:2px dashed var(--tierra2);
+  border-radius:18px;padding:12px 14px;margin:16px 0 4px;text-align:left}
+.hoy .e{font-size:1.9rem}
+.hoy b{color:var(--terra)}
+.barra{height:14px;border-radius:99px;background:var(--tierra);overflow:hidden;margin-top:10px}
+.barra i{display:block;height:100%;background:linear-gradient(90deg,var(--hoja2),var(--hoja));border-radius:99px;transition:width .5s}
+
+/* ── ruta ── */
+.ruta{display:flex;flex-direction:column;gap:10px}
+.paso{display:flex;align-items:center;gap:14px;background:#fff;border-radius:20px;padding:14px 16px;
+  border:2px solid transparent;box-shadow:0 4px 0 rgba(90,120,80,.10);width:100%;text-align:left;color:var(--tinta)}
+.paso:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(90,120,80,.10)}
+.paso .e{font-size:1.9rem;width:40px;text-align:center}
+.paso .t{flex:1}
+.paso .t b{font-family:'Fredoka';font-size:1.15rem;color:var(--verde);display:block}
+.paso .t small{color:var(--suave);font-weight:700}
+.paso.actual{border-color:var(--sol);background:#fffbf0}
+.mini-barra{height:8px;border-radius:99px;background:var(--tierra);overflow:hidden;margin-top:6px;max-width:150px}
+.mini-barra i{display:block;height:100%;background:var(--hoja);border-radius:99px}
+
+/* ── array de fichas ── */
+.array{display:grid;gap:5px;justify-content:center;padding:10px 0}
+.array .fila-a{display:flex;gap:5px}
+.pt{width:16px;height:16px;border-radius:50%;background:var(--hoja);animation:brota .3s ease backwards}
+@keyframes brota{from{transform:scale(0)}to{transform:scale(1)}}
+.arrayWrap{background:#f6fbf2;border-radius:18px;padding:8px;overflow-x:auto}
+.leyenda{text-align:center;color:var(--suave);font-weight:700;font-size:.9rem;margin-top:4px}
+
+/* ── lección ── */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0 4px}
+.tab{min-width:46px;min-height:46px;border-radius:14px;background:#fff;border:2px solid var(--tierra2);
+  font-weight:700;font-size:1.05rem;color:var(--verde)}
+.tab.on{background:var(--hoja);color:#fff;border-color:var(--hoja)}
+.res{font-family:'Fredoka';font-size:2.2rem;text-align:center;color:var(--verde);font-weight:600}
+.saltos{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.salto{background:#fff;border:2px solid var(--hoja2);border-radius:12px;padding:6px 10px;font-weight:800;color:var(--verde)}
+.salto.on{background:var(--sol);border-color:var(--sol);color:#5a4108}
+.truco{background:#fffaf0;border-left:6px solid var(--sol);border-radius:14px;padding:14px;margin-top:14px;font-weight:700;line-height:1.5}
+.listaTabla{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:8px;margin-top:14px}
+.listaTabla div{background:#f6fbf2;border-radius:12px;padding:9px;text-align:center;font-weight:800;color:var(--verde)}
+.listaTabla div.flor{background:#ffeef4;color:#b23a6a}
+
+/* ── práctica ── */
+.progreso{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.progreso i{width:9px;height:9px;border-radius:50%;background:var(--tierra)}
+.progreso i.ok{background:var(--hoja)}
+.progreso i.now{background:var(--sol);transform:scale(1.5)}
+.pregunta{font-family:'Fredoka';font-size:3.4rem;font-weight:600;text-align:center;color:var(--verde);letter-spacing:2px;line-height:1.1}
+.pantalla{margin:14px auto;height:76px;max-width:280px;border-radius:18px;background:#f6fbf2;border:3px solid var(--hoja2);
+  display:flex;align-items:center;justify-content:center;font-family:'Fredoka';font-size:2.6rem;color:var(--verde)}
+.pantalla.vacia{color:#c3d3bd}
+.pantalla.mal{border-color:var(--terra);background:#fdf0e8}
+.pantalla.bien{border-color:var(--hoja);background:#eaf9e6}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:330px;margin:0 auto}
+.pad button{min-height:60px;border-radius:18px;background:#fff;border:2px solid var(--tierra2);
+  font-size:1.7rem;font-weight:600;color:var(--verde);box-shadow:0 4px 0 #ded0b6}
+.pad button:active{transform:translateY(3px);box-shadow:0 1px 0 #ded0b6}
+.pad button.ok{background:var(--hoja);color:#fff;border-color:var(--hoja);box-shadow:0 4px 0 #3f8a58}
+.pad button.del{background:#fff3ea;color:var(--terra)}
+.ayudas{display:flex;gap:8px;margin-top:14px}
+.ayudas button{flex:1;min-height:50px;border-radius:16px;background:#fff;border:2px solid var(--tierra2);
+  font-size:.98rem;font-weight:600;color:var(--verde)}
+.salida{display:block;width:100%;margin-top:12px;background:none;border:none;color:var(--suave);
+  font-weight:600;font-size:.95rem;text-decoration:underline;min-height:44px}
+.pista{background:#fffaf0;border:2px solid var(--sol);border-radius:16px;padding:14px;margin-top:12px;
+  font-weight:700;line-height:1.5;animation:in .25s ease}
+.revela{text-align:center}
+.revela .grande{font-family:'Fredoka';font-size:2.6rem;color:var(--terra);font-weight:600}
+
+/* ── jardín / cuadrícula ── */
+.scrollx{overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.grid{display:grid;grid-template-columns:repeat(11,46px);gap:3px;width:max-content;margin:0 auto}
+.cel{width:46px;height:46px;border-radius:10px;background:var(--tierra);display:flex;align-items:center;
+  justify-content:center;font-size:1.2rem;border:none;padding:0}
+.cel.cab{background:transparent;font-family:'Fredoka';font-weight:600;color:var(--verde);font-size:1.05rem}
+.cel.b1{background:#e7f3d9}.cel.b2{background:#a8dc94}.cel.b3{background:#ffdfe9}
+.cel.diag{outline:2px dashed var(--sol);outline-offset:-3px}
+.detalle{margin-top:14px;text-align:center;display:none}
+.detalle.on{display:block}
+
+/* ── dados ── */
+.dados{display:flex;gap:18px;justify-content:center;align-items:center;margin:10px 0}
+.dado{width:88px;height:88px;border-radius:20px;background:#fff;border:3px solid var(--tierra2);
+  display:flex;align-items:center;justify-content:center;font-family:'Fredoka';font-size:2.6rem;color:var(--verde);
+  box-shadow:0 5px 0 #ded0b6}
+.dado.rueda{animation:rueda .5s ease}
+@keyframes rueda{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.15)}100%{transform:rotate(360deg) scale(1)}}
+
+/* ── varios ── */
+details{background:#fff;border-radius:20px;padding:16px 18px;box-shadow:0 4px 0 rgba(90,120,80,.10);margin-bottom:16px}
+summary{font-family:'Fredoka';font-size:1.05rem;color:var(--verde);cursor:pointer;font-weight:600}
+details p{margin-top:10px;line-height:1.6;font-size:.95rem}
+details li{margin:6px 0 6px 18px;line-height:1.55;font-size:.95rem}
+.centro{text-align:center}
+.suave{color:var(--suave);font-weight:600}
+.confeti{position:fixed;top:-16px;width:11px;height:16px;border-radius:2px;z-index:60;pointer-events:none}
+@keyframes cae{to{transform:translateY(105vh) rotate(720deg);opacity:.15}}
+.tostada{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--verde);color:#fff;
+  padding:12px 20px;border-radius:99px;font-family:'Fredoka';font-size:1.05rem;z-index:70;opacity:0;
+  transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center}
+.tostada.on{opacity:1}
+@media (max-width:380px){.pregunta{font-size:2.8rem}.hero h1{font-size:1.6rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <button class="volver" id="btnVolver" onclick="volver()" style="display:none">←</button>
+  <span class="marca">🌻 El Jardín de las Tablas</span>
+  <span class="chip"><span id="stars">0</span> ⭐</span>
+</div>
+
+<!-- ══════════ INICIO ══════════ -->
+<section class="screen active" id="scr-inicio">
+  <div class="hero">
+    <div class="macetas">🌱 🌿 🌸 🌻 🌷</div>
+    <h1>El Jardín de las Tablas</h1>
+    <p class="sub">Cada cosa que aprendes hace crecer una flor.<br>Sin reloj, sin prisa. 5 minutos al día.</p>
+  </div>
+
+  <div class="card tierra">
+    <div class="hoy">
+      <span class="e" id="hoyEmoji">🌱</span>
+      <div style="flex:1">
+        <div style="font-weight:700">Hoy toca: <b id="hoyTexto">la tabla del 2</b></div>
+        <div class="suave" style="font-size:.9rem" id="hoyFlores">0 de 55 flores</div>
+      </div>
+    </div>
+    <div class="barra"><i id="barraTotal" style="width:0%"></i></div>
+    <button class="btn grande" style="margin-top:16px" onclick="empezarPractica()">🌿 Practicar 5 minutos</button>
+  </div>
+
+  <div class="fila" style="margin-bottom:10px">
+    <button class="btn suave" onclick="go('aprender')">📖 Aprender</button>
+    <button class="btn suave" onclick="abrirJardin()">🌻 Mi jardín</button>
+  </div>
+  <button class="btn sol" style="margin-bottom:16px" onclick="empezarDados()">🎲 Juego de los dados</button>
+
+  <details>
+    <summary>👩‍🌾 Para papá y mamá</summary>
+    <p><b>Cómo está hecha esta app.</b> Sigue lo que hoy mejor respalda la investigación: entender primero,
+    luego estrategias de razonamiento (hechos derivados) y sólo después práctica de recuperación breve,
+    espaciada e intercalada.</p>
+    <ul>
+      <li><b>Sin cronómetro.</b> No hay tiempo, ni vidas, ni ranking. La velocidad no se mide ni se premia.</li>
+      <li><b>Diseñada para acertar.</b> Cada sesión mezcla 1 hecho nuevo con muchos ya dominados (repaso incremental),
+      para que Sofía gane casi siempre.</li>
+      <li><b>Sin errores repetidos.</b> Si falla, se muestra enseguida la respuesta y la estrategia; no se la deja
+      equivocarse una y otra vez.</li>
+      <li><b>Conmutativa.</b> 3×7 y 7×3 son <i>la misma flor</i>: sólo hay 55 hechos que aprender, no 100.</li>
+      <li><b>Progreso visual, no notas.</b> La cuadrícula de flores es el termómetro. Las estrellas se ganan por
+      terminar una sesión, no por acertar.</li>
+    </ul>
+    <p><b>Qué hacer usted.</b> 5-10 minutos, 4-6 días por semana; mejor 7 minutos alegres que 25 tensos.
+    Elogie el proceso ("me gustó cómo usaste el doble"), no la capacidad ("eres un genio") ni la rapidez.
+    Si se frustra, use el botón <i>"Ya terminamos por hoy"</i> y termine en éxito, sin drama.
+    Evite premios materiales por acierto. Y respire usted primero: la tensión del adulto se contagia.</p>
+    <p class="suave" style="font-size:.85rem">Basado en McNeil, Jordan, Viegut y Ansari (2025); Burns (2004,
+    ratio 90/10 y repaso incremental); Rohrer (práctica intercalada); Ramirez, Gunderson, Levine y Beilock (2013,
+    ansiedad matemática); Deci, Koestner y Ryan (1999, recompensas); NCTM (2023).</p>
+  </details>
+</section>
+
+<!-- ══════════ ONBOARDING ══════════ -->
+<section class="screen" id="scr-onboard">
+  <div class="card">
+    <h2 style="color:var(--verde);text-align:center">🌷 Antes de empezar</h2>
+    <p style="margin-top:12px;line-height:1.6;text-align:center">
+      Vamos a ver cuánto sabes <b>ya</b>. Toca las tablas que te salen fáciles:
+    </p>
+    <div class="tabs" id="onbTabs" style="margin-top:16px"></div>
+    <p class="suave centro" style="margin-top:12px;font-size:.92rem">
+      Si no estás segura, no la toques: la aprendemos juntas.
+    </p>
+    <div class="card" style="background:#f6fbf2;box-shadow:none;margin-top:16px;text-align:center">
+      <div style="font-family:'Fredoka';font-size:1.4rem;color:var(--verde)" id="onbCuenta">0 flores de regalo</div>
+      <div class="suave" style="font-size:.9rem">de las 55 que hay en el jardín</div>
+    </div>
+    <button class="btn grande" onclick="terminarOnboard()">🌱 ¡Empezar mi jardín!</button>
+  </div>
+</section>
+
+<!-- ══════════ APRENDER (ruta) ══════════ -->
+<section class="screen" id="scr-aprender">
+  <div class="card">
+    <h2 style="color:var(--verde)">📖 Tu ruta</h2>
+    <p class="suave" style="margin-top:6px;font-size:.95rem">De lo fácil a lo difícil. Puedes tocar la que quieras.</p>
+  </div>
+  <div class="ruta" id="rutaLista"></div>
+</section>
+
+<!-- ══════════ LECCIÓN ══════════ -->
+<section class="screen" id="scr-leccion">
+  <div class="card">
+    <h2 id="lecTitulo" style="color:var(--verde)">La tabla del 2</h2>
+    <p id="lecTexto" style="margin-top:10px;line-height:1.6"></p>
+    <button class="btn mini suave" style="margin-top:12px;max-width:150px" onclick="say(lecAudio)">🔊 Escuchar</button>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--verde);font-size:1.05rem">Míralo con fichas</h3>
+    <div class="tabs" id="lecTabs"></div>
+    <div class="arrayWrap"><div class="array" id="lecArray"></div></div>
+    <div class="res" id="lecRes">2 × 1 = 2</div>
+    <div class="leyenda" id="lecLeyenda"></div>
+    <button class="btn mini suave" style="margin-top:12px" id="lecGirar" onclick="girarArray()">🔄 Girarlo</button>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--verde);font-size:1.05rem">De salto en salto</h3>
+    <div class="saltos" id="lecSaltos"></div>
+    <div class="truco" id="lecTruco"></div>
+    <div class="listaTabla" id="lecLista"></div>
+  </div>
+
+  <button class="btn grande" onclick="practicarEtapa()">🌿 Practicar esto</button>
+</section>
+
+<!-- ══════════ PRÁCTICA ══════════ -->
+<section class="screen" id="scr-practica">
+  <div class="card">
+    <div class="progreso" id="prog"></div>
+    <div id="zonaPregunta">
+      <div class="pregunta" id="preg">6 × 7</div>
+      <div class="pantalla vacia" id="pantalla">?</div>
+      <div class="pad">
+        <button onclick="tecla('1')">1</button><button onclick="tecla('2')">2</button><button onclick="tecla('3')">3</button>
+        <button onclick="tecla('4')">4</button><button onclick="tecla('5')">5</button><button onclick="tecla('6')">6</button>
+        <button onclick="tecla('7')">7</button><button onclick="tecla('8')">8</button><button onclick="tecla('9')">9</button>
+        <button class="del" onclick="borrar()">⌫</button><button onclick="tecla('0')">0</button>
+        <button class="ok" onclick="comprobar()">✓</button>
+      </div>
+      <div class="ayudas">
+        <button onclick="say(qAudio)">🔊 Repetir</button>
+        <button onclick="mostrarPista()">💡 Pista</button>
+        <button onclick="noSe()">🤔 No sé</button>
+      </div>
+      <div id="pistaBox"></div>
+    </div>
+
+    <div id="zonaRevela" style="display:none"></div>
+    <button class="salida" onclick="salirBien()">Ya terminamos por hoy 🌙</button>
+  </div>
+</section>
+
+<!-- ══════════ FIN DE SESIÓN ══════════ -->
+<section class="screen" id="scr-fin">
+  <div class="card centro">
+    <div style="font-size:3.6rem" id="finEmoji">🌻</div>
+    <h2 style="color:var(--verde);margin-top:8px" id="finTitulo">¡Buen trabajo!</h2>
+    <p style="margin-top:12px;line-height:1.6" id="finTexto"></p>
+    <div class="barra" style="margin-top:18px"><i id="finBarra" style="width:0%"></i></div>
+    <div class="suave" style="margin-top:8px" id="finFlores"></div>
+    <button class="btn grande" style="margin-top:20px" onclick="abrirJardin()">🌻 Ver mi jardín</button>
+    <button class="btn suave mini" style="margin-top:10px" onclick="go('inicio')">🏡 Volver al inicio</button>
+  </div>
+</section>
+
+<!-- ══════════ JARDÍN ══════════ -->
+<section class="screen" id="scr-jardin">
+  <div class="card">
+    <h2 style="color:var(--verde)">🌻 Mi jardín</h2>
+    <div class="suave" style="margin-top:4px;font-size:.95rem" id="jarCuenta"></div>
+    <div class="barra" style="margin-top:10px"><i id="jarBarra" style="width:0%"></i></div>
+    <p class="suave" style="margin-top:12px;font-size:.9rem">
+      🌱 empezando · 🌿 casi · 🌸 ¡dominada!<br>
+      Toca una casilla para verla. Fíjate: es igual arriba y abajo de la línea amarilla.
+    </p>
+  </div>
+  <div class="card">
+    <div class="scrollx"><div class="grid" id="grid"></div></div>
+    <div class="detalle" id="jarDetalle"></div>
+  </div>
+</section>
+
+<!-- ══════════ DADOS ══════════ -->
+<section class="screen" id="scr-dados">
+  <div class="card centro">
+    <h2 style="color:var(--verde)">🎲 Los dados</h2>
+    <p class="suave" style="margin-top:6px;font-size:.95rem">Lanza, multiplica y riega una flor. Sin prisa.</p>
+    <div class="dados"><div class="dado" id="d1">?</div><div style="font-size:1.8rem;color:var(--suave)">×</div><div class="dado" id="d2">?</div></div>
+    <div id="dadosZona"></div>
+    <button class="btn grande" id="btnLanzar" onclick="lanzar()">🎲 ¡Lanzar!</button>
+    <div class="suave" style="margin-top:12px" id="dadosMarcador"></div>
+  </div>
+</section>
+
+<div class="tostada" id="tostada"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* ═══════════ HECHOS (55 únicos, conmutativa aplicada) ═══════════ */
+const clave = (a,b) => a<=b ? a+'x'+b : b+'x'+a;
+const FACTS = [];
+for (let a=1;a<=10;a++) for (let b=a;b<=10;b++) FACTS.push(a+'x'+b);
+const partes = k => k.split('x').map(Number);
+
+/* ═══════════ ESTADO ═══════════ */
+const KEY = 'tablas-estado';
+let S = { cajas:{}, estrellas:0, sesion:0, onboard:false };
+function cargar(){ try{ Object.assign(S, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){} }
+function guardar(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+const bx = k => S.cajas[k] || 0;
+function setBx(k,v){ S.cajas[k] = Math.max(0, Math.min(3, v)); guardar(); }
+const florecidas = () => FACTS.filter(k => bx(k)===3).length;
+
+/* ═══════════ RUTA (consenso pedagógico: fácil → difícil) ═══════════ */
+const RUTA = [
+  { id:'concepto', e:'🧩', nom:'¿Qué es multiplicar?', audio:'concepto', tabla:null,
+    txt:'Multiplicar es hacer <b>grupos iguales</b>. 3 × 4 son 3 grupos de 4 fichas: 4 + 4 + 4 = 12. Es una suma con atajo.' },
+  { id:'t2', e:'👯', nom:'La tabla del 2', audio:'t2', tabla:2,
+    txt:'La tabla del 2 son los <b>dobles</b>. 2 × 6 es 6 + 6 = 12. Si sabes sumar dos veces, ¡ya te la sabes!' },
+  { id:'t10',e:'🔟', nom:'La tabla del 10', audio:'t10', tabla:10,
+    txt:'La más fácil de todas: pones el número y le <b>añades un cero</b>. 10 × 7 = 70.' },
+  { id:'t5', e:'🖐️', nom:'La tabla del 5', audio:'t5', tabla:5,
+    txt:'El 5 es la <b>mitad</b> del 10. 10 × 6 = 60, y la mitad es 30. Todos terminan en 5 o en 0.' },
+  { id:'cuad',e:'🟩', nom:'Los cuadrados', audio:'tcuad', tabla:null, cuad:true,
+    txt:'Un número por <b>sí mismo</b>: 3 × 3 = 9, 4 × 4 = 16. Con las fichas forman un cuadrado perfecto.' },
+  { id:'t4', e:'🍀', nom:'La tabla del 4', audio:'t4', tabla:4,
+    txt:'El 4 es el <b>doble del doble</b>. 4 × 7: primero 2 × 7 = 14, y el doble de 14 es 28.' },
+  { id:'t3', e:'🔺', nom:'La tabla del 3', audio:'t3', tabla:3,
+    txt:'El 3 es el <b>doble más una vez</b>. 3 × 6: 2 × 6 = 12, más otro 6 = 18.' },
+  { id:'t9', e:'🌟', nom:'La tabla del 9', audio:'t9', tabla:9,
+    txt:'Truco del 9: multiplica <b>por 10 y quita el número</b>. 9 × 6 = 60 − 6 = 54. Y sus dos cifras siempre suman 9.' },
+  { id:'t6', e:'🐞', nom:'La tabla del 6', audio:'t6', tabla:6,
+    txt:'El 6 es <b>el 5 más una vez</b>. 6 × 7: 5 × 7 = 35, más 7 = 42.' },
+  { id:'t7', e:'🌈', nom:'La tabla del 7', audio:'t7', tabla:7,
+    txt:'Quedan poquitas. Recuerda esta: <b>5, 6, 7, 8</b> → 56 = 7 × 8.' },
+  { id:'t8', e:'🐙', nom:'La tabla del 8', audio:'t8', tabla:8,
+    txt:'El 8 es el <b>doble, del doble, del doble</b>. 8 × 3: 6 → 12 → 24.' },
+];
+function factsEtapa(i){
+  const r = RUTA[i];
+  if (r.cuad) return [1,2,3,4,5,6,7,8,9,10].map(n=>clave(n,n));
+  if (r.tabla) { const out=[]; for(let b=1;b<=10;b++) out.push(clave(r.tabla,b)); return [...new Set(out)]; }
+  return [2,3,4,5].map(n=>clave(2,n));
+}
+function dominadaEtapa(i){
+  const f = factsEtapa(i);
+  return f.filter(k=>bx(k)===3).length / f.length;
+}
+function etapaSugerida(){
+  for (let i=1;i<RUTA.length;i++) if (dominadaEtapa(i) < 0.8) return i;
+  return RUTA.length-1;
+}
+
+/* ═══════════ ESTRATEGIAS (hechos derivados) ═══════════ */
+const RANGO = {1:0, 10:1, 2:2, 5:3, 4:4, 3:5, 9:6, 6:7, 8:8, 7:9};
+function pista(a,b){
+  if ((a===7&&b===8)||(a===8&&b===7))
+    return { t:'Canta: <b>5, 6, 7, 8</b> → <b>56 = 7 × 8</b>.', s:'s-cinco-seis' };
+  const [d,o] = RANGO[a] <= RANGO[b] ? [a,b] : [b,a];
+  const cuad = a===b ? 'Es un <b>cuadrado</b> (el número por sí mismo). ' : '';
+  const R = {
+    1:  { t:`Por 1 no cambia nada: sigue siendo <b>${o}</b>.`, s:'s-igual' },
+    10: { t:`Le añades un cero: ${o} → <b>${10*o}</b>.`, s:'s-cero' },
+    2:  { t:`El doble: ${o} + ${o} = <b>${2*o}</b>.`, s:'s-dobles' },
+    5:  { t:`La mitad del 10: 10 × ${o} = ${10*o}, y la mitad es <b>${5*o}</b>.`, s:'s-mitad-diez' },
+    4:  { t:`El doble del doble: 2 × ${o} = ${2*o}, y el doble es <b>${4*o}</b>.`, s:'s-doble-doble' },
+    3:  { t:`El doble más una vez: 2 × ${o} = ${2*o}, más ${o} = <b>${3*o}</b>.`, s:'s-doble-mas' },
+    9:  { t:`Por 10 y quitas: 10 × ${o} = ${10*o}, menos ${o} = <b>${9*o}</b>.`, s:'s-diez-menos' },
+    6:  { t:`El 5 más una vez: 5 × ${o} = ${5*o}, más ${o} = <b>${6*o}</b>.`, s:'s-cinco-mas' },
+    8:  { t:`Doble, doble y doble: ${2*o} → ${4*o} → <b>${8*o}</b>.`, s:'s-doble-tres' },
+    7:  { t:`Sepáralo: 5 × ${o} = ${5*o} y 2 × ${o} = ${2*o}. Súmalos: <b>${7*o}</b>.`, s:'s-cinco-dos' },
+  }[d];
+  return { t: cuad + R.t, s: cuad ? 's-cuadrado' : R.s };
+}
+
+/* ═══════════ SONIDO ═══════════ */
+let actx;
+const ctx = () => actx ??= new (window.AudioContext || window.webkitAudioContext)();
+function tono(f, dur, tipo='sine', when=0, vol=.16){
+  const a=ctx(), o=a.createOscillator(), g=a.createGain();
+  o.type=tipo; o.frequency.value=f; o.connect(g); g.connect(a.destination);
+  const t=a.currentTime+when;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+.01);
+  g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.start(t); o.stop(t+dur+.02);
+}
+const ding = () => { tono(784,.15,'sine',0); tono(1047,.3,'sine',.09); };
+const suaveNo = () => { tono(392,.14,'sine',0,.10); tono(330,.22,'sine',.1,.09); };
+const florSonido = () => { [523,659,784,1047].forEach((f,i)=>tono(f,.3,'triangle',i*.09,.13)); };
+function aplausos(dur=1.4){
+  const a=ctx(), n=a.sampleRate*dur, buf=a.createBuffer(1,n,a.sampleRate), d=buf.getChannelData(0);
+  for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,1.6)*(Math.random()>.55?1:.25);
+  const src=a.createBufferSource(), g=a.createGain(), f=a.createBiquadFilter();
+  f.type='bandpass'; f.frequency.value=2000; src.buffer=buf;
+  src.connect(f); f.connect(g); g.connect(a.destination); g.gain.value=.26; src.start();
+}
+
+const voz = new Audio();
+let cola = [];
+voz.addEventListener('ended', () => { if (cola.length) reproducir(cola.shift()); });
+function reproducir(n){ voz.src = 'audio/' + n + '.mp3'; voz.play().catch(()=>{}); }
+function say(...ns){ cola = ns.slice(1); voz.pause(); reproducir(ns[0]); }
+
+function confeti(n=26){
+  const cols=['#f2b93b','#e8709b','#5aa870','#d9793f','#8fcf9b','#fff'];
+  for(let i=0;i<n;i++){
+    const d=document.createElement('div');
+    d.className='confeti'; d.style.left=Math.random()*100+'vw';
+    d.style.background=cols[i%cols.length];
+    d.style.animation=`cae ${1.5+Math.random()*1.3}s linear ${Math.random()*.4}s forwards`;
+    document.body.appendChild(d); setTimeout(()=>d.remove(),3400);
+  }
+}
+let tostadaT;
+function tostada(msg){
+  const t=$('tostada'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(tostadaT); tostadaT=setTimeout(()=>t.classList.remove('on'),2200);
+}
+
+/* ═══════════ NAVEGACIÓN ═══════════ */
+let pila = [];
+function go(id, apilar=true){
+  const act = document.querySelector('.screen.active');
+  if (apilar && act && act.id !== 'scr-'+id) pila.push(act.id.slice(4));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $('scr-'+id).classList.add('active');
+  $('btnVolver').style.display = id==='inicio' ? 'none' : '';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function volver(){
+  const prev = pila.pop() || 'inicio';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $('scr-'+prev).classList.add('active');
+  $('btnVolver').style.display = prev==='inicio' ? 'none' : '';
+  if (prev==='inicio') pintarInicio();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ═══════════ ESTRELLAS ═══════════ */
+function pintarEstrellas(){ $('stars').textContent = S.estrellas; }
+function darEstrella(){
+  S.estrellas++; guardar(); pintarEstrellas();
+  const c=$('stars').parentElement; c.classList.remove('pulse'); void c.offsetWidth; c.classList.add('pulse');
+}
+
+/* ═══════════ INICIO ═══════════ */
+function pintarInicio(){
+  const f = florecidas(), pct = Math.round(f/55*100);
+  const i = etapaSugerida();
+  $('hoyEmoji').textContent = RUTA[i].e;
+  $('hoyTexto').textContent = RUTA[i].nom.replace(/^La tabla/,'la tabla').replace(/^Los/,'los');
+  $('hoyFlores').textContent = f + ' de 55 flores 🌸';
+  $('barraTotal').style.width = pct + '%';
+}
+
+/* ═══════════ ONBOARDING (Semana 0) ═══════════ */
+let onbSel = new Set();
+function pintarOnboard(){
+  const cont = $('onbTabs'); cont.innerHTML='';
+  [1,2,5,10].forEach(n=>{
+    const b=document.createElement('button');
+    b.className='tab'+(onbSel.has(n)?' on':''); b.style.minWidth='64px';
+    b.textContent = 'del '+n;
+    b.onclick = () => { onbSel.has(n)?onbSel.delete(n):onbSel.add(n); tono(660,.1); pintarOnboard(); };
+    cont.appendChild(b);
+  });
+  const set = new Set();
+  onbSel.forEach(n => { for(let b=1;b<=10;b++) set.add(clave(n,b)); });
+  $('onbCuenta').textContent = set.size + (set.size===1?' flor de regalo':' flores de regalo');
+}
+function terminarOnboard(){
+  /* Semana 0: lo que ya sabe entra como flor. Si falla una, Leitner la baja sola a semilla. */
+  onbSel.forEach(n => { for(let b=1;b<=10;b++) setBx(clave(n,b), 3); });
+  S.onboard = true; guardar();
+  aplausos(); confeti();
+  if (onbSel.size) say('fb-flor');
+  abrirJardin();
+}
+
+/* ═══════════ APRENDER ═══════════ */
+function pintarRuta(){
+  const sug = etapaSugerida(), cont = $('rutaLista'); cont.innerHTML='';
+  RUTA.forEach((r,i)=>{
+    const f = factsEtapa(i), hechas = f.filter(k=>bx(k)===3).length;
+    const b=document.createElement('button');
+    b.className='paso'+(i===sug?' actual':'');
+    b.innerHTML = `<span class="e">${r.e}</span><div class="t"><b>${r.nom}</b>
+      <small>${i===0?'Empieza por aquí':hechas+' de '+f.length+' flores'}</small>
+      ${i===0?'':`<div class="mini-barra"><i style="width:${hechas/f.length*100}%"></i></div>`}</div>
+      <span style="font-size:1.3rem;color:var(--suave)">›</span>`;
+    b.onclick = () => abrirLeccion(i);
+    cont.appendChild(b);
+  });
+}
+
+let lecI = 0, lecB = 1, lecGirado = false, lecAudio = 'concepto';
+function abrirLeccion(i){
+  lecI = i; lecB = 1; lecGirado = false; lecAudio = RUTA[i].audio;
+  $('lecTitulo').textContent = RUTA[i].nom;
+  $('lecTexto').innerHTML = RUTA[i].txt;
+  const tabs = $('lecTabs'); tabs.innerHTML='';
+  for(let n=1;n<=10;n++){
+    const b=document.createElement('button'); b.className='tab'; b.textContent=n;
+    b.onclick=()=>{ lecB=n; lecGirado=false; tono(700,.08); pintarLeccion(); };
+    tabs.appendChild(b);
+  }
+  pintarLeccion();
+  go('leccion');
+  say(RUTA[i].audio);
+}
+function baseLeccion(){ const r=RUTA[lecI]; return r.cuad ? lecB : (r.tabla || 3); }
+function girarArray(){ lecGirado = !lecGirado; tono(540,.12); pintarLeccion(); }
+function pintarLeccion(){
+  const r = RUTA[lecI], a0 = baseLeccion(), b0 = lecB;
+  const [a,b] = lecGirado ? [b0,a0] : [a0,b0];
+  $('lecArray').replaceChildren(arrayNodo(a,b));
+  $('lecRes').textContent = `${a} × ${b} = ${a*b}`;
+  $('lecLeyenda').innerHTML = lecGirado
+    ? `¡Mismas fichas! <b>${a0} × ${b0}</b> y <b>${b0} × ${a0}</b> dan <b>${a*b}</b>. Un hecho, dos por el precio de uno.`
+    : `${a} grupos de ${b}`;
+  $('lecGirar').textContent = `🔄 Girarlo (${a0} × ${b0} = ${b0} × ${a0})`;
+  document.querySelectorAll('#lecTabs .tab').forEach((t,i)=>t.classList.toggle('on', i+1===lecB));
+
+  const base = r.cuad ? null : (r.tabla || 2);
+  const saltos = $('lecSaltos'); saltos.innerHTML='';
+  for(let n=1;n<=10;n++){
+    const v = base ? base*n : n*n;
+    const s=document.createElement('span');
+    s.className='salto'+(n<=lecB?' on':''); s.textContent=v; saltos.appendChild(s);
+  }
+  $('lecTruco').innerHTML = '💡 ' + (r.cuad
+    ? `Un cuadrado es el número por sí mismo. ${lecB} × ${lecB} = <b>${lecB*lecB}</b>.`
+    : pista(base, lecB).t);
+
+  const lista = $('lecLista'); lista.innerHTML='';
+  for(let n=1;n<=10;n++){
+    const A = r.cuad ? n : base, B = n;
+    const d=document.createElement('div');
+    d.className = bx(clave(A,B))===3 ? 'flor' : '';
+    d.innerHTML = `${A} × ${B} = ${A*B}` + (bx(clave(A,B))===3 ? ' 🌸' : '');
+    lista.appendChild(d);
+  }
+}
+function arrayNodo(a,b){
+  const pal=['#5aa870','#8fcf9b','#f2b93b','#e8709b','#d9793f','#6bb8c9','#b07fd4','#7fb069','#e0a458','#68b0ab'];
+  const frag=document.createDocumentFragment();
+  for(let i=0;i<a;i++){
+    const fila=document.createElement('div'); fila.className='fila-a';
+    for(let j=0;j<b;j++){
+      const p=document.createElement('span'); p.className='pt';
+      p.style.background=pal[i%pal.length];
+      p.style.animationDelay=((i*b+j)*0.012)+'s';
+      fila.appendChild(p);
+    }
+    frag.appendChild(fila);
+  }
+  return frag;
+}
+function practicarEtapa(){ empezarPractica(lecI); }
+
+/* ═══════════ MOTOR DE PRÁCTICA (repaso incremental) ═══════════ */
+const mezclar = arr => { const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[a[i],a[j]]=[a[j],a[i]];} return a; };
+/* Plantilla de repaso incremental: el hecho 0 (nuevo) reaparece con huecos crecientes,
+   intercalado entre hechos ya dominados. K = conocido. */
+const PLANTILLA = ['0','K','0','K','1','K','0','2','K','K','1','K','0','K','2','K','K'];
+
+function construirMazo(etapa){
+  const intro = FACTS.filter(k=>bx(k)>0);
+  const conocidos = mezclar(intro.filter(k=>bx(k)>=2));
+  const aprendiendo = mezclar(intro.filter(k=>bx(k)===1));
+  const nuevos = mezclar(factsEtapa(etapa).filter(k=>bx(k)===0));
+
+  const focos = [];
+  if (nuevos.length && aprendiendo.length < 3) focos.push(nuevos[0]);
+  focos.push(...aprendiendo.slice(0, 3 - focos.length));
+  if (!focos.length) focos.push(...conocidos.slice(0,2));
+  if (!focos.length) focos.push(...mezclar(factsEtapa(etapa)).slice(0,3));
+
+  let pozo = conocidos.length >= 4 ? conocidos : (intro.length >= 4 ? intro : factsEtapa(etapa));
+  pozo = mezclar(pozo.filter(k => !focos.includes(k)));
+  if (!pozo.length) pozo = focos.slice();
+
+  let pi = 0;
+  const q = PLANTILLA.map(s => (s==='K' || !focos[+s]) ? pozo[pi++ % pozo.length] : focos[+s]);
+  for (let i=0;i<q.length-1;i++) if (q[i]===q[i+1] && q[i+2]) { const t=q[i+1]; q[i+1]=q[i+2]; q[i+2]=t; }
+  return q.map(k => { const [a,b]=partes(k); return Math.random()<.5 ? {k,a,b} : {k,a:b,b:a}; });
+}
+
+let mazo=[], idx=0, entrada='', fallada=false, usoPista=false, reencolada=new Set(), aciertos=0, modo='practica', qAudio='';
+
+function empezarPractica(etapa){
+  modo='practica';
+  mazo = construirMazo(etapa ?? etapaSugerida());
+  idx=0; aciertos=0; reencolada.clear();
+  go('practica');
+  $('zonaPregunta').style.display=''; $('zonaRevela').style.display='none';
+  mostrar();
+}
+function mostrar(){
+  if (idx >= mazo.length) return finSesion(true);
+  const it = mazo[idx];
+  entrada=''; fallada=false; usoPista=false;
+  $('preg').textContent = `${it.a} × ${it.b}`;
+  $('pistaBox').innerHTML='';
+  $('zonaPregunta').style.display=''; $('zonaRevela').style.display='none';
+  pintarPantalla();
+  pintarProgreso();
+  qAudio = `q-${it.a}-${it.b}`;
+  say(qAudio);
+}
+function pintarProgreso(){
+  const p=$('prog'); p.innerHTML='';
+  mazo.forEach((_,i)=>{
+    const s=document.createElement('i');
+    s.className = i<idx ? 'ok' : (i===idx ? 'now' : '');
+    p.appendChild(s);
+  });
+}
+function pintarPantalla(){
+  const p=$('pantalla');
+  p.className = 'pantalla' + (entrada ? '' : ' vacia');
+  p.textContent = entrada || '?';
+}
+function tecla(d){ if(entrada.length<3){ entrada+=d; tono(620,.06,'sine',0,.08); pintarPantalla(); } }
+function borrar(){ entrada=entrada.slice(0,-1); tono(300,.06,'sine',0,.08); pintarPantalla(); }
+
+function comprobar(){
+  if (!entrada) { say('fb-sin-prisa'); return; }
+  const it = mazo[idx];
+  if (+entrada === it.a*it.b) return acierto();
+  fallo();
+}
+function acierto(){
+  const it = mazo[idx];
+  $('pantalla').classList.add('bien');
+  ding(); aciertos++;
+  const previa = bx(it.k);
+  if (!fallada && !usoPista) setBx(it.k, previa+1);
+  else if (previa===0) setBx(it.k, 1);
+  const nueva = bx(it.k);
+  if (nueva===3 && previa<3){ florSonido(); confeti(14); tostada('🌸 ¡Floreció ' + it.k.replace('x',' × ') + '!'); say('fb-flor'); }
+  else if (nueva===2 && previa<2){ say('fb-brote'); }
+  else say(['fb-correcto','fb-muy-bien','fb-esa-es','fb-estrategia'][(Math.random()*4)|0]);
+  setTimeout(()=>{ idx++; mostrar(); }, nueva===3&&previa<3 ? 1600 : 850);
+}
+function fallo(){
+  const it = mazo[idx];
+  suaveNo();
+  $('pantalla').classList.add('mal');
+  /* Baja un solo escalón: un resbalón de dedo no debe arrancar una flor del jardín. */
+  setBx(it.k, Math.max(1, bx(it.k) - 1));
+  revelar(true);
+}
+function noSe(){ usoPista=true; const it=mazo[idx]; if(bx(it.k)===0) setBx(it.k,1); revelar(false); }
+
+function revelar(erroneo){
+  const it = mazo[idx];
+  fallada = true;
+  const p = pista(it.a, it.b);
+  $('zonaPregunta').style.display='none';
+  $('zonaRevela').style.display='';
+  $('zonaRevela').innerHTML = `
+    <div class="revela">
+      <div class="suave" style="font-weight:700">${erroneo?'Casi. Mira cómo se saca:':'Tranquila, te la enseño:'}</div>
+      <div class="grande" style="margin:10px 0">${it.a} × ${it.b} = ${it.a*it.b}</div>
+      <div class="arrayWrap"><div class="array" id="revArray"></div></div>
+      <div class="pista" style="text-align:left">💡 ${p.t}</div>
+      <button class="btn mini suave" style="margin-top:12px;max-width:160px;margin-left:auto;margin-right:auto"
+        onclick="say('r-${it.a}-${it.b}','${p.s}')">🔊 Escuchar</button>
+      <button class="btn" style="margin-top:14px" onclick="seguir()">Sigo 👍</button>
+      <div class="suave" style="margin-top:10px;font-size:.88rem">Equivocarse es parte de aprender 🌱</div>
+    </div>`;
+  $('revArray').replaceChildren(arrayNodo(it.a, it.b));
+  say(erroneo?'fb-casi':'fb-dificil', `r-${it.a}-${it.b}`, p.s);
+}
+function mostrarPista(){
+  usoPista = true;
+  const it = mazo[idx], p = pista(it.a, it.b);
+  $('pistaBox').innerHTML = `<div class="pista">💡 ${p.t}</div>`;
+  say(p.s);
+}
+function seguir(){
+  const it = mazo[idx];
+  /* Repaso: se vuelve a preguntar una sola vez, tras 3 hechos ya dominados. Nunca se machaca. */
+  if (!reencolada.has(it.k)) { reencolada.add(it.k); mazo.splice(Math.min(idx+4, mazo.length), 0, {...it}); }
+  idx++; mostrar();
+}
+
+function salirBien(){ finSesion(false); }
+function finSesion(completa){
+  S.sesion++; darEstrella(); guardar();
+  const f = florecidas();
+  aplausos(); confeti(completa?34:16);
+  $('finEmoji').textContent = completa ? '🌻' : '🌙';
+  $('finTitulo').textContent = completa ? '¡Sesión completa!' : '¡Buen trabajo hoy!';
+  $('finTexto').innerHTML = completa
+    ? `Practicaste <b>${mazo.length}</b> multiplicaciones y ganaste una <b>⭐</b>.<br>Mañana seguimos con otro ratito.`
+    : `Practicaste un rato y ganaste una <b>⭐</b>.<br>Parar cuando toca también cuenta. Mañana seguimos.`;
+  $('finBarra').style.width = Math.round(f/55*100)+'%';
+  $('finFlores').textContent = f + ' de 55 flores 🌸';
+  say(completa ? 'fb-sesion' : 'fb-hasta-manana');
+  pila = ['inicio'];
+  go('fin', false);
+  $('btnVolver').style.display='';
+  pintarInicio();
+}
+
+/* ═══════════ JARDÍN (tabla de Pitágoras) ═══════════ */
+function abrirJardin(){ pintarJardin(); go('jardin'); }
+function pintarJardin(){
+  const g=$('grid'); g.innerHTML='';
+  const emo = ['','🌱','🌿','🌸'];
+  const esq=document.createElement('div'); esq.className='cel cab'; esq.textContent='×'; g.appendChild(esq);
+  for(let b=1;b<=10;b++){ const c=document.createElement('div'); c.className='cel cab'; c.textContent=b; g.appendChild(c); }
+  for(let a=1;a<=10;a++){
+    const h=document.createElement('div'); h.className='cel cab'; h.textContent=a; g.appendChild(h);
+    for(let b=1;b<=10;b++){
+      const k=clave(a,b), n=bx(k);
+      const c=document.createElement('button');
+      c.className='cel b'+n+(a===b?' diag':'');
+      c.textContent = emo[n];
+      c.setAttribute('aria-label', `${a} por ${b}`);
+      c.onclick = () => verCelda(a,b);
+      g.appendChild(c);
+    }
+  }
+  const f=florecidas();
+  $('jarCuenta').innerHTML = `<b>${f}</b> de 55 flores 🌸 · sólo hay 55 porque 3×7 y 7×3 son la misma.`;
+  $('jarBarra').style.width = Math.round(f/55*100)+'%';
+}
+function verCelda(a,b){
+  const p = pista(a,b), d=$('jarDetalle');
+  d.classList.add('on');
+  d.innerHTML = `
+    <div class="res">${a} × ${b} = ${a*b}</div>
+    <div class="arrayWrap" style="margin-top:8px"><div class="array" id="jarArray"></div></div>
+    <div class="leyenda">${a} grupos de ${b} · y ${b} × ${a} da lo mismo</div>
+    <div class="pista" style="text-align:left">💡 ${p.t}</div>
+    <button class="btn mini suave" style="margin-top:10px;max-width:170px;margin-left:auto;margin-right:auto"
+      onclick="say('r-${a}-${b}','${p.s}')">🔊 Escuchar</button>`;
+  $('jarArray').replaceChildren(arrayNodo(a,b));
+  tono(700,.08);
+}
+
+/* ═══════════ DADOS ═══════════ */
+let dadoFact=null, dadoRiego=0;
+function empezarDados(){ dadoRiego=0; $('dadosZona').innerHTML=''; $('d1').textContent='?'; $('d2').textContent='?';
+  $('dadosMarcador').textContent=''; $('btnLanzar').style.display=''; go('dados'); say('fb-dados'); }
+function lanzar(){
+  const intro = FACTS.filter(k=>bx(k)>0);
+  const pozo = intro.length ? intro : factsEtapa(etapaSugerida());
+  const k = pozo[(Math.random()*pozo.length)|0];
+  let [a,b] = partes(k); if (Math.random()<.5) [a,b]=[b,a];
+  dadoFact = {k,a,b};
+  $('d1').classList.add('rueda'); $('d2').classList.add('rueda');
+  tono(300,.06,'square',0,.08); tono(420,.06,'square',.12,.08);
+  setTimeout(()=>{
+    $('d1').classList.remove('rueda'); $('d2').classList.remove('rueda');
+    $('d1').textContent=a; $('d2').textContent=b;
+    $('btnLanzar').style.display='none';
+    $('dadosZona').innerHTML = `
+      <div class="pantalla vacia" id="dPant">?</div>
+      <div class="pad" id="dPad"></div>
+      <div class="ayudas">
+        <button onclick="say('q-${a}-${b}')">🔊</button>
+        <button onclick="dadoPista()">💡 Pista</button>
+        <button onclick="dadoRevela()">🤔 No sé</button>
+      </div>
+      <div id="dPista"></div>`;
+    const pad=$('dPad');
+    ['1','2','3','4','5','6','7','8','9','⌫','0','✓'].forEach(t=>{
+      const b2=document.createElement('button');
+      b2.textContent=t;
+      if(t==='✓') b2.className='ok'; if(t==='⌫') b2.className='del';
+      b2.onclick=()=>dadoTecla(t);
+      pad.appendChild(b2);
+    });
+    say(`q-${a}-${b}`);
+  },520);
+}
+let dEntrada='';
+function dadoTecla(t){
+  if(t==='⌫') dEntrada=dEntrada.slice(0,-1);
+  else if(t==='✓') return dadoComprobar();
+  else if(dEntrada.length<3) dEntrada+=t;
+  tono(620,.06,'sine',0,.08);
+  const p=$('dPant'); p.textContent=dEntrada||'?'; p.className='pantalla'+(dEntrada?'':' vacia');
+}
+function dadoComprobar(){
+  if(!dEntrada) return;
+  const {a,b,k}=dadoFact;
+  if(+dEntrada === a*b){
+    ding(); dadoRiego++;
+    if(bx(k)>0 && bx(k)<3) setBx(k, bx(k)+1);
+    $('dPant').className='pantalla bien';
+    say(['fb-correcto','fb-esa-es','fb-muy-bien'][(Math.random()*3)|0]);
+    $('dadosMarcador').textContent = '🌷'.repeat(Math.min(dadoRiego,12)) + `  (${dadoRiego} regadas)`;
+    setTimeout(siguienteDado, 900);
+  } else {
+    suaveNo(); $('dPant').className='pantalla mal';
+    dadoRevela(true);
+  }
+}
+function dadoPista(){ const p=pista(dadoFact.a,dadoFact.b); $('dPista').innerHTML=`<div class="pista">💡 ${p.t}</div>`; say(p.s); }
+function dadoRevela(erroneo){
+  const {a,b}=dadoFact, p=pista(a,b);
+  $('dadosZona').innerHTML = `<div class="revela">
+      <div class="grande">${a} × ${b} = ${a*b}</div>
+      <div class="pista" style="text-align:left">💡 ${p.t}</div>
+      <button class="btn" style="margin-top:14px" onclick="siguienteDado()">Otra vez 🎲</button>
+    </div>`;
+  say(erroneo===true?'fb-casi':'fb-dificil', `r-${a}-${b}`, p.s);
+}
+function siguienteDado(){
+  dEntrada=''; $('dadosZona').innerHTML=''; $('btnLanzar').style.display='';
+  $('d1').textContent='?'; $('d2').textContent='?';
+  /* El juego no da estrellas: las estrellas se ganan practicando, no jugando rápido. */
+  if(dadoRiego && dadoRiego%6===0){ aplausos(); confeti(18); tostada('🌷 ¡Seis flores regadas!'); }
+}
+
+/* ═══════════ ARRANQUE ═══════════ */
+cargar();
+pintarEstrellas(); pintarInicio(); pintarRuta(); pintarOnboard();
+if (!S.onboard) { go('onboard', false); $('btnVolver').style.display='none'; }
+document.body.addEventListener('click', () => { try{ ctx().resume(); }catch(e){} }, {once:true});
+setTimeout(()=>{ if(S.onboard) say('fb-bienvenida'); }, 400);
+
+/* ═══════════ COMPROBACIÓN (abre index.html?test) ═══════════ */
+function pruebas(){
+  const ok=[], fallos=[];
+  const chk=(n,c)=>{ (c?ok:fallos).push(n); console[c?'log':'error'](c?'✅':'❌', n); };
+  const backup = JSON.stringify(S);
+
+  chk('55 hechos únicos', FACTS.length===55 && new Set(FACTS).size===55);
+  chk('conmutativa: 3×7 y 7×3 son la misma clave', clave(3,7)===clave(7,3));
+
+  // arranque en frío: sin nada aprendido, el mazo debe existir y ser jugable
+  S.cajas={};
+  let m = construirMazo(1);
+  chk('mazo en frío no vacío', m.length>=12);
+  chk('mazo en frío: todos son hechos válidos', m.every(x=>FACTS.includes(x.k)));
+  chk('mazo en frío: sin repetidos seguidos', m.every((x,i)=>i===0||x.k!==m[i-1].k));
+
+  // tras el onboarding (1,2,5,10 conocidas) → mayoría de la sesión ya dominada
+  S.cajas={}; [1,2,5,10].forEach(n=>{for(let b=1;b<=10;b++) S.cajas[clave(n,b)]=2;});
+  m = construirMazo(5); // tabla del 4
+  const conocidas = m.filter(x=>S.cajas[x.k]>=2).length;
+  chk('tras onboarding: ≥75% de la sesión ya dominada ('+conocidas+'/'+m.length+')', conocidas/m.length>=0.75);
+  chk('tras onboarding: como mucho 1 hecho nuevo distinto',
+      new Set(m.filter(x=>!S.cajas[x.k]).map(x=>x.k)).size<=1);
+  chk('mazo sin repetidos seguidos', m.every((x,i)=>i===0||x.k!==m[i-1].k));
+
+  // cajas Leitner
+  S.cajas={}; setBx('4x7',0); setBx('4x7', bx('4x7')+1); chk('sube 0→1', bx('4x7')===1);
+  setBx('4x7', bx('4x7')+1); setBx('4x7', bx('4x7')+1); setBx('4x7', bx('4x7')+1);
+  chk('tope en 3', bx('4x7')===3);
+  setBx('4x7', Math.max(1, bx('4x7')-1)); chk('un fallo baja un escalón, no arranca la flor', bx('4x7')===2);
+  setBx('4x7', Math.max(1, bx('4x7')-1)); setBx('4x7', Math.max(1, bx('4x7')-1));
+  chk('nunca baja por debajo de semilla', bx('4x7')===1);
+
+  // estrategias
+  chk('pista 7×8 usa el truco 5678', pista(7,8).s==='s-cinco-seis' && pista(8,7).s==='s-cinco-seis');
+  chk('pista 9×6 usa 10 menos', pista(9,6).s==='s-diez-menos');
+  chk('pista 4×7 usa doble del doble', pista(4,7).s==='s-doble-doble');
+  chk('pista 6×7 usa 5 más una vez', pista(6,7).s==='s-cinco-mas');
+  chk('todas las combinaciones dan pista', FACTS.every(k=>{const[a,b]=partes(k);const p=pista(a,b);return p&&p.t&&p.s;}));
+  chk('la pista nunca dice un resultado falso',
+      FACTS.every(k=>{const[a,b]=partes(k);return pista(a,b).t.includes('<b>'+(a*b)+'</b>')||a===7&&b===8;}));
+
+  // etapas
+  chk('etapas cubren los 55 hechos',
+      new Set(RUTA.flatMap((_,i)=>factsEtapa(i))).size>=54);
+  S.cajas={}; chk('etapa sugerida en frío = la del 2', etapaSugerida()===1);
+  FACTS.forEach(k=>S.cajas[k]=3); chk('todo dominado → última etapa', etapaSugerida()===RUTA.length-1);
+  chk('mazo con todo dominado sigue funcionando', construirMazo(3).length>=12);
+
+  S = JSON.parse(backup); guardar();
+  const msg = fallos.length ? `❌ ${fallos.length} fallo(s): ${fallos.join(' | ')}` : `✅ ${ok.length} comprobaciones OK`;
+  console.log(msg);
+  document.body.insertAdjacentHTML('afterbegin',
+    `<div style="position:fixed;inset:auto 0 0 0;z-index:99;background:${fallos.length?'#c0392b':'#2e6b4f'};color:#fff;padding:12px;font:600 14px Nunito">${msg}</div>`);
+}
+if (location.search.includes('test')) pruebas();
+</script>
+</body>
+</html>
