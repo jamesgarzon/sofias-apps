@@ -874,6 +874,8 @@ function dadoComprobar(){
     setTimeout(siguienteDado, 900);
   } else {
     suaveNo(); $('dPant').className='pantalla mal';
+    /* Mismo criterio que en la práctica: baja un escalón (flor → hoja), nunca por debajo de semilla. */
+    setBx(k, Math.max(1, bx(k)-1));
     dadoRevela(true);
   }
 }
@@ -957,6 +959,13 @@ function pruebas(){
   tecla('7'); comprobar();
   chk('tras acertar, el teclado queda bloqueado',
       entrada===String(it0.a*it0.b) && $('zonaRevela').style.display==='none');
+  go('inicio', false);
+
+  // en los dados, fallar baja la flor a hoja (igual que en la práctica)
+  S.cajas={}; setBx('4x7',3); dadoFact={k:'4x7',a:4,b:7}; dBloqueo=false; dEntrada='1';
+  $('dadosZona').innerHTML='<div class="pantalla" id="dPant">1</div>';
+  dadoComprobar();
+  chk('dados: fallar baja flor → hoja', bx('4x7')===2);
   go('inicio', false);
 
   S = JSON.parse(backup); guardar();
