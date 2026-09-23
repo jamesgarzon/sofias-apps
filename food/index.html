@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Healthy Market 🧺</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@600;700;800&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1b3521; --muted:#587060; --bg:#edf5e4; --paper:#fff;
+  --leaf:#2f7d3b; --leaf2:#3b8f47; --leaf-d:#1f5a2a;
+  --lemon:#ffd23f; --lemon-d:#d9a400;
+  --ok:#2e9b4f; --ok-d:#1d6b35; --bad:#e0402b; --bad-d:#9b2a1c;
+  --edge:#cfe2c3; --accent:#2f7d3b;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{min-height:100svh;color:var(--ink);background:var(--bg);font-family:"Lexend",system-ui,sans-serif;
+  padding-bottom:calc(28px + env(safe-area-inset-bottom))}
+h1,h2,h3,.g{font-family:"Grandstander",system-ui,sans-serif}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--lemon-d);outline-offset:3px}
+[hidden]{display:none!important}
+.wrap{max-width:560px;margin:0 auto;padding:26px 16px 0}
+
+/* ---------- awning top bar ---------- */
+header.bar{
+  position:sticky;top:0;z-index:20;
+  background:repeating-linear-gradient(90deg,var(--leaf) 0 28px,var(--leaf2) 28px 56px);
+  padding:calc(8px + env(safe-area-inset-top)) 12px 8px;
+}
+header.bar::after{
+  content:"";position:absolute;left:0;right:0;top:100%;height:13px;pointer-events:none;
+  background:
+    radial-gradient(circle at 14px 0,var(--leaf) 13px,transparent 13.5px) 0 0/56px 13px repeat-x,
+    radial-gradient(circle at 42px 0,var(--leaf2) 13px,transparent 13.5px) 0 0/56px 13px repeat-x;
+  filter:drop-shadow(0 3px 0 rgba(27,53,33,.12));
+}
+.bar-in{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:8px}
+#back{display:none;width:44px;height:44px;border-radius:14px;flex:none;background:rgba(255,255,255,.18);
+  color:#fff;font-size:1.35rem;line-height:1}
+#back.on{display:block}
+.brand{flex:1;min-width:0;color:#fff;font-family:"Grandstander";font-weight:800;font-size:1.15rem;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#esBtn{flex:none;height:40px;min-width:46px;padding:0 12px;border-radius:20px;font-weight:700;font-size:.9rem;
+  background:rgba(255,255,255,.18);color:#fff}
+#esBtn.on{background:#fff;color:var(--leaf-d)}
+.stars{flex:none;display:flex;align-items:center;gap:5px;height:40px;padding:0 13px;border-radius:20px;
+  background:var(--lemon);color:#4a3700;font-family:"Grandstander";font-weight:800;box-shadow:0 3px 0 var(--lemon-d)}
+
+/* ---------- screens ---------- */
+.screen{display:none}
+.screen.on{display:block;animation:in .22s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.hero{text-align:center}
+.hero .pyrbox{width:min(100%,330px);margin:0 auto}
+.hero h1{font-size:1.9rem;font-weight:800;line-height:1.15;margin-top:12px}
+.hero p{color:var(--muted);margin-top:6px;font-size:.95rem}
+h2.sect{font-size:1.3rem;font-weight:800;margin:28px 0 12px}
+
+.tiles{display:grid;gap:12px}
+.tile{
+  --c:var(--leaf);
+  display:flex;align-items:center;gap:14px;width:100%;min-height:80px;padding:11px 16px 11px 11px;
+  border-radius:22px;text-align:left;background:var(--paper);
+  border:2px solid color-mix(in srgb,var(--c) 35%,#fff);
+  box-shadow:0 5px 0 color-mix(in srgb,var(--c) 35%,#fff);
+  transition:transform .08s,box-shadow .08s;
+}
+.tile:active{transform:translateY(4px);box-shadow:0 1px 0 color-mix(in srgb,var(--c) 35%,#fff)}
+.th{width:58px;height:58px;flex:none;border-radius:50%;overflow:hidden;display:grid;place-items:center;
+  font-size:1.75rem;background:color-mix(in srgb,var(--c) 22%,#fff);box-shadow:0 0 0 3px var(--c)}
+.th img{width:100%;height:100%;object-fit:cover}
+.th svg{width:70%;height:auto}
+.tile .n{display:block;font-family:"Grandstander";font-weight:800;font-size:1.14rem;line-height:1.2}
+.tile .s{display:block;font-size:.82rem;color:var(--muted);margin-top:2px}
+.tile.done .n::after{content:" ✓";color:var(--ok)}
+.tile.exam{background:var(--leaf);border-color:var(--leaf-d);box-shadow:0 5px 0 var(--leaf-d);color:#fff}
+.tile.exam .s{color:#d7ecd3}
+.tile.exam .th{background:#fff;box-shadow:0 0 0 3px var(--lemon)}
+
+/* ---------- spanish help ---------- */
+.tr,.es{display:none}
+body.es-on .tr{display:block;font-size:.78rem;font-weight:600;color:#9a6b00;font-style:italic}
+body.es-on .es{display:block}
+.es{margin-top:12px;padding-top:12px;border-top:2px dashed #e1ead9;font-size:.95rem;line-height:1.55;color:#5b6f60}
+.es::before{content:"ES";display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.5px;
+  background:var(--lemon);color:#4a3700;padding:2px 7px;border-radius:6px;margin-right:8px;vertical-align:2px}
+.es.plain{border-top:none;padding-top:0;margin-top:6px;text-align:center}
+body.es-on .tr.inl{display:inline;font-style:normal}
+
+/* ---------- learn ---------- */
+.plate{background:var(--paper);border-radius:24px;overflow:hidden;
+  border:2px solid color-mix(in srgb,var(--accent) 30%,#fff);box-shadow:0 6px 0 color-mix(in srgb,var(--accent) 30%,#fff)}
+.pic{position:relative;aspect-ratio:4/3;background:#f2f6ee;overflow:hidden}
+.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.pic.duo{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.pic.noimg{aspect-ratio:auto!important;width:100%;height:112px;display:grid;place-items:center;font-size:3.8rem;
+  background:color-mix(in srgb,var(--accent) 16%,#fff)}
+.pic.pyr{aspect-ratio:auto;padding:18px 34px 10px;background:color-mix(in srgb,var(--accent) 10%,#fff)}
+.plate .body{padding:16px 18px 20px}
+.tag{display:inline-block;font-size:.8rem;font-weight:600;color:#fff;background:var(--accent);padding:4px 11px;border-radius:999px}
+.src{display:inline-block;margin-left:6px;font-size:.78rem;color:var(--muted)}
+.plate h2{font-size:1.5rem;font-weight:800;line-height:1.2;margin:10px 0 6px}
+.plate p.t{font-size:1.06rem;line-height:1.6;white-space:pre-line}
+
+.rowbtns{display:flex;gap:10px;align-items:center;margin-top:14px}
+.rnd{width:56px;height:56px;flex:none;border-radius:50%;background:var(--paper);font-size:1.3rem;
+  border:2px solid var(--edge);box-shadow:0 3px 0 var(--edge);display:grid;place-items:center}
+.rnd:disabled{opacity:.35}
+.rnd.speak{width:48px;height:48px;background:var(--lemon);border-color:var(--lemon-d);box-shadow:0 3px 0 var(--lemon-d)}
+.dots{flex:1;display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;background:#c9d9bf}
+.dot.on{background:var(--accent);transform:scale(1.3)}
+.vocab{margin-top:16px;background:var(--paper);border-radius:18px;padding:14px 16px;border:2px dashed var(--edge)}
+.vocab h3{font-size:1.05rem;font-weight:800;margin-bottom:6px}
+.vocab li{list-style:none;font-size:.93rem;margin:6px 0;line-height:1.4}
+
+/* ---------- buttons / feedback ---------- */
+.cta{display:block;width:100%;min-height:56px;padding:15px;border-radius:18px;margin-top:12px;
+  background:var(--leaf);color:#fff;font-family:"Grandstander";font-weight:800;font-size:1.15rem;box-shadow:0 5px 0 var(--leaf-d)}
+.cta:active{transform:translateY(3px);box-shadow:0 2px 0 var(--leaf-d)}
+.cta.ghost{background:var(--paper);color:var(--ink);box-shadow:0 5px 0 var(--edge);border:2px solid var(--edge)}
+.cta.next{background:var(--lemon);color:#4a3700;box-shadow:0 5px 0 var(--lemon-d)}
+.qbar{height:10px;border-radius:6px;background:#d8e6cf;overflow:hidden;margin-bottom:12px}
+.qbar i{display:block;height:100%;width:0;background:var(--leaf);transition:width .3s}
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.qhead .count{flex:1;text-align:right;color:var(--muted);font-weight:600}
+.msg{text-align:center;min-height:1.6rem;margin-top:14px;font-family:"Grandstander";font-weight:700;font-size:1.12rem;line-height:1.35}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+@keyframes pop{50%{transform:scale(1.05)}}
+
+/* ---------- pick games (classify, H/U, T/F) ---------- */
+.card{background:var(--paper);border-radius:22px;overflow:hidden;border:2px solid var(--edge);box-shadow:0 5px 0 var(--edge)}
+.card .pic{aspect-ratio:16/10}
+.card .name{padding:14px 16px 16px;text-align:center;font-family:"Grandstander";font-weight:800;font-size:1.55rem;line-height:1.2}
+.card .name.stmt{font-size:1.35rem;padding:28px 18px}
+.card .es{margin:0 16px 14px;padding-top:10px;font-family:"Lexend";font-weight:400;font-size:.92rem}
+.opts{display:grid;gap:11px;margin-top:16px}
+.opts.two{grid-template-columns:1fr 1fr}
+.opt{
+  --c:#fff;
+  width:100%;min-height:58px;padding:12px 14px;border-radius:18px;text-align:left;
+  background:var(--paper);font-weight:600;font-size:1rem;line-height:1.3;
+  border:2px solid var(--edge);box-shadow:0 4px 0 var(--edge);transition:transform .08s,box-shadow .08s;
+}
+.opt:active{transform:translateY(3px);box-shadow:0 1px 0 var(--edge)}
+.opt.grp{background:color-mix(in srgb,var(--c) 30%,#fff);border-color:var(--c);box-shadow:0 4px 0 var(--c);
+  font-family:"Grandstander";font-weight:800;font-size:1.05rem;min-height:74px;text-align:center}
+.opt.big{min-height:104px;text-align:center;background:color-mix(in srgb,var(--c) 14%,#fff);border-color:var(--c);box-shadow:0 4px 0 var(--c)}
+.opt.big i{display:block;font-style:normal;font-family:"Grandstander";font-weight:800;font-size:2.4rem;line-height:1;color:var(--c)}
+.opt.big b{display:block;font-family:"Grandstander";font-size:1.1rem;margin-top:4px}
+.opt[disabled]{opacity:.5}
+.opt.ok,.opt.ok[disabled]{opacity:1;background:var(--ok);border-color:var(--ok-d);box-shadow:0 4px 0 var(--ok-d);color:#fff;animation:pop .3s}
+.opt.bad,.opt.bad[disabled]{opacity:1;background:var(--bad);border-color:var(--bad-d);box-shadow:0 4px 0 var(--bad-d);color:#fff;animation:shake .35s}
+.opt.ok i,.opt.bad i{color:#fff}
+.opt.ok .tr,.opt.bad .tr{color:#fff}
+
+/* ---------- pyramid ---------- */
+.pyr{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 5px 0 rgba(31,90,42,.16))}
+.pz .bg{fill:#d9e7cf}
+.pz .tint{opacity:.3}
+.pz .edge{fill:none;stroke:#fff;stroke-width:4;stroke-linejoin:round}
+.pz .lbl{font-family:"Grandstander";font-weight:800;fill:#fff;stroke:#1b3521;stroke-width:4.5px;paint-order:stroke;
+  stroke-linejoin:round;text-anchor:middle;dominant-baseline:middle}
+.pz .q{font-family:"Grandstander";font-weight:800;font-size:40px;fill:var(--lemon-d);text-anchor:middle;dominant-baseline:middle}
+.pz.dim{opacity:.25}
+.pz.target .bg{fill:#fff3b8}
+.pz.target .edge{stroke:var(--lemon-d);stroke-width:5;animation:glow .9s ease-in-out infinite alternate}
+@keyframes glow{to{stroke:#fff}}
+.pyr.tap .pz{cursor:pointer}
+.pz.bad .bg{fill:#f6a797}
+.pz.bad .edge{stroke:var(--bad);stroke-width:5}
+.pz.good .edge{stroke:var(--ok);stroke-width:5}
+.ptask{background:var(--paper);border-radius:20px;padding:16px;text-align:center;border:2px solid var(--edge);
+  box-shadow:0 5px 0 var(--edge);font-family:"Grandstander";font-weight:800;font-size:1.3rem;line-height:1.35;margin-bottom:14px}
+.ptask .gap{display:inline-block;min-width:88px;border-bottom:3px solid var(--lemon-d);color:var(--lemon-d)}
+.ptask .chip{display:inline-block;padding:6px 16px;border-radius:14px;background:color-mix(in srgb,var(--c) 30%,#fff);
+  border:2px solid var(--c);margin-top:6px}
+.ptask .es{font-weight:400;text-align:center}
+.pyrbox{width:min(100%,340px);margin:0 auto}
+#yPyr{width:min(100%,270px)}
+
+/* ---------- match lines ---------- */
+.mhead{text-align:center;margin-bottom:14px}
+.mhead h2{font-size:1.3rem;font-weight:800;line-height:1.25}
+.mhead p{font-size:.84rem;color:var(--muted);margin-top:3px}
+.mboard{position:relative;display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);column-gap:40px}
+.mcol{display:flex;flex-direction:column;justify-content:space-around;gap:12px;position:relative;z-index:1}
+.mchip{
+  --c:#9ab;
+  width:100%;min-height:58px;padding:10px 12px;border-radius:14px;text-align:left;background:var(--paper);
+  border:2px solid var(--edge);box-shadow:0 3px 0 var(--edge);font-size:.88rem;line-height:1.3;
+}
+.mchip.L{font-family:"Grandstander";font-weight:800;font-size:1rem;border-left:8px solid var(--c)}
+.mchip.sel{background:#fff6cc;border-color:var(--lemon-d);box-shadow:0 3px 0 var(--lemon-d)}
+.mchip.done{background:color-mix(in srgb,var(--c) 22%,#fff);border-color:var(--c);box-shadow:0 3px 0 var(--c)}
+.mchip.bad{background:#fde0da;border-color:var(--bad);animation:shake .35s}
+.mlines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.mlines line{stroke-width:4;stroke-linecap:round}
+.mlines .miss{stroke:var(--bad);stroke-dasharray:6 6}
+
+/* ---------- exam / results ---------- */
+.extag{display:block;margin:0 auto 10px;width:max-content;padding:4px 12px;border-radius:20px;
+  background:#fff6cc;border:2px solid var(--lemon);font-weight:600;font-size:.8rem;color:#7a5a00}
+.qtext{font-family:"Grandstander";font-weight:800;font-size:1.3rem;line-height:1.35;text-align:center;margin:6px 0 4px}
+.qtext .gap{display:inline-block;min-width:80px;padding:0 6px;border-bottom:3px solid var(--lemon-d);color:var(--lemon-d)}
+.qtext .gap.gok{color:var(--ok);border-color:var(--ok)}
+.qtext .gap.gbad{color:var(--bad);border-color:var(--bad)}
+.hero .mark{font-size:4rem;line-height:1}
+.diploma{background:var(--paper);border-radius:24px;padding:24px 18px;text-align:center;
+  border:4px double var(--leaf);box-shadow:0 6px 0 var(--edge)}
+.diploma .seal{font-size:3.8rem;line-height:1}
+.diploma .dlabel{font-size:.85rem;color:var(--muted)}
+.diploma h2{font-size:1.8rem;font-weight:800;margin:6px 0 2px}
+.diploma .dscore{font-size:1.2rem;font-weight:700}
+.earn{font-size:2.2rem;letter-spacing:5px;min-height:2.6rem;margin:6px 0}
+.diploma .dstats{font-size:.85rem;color:var(--muted)}
+.review{margin-top:18px}
+.review h3{font-size:1.1rem;font-weight:800;text-align:center;margin-bottom:10px}
+.rev{background:var(--paper);border-left:5px solid var(--lemon-d);border-radius:0 14px 14px 0;padding:10px 12px;margin-bottom:8px;font-size:.92rem}
+.rev b{display:block;margin-top:4px;color:var(--ok-d)}
+.result{text-align:center;padding:14px 0}
+.result .big{font-size:4.4rem;line-height:1}
+.result h2{font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.result p{color:var(--muted);margin-bottom:8px}
+
+.credits{margin-top:28px;font-size:.75rem;color:var(--muted);line-height:1.6}
+.credits summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px}
+.credits p{margin-top:6px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
+.cf{position:absolute;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<script type="application/json" id="content">
+{
+  "stalls": [
+    {
+      "id": "groups",
+      "title": "Food groups",
+      "esTitle": "Los grupos de alimentos",
+      "src": "From your book, page 98",
+      "thumb": "fruits.jpg",
+      "color": "#3f9a4a",
+      "vocab": [
+        ["starch", "the part of bread, rice and pasta that gives you energy", "almidón"],
+        ["bruises", "purple marks on your skin after a hit", "moretones"],
+        ["balanced diet", "food from all four groups and drinking water", "dieta balanceada"],
+        ["portions", "how much of each food you eat", "porciones"]
+      ],
+      "cards": [
+        {
+          "a": "g-1", "icon": "🤔",
+          "h": "Think about it…",
+          "t": "How do we know which foods are healthy and not? All your food can be divided into different groups. You need to eat from each of these groups to stay healthy.",
+          "es": "Piénsalo… ¿Cómo sabemos qué alimentos son saludables y cuáles no? Todos tus alimentos se pueden dividir en diferentes grupos. Necesitas comer de cada uno de estos grupos para mantenerte sana."
+        },
+        {
+          "a": "g-2", "img": "oil.jpg",
+          "h": "Fats and Oils",
+          "t": "Fat gives you energy and some important chemicals that helps your body to work properly.",
+          "es": "Grasas y aceites. La grasa te da energía y algunas sustancias químicas importantes que ayudan a que tu cuerpo funcione bien."
+        },
+        {
+          "a": "g-3", "img": "proteins.jpg",
+          "h": "Proteins",
+          "t": "Proteins build muscle, help you grow and keep your bones and teeth healthy.",
+          "es": "Proteínas. Las proteínas construyen músculo, te ayudan a crecer y mantienen sanos tus huesos y dientes."
+        },
+        {
+          "a": "g-4", "img": "bread.jpg",
+          "h": "Carbohydrates",
+          "t": "These kinds of food also give you energy. The energy comes from the starch and sugar in the food.",
+          "es": "Carbohidratos. Estos alimentos también te dan energía. La energía viene del almidón y del azúcar que tiene la comida."
+        },
+        {
+          "a": "g-5", "img": "fruits.jpg",
+          "h": "Vitamins and Minerals",
+          "t": "Vitamins and minerals give you healthy skin, clean your blood, and help to heal cuts and bruises. Some vitamins also keep your teeth and bones strong and healthy.",
+          "es": "Vitaminas y minerales. Las vitaminas y los minerales te dan una piel sana, limpian tu sangre y ayudan a sanar cortadas y moretones. Algunas vitaminas también mantienen tus dientes y huesos fuertes y sanos."
+        },
+        {
+          "a": "g-6", "img": "balanced.jpg",
+          "h": "A balanced diet",
+          "t": "A balanced diet includes food from all four groups and drinking water. To help you know exactly how much of each group you should eat, you can use the food wheel to compare the portions.",
+          "es": "Una dieta balanceada. Una dieta balanceada incluye comida de los cuatro grupos y tomar agua. Para saber exactamente cuánto debes comer de cada grupo, puedes usar la rueda de los alimentos para comparar las porciones."
+        }
+      ]
+    },
+    {
+      "id": "nutrients",
+      "title": "Food nutrients",
+      "esTitle": "Los nutrientes",
+      "src": "From your book: Food Nutrients",
+      "thumb": "water.jpg",
+      "color": "#2f7fc8",
+      "vocab": [
+        ["nutrients", "what is inside food that your body needs", "nutrientes"],
+        ["tissues", "the parts your body is made of, like muscle", "tejidos"],
+        ["digestive system", "the parts of your body that break down food", "sistema digestivo"],
+        ["fat soluble", "it dissolves in fat", "se disuelve en grasa"]
+      ],
+      "cards": [
+        {
+          "a": "n-0", "icon": "≠",
+          "h": "Food groups ≠ food nutrients",
+          "t": "Food groups are not the same as food nutrients. Food groups sort the food we eat. Nutrients are inside the food and help our body. There are seven nutrients: carbohydrates, protein, fats, vitamins, minerals, fiber and water.",
+          "es": "Grupos de alimentos ≠ nutrientes. Los grupos de alimentos no son lo mismo que los nutrientes. Los grupos ordenan la comida que comemos. Los nutrientes están dentro de la comida y ayudan a nuestro cuerpo. Hay siete nutrientes: carbohidratos, proteína, grasas, vitaminas, minerales, fibra y agua."
+        },
+        {
+          "a": "n-1", "img": "pasta.jpg",
+          "h": "Carbohydrates",
+          "t": "This is our main source of energy.",
+          "es": "Carbohidratos. Son nuestra principal fuente de energía."
+        },
+        {
+          "a": "n-2", "img": "eggs.jpg",
+          "h": "Protein",
+          "t": "This is essential for growth and repair of muscle and other body tissues.",
+          "es": "Proteína. Es esencial para crecer y para reparar los músculos y otros tejidos del cuerpo."
+        },
+        {
+          "a": "n-3", "img": "butter.jpg",
+          "h": "Fats",
+          "t": "A source of energy that is important in relation to fat soluble vitamins.",
+          "es": "Grasas. Son una fuente de energía, importante para las vitaminas que se disuelven en grasa."
+        },
+        {
+          "a": "n-4", "img": "carrots.jpg",
+          "h": "Vitamins",
+          "t": "Water- and fat-soluble vitamins play important roles in many chemical processes in the body.",
+          "es": "Vitaminas. Las vitaminas que se disuelven en agua y en grasa cumplen papeles importantes en muchos procesos químicos del cuerpo."
+        },
+        {
+          "a": "n-5", "img": "spinach.jpg",
+          "h": "Minerals",
+          "t": "These are inorganic elements occurring in the body that are critical to a body's normal functions.",
+          "es": "Minerales. Son elementos inorgánicos que están en el cuerpo y que son muy importantes para que el cuerpo funcione normalmente."
+        },
+        {
+          "a": "n-6", "img": "oats.jpg",
+          "h": "Fiber",
+          "t": "This is essential for the health of the digestive system.",
+          "es": "Fibra. Es esencial para la salud del sistema digestivo."
+        },
+        {
+          "a": "n-7", "img": "water.jpg",
+          "h": "Water",
+          "t": "It's essential for normal body function. It's a vehicle for carrying other nutrients. Water makes up 70% of the human body.",
+          "es": "Agua. Es esencial para que el cuerpo funcione normalmente. Es un vehículo que lleva los otros nutrientes. El agua forma el 70% del cuerpo humano."
+        },
+        {
+          "a": "n-8", "icon": "📝",
+          "h": "Class workshop: main functions",
+          "t": "Carbohydrates: main source of energy for our body.\nProteins: essential for growth and repair of muscle.\nVitamins and minerals: essential for healthy skin, blood, teeth and bones.\nWater: it's a vehicle that carries nutrients to the rest of your body.",
+          "es": "Taller de clase: funciones principales. Carbohidratos: la principal fuente de energía de nuestro cuerpo. Proteínas: esenciales para crecer y reparar los músculos. Vitaminas y minerales: esenciales para una piel, sangre, dientes y huesos sanos. Agua: es un vehículo que lleva los nutrientes al resto de tu cuerpo."
+        }
+      ]
+    },
+    {
+      "id": "pyramid",
+      "title": "The food pyramid",
+      "esTitle": "La pirámide de los alimentos",
+      "src": "From your notebook",
+      "color": "#e08a1e",
+      "vocab": [
+        ["bottom", "the lowest part", "abajo, la base"],
+        ["middle left", "the centre, on the left side", "en el medio, a la izquierda"],
+        ["middle right", "the centre, on the right side", "en el medio, a la derecha"],
+        ["top", "the highest part", "arriba, la punta"]
+      ],
+      "cards": [
+        {
+          "a": "p-1", "pyr": "all",
+          "h": "The food pyramid",
+          "t": "The food pyramid has four parts: the bottom, the middle left, the middle right and the top.",
+          "es": "La pirámide de los alimentos. La pirámide tiene cuatro partes: abajo (la base), el medio a la izquierda, el medio a la derecha y arriba (la punta)."
+        },
+        {
+          "a": "p-2", "pyr": "bottom",
+          "h": "At the bottom",
+          "t": "At the bottom: carbohydrates. They are our main source of energy.",
+          "es": "Abajo, en la base: los carbohidratos. Son nuestra principal fuente de energía."
+        },
+        {
+          "a": "p-3", "pyr": "left",
+          "h": "In the middle left",
+          "t": "In the middle left: vitamins and minerals.",
+          "es": "En el medio, a la izquierda: vitaminas y minerales."
+        },
+        {
+          "a": "p-4", "pyr": "right",
+          "h": "In the middle right",
+          "t": "In the middle right: proteins.",
+          "es": "En el medio, a la derecha: proteínas."
+        },
+        {
+          "a": "p-5", "pyr": "top",
+          "h": "At the top",
+          "t": "At the top: fats and sugar.",
+          "es": "Arriba, en la punta: grasas y azúcar."
+        }
+      ]
+    },
+    {
+      "id": "healthy",
+      "title": "Healthy or unhealthy?",
+      "esTitle": "¿Saludable o no saludable?",
+      "src": "From your notebook",
+      "thumb": "apples-bananas.jpg",
+      "color": "#d9483b",
+      "vocab": [
+        ["healthy (H)", "good for your body", "saludable"],
+        ["unhealthy (U)", "not good for your body", "no saludable"],
+        ["processed food", "food that is changed in a factory", "comida procesada"],
+        ["raw", "not cooked", "crudo"]
+      ],
+      "cards": [
+        {
+          "a": "hh-1", "img": "apples-bananas.jpg",
+          "h": "Fresh apples and bananas",
+          "t": "Fresh apples and bananas are healthy food (H).",
+          "es": "Manzanas y bananos frescos: comida saludable (H)."
+        },
+        {
+          "a": "hh-2", "img": "fish-veg.jpg",
+          "h": "Cooked fish and vegetables",
+          "t": "Cooked fish and vegetables are healthy food (H).",
+          "es": "Pescado cocinado y verduras: comida saludable (H)."
+        },
+        {
+          "a": "hh-3", "img": "fries-soda.jpg",
+          "h": "French fries and soda",
+          "t": "French fries and soda are unhealthy food (U).",
+          "es": "Papas a la francesa y gaseosa: comida no saludable (U)."
+        },
+        {
+          "a": "hh-4", "img": "icecream-candies.jpg",
+          "h": "Ice cream and candies",
+          "t": "Ice cream and candies are unhealthy food (U).",
+          "es": "Helado y dulces: comida no saludable (U)."
+        },
+        {
+          "a": "hh-5", "img": "salad.jpg",
+          "h": "Natural or processed?",
+          "t": "Natural food is better for us than processed food.",
+          "es": "¿Natural o procesada? La comida natural es mejor para nosotros que la comida procesada."
+        },
+        {
+          "a": "hh-6", "img": "raw-chicken.jpg",
+          "h": "Raw chicken? No!",
+          "t": "Eating raw chicken is not good and not safe for our health. We must cook it.",
+          "es": "¿Pollo crudo? ¡No! Comer pollo crudo no es bueno ni seguro para nuestra salud. Hay que cocinarlo."
+        }
+      ]
+    }
+  ],
+  "pyramid": [
+    { "id": "bottom", "n": "Carbohydrates", "es": "Carbohidratos", "pos": "At the bottom", "hint": "main source of energy", "posEs": "Abajo (la base)", "img": "bread.jpg", "lines": ["Carbohydrates"], "fs": 17, "color": "#f2b632" },
+    { "id": "left", "n": "Vitamins and minerals", "es": "Vitaminas y minerales", "pos": "In the middle left", "posEs": "En el medio, a la izquierda", "img": "fruits.jpg", "lines": ["Vitamins", "and", "minerals"], "fs": 13, "color": "#5cb85c" },
+    { "id": "right", "n": "Proteins", "es": "Proteínas", "pos": "In the middle right", "posEs": "En el medio, a la derecha", "img": "proteins.jpg", "lines": ["Proteins"], "fs": 15, "color": "#ef7b5b" },
+    { "id": "top", "n": "Fats and sugar", "es": "Grasas y azúcar", "pos": "At the top", "posEs": "Arriba (la punta)", "img": "icecream-candies.jpg", "lines": ["Fats and", "sugar"], "fs": 12.5, "color": "#ee86b6" }
+  ],
+  "sort": {
+    "bins": [
+      { "id": "carbs", "n": "Carbohydrates", "es": "Carbohidratos", "color": "#f2b632" },
+      { "id": "prot", "n": "Proteins", "es": "Proteínas", "color": "#ef7b5b" },
+      { "id": "dairy", "n": "Dairy products", "es": "Lácteos", "color": "#5aa9e6" },
+      { "id": "vm", "n": "Vitamins and minerals", "es": "Vitaminas y minerales", "color": "#5cb85c" }
+    ],
+    "items": [
+      { "a": "s-apple", "n": "Apple", "es": "Manzana", "img": "apple.jpg", "bin": "vm", "core": 1 },
+      { "a": "s-bread", "n": "Bread", "es": "Pan", "img": "bread.jpg", "bin": "carbs", "core": 1 },
+      { "a": "s-chicken", "n": "Chicken", "es": "Pollo", "img": "chicken.jpg", "bin": "prot", "core": 1 },
+      { "a": "s-milk", "n": "Milk", "es": "Leche", "img": "milk.jpg", "bin": "dairy", "core": 1 },
+      { "a": "s-cheese", "n": "Cheese", "es": "Queso", "img": "cheese.jpg", "bin": "dairy", "core": 1 },
+      { "a": "s-rice", "n": "Rice", "es": "Arroz", "img": "rice.jpg", "bin": "carbs", "core": 1 },
+      { "a": "s-carrots", "n": "Carrots", "es": "Zanahorias", "img": "carrots.jpg", "bin": "vm", "core": 1 },
+      { "a": "s-fish", "n": "Fish", "es": "Pescado", "img": "fish.jpg", "bin": "prot", "core": 1 },
+      { "a": "s-pasta", "n": "Pasta", "es": "Pasta", "img": "pasta.jpg", "bin": "carbs" },
+      { "a": "s-banana", "n": "Bananas", "es": "Bananos", "img": "banana.jpg", "bin": "vm" },
+      { "a": "s-grapes", "n": "Grapes", "es": "Uvas", "img": "grapes.jpg", "bin": "vm" },
+      { "a": "s-eggs", "n": "Eggs", "es": "Huevos", "img": "eggs.jpg", "bin": "prot" },
+      { "a": "s-yogurt", "n": "Yogurt", "es": "Yogur", "img": "yogurt.jpg", "bin": "dairy" }
+    ]
+  },
+  "hu": [
+    { "a": "h-1", "n": "Fresh apples and bananas", "es": "Manzanas y bananos frescos", "img": "apples-bananas.jpg", "h": 1, "core": 1 },
+    { "a": "h-2", "n": "French fries and soda", "es": "Papas a la francesa y gaseosa", "img": "fries-soda.jpg", "h": 0, "core": 1 },
+    { "a": "h-3", "n": "Cooked fish and vegetables", "es": "Pescado cocinado y verduras", "img": "fish-veg.jpg", "h": 1, "core": 1 },
+    { "a": "h-4", "n": "Ice cream and candies", "es": "Helado y dulces", "img": "icecream-candies.jpg", "h": 0, "core": 1 },
+    { "a": "h-5", "n": "Salad", "es": "Ensalada", "img": "salad.jpg", "h": 1 },
+    { "a": "h-6", "n": "A glass of water", "es": "Un vaso de agua", "img": "water.jpg", "h": 1 },
+    { "a": "s-carrots", "n": "Carrots", "es": "Zanahorias", "img": "carrots.jpg", "h": 1 },
+    { "a": "s-grapes", "n": "Grapes", "es": "Uvas", "img": "grapes.jpg", "h": 1 },
+    { "a": "h-9", "n": "Donuts", "es": "Donas", "img": "donuts.jpg", "h": 0 },
+    { "a": "h-10", "n": "Potato chips", "es": "Papitas de paquete", "img": "chips.jpg", "h": 0 },
+    { "a": "h-11", "n": "Chocolate cake", "es": "Torta de chocolate", "img": "cake.jpg", "h": 0 }
+  ],
+  "tf": [
+    { "a": "tf-01", "s": "Carbohydrates give us energy.", "t": 1, "core": 1, "es": "Los carbohidratos nos dan energía." },
+    { "a": "tf-02", "s": "Water makes up 70% of the human body.", "t": 1, "core": 1, "es": "El agua forma el 70% del cuerpo humano." },
+    { "a": "tf-03", "s": "Eating raw chicken is good and safe for our health.", "t": 0, "core": 1, "es": "Comer pollo crudo es bueno y seguro para nuestra salud.", "fix": "Raw chicken is not safe. We must cook it!" },
+    { "a": "tf-04", "s": "Natural food is better for us than processed food.", "t": 1, "core": 1, "es": "La comida natural es mejor para nosotros que la comida procesada." },
+    { "a": "tf-05", "s": "Fats give us energy and help our body to work properly.", "t": 1, "core": 1, "es": "Las grasas nos dan energía y ayudan a que nuestro cuerpo funcione bien." },
+    { "a": "tf-06", "s": "Proteins build muscle and help you grow.", "t": 1, "es": "Las proteínas construyen músculo y te ayudan a crecer." },
+    { "a": "tf-07", "s": "Fiber is essential for the health of the digestive system.", "t": 1, "es": "La fibra es esencial para la salud del sistema digestivo." },
+    { "a": "tf-08", "s": "Food groups and food nutrients are the same thing.", "t": 0, "es": "Los grupos de alimentos y los nutrientes son lo mismo.", "fix": "Food groups ≠ food nutrients." },
+    { "a": "tf-09", "s": "Fats and sugar go at the bottom of the food pyramid.", "t": 0, "es": "Las grasas y el azúcar van abajo en la pirámide.", "fix": "Fats and sugar go at the top. Carbohydrates go at the bottom." },
+    { "a": "tf-10", "s": "A balanced diet includes food from all four groups and drinking water.", "t": 1, "es": "Una dieta balanceada incluye comida de los cuatro grupos y tomar agua." },
+    { "a": "tf-11", "s": "Vitamins and minerals help to heal cuts and bruises.", "t": 1, "es": "Las vitaminas y los minerales ayudan a sanar cortadas y moretones." },
+    { "a": "tf-12", "s": "French fries and soda are healthy food.", "t": 0, "es": "Las papas a la francesa y la gaseosa son comida saludable.", "fix": "French fries and soda are unhealthy food (U)." },
+    { "a": "tf-13", "s": "Proteins go in the middle right of the food pyramid.", "t": 1, "es": "Las proteínas van en el medio, a la derecha, de la pirámide." },
+    { "a": "tf-14", "s": "Milk and cheese are dairy products.", "t": 1, "es": "La leche y el queso son productos lácteos." },
+    { "a": "tf-15", "s": "Water is a vehicle that carries nutrients to the rest of your body.", "t": 1, "es": "El agua es un vehículo que lleva los nutrientes al resto de tu cuerpo." },
+    { "a": "tf-16", "s": "Carbohydrates are at the top of the food pyramid.", "t": 0, "es": "Los carbohidratos están arriba en la pirámide.", "fix": "Carbohydrates are at the bottom: our main source of energy." },
+    { "a": "tf-17", "s": "Ice cream and candies are healthy food.", "t": 0, "es": "El helado y los dulces son comida saludable.", "fix": "Ice cream and candies are unhealthy food (U)." },
+    { "a": "tf-18", "s": "Vitamins and minerals go in the middle left of the food pyramid.", "t": 1, "es": "Las vitaminas y los minerales van en el medio, a la izquierda, de la pirámide." },
+    { "a": "tf-19", "s": "Bread and rice are proteins.", "t": 0, "es": "El pan y el arroz son proteínas.", "fix": "Bread and rice are carbohydrates." }
+  ],
+  "match": [
+    {
+      "a": "mt-1", "title": "Match the nutrient to its main function", "src": "Like exercise 1 of your class workshop",
+      "pairs": [
+        ["Carbohydrates", "Main source of energy for our body", "#f2b632", "Carbohidratos", "La principal fuente de energía de nuestro cuerpo"],
+        ["Proteins", "Essential for growth and repair of muscle", "#ef7b5b", "Proteínas", "Esencial para crecer y reparar los músculos"],
+        ["Vitamins and minerals", "Essential for healthy skin, blood, teeth and bones", "#5cb85c", "Vitaminas y minerales", "Esencial para una piel, sangre, dientes y huesos sanos"],
+        ["Water", "It's a vehicle that carries nutrients to the rest of your body", "#2f7fc8", "Agua", "Es un vehículo que lleva los nutrientes al resto de tu cuerpo"]
+      ]
+    },
+    {
+      "a": "mt-2", "title": "Match each food group with the correct statement", "src": "From your book, page 98",
+      "pairs": [
+        ["Vitamins and minerals", "Keep your skin healthy.", "#5cb85c", "Vitaminas y minerales", "Mantienen tu piel sana."],
+        ["Proteins", "Keep your bones and teeth healthy.", "#ef7b5b", "Proteínas", "Mantienen tus huesos y dientes sanos."],
+        ["Fats and oils", "The chemicals help your body work properly.", "#ee86b6", "Grasas y aceites", "Las sustancias químicas ayudan a que tu cuerpo funcione bien."],
+        ["Carbohydrates", "The starch in pasta gives you energy.", "#f2b632", "Carbohidratos", "El almidón de la pasta te da energía."]
+      ]
+    },
+    {
+      "a": "mt-3", "title": "Match the nutrient to what it does", "src": "From your book: Food Nutrients", "pick": 4,
+      "pairs": [
+        ["Carbohydrates", "Our main source of energy", "#f2b632", "Carbohidratos", "Nuestra principal fuente de energía"],
+        ["Protein", "Growth and repair of muscle and other body tissues", "#ef7b5b", "Proteína", "Crecer y reparar los músculos y otros tejidos"],
+        ["Fats", "A source of energy, important for fat soluble vitamins", "#ee86b6", "Grasas", "Una fuente de energía, importante para las vitaminas que se disuelven en grasa"],
+        ["Vitamins", "Important roles in many chemical processes in the body", "#e9a23b", "Vitaminas", "Papeles importantes en muchos procesos químicos del cuerpo"],
+        ["Minerals", "Inorganic elements critical to a body's normal functions", "#8d7bd6", "Minerales", "Elementos inorgánicos muy importantes para que el cuerpo funcione"],
+        ["Fiber", "The health of the digestive system", "#a07a45", "Fibra", "La salud del sistema digestivo"],
+        ["Water", "A vehicle for carrying other nutrients", "#2f7fc8", "Agua", "Un vehículo que lleva los otros nutrientes"]
+      ]
+    }
+  ],
+  "exam": [
+    { "a": "ex-01", "topic": "groups", "type": "mc", "q": "Which food group gives you energy from the starch and sugar in the food?", "o": ["Carbohydrates", "Proteins", "Vitamins and minerals", "Fats and oils"], "c": 0 },
+    { "a": "ex-02", "topic": "groups", "type": "blank", "q": "Proteins build ___, help you grow and keep your bones and teeth healthy.", "o": ["muscle", "starch", "sugar"], "c": 0 },
+    { "a": "ex-03", "topic": "groups", "type": "mc", "q": "What do vitamins and minerals do?", "o": ["Give you healthy skin, clean your blood and help to heal cuts and bruises", "Give you energy from the starch and sugar in the food", "Carry nutrients to the rest of your body"], "c": 0 },
+    { "a": "ex-04", "topic": "groups", "type": "blank", "q": "A balanced diet includes food from all four groups and drinking ___.", "o": ["water", "soda", "juice"], "c": 0 },
+    { "a": "ex-05", "topic": "groups", "type": "blank", "q": "Fat gives you energy and some important ___ that help your body to work properly.", "o": ["chemicals", "bruises", "portions"], "c": 0 },
+    { "a": "ex-06", "topic": "groups", "type": "mc", "q": "A balanced diet includes food from how many groups?", "o": ["Four", "Two", "Ten"], "c": 0 },
+    { "a": "ex-07", "topic": "groups", "type": "mc", "q": "What can you use to compare the portions of each food group?", "o": ["The food wheel", "A clock", "A map"], "c": 0 },
+    { "a": "ex-08", "topic": "groups", "type": "blank", "q": "The starch in pasta gives you ___.", "o": ["energy", "healthy skin", "strong teeth"], "c": 0 },
+    { "a": "ex-09", "topic": "nutrients", "type": "mc", "q": "Which nutrient is our main source of energy?", "o": ["Carbohydrates", "Water", "Fiber", "Minerals"], "c": 0 },
+    { "a": "ex-10", "topic": "nutrients", "type": "mc", "q": "Which nutrient is essential for the health of the digestive system?", "o": ["Fiber", "Fats", "Water"], "c": 0 },
+    { "a": "ex-11", "topic": "nutrients", "type": "mc", "q": "Which nutrient is essential for growth and repair of muscle and other body tissues?", "o": ["Protein", "Carbohydrates", "Fiber"], "c": 0 },
+    { "a": "ex-12", "topic": "nutrients", "type": "mc", "q": "Which nutrient is a vehicle for carrying other nutrients?", "o": ["Water", "Fats", "Minerals"], "c": 0 },
+    { "a": "ex-13", "topic": "nutrients", "type": "mc", "q": "What are minerals?", "o": ["Inorganic elements that are critical to a body's normal functions", "Our main source of energy", "Foods like ice cream and candies"], "c": 0 },
+    { "a": "ex-14", "topic": "nutrients", "type": "tf", "q": "Food groups and food nutrients are the same thing.", "o": ["True", "False"], "c": 1 },
+    { "a": "ex-15", "topic": "nutrients", "type": "blank", "q": "Fats are a source of energy that is important in relation to fat soluble ___.", "o": ["vitamins", "minerals", "proteins"], "c": 0 },
+    { "a": "ex-16", "topic": "nutrients", "type": "mc", "q": "Which one is a food nutrient, but not a food group?", "o": ["Fiber", "Proteins", "Carbohydrates"], "c": 0 },
+    { "a": "ex-17", "topic": "pyramid", "type": "blank", "q": "At the bottom of the food pyramid (main source of energy): ___", "o": ["Carbohydrates", "Proteins", "Fats and sugar", "Vitamins and minerals"], "c": 0 },
+    { "a": "ex-18", "topic": "pyramid", "type": "blank", "q": "At the top of the food pyramid: ___", "o": ["Fats and sugar", "Carbohydrates", "Proteins", "Vitamins and minerals"], "c": 0 },
+    { "a": "ex-19", "topic": "pyramid", "type": "blank", "q": "In the middle left of the food pyramid: ___", "o": ["Vitamins and minerals", "Fats and sugar", "Carbohydrates", "Proteins"], "c": 0 },
+    { "a": "ex-20", "topic": "pyramid", "type": "blank", "q": "In the middle right of the food pyramid: ___", "o": ["Proteins", "Vitamins and minerals", "Fats and sugar", "Carbohydrates"], "c": 0 },
+    { "a": "ex-21", "topic": "pyramid", "type": "mc", "q": "Where do carbohydrates go in the food pyramid?", "o": ["At the bottom", "At the top", "In the middle right"], "c": 0 },
+    { "a": "ex-22", "topic": "pyramid", "type": "mc", "q": "Where do fats and sugar go in the food pyramid?", "o": ["At the top", "At the bottom", "In the middle left"], "c": 0 },
+    { "a": "ex-23", "topic": "healthy", "type": "mc", "q": "Which one is healthy food?", "o": ["Cooked fish and vegetables", "French fries and soda", "Ice cream and candies"], "c": 0 },
+    { "a": "ex-24", "topic": "healthy", "type": "mc", "q": "Which one is unhealthy food?", "o": ["Ice cream and candies", "Fresh apples and bananas", "Cooked fish and vegetables"], "c": 0 },
+    { "a": "ex-25", "topic": "healthy", "type": "tf", "q": "Eating raw chicken is good and safe for our health.", "o": ["True", "False"], "c": 1 },
+    { "a": "ex-26", "topic": "healthy", "type": "tf", "q": "Natural food is better for us than processed food.", "o": ["True", "False"], "c": 0 },
+    { "a": "ex-27", "topic": "healthy", "type": "mc", "q": "Fresh apples and bananas are…", "o": ["H (healthy food)", "U (unhealthy food)"], "c": 0 },
+    { "a": "ex-28", "topic": "healthy", "type": "mc", "q": "French fries and soda are…", "o": ["U (unhealthy food)", "H (healthy food)"], "c": 0 },
+    { "a": "ex-29", "topic": "workshop", "type": "mc", "q": "Bread and rice go in the group…", "o": ["Carbohydrates", "Proteins", "Dairy products", "Vitamins and minerals"], "c": 0 },
+    { "a": "ex-30", "topic": "workshop", "type": "mc", "q": "Chicken and fish go in the group…", "o": ["Proteins", "Carbohydrates", "Dairy products", "Vitamins and minerals"], "c": 0 },
+    { "a": "ex-31", "topic": "workshop", "type": "mc", "q": "Milk and cheese go in the group…", "o": ["Dairy products", "Proteins", "Carbohydrates", "Vitamins and minerals"], "c": 0 },
+    { "a": "ex-32", "topic": "workshop", "type": "mc", "q": "Apples and carrots go in the group…", "o": ["Vitamins and minerals", "Dairy products", "Proteins", "Carbohydrates"], "c": 0 },
+    { "a": "ex-33", "topic": "workshop", "type": "tf", "q": "Water makes up 70% of the human body.", "o": ["True", "False"], "c": 0 },
+    { "a": "ex-34", "topic": "workshop", "type": "mc", "q": "Which nutrient is essential for healthy skin, blood, teeth and bones?", "o": ["Vitamins and minerals", "Carbohydrates", "Water"], "c": 0 },
+    { "a": "ex-35", "topic": "workshop", "type": "tf", "q": "Fats give us energy and help our body to work properly.", "o": ["True", "False"], "c": 0 },
+    { "a": "ex-36", "topic": "workshop", "type": "tf", "q": "Carbohydrates give us energy.", "o": ["True", "False"], "c": 0 }
+  ],
+  "voice": {
+    "welcome": "Welcome to the Healthy Market! Learn at the stalls, then play to win stars.",
+    "fb-great": "Great job! That's correct!",
+    "fb-yes": "Yes! Perfect!",
+    "fb-star": "You are a star!",
+    "fb-try": "Not quite. Look at the right answer.",
+    "fb-close": "Oops! Let's learn this one.",
+    "fb-round": "Round complete! Well done!",
+    "fb-perfect": "Amazing! A perfect score! I am so proud of you, Sofia!",
+    "fb-pyr": "You built the whole food pyramid!",
+    "fb-board": "All matched! Here comes the next one.",
+    "m-pyr": "Build the food pyramid! What goes in each part?",
+    "m-pyr2": "Round two! Tap the part of the pyramid where it goes.",
+    "m-sort": "Classify the food! Put each food in the correct group.",
+    "m-hu": "Healthy or unhealthy? Choose H for healthy food, or U for unhealthy food.",
+    "m-tf": "True or false? Read each statement and choose T or F.",
+    "m-exam": "This is the practice quiz. Twenty questions about food, and no help in Spanish. Read carefully, Sofia. You can do it!",
+    "pq-bottom": "What goes at the bottom? It is the main source of energy.",
+    "pq-left": "What goes in the middle left?",
+    "pq-right": "What goes in the middle right?",
+    "pq-top": "What goes at the top?",
+    "pw-bottom": "Where do carbohydrates go?",
+    "pw-left": "Where do vitamins and minerals go?",
+    "pw-right": "Where do proteins go?",
+    "pw-top": "Where do fats and sugar go?"
+  }
+}
+</script>
+
+<header class="bar">
+  <div class="bar-in">
+    <button id="back" aria-label="Back">←</button>
+    <div class="brand">🧺 The Healthy Market</div>
+    <button id="esBtn" aria-pressed="false" title="Ayuda en español">ES</button>
+    <div class="stars" aria-live="polite">⭐ <span id="totalStars">0</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- HOME -->
+  <section class="screen on" id="s-home">
+    <div class="hero">
+      <div class="pyrbox" id="heroPyr"></div>
+      <h1>Food groups and nutrients</h1>
+      <p>Tap the pyramid to hear each part.</p>
+      <p class="tr">Toca la pirámide para escuchar cada parte.</p>
+    </div>
+    <h2 class="sect">Learn <span class="tr inl">· Aprende</span></h2>
+    <div class="tiles" id="stallTiles"></div>
+    <h2 class="sect">Play <span class="tr inl">· Juega</span></h2>
+    <div class="tiles" id="gameTiles"></div>
+    <details class="credits">
+      <summary>📷 Photo credits</summary>
+      <div id="creditList"></div>
+    </details>
+  </section>
+
+  <!-- LEARN -->
+  <section class="screen" id="s-learn">
+    <div class="plate">
+      <div class="pic" id="pic"></div>
+      <div class="body">
+        <span class="tag" id="cardTag"></span><span class="src" id="cardSrc"></span>
+        <h2 id="cardH"></h2>
+        <p class="t" id="cardT"></p>
+        <p class="es" id="cardEs"></p>
+      </div>
+    </div>
+    <div class="rowbtns">
+      <button class="rnd" id="prev" aria-label="Previous">◀</button>
+      <div class="dots" id="dots"></div>
+      <button class="rnd" id="next" aria-label="Next">▶</button>
+    </div>
+    <button class="cta ghost" id="replay">🔊 Listen again</button>
+    <div class="vocab" id="vocabBox"></div>
+  </section>
+
+  <!-- PICK GAMES: classify / healthy-unhealthy / true-false -->
+  <section class="screen" id="s-pick">
+    <div class="qbar"><i id="pBar"></i></div>
+    <div class="qhead">
+      <button class="rnd speak" id="pSpeak" aria-label="Listen again">🔊</button>
+      <span class="g" id="pTitle" style="font-weight:800"></span>
+      <span class="count" id="pCount"></span>
+    </div>
+    <div class="card">
+      <div class="pic" id="pPic"></div>
+      <div class="name" id="pName"></div>
+      <p class="es" id="pEs"></p>
+    </div>
+    <div class="opts" id="pOpts"></div>
+    <div class="msg" id="pMsg" aria-live="polite"></div>
+    <button class="cta next" id="pNext" hidden>Next ▶</button>
+  </section>
+
+  <!-- PYRAMID -->
+  <section class="screen" id="s-pyr">
+    <div class="qbar"><i id="yBar"></i></div>
+    <div class="qhead">
+      <button class="rnd speak" id="ySpeak" aria-label="Listen again">🔊</button>
+      <span class="g" id="yRound" style="font-weight:800"></span>
+      <span class="count" id="yCount"></span>
+    </div>
+    <div class="ptask" id="yTask"></div>
+    <div class="pyrbox" id="yPyr"></div>
+    <div class="opts two" id="yOpts"></div>
+    <div class="msg" id="yMsg" aria-live="polite"></div>
+    <button class="cta next" id="yNext" hidden>Next ▶</button>
+  </section>
+
+  <!-- MATCH -->
+  <section class="screen" id="s-match">
+    <div class="qbar"><i id="mBar"></i></div>
+    <div class="qhead">
+      <button class="rnd speak" id="mSpeak" aria-label="Listen again">🔊</button>
+      <span class="count" id="mCount"></span>
+    </div>
+    <div class="mhead"><h2 id="mTitle"></h2><p id="mSrc"></p></div>
+    <div class="mboard" id="mBoard">
+      <svg class="mlines" id="mLines"></svg>
+      <div class="mcol" id="mLeft"></div>
+      <div class="mcol" id="mRight"></div>
+    </div>
+    <div class="msg" id="mMsg" aria-live="polite"></div>
+  </section>
+
+  <!-- EXAM INTRO -->
+  <section class="screen" id="s-exam-intro">
+    <div class="hero">
+      <div class="mark">🎓</div>
+      <h1>Practice quiz</h1>
+      <p>20 questions about everything in the market. One try per question and no Spanish help, just like the real quiz.</p>
+    </div>
+    <button class="cta" id="exStart">Start the quiz</button>
+  </section>
+
+  <!-- EXAM -->
+  <section class="screen" id="s-exam">
+    <div class="qbar"><i id="exBar"></i></div>
+    <div class="qhead">
+      <button class="rnd speak" id="exSpeak" aria-label="Listen again">🔊</button>
+      <span class="count" id="exCount"></span>
+    </div>
+    <span class="extag" id="exTag"></span>
+    <div class="qtext" id="exText"></div>
+    <div class="opts" id="exOpts"></div>
+    <div class="msg" id="exMsg" aria-live="polite"></div>
+    <button class="cta next" id="exNext" hidden>Next ▶</button>
+  </section>
+
+  <!-- DIPLOMA -->
+  <section class="screen" id="s-diploma">
+    <div class="diploma">
+      <div class="seal" id="dSeal"></div>
+      <div class="dlabel">The Healthy Market practice quiz</div>
+      <h2 id="dGrade"></h2>
+      <div class="dscore" id="dScore"></div>
+      <div class="earn" id="dStars"></div>
+      <div class="dstats" id="dStats"></div>
+    </div>
+    <div class="review" id="dReview"></div>
+    <button class="cta" id="dAgain">Take the quiz again</button>
+    <button class="cta ghost" id="dHome">Back to the market</button>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="s-result">
+    <div class="result">
+      <div class="big" id="rEmoji"></div>
+      <div class="earn" id="rStars"></div>
+      <h2 id="rTitle"></h2>
+      <p id="rText"></p>
+      <button class="cta" id="rAgain">Play again</button>
+      <button class="cta ghost" id="rHome">Back to the market</button>
+    </div>
+  </section>
+</div>
+
+<div id="confetti"></div>
+
+<script>
+const DATA = JSON.parse(document.getElementById("content").textContent);
+const $ = id => document.getElementById(id);
+const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
+const pickN = (a, n) => shuffle(a).slice(0, n);
+const PYR = Object.fromEntries(DATA.pyramid.map(s => [s.id, s]));
+
+/* ---------- stars ---------- */
+let totalStars = +localStorage.getItem("food-stars") || 0;
+const renderStars = () => $("totalStars").textContent = totalStars;
+function addStars(n) {
+  if (!n) return;
+  totalStars += n;
+  localStorage.setItem("food-stars", totalStars);
+  renderStars();
+}
+renderStars();
+
+/* ---------- spanish help ---------- */
+let esOn = localStorage.getItem("food-es") === "1";
+function renderEs() {
+  document.body.classList.toggle("es-on", esOn);
+  $("esBtn").classList.toggle("on", esOn);
+  $("esBtn").setAttribute("aria-pressed", esOn);
+}
+$("esBtn").onclick = () => { esOn = !esOn; localStorage.setItem("food-es", esOn ? "1" : "0"); renderEs(); };
+renderEs();
+
+/* ---------- sound (WebAudio, no files) ---------- */
+let actx;
+const ctx = () => actx ??= new (window.AudioContext || window.webkitAudioContext)();
+function tone(freq, start, dur, type = "sine", vol = .18) {
+  const c = ctx(), o = c.createOscillator(), g = c.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.setValueAtTime(0, c.currentTime + start);
+  g.gain.linearRampToValueAtTime(vol, c.currentTime + start + .02);
+  g.gain.exponentialRampToValueAtTime(.001, c.currentTime + start + dur);
+  o.connect(g).connect(c.destination);
+  o.start(c.currentTime + start); o.stop(c.currentTime + start + dur + .05);
+}
+const ding = () => { tone(880, 0, .18); tone(1320, .09, .25); };
+const buzz = () => tone(196, 0, .22, "sawtooth", .12);
+const fanfare = () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * .11, .35, "triangle", .16));
+function applause() {
+  const c = ctx(), buf = c.createBuffer(1, c.sampleRate * 1.4, c.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 1.6) * .5;
+  const s = c.createBufferSource(); s.buffer = buf;
+  const f = c.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = 1600;
+  s.connect(f).connect(c.destination); s.start();
+}
+function confetti(n = 34) {
+  const cols = ["#f2b632", "#5cb85c", "#ef7b5b", "#ee86b6", "#5aa9e6"];
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement("div");
+    p.className = "cf";
+    p.style.cssText = `left:${Math.random() * 100}vw;top:-20px;background:${cols[i % cols.length]};` +
+      `animation-duration:${1.4 + Math.random()}s;animation-delay:${Math.random() * .35}s`;
+    $("confetti").appendChild(p);
+    setTimeout(() => p.remove(), 3000);
+  }
+}
+
+/* ---------- voice: pre-generated edge-tts mp3 (gen_audio.py), played in a queue ---------- */
+const voice = new Audio();
+let vq = [];
+function playNext() {
+  const k = vq.shift();
+  if (!k) return;
+  voice.src = "audio/" + k + ".mp3";
+  voice.play().catch(() => {});
+}
+voice.onended = playNext;
+function say(...keys) {
+  vq = keys.filter(Boolean);
+  try { voice.pause(); } catch (e) {}
+  playNext();
+}
+const hush = () => say();
+const praise = () => say(["fb-great", "fb-yes", "fb-star"][Math.floor(Math.random() * 3)]);
+const nudge = () => say(Math.random() < .5 ? "fb-try" : "fb-close");
+
+/* ---------- navigation ---------- */
+const stack = [];
+function show(id, push = true) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id));
+  if (push) stack.push(id);
+  $("back").classList.toggle("on", id !== "s-home");
+  $("esBtn").style.visibility = id === "s-exam" ? "hidden" : "";
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+function goHome() {
+  stack.length = 0;
+  hush();
+  show("s-home", false);
+  renderHome();
+}
+$("back").onclick = () => {
+  hush();
+  stack.pop();
+  const prev = stack[stack.length - 1];
+  if (!prev || prev === "s-home") return goHome();
+  show(prev, false);
+};
+
+/* ---------- photos ---------- */
+function photo(el, img, alt, icon) {
+  el.className = el.className.replace(/\b(noimg|duo|pyr)\b/g, "").trim();
+  el.innerHTML = "";
+  const files = Array.isArray(img) ? img : img ? [img] : [];
+  if (!files.length) { el.classList.add("noimg"); el.textContent = icon || "🧺"; return; }
+  if (files.length > 1) el.classList.add("duo");
+  files.forEach(f => {
+    const i = new Image();
+    i.alt = alt; i.src = "img/" + f;
+    i.onerror = () => { el.classList.add("noimg"); el.textContent = icon || "🧺"; };
+    el.appendChild(i);
+  });
+}
+
+/* ---------- the food pyramid (SVG, photo-filled parts) ---------- */
+const PZ = {
+  top:    { pts: "160,6 210.3,100 109.7,100",            box: [109.7, 6, 100.6, 94],  lx: 160, ly: 70 },
+  left:   { pts: "109.7,100 160,100 160,210 50.9,210",   box: [50.9, 100, 109.1, 110], lx: 122, ly: 170 },
+  right:  { pts: "160,100 210.3,100 269.1,210 160,210",  box: [160, 100, 109.1, 110], lx: 200, ly: 160 },
+  bottom: { pts: "50.9,210 269.1,210 314,294 6,294",     box: [6, 210, 308, 84],       lx: 160, ly: 254 },
+};
+let pyrUid = 0;
+function pyrSVG({ show = [], target = null, hi = null, tap = false, good = null, bad = null } = {}) {
+  const uid = "pz" + (++pyrUid);
+  let defs = "", body = "";
+  DATA.pyramid.forEach(s => {
+    const z = PZ[s.id], on = show.includes(s.id);
+    const cls = ["pz", target === s.id && "target", hi && hi !== s.id && "dim",
+                 good === s.id && "good", bad === s.id && "bad"].filter(Boolean).join(" ");
+    const a11y = tap ? ` role="button" tabindex="0" aria-label="${s.pos}"` : "";
+    defs += `<clipPath id="${uid}-${s.id}"><polygon points="${z.pts}"/></clipPath>`;
+    body += `<g class="${cls}" data-id="${s.id}"${a11y}><polygon class="bg" points="${z.pts}"/>`;
+    if (on) {
+      const [x, y, w, h] = z.box, lh = s.fs * 1.12, y0 = z.ly - (s.lines.length - 1) * lh / 2;
+      body += `<image href="img/${s.img}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${uid}-${s.id})"/>` +
+        `<polygon class="tint" points="${z.pts}" fill="${s.color}"/>` +
+        `<text class="lbl" style="font-size:${s.fs}px">` +
+        s.lines.map((l, i) => `<tspan x="${z.lx}" y="${y0 + i * lh}">${l}</tspan>`).join("") + `</text>`;
+    } else if (target === s.id) {
+      body += `<text class="q" x="${z.lx}" y="${z.ly}">?</text>`;
+    }
+    body += `<polygon class="edge" points="${z.pts}"/></g>`;
+  });
+  return `<svg viewBox="0 0 320 300" class="pyr${tap ? " tap" : ""}" role="img" aria-label="Food pyramid">` +
+    `<defs>${defs}</defs>${body}</svg>`;
+}
+function onPyrTap(box, fn) {
+  const hit = e => { const g = e.target.closest("g[data-id]"); if (g) fn(g.dataset.id); };
+  box.onclick = hit;
+  box.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); hit(e); } };
+}
+const PYR_CARD = { bottom: "p-2", left: "p-3", right: "p-4", top: "p-5" };
+$("heroPyr").innerHTML = pyrSVG({ show: Object.keys(PZ), tap: true });
+onPyrTap($("heroPyr"), id => { ctx().resume?.(); say(PYR_CARD[id]); });
+
+/* ---------- home ---------- */
+const miniPyr = `<svg viewBox="0 0 40 36"><polygon points="20,1 26.6,13 13.4,13" fill="#ee86b6"/>` +
+  `<polygon points="13.4,13 20,13 20,26 6.3,26" fill="#5cb85c"/><polygon points="20,13 26.6,13 33.7,26 20,26" fill="#ef7b5b"/>` +
+  `<polygon points="6.3,26 33.7,26 39,35 1,35" fill="#f2b632"/></svg>`;
+const GAMES = [
+  { id: "pyr", th: miniPyr, c: "#e08a1e", n: "Build the pyramid", s: "What goes at the bottom, in the middle and at the top? Like exercise 5.",
+    es: "Arma la pirámide de los alimentos" },
+  { id: "sort", th: "🧺", c: "#5aa9e6", n: "Classify the food", s: "Put each food in its group. Like exercise 2.",
+    es: "Clasifica cada alimento en su grupo" },
+  { id: "hu", th: "🍎", c: "#d9483b", n: "Healthy or unhealthy?", s: "Choose H or U for each food. Like exercise 4.",
+    es: "¿Saludable (H) o no saludable (U)?" },
+  { id: "match", th: "✏️", c: "#8d7bd6", n: "Match the nutrient", s: "Draw a line to its function. Like exercise 1.",
+    es: "Une cada nutriente con su función" },
+  { id: "tf", th: "✅", c: "#3f9a4a", n: "True or false?", s: "Read each statement and choose T or F. Like exercise 3.",
+    es: "¿Verdadero o falso?" },
+  { id: "exam", th: "🎓", c: "#2f7d3b", n: "Practice quiz", s: "20 questions, no help. Win your diploma!",
+    es: "Examen de práctica: 20 preguntas, sin ayuda", cls: "exam" },
+];
+function tile({ th, c, n, s, es, cls, done }) {
+  const b = document.createElement("button");
+  b.className = "tile" + (cls ? " " + cls : "") + (done ? " done" : "");
+  b.style.setProperty("--c", c);
+  b.innerHTML = `<span class="th">${th}</span><span><span class="n">${n}</span>` +
+    `<span class="s">${s}</span><span class="tr">${es}</span></span>`;
+  return b;
+}
+function renderHome() {
+  $("stallTiles").innerHTML = "";
+  DATA.stalls.forEach((st, i) => {
+    const b = tile({
+      th: st.thumb ? `<img src="img/${st.thumb}" alt="">` : miniPyr, c: st.color, n: st.title,
+      s: `${st.cards.length} cards. ${st.src}.`, es: st.esTitle,
+      done: localStorage.getItem("food-read-" + st.id),
+    });
+    b.onclick = () => openStall(i);
+    $("stallTiles").appendChild(b);
+  });
+  $("gameTiles").innerHTML = "";
+  GAMES.forEach(g => {
+    const b = tile(g);
+    b.onclick = () => startGame(g.id);
+    $("gameTiles").appendChild(b);
+  });
+}
+function startGame(id) {
+  ctx().resume?.();
+  if (id === "pyr") startPyr();
+  if (id === "sort" || id === "hu" || id === "tf") startPick(id);
+  if (id === "match") startMatch();
+  if (id === "exam") { show("s-exam-intro"); say("m-exam"); }
+}
+renderHome();
+
+/* ---------- learn ---------- */
+let stall = null, cardIdx = 0;
+function openStall(i) {
+  stall = DATA.stalls[i]; cardIdx = 0;
+  document.documentElement.style.setProperty("--accent", stall.color);
+  $("vocabBox").innerHTML = `<h3>Words to know <span class="tr inl">· Palabras clave</span></h3><ul>` +
+    stall.vocab.map(v => `<li><b>${v[0]}</b>: ${v[1]}<span class="tr inl"> (${v[2]})</span></li>`).join("") + `</ul>`;
+  $("dots").innerHTML = stall.cards.map(() => `<span class="dot"></span>`).join("");
+  show("s-learn");
+  drawCard();
+}
+function drawCard() {
+  const c = stall.cards[cardIdx], pic = $("pic");
+  $("cardTag").textContent = stall.title;
+  $("cardSrc").textContent = stall.src;
+  $("cardH").textContent = c.h;
+  $("cardT").textContent = c.t;
+  $("cardEs").textContent = c.es;
+  if (c.pyr) {
+    pic.className = "pic pyr";
+    pic.innerHTML = pyrSVG({ show: Object.keys(PZ), hi: c.pyr === "all" ? null : c.pyr });
+  } else {
+    pic.className = "pic";
+    photo(pic, c.img, c.h, c.icon);
+  }
+  [...$("dots").children].forEach((d, i) => d.classList.toggle("on", i === cardIdx));
+  $("prev").disabled = cardIdx === 0;
+  $("next").textContent = cardIdx === stall.cards.length - 1 ? "✓" : "▶";
+  $("next").setAttribute("aria-label", cardIdx === stall.cards.length - 1 ? "Finish" : "Next");
+  say(c.a);
+}
+$("prev").onclick = () => { if (cardIdx > 0) { cardIdx--; drawCard(); } };
+$("next").onclick = () => {
+  if (cardIdx < stall.cards.length - 1) { cardIdx++; drawCard(); return; }
+  if (!localStorage.getItem("food-read-" + stall.id)) {
+    localStorage.setItem("food-read-" + stall.id, "1");
+    addStars(1); ding(); confetti(20);
+  }
+  goHome();
+};
+$("replay").onclick = () => say(stall.cards[cardIdx].a);
+
+/* ---------- results ---------- */
+let replay = null;
+function result(score, total, emojiWin) {
+  const stars = score === total ? 3 : score >= Math.ceil(total * .75) ? 2 : score >= Math.ceil(total * .5) ? 1 : 0;
+  addStars(stars);
+  $("rEmoji").textContent = stars === 3 ? "🏆" : stars === 2 ? emojiWin : stars === 1 ? "💪" : "📚";
+  $("rStars").textContent = "⭐".repeat(stars) || "☆";
+  $("rTitle").textContent = `${score} of ${total} correct`;
+  $("rText").textContent =
+    stars === 3 ? "A perfect score! You know this by heart." :
+    stars === 2 ? "Almost perfect. Great work!" :
+    stars === 1 ? "Good try! Visit the stalls again and come back for more stars." :
+                  "Learn at the stalls first, then try again.";
+  if (stars >= 2) { applause(); confetti(44); }
+  if (stars === 3) { fanfare(); say("fb-perfect"); } else if (stars >= 1) say("fb-round");
+  stack.length = 0;
+  show("s-result");
+}
+$("rAgain").onclick = () => { stack.pop(); replay?.(); };
+$("rHome").onclick = goHome;
+
+/* ---------- pick games: classify (ex. 2), healthy/unhealthy (ex. 4), true/false (ex. 3) ---------- */
+const BIN = Object.fromEntries(DATA.sort.bins.map(b => [b.id, b]));
+const twoOpts = (a, b) => [
+  { v: 1, c: "var(--ok)", big: 1, html: `<i>${a[0]}</i><b>${a[1]}</b><span class="tr">${a[2]}</span>` },
+  { v: 0, c: "var(--bad)", big: 1, html: `<i>${b[0]}</i><b>${b[1]}</b><span class="tr">${b[2]}</span>` },
+];
+const PICK = {
+  sort: {
+    title: "Classify the food", intro: "m-sort", emoji: "🧺",
+    items: () => [...DATA.sort.items.filter(x => x.core), ...pickN(DATA.sort.items.filter(x => !x.core), 4)],
+    opts: DATA.sort.bins.map(b => ({ v: b.id, c: b.color, html: `${b.n}<span class="tr">${b.es}</span>` })),
+    ans: it => it.bin,
+    ok: it => `✅ ${it.n}: ${BIN[it.bin].n}`,
+    fix: it => `${it.n} goes in ${BIN[it.bin].n}.`,
+  },
+  hu: {
+    title: "Healthy or unhealthy?", intro: "m-hu", emoji: "🍎",
+    items: () => [...DATA.hu.filter(x => x.core), ...pickN(DATA.hu.filter(x => !x.core), 6)],
+    opts: twoOpts(["H", "Healthy", "Saludable"], ["U", "Unhealthy", "No saludable"]),
+    ans: it => it.h,
+    ok: it => `✅ ${it.h ? "H: healthy food" : "U: unhealthy food"}`,
+    fix: it => `${it.n}: ${it.h ? "H, healthy food." : "U, unhealthy food."}`,
+  },
+  tf: {
+    title: "True or false?", intro: "m-tf", emoji: "✅",
+    items: () => [...DATA.tf.filter(x => x.core), ...pickN(DATA.tf.filter(x => !x.core), 5)],
+    opts: twoOpts(["T", "True", "Verdadero"], ["F", "False", "Falso"]),
+    ans: it => it.t,
+    ok: it => "✅ " + (it.fix || "Correct! It's true."),
+    fix: it => it.fix || "It's true!",
+  },
+};
+let P = null;
+function startPick(id) {
+  replay = () => startPick(id);
+  const g = PICK[id];
+  P = { g, list: shuffle(g.items()), i: 0, score: 0, lock: false };
+  $("pTitle").textContent = g.title;
+  show("s-pick");
+  drawPick(true);
+}
+function drawPick(first) {
+  const { g, list, i } = P, it = list[i];
+  P.lock = false;
+  $("pBar").style.width = (i / list.length * 100) + "%";
+  $("pCount").textContent = `${i + 1} / ${list.length}`;
+  $("pPic").hidden = !it.img;
+  if (it.img) photo($("pPic"), it.img, it.n, g.emoji);
+  $("pName").textContent = it.n || it.s;
+  $("pName").classList.toggle("stmt", !it.img);
+  $("pEs").textContent = it.es;
+  $("pMsg").textContent = "";
+  $("pNext").hidden = true;
+  $("pOpts").className = "opts two";
+  $("pOpts").innerHTML = "";
+  g.opts.forEach(o => {
+    const b = document.createElement("button");
+    b.className = "opt " + (o.big ? "big" : "grp");
+    b.style.setProperty("--c", o.c);
+    b.dataset.v = o.v;
+    b.innerHTML = o.html;
+    b.onclick = () => answerPick(b, o.v);
+    $("pOpts").appendChild(b);
+  });
+  say(first ? g.intro : null, it.a);
+}
+$("pSpeak").onclick = () => say(P.list[P.i].a);
+function answerPick(btn, v) {
+  if (P.lock) return;
+  P.lock = true;
+  const { g } = P, it = P.list[P.i], good = String(v) === String(g.ans(it));
+  [...$("pOpts").children].forEach(b => {
+    b.disabled = true;
+    if (b.dataset.v === String(g.ans(it))) b.classList.add("ok");
+  });
+  if (good) {
+    P.score++; ding(); praise();
+    $("pMsg").textContent = g.ok(it);
+    setTimeout(nextPick, it.fix ? 2200 : 1100);
+  } else {
+    btn.classList.add("bad"); buzz(); nudge();
+    $("pMsg").textContent = "❌ " + g.fix(it);
+    $("pNext").hidden = false;
+  }
+}
+function nextPick() {
+  P.i++;
+  if (P.i < P.list.length) drawPick(false);
+  else { $("pBar").style.width = "100%"; result(P.score, P.list.length, P.g.emoji); }
+}
+$("pNext").onclick = nextPick;
+
+/* ---------- build the pyramid (ex. 5): round 1 name the part, round 2 tap the part ---------- */
+let Y = null;
+function startPyr() {
+  replay = startPyr;
+  Y = { round: 1, order: shuffle(Object.keys(PZ)), i: 0, score: 0, filled: [], lock: false,
+        labels: shuffle(DATA.pyramid.slice()) };
+  show("s-pyr");
+  drawPyr(true);
+}
+function drawPyr(first) {
+  const s = PYR[Y.order[Y.i]], r1 = Y.round === 1;
+  Y.lock = false;
+  const done = (Y.round - 1) * 4 + Y.i;
+  $("yBar").style.width = (done / 8 * 100) + "%";
+  $("yCount").textContent = `${done + 1} / 8`;
+  $("yRound").textContent = r1 ? "Round 1: what goes here?" : "Round 2: where does it go?";
+  $("yMsg").textContent = "";
+  $("yNext").hidden = true;
+  $("yOpts").innerHTML = "";
+  if (r1) {
+    $("yTask").innerHTML = `${s.pos}${s.hint ? ` (${s.hint})` : ""}: <span class="gap">&nbsp;</span>` +
+      `<p class="es plain">${s.posEs}</p>`;
+    $("yPyr").innerHTML = pyrSVG({ show: Y.filled, target: s.id });
+    onPyrTap($("yPyr"), () => {});
+    Y.labels.forEach(o => {
+      const b = document.createElement("button");
+      b.className = "opt grp";
+      b.style.setProperty("--c", o.color);
+      b.dataset.v = o.id;
+      b.innerHTML = `${o.n}<span class="tr">${o.es}</span>`;
+      b.onclick = () => answerPyr(o.id, b);
+      $("yOpts").appendChild(b);
+    });
+  } else {
+    $("yTask").innerHTML = `Where do they go?<br><span class="chip" style="--c:${s.color}">${s.n}</span>` +
+      `<p class="es plain">${s.es}: ¿dónde van?</p>`;
+    $("yPyr").innerHTML = pyrSVG({ show: Y.filled, tap: true });
+    onPyrTap($("yPyr"), id => answerPyr(id, null));
+  }
+  say(first ? (r1 ? "m-pyr" : "m-pyr2") : null, (r1 ? "pq-" : "pw-") + s.id);
+}
+$("ySpeak").onclick = () => say((Y.round === 1 ? "pq-" : "pw-") + Y.order[Y.i]);
+function answerPyr(id, btn) {
+  if (Y.lock) return;
+  Y.lock = true;
+  const s = PYR[Y.order[Y.i]], good = id === s.id;
+  Y.filled.push(s.id);
+  const gap = $("yTask").querySelector(".gap");
+  if (gap) gap.textContent = s.n;
+  $("yPyr").innerHTML = pyrSVG({ show: Y.filled, good: s.id, bad: good ? null : id });
+  if (btn) [...$("yOpts").children].forEach(b => {
+    b.disabled = true;
+    if (b.dataset.v === s.id) b.classList.add("ok");
+    else if (b === btn) b.classList.add("bad");
+  });
+  if (good) {
+    Y.score++; ding(); praise();
+    $("yMsg").textContent = `✅ ${s.pos}: ${s.n}`;
+    setTimeout(nextPyr, 1300);
+  } else {
+    buzz(); nudge();
+    $("yMsg").textContent = `❌ ${s.n} go ${s.pos.toLowerCase()}.`;
+    $("yNext").hidden = false;
+  }
+}
+function nextPyr() {
+  $("yNext").hidden = true;
+  Y.i++;
+  if (Y.i < 4) return drawPyr(false);
+  if (Y.round === 2) { $("yBar").style.width = "100%"; return result(Y.score, 8, "🔺"); }
+  Y.lock = true;
+  $("yMsg").textContent = "🎉 You built the whole food pyramid!";
+  $("yOpts").innerHTML = "";
+  $("yPyr").innerHTML = pyrSVG({ show: Y.filled });
+  confetti(24); say("fb-pyr");
+  setTimeout(() => {
+    Y.round = 2; Y.i = 0; Y.filled = []; Y.order = shuffle(Object.keys(PZ));
+    drawPyr(true);
+  }, 2600);
+}
+$("yNext").onclick = nextPyr;
+
+/* ---------- match the nutrient (ex. 1 + book page 98): draw lines like in the notebook ---------- */
+let M = null;
+function startMatch() {
+  replay = startMatch;
+  const boards = DATA.match.map(b => ({ ...b, pairs: b.pick ? pickN(b.pairs, b.pick) : b.pairs }));
+  M = { boards, b: 0, score: 0, total: boards.reduce((n, b) => n + b.pairs.length, 0) };
+  show("s-match");
+  drawBoard();
+}
+function drawBoard() {
+  const bd = M.boards[M.b];
+  Object.assign(M, { sel: null, done: new Set(), missed: new Set(), lock: false, bad: null });
+  $("mBar").style.width = (M.boards.slice(0, M.b).reduce((n, b) => n + b.pairs.length, 0) / M.total * 100) + "%";
+  $("mCount").textContent = `Board ${M.b + 1} / ${M.boards.length}`;
+  $("mTitle").textContent = bd.title;
+  $("mSrc").textContent = bd.src;
+  $("mMsg").textContent = "";
+  const chip = (side, k, html) => {
+    const b = document.createElement("button");
+    b.className = "mchip " + side;
+    b.dataset.side = side; b.dataset.k = k;
+    b.style.setProperty("--c", side === "L" ? bd.pairs[k][2] : "#9ab");
+    b.innerHTML = html;
+    b.onclick = () => tapChip(b);
+    return b;
+  };
+  const idx = bd.pairs.map((_, k) => k);
+  $("mLeft").replaceChildren(...shuffle(idx).map(k => chip("L", k, `${bd.pairs[k][0]}<span class="tr">${bd.pairs[k][3]}</span>`)));
+  $("mRight").replaceChildren(...shuffle(idx).map(k => chip("R", k, `${bd.pairs[k][1]}<span class="tr">${bd.pairs[k][4]}</span>`)));
+  drawLines();
+  say(bd.a);
+}
+$("mSpeak").onclick = () => say(M.boards[M.b].a);
+const mEl = (side, k) => document.querySelector(`#mBoard .mchip[data-side="${side}"][data-k="${k}"]`);
+function tapChip(el) {
+  if (M.lock || el.classList.contains("done")) return;
+  const side = el.dataset.side, k = +el.dataset.k;
+  if (!M.sel || M.sel.side === side) {
+    document.querySelectorAll("#mBoard .mchip.sel").forEach(c => c.classList.remove("sel"));
+    M.sel = M.sel && M.sel.side === side && M.sel.k === k ? null : { side, k };
+    if (M.sel) el.classList.add("sel");
+    return;
+  }
+  const L = side === "L" ? k : M.sel.k, R = side === "R" ? k : M.sel.k;
+  const lEl = mEl("L", L), rEl = mEl("R", R), bd = M.boards[M.b];
+  lEl.classList.remove("sel"); rEl.classList.remove("sel");
+  M.sel = null;
+  if (L === R) {
+    M.done.add(L);
+    if (!M.missed.has(L)) M.score++;
+    rEl.style.setProperty("--c", bd.pairs[L][2]);
+    lEl.classList.add("done"); rEl.classList.add("done");
+    ding();
+    drawLines();
+    if (M.done.size === bd.pairs.length) {
+      M.lock = true;
+      $("mMsg").textContent = "🎉 All matched!";
+      confetti(18);
+      if (M.b < M.boards.length - 1) { say("fb-board"); setTimeout(() => { M.b++; drawBoard(); }, 1800); }
+      else setTimeout(() => { $("mBar").style.width = "100%"; result(M.score, M.total, "✏️"); }, 1300);
+    }
+  } else {
+    M.missed.add(L);
+    buzz();
+    M.bad = [L, R];
+    drawLines();
+    lEl.classList.add("bad"); rEl.classList.add("bad");
+    $("mMsg").textContent = "❌ Not a match. Try again!";
+    setTimeout(() => {
+      lEl.classList.remove("bad"); rEl.classList.remove("bad");
+      M.bad = null; drawLines();
+    }, 800);
+  }
+}
+function drawLines() {
+  const box = $("mBoard").getBoundingClientRect(), bd = M.boards[M.b];
+  const end = (L, R) => {
+    const a = mEl("L", L).getBoundingClientRect(), b = mEl("R", R).getBoundingClientRect();
+    return [a.right - box.left, a.top + a.height / 2 - box.top, b.left - box.left, b.top + b.height / 2 - box.top];
+  };
+  let svg = "";
+  M.done.forEach(k => {
+    const [x1, y1, x2, y2] = end(k, k), c = bd.pairs[k][2];
+    svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}"/>` +
+      `<circle cx="${x1}" cy="${y1}" r="5" fill="${c}"/><circle cx="${x2}" cy="${y2}" r="5" fill="${c}"/>`;
+  });
+  if (M.bad) {
+    const [x1, y1, x2, y2] = end(...M.bad);
+    svg += `<line class="miss" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+  }
+  $("mLines").innerHTML = svg;
+}
+window.addEventListener("resize", () => { if ($("s-match").classList.contains("on")) drawLines(); });
+
+/* ---------- practice quiz (English only, one try per question) ---------- */
+const EXN = 20, EX_PER_TOPIC = 4;
+let exList = [], exi = 0, exScore = 0, exWrong = [], exT0 = 0, exLock = false;
+$("exStart").onclick = startExam;
+function startExam() {
+  replay = startExam;
+  const byTopic = {};
+  DATA.exam.forEach(q => (byTopic[q.topic] ??= []).push(q));
+  exList = shuffle(Object.values(byTopic).flatMap(qs => pickN(qs, EX_PER_TOPIC)))
+    .map(q => ({ ...q, o: q.type === "tf" ? q.o : shuffle(q.o), correct: q.o[q.c] }));
+  exi = 0; exScore = 0; exWrong = []; exT0 = Date.now();
+  show("s-exam");
+  drawEx();
+}
+function drawEx() {
+  const q = exList[exi];
+  exLock = false;
+  $("exBar").style.width = (exi / EXN * 100) + "%";
+  $("exCount").textContent = `${exi + 1} / ${EXN}`;
+  $("exTag").textContent = q.type === "tf" ? "True or false?" : q.type === "blank" ? "Fill in the blank" : "Choose the answer";
+  $("exText").innerHTML = q.type === "blank" ? q.q.replace("___", '<span class="gap" id="exGap">?</span>') : q.q;
+  $("exMsg").textContent = "";
+  $("exNext").hidden = true;
+  $("exOpts").className = "opts" + (q.type === "tf" ? " two" : "");
+  $("exOpts").innerHTML = "";
+  q.o.forEach(opt => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.textContent = opt;
+    b.onclick = () => answerEx(b, opt);
+    $("exOpts").appendChild(b);
+  });
+  say(q.a);
+}
+$("exSpeak").onclick = () => say(exList[exi].a);
+function answerEx(btn, opt) {
+  if (exLock) return;
+  exLock = true;
+  const q = exList[exi], good = opt === q.correct;
+  [...$("exOpts").children].forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("ok");
+  });
+  if ($("exGap")) { $("exGap").textContent = opt; $("exGap").classList.add(good ? "gok" : "gbad"); }
+  if (good) {
+    exScore++; ding(); praise();
+    $("exMsg").textContent = "✅ Correct!";
+    setTimeout(nextEx, 1100);
+  } else {
+    btn.classList.add("bad"); buzz(); nudge();
+    $("exMsg").textContent = "The answer is: " + q.correct;
+    exWrong.push(q);
+    $("exNext").hidden = false;
+  }
+}
+function nextEx() {
+  exi++;
+  if (exi < EXN) drawEx();
+  else { $("exBar").style.width = "100%"; diploma(); }
+}
+$("exNext").onclick = nextEx;
+function diploma() {
+  const pct = Math.round(exScore / EXN * 100);
+  const stars = pct >= 90 ? 3 : pct >= 75 ? 2 : pct >= 60 ? 1 : 0;
+  addStars(stars);
+  $("dSeal").textContent = stars === 3 ? "🏆" : stars ? "🎓" : "📚";
+  $("dGrade").textContent = pct >= 90 ? "Excellent!" : pct >= 75 ? "Very good!" : pct >= 60 ? "Good job!" : "Keep studying!";
+  $("dScore").textContent = `${exScore} of ${EXN} correct (${pct}%)`;
+  $("dStars").textContent = "⭐".repeat(stars) || "☆";
+  const secs = Math.round((Date.now() - exT0) / 1000);
+  $("dStats").textContent = `Time: ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
+  $("dReview").innerHTML = exWrong.length
+    ? `<h3>Study these ${exWrong.length} again</h3>` + exWrong.map(q =>
+        `<div class="rev">${q.q.replace("___", "______")}<b>${q.correct}</b></div>`).join("")
+    : `<h3>Nothing to review. A perfect quiz! 🎉</h3>`;
+  if (stars >= 2) { applause(); confetti(50); }
+  if (stars === 3) { fanfare(); say("fb-perfect"); }
+  else say(stars ? "fb-round" : "fb-try");
+  stack.length = 0;
+  show("s-diploma");
+}
+$("dAgain").onclick = () => { stack.pop(); startExam(); };
+$("dHome").onclick = goHome;
+
+/* ---------- photo credits ---------- */
+fetch("img/credits.json")
+  .then(r => r.ok ? r.json() : Promise.reject())
+  .then(list => {
+    $("creditList").innerHTML = list.map(c =>
+      `<p>${c.shows} — <i>${c.title}</i>, ${c.author || "Unknown"} (${c.license}), Wikimedia Commons.</p>`).join("");
+  })
+  .catch(() => $("creditList").innerHTML = "<p>Photos from Wikimedia Commons under free licences (Public domain, CC0, CC BY, CC BY-SA).</p>");
+
+/* first tap unlocks audio on iOS */
+document.body.addEventListener("pointerdown", () => {
+  ctx().resume?.();
+  if (!vq.length && voice.paused) say("welcome");
+}, { once: true });
+</script>
+</body>
+</html>
