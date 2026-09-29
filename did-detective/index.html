@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Did Detective 🔍</title>
+<meta name="description" content="Simple past: negative sentences, questions and short answers with did / didn't.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Lexend:wght@400;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --desk:#172033; --desk2:#22304d; --cream:#f7ecd0;
+  --manila:#f5e6c4; --manila-d:#e6d09c; --edge:#c9ad6f;
+  --ink:#2b2118; --muted:#6e5f47; --slip:#fffaf0; --slip-d:#c4b183;
+  --c-s:#1f5c9e; --c-a:#b3261e; --c-v:#1e7042; --c-q:#9a6a00;
+  --ok:#2e9b4f; --bad:#d64533; --gold:#f2c230;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;background:var(--desk)}
+body{
+  min-height:100svh;color:var(--cream);font-family:"Lexend",system-ui,sans-serif;
+  background:
+    radial-gradient(900px 520px at 50% -12%,#34466f 0%,transparent 62%),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 2px,transparent 2px 60px),
+    linear-gradient(180deg,var(--desk2),var(--desk) 60%);
+  background-attachment:fixed;
+  padding-bottom:calc(32px + env(safe-area-inset-bottom));
+  overflow-x:hidden;
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+[hidden]{display:none!important}
+.wrap{max-width:560px;margin:0 auto;padding:22px 16px 0}
+.type{font-family:"Special Elite",monospace;letter-spacing:.5px}
+
+/* ---------- top bar ---------- */
+header.top{position:sticky;top:0;z-index:20;background:rgba(15,21,34,.92);backdrop-filter:blur(6px);
+  border-bottom:2px solid #33415f;padding:calc(8px + env(safe-area-inset-top)) 12px 8px}
+.top-in{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:8px}
+#back{display:none;width:44px;height:44px;flex:none;border-radius:12px;background:#2a3858;font-size:1.3rem}
+#back.on{display:block}
+.brand{flex:1;min-width:0;font-family:"Special Elite",monospace;font-size:1.15rem;color:var(--gold);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#esBtn{flex:none;height:44px;min-width:48px;padding:0 12px;border-radius:22px;font-weight:700;font-size:.9rem;background:#2a3858}
+#esBtn[aria-pressed="true"]{background:var(--cream);color:var(--ink)}
+.stars{flex:none;display:flex;align-items:center;gap:5px;height:44px;padding:0 14px;border-radius:22px;
+  background:var(--gold);color:#3d2c00;font-weight:700;box-shadow:0 3px 0 #b88a00}
+
+/* ---------- screens ---------- */
+.screen{display:none}
+.screen.on{display:block;animation:in .22s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- home ---------- */
+.hero{text-align:center;position:relative;padding-top:8px}
+#home{overflow-x:clip}
+.tape{margin:0 -16px 18px;transform:rotate(-3deg);background:var(--gold);color:#1b1b1b;
+  border-top:3px solid #1b1b1b;border-bottom:3px solid #1b1b1b;padding:6px 0;white-space:nowrap;overflow:hidden;
+  font-family:"Special Elite",monospace;font-size:1.05rem;letter-spacing:2px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.hero svg{width:118px;height:auto;display:block;margin:0 auto -4px}
+.hero h1{font-family:"Alfa Slab One",serif;font-weight:400;font-size:clamp(2.2rem,11vw,3.2rem);line-height:1.02;
+  color:var(--cream);text-shadow:0 4px 0 #0b1020}
+.hero p{margin-top:10px;color:#cfd7ea;font-size:.98rem}
+.hero .spk{margin-top:10px}
+
+.folders{display:grid;gap:22px;margin-top:34px}
+.folder{
+  --c:var(--c-s);position:relative;display:flex;align-items:center;gap:14px;width:100%;min-height:86px;
+  padding:14px 16px;text-align:left;color:var(--ink);background:var(--manila);
+  border-radius:0 18px 18px 18px;box-shadow:0 6px 0 var(--edge),0 12px 26px rgba(0,0,0,.35);
+  border-left:8px solid var(--c);transition:transform .08s,box-shadow .08s;
+}
+.folder::before{content:"";position:absolute;left:-8px;top:-15px;width:120px;height:17px;background:var(--manila);
+  border-radius:10px 16px 0 0;border-left:8px solid var(--c)}
+.folder:active{transform:translateY(4px);box-shadow:0 2px 0 var(--edge),0 6px 14px rgba(0,0,0,.3)}
+.folder .ic{width:56px;height:56px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:1.8rem;
+  background:#fffaf0;box-shadow:0 0 0 3px var(--c)}
+.folder b{display:block;font-family:"Alfa Slab One",serif;font-weight:400;font-size:1.2rem;line-height:1.15}
+.folder small{display:block;font-size:.86rem;color:var(--muted);margin-top:3px}
+
+.credits{margin-top:34px;font-size:.78rem;color:#aeb8cf;line-height:1.6}
+.credits summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+.credits p{margin-top:6px}
+.credits a{color:inherit}
+.foot{text-align:center;margin-top:14px;font-size:.9rem}
+.foot a{color:#aeb8cf;display:inline-block;padding:12px}
+
+/* ---------- spanish help ---------- */
+.es,.tr{display:none}
+body.es-on .es,body.es-on .tr{display:block}
+.es{margin-top:10px;padding:8px 10px;border-radius:10px;background:rgba(242,194,48,.18);color:#5a4200;
+  font-size:.92rem;line-height:1.5}
+.es::before{content:"ES";font-size:.62rem;font-weight:700;background:var(--gold);color:#3d2c00;
+  padding:2px 6px;border-radius:5px;margin-right:7px;vertical-align:2px}
+.tr{font-size:.85rem;font-style:italic;color:var(--muted);margin-top:2px}
+.folder .tr{color:#8a6a10}
+
+/* ---------- case file card ---------- */
+.file{position:relative;margin-top:26px;background:var(--manila);color:var(--ink);
+  border-radius:0 18px 18px 18px;padding:18px 16px 18px;box-shadow:0 6px 0 var(--edge),0 16px 34px rgba(0,0,0,.4)}
+.tab{position:absolute;left:0;top:-26px;height:28px;padding:5px 16px 0;background:var(--manila);
+  border-radius:10px 16px 0 0;font-family:"Special Elite",monospace;font-size:.85rem;color:var(--muted);letter-spacing:1px}
+.file h2{font-family:"Alfa Slab One",serif;font-weight:400;font-size:1.5rem;line-height:1.15;margin-bottom:8px}
+.file p.t{font-size:1.08rem;line-height:1.6}
+.file h3{font-size:.8rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:20px 0 4px;font-weight:400}
+
+.r-s{color:var(--c-s);font-weight:700}
+.r-a{color:var(--c-a);font-weight:700}
+.r-v{color:var(--c-v);font-weight:700;text-decoration:underline 2px;text-underline-offset:3px}
+.r-q{color:var(--c-q);font-weight:700}
+
+.struct{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:14px;padding:12px;border-radius:14px;
+  background:#fffaf0;border:2px dashed var(--edge)}
+.chip{padding:6px 10px;border-radius:10px;font-size:.92rem;background:#fff;border:2px solid currentColor;text-decoration:none}
+.chip.r-c{color:#5d5446;font-weight:700}
+.plus{font-weight:700;color:var(--muted)}
+
+.didbadge{float:right;width:88px;height:88px;margin:0 0 8px 10px;border-radius:50%;border:4px double var(--c-a);
+  color:var(--c-a);display:grid;place-content:center;text-align:center;transform:rotate(-10deg);background:#fffaf0}
+.didbadge b{font-family:"Alfa Slab One",serif;font-weight:400;font-size:1.7rem;line-height:1}
+.didbadge span{font-family:"Special Elite",monospace;font-size:.62rem;line-height:1.1}
+
+.ex{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--manila-d)}
+.ex img{width:84px;height:84px;flex:none;object-fit:cover;border-radius:6px;border:4px solid #fff;
+  box-shadow:0 3px 8px rgba(0,0,0,.2);transform:rotate(-2deg)}
+.ex-t{flex:1;min-width:0}
+.ex-t p{font-size:1.1rem;line-height:1.45}
+.ex-t .yn,.ex-t .wrong{font-size:1rem;margin-top:6px}
+.yn.ok b{color:var(--ok)} .yn.no b{color:var(--c-a)}
+.wrong{color:#8b7f6a}
+.wrong s{text-decoration-thickness:2px}
+
+.spk{width:44px;height:44px;border-radius:50%;background:var(--gold);color:#3d2c00;font-size:1.05rem;
+  display:inline-grid;place-items:center;vertical-align:middle;box-shadow:0 3px 0 #b88a00;flex:none}
+.spk:active{transform:translateY(2px);box-shadow:0 1px 0 #b88a00}
+
+.navrow{display:flex;align-items:center;gap:10px;margin-top:20px}
+.rnd{width:56px;height:56px;flex:none;border-radius:50%;background:#2a3858;font-size:1.3rem;box-shadow:0 3px 0 #0e1422}
+.rnd:disabled{opacity:.35}
+.rnd.go{background:var(--gold);color:#3d2c00;box-shadow:0 3px 0 #b88a00}
+.dots{flex:1;display:flex;gap:8px;justify-content:center}
+.dot{width:10px;height:10px;border-radius:50%;background:#46557a}
+.dot.on{background:var(--gold);transform:scale(1.3)}
+
+/* ---------- game cards ---------- */
+.prog{display:flex;justify-content:space-between;font-family:"Special Elite",monospace;color:#cfd7ea;font-size:.95rem;margin-top:4px}
+.polaroid{position:relative;width:min(80%,290px);margin:4px auto 14px;background:#fff;padding:8px 8px 20px;
+  transform:rotate(-2deg);box-shadow:0 8px 18px rgba(0,0,0,.25)}
+.polaroid::before{content:"";position:absolute;top:-12px;left:22px;width:16px;height:40px;border:3px solid #8f98a8;
+  border-radius:9px;transform:rotate(8deg)}
+.polaroid img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#eee4cc}
+.label{font-family:"Special Elite",monospace;font-size:.95rem;color:var(--muted);letter-spacing:.5px}
+.clue{font-size:1.25rem;line-height:1.45;font-weight:600;margin-top:4px}
+.clue .spk{margin-left:6px}
+.task{margin-top:14px;font-size:1.1rem}
+.task b{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--c-a)}
+.sticky{display:inline-block;margin-top:10px;padding:6px 12px;background:#fff59d;color:#4a3b00;
+  font-family:"Special Elite",monospace;font-size:1.05rem;transform:rotate(-1.5deg);box-shadow:0 3px 6px rgba(0,0,0,.18)}
+
+.stamp{position:absolute;right:14px;top:22px;z-index:3;padding:4px 14px;border:4px solid var(--c-a);border-radius:8px;
+  color:var(--c-a);font-family:"Special Elite",monospace;font-size:1.7rem;letter-spacing:3px;background:rgba(255,250,240,.6);
+  opacity:0;pointer-events:none;transform:rotate(-14deg)}
+.stamp.on{animation:stamp .45s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes stamp{0%{opacity:0;transform:rotate(-14deg) scale(2.4)}100%{opacity:.95;transform:rotate(-14deg) scale(1)}}
+
+.slots{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:12px}
+.slot{flex:1 1 30%;min-width:84px;display:flex;flex-direction:column;gap:3px;color:var(--ink)}
+.slot small{font-family:"Special Elite",monospace;font-size:.7rem;color:var(--muted);text-transform:uppercase}
+.slot button{min-height:50px;padding:8px;border-radius:10px;border:2px dashed var(--edge);background:rgba(255,255,255,.4);
+  font-weight:600;font-size:1.02rem}
+.slot button.fill{border-style:solid;border-color:var(--slip-d);background:var(--slip);box-shadow:0 3px 0 var(--slip-d)}
+.slot button.solved{border:2px solid currentColor;box-shadow:none;background:#fff}
+.punct{font-family:"Alfa Slab One",serif;font-size:1.6rem;color:var(--muted);padding:0 2px 8px}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+.tray{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:18px 0 4px}
+.tile{min-height:52px;padding:10px 16px;border-radius:12px;background:var(--slip);color:var(--ink);font-weight:600;
+  font-size:1.08rem;box-shadow:0 4px 0 var(--slip-d),0 8px 14px rgba(0,0,0,.25);transform:rotate(var(--r,0deg))}
+.tile:active{transform:translateY(3px)}
+.tile.used{visibility:hidden}
+.tile:disabled{opacity:.5}
+
+.fb{margin-top:12px;font-size:1.05rem;line-height:1.5;min-height:1.5em}
+.fb.ok::before{content:"✓ ";color:var(--ok);font-weight:700}
+.fb.bad{color:#7a2016}
+
+.opts{display:grid;gap:10px;margin-top:16px}
+.opt{width:100%;min-height:58px;padding:12px 16px;border-radius:14px;background:var(--slip);color:var(--ink);
+  font-weight:600;font-size:1.08rem;line-height:1.35;text-align:left;box-shadow:0 4px 0 var(--slip-d)}
+.opt:active{transform:translateY(3px)}
+.opt.ok{background:#dcf5e3;box-shadow:0 4px 0 var(--ok);outline:3px solid var(--ok)}
+.opt.bad{background:#fde1dc;box-shadow:0 4px 0 var(--bad);outline:3px solid var(--bad);animation:shake .4s}
+.opt:disabled{cursor:default}
+
+.words{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.word{min-height:48px;padding:8px 10px;border-radius:10px;background:var(--slip);font-size:1.12rem;font-weight:600;
+  color:var(--ink);box-shadow:0 3px 0 var(--slip-d)}
+.word.ok{background:#dcf5e3;outline:3px solid var(--ok)}
+.word.bad{background:#fde1dc;outline:3px solid var(--bad);animation:shake .4s}
+
+.btn{min-height:52px;padding:12px 22px;border-radius:14px;background:#2a3858;font-weight:600;font-size:1.05rem;box-shadow:0 4px 0 #0e1422}
+.btn.go{background:var(--gold);color:#3d2c00;box-shadow:0 4px 0 #b88a00}
+.btn.wide{display:block;width:100%;margin-top:16px}
+.btn:active{transform:translateY(3px)}
+
+/* ---------- end ---------- */
+.done{text-align:center;padding-top:26px}
+.medal{font-size:4rem;animation:stamp .5s cubic-bezier(.2,1.6,.4,1) both;--r:0deg}
+.done h2{font-family:"Alfa Slab One",serif;font-weight:400;font-size:2rem;margin-top:6px}
+.done > p{color:#cfd7ea;margin-top:8px}
+.review{margin-top:18px;text-align:left}
+.review h3{font-family:"Special Elite",monospace;font-weight:400;color:var(--gold);margin-bottom:6px}
+.review p{background:var(--manila);color:var(--ink);border-radius:10px;padding:10px 12px;margin-top:8px;line-height:1.45}
+.endbtns{display:flex;gap:12px;justify-content:center;margin-top:24px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.stamp.on{opacity:.95}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <button id="back" aria-label="Back to the menu">←</button>
+  <div class="brand">🔍 Did Detective</div>
+  <button id="esBtn" aria-pressed="false" title="Ayuda en español">ES</button>
+  <div class="stars" aria-label="Stars">⭐ <span id="starCount">0</span></div>
+</div></header>
+
+<!-- HOME -->
+<section class="screen on" id="home"><div class="wrap">
+  <div class="hero">
+    <div class="tape" aria-hidden="true">DID? · DIDN'T! · DID? · DIDN'T! · DID? · DIDN'T! · DID? · DIDN'T!</div>
+    <svg viewBox="0 0 120 120" aria-hidden="true">
+      <circle cx="50" cy="48" r="34" fill="#cfe8ff" fill-opacity=".35" stroke="#e8b54a" stroke-width="9"/>
+      <path d="M36 34a20 20 0 0 1 18-8" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none" opacity=".8"/>
+      <text x="50" y="57" text-anchor="middle" font-family="Special Elite, monospace" font-size="22" fill="#f7ecd0">did?</text>
+      <path d="M75 74l28 28" stroke="#5a3a1c" stroke-width="13" stroke-linecap="round"/>
+    </svg>
+    <h1>The Did<br>Detective</h1>
+    <p class="type">CASE: Simple past · negatives &amp; questions</p>
+    <button class="spk" id="heroSpk" aria-label="Listen to the welcome">🔊</button>
+  </div>
+
+  <div class="folders">
+    <button class="folder" data-go="learn" style="--c:var(--c-s)"><span class="ic">📂</span>
+      <span><b>Case Files</b><small>Learn the rules of did and didn't</small><small class="tr">Aprende las reglas</small></span></button>
+    <button class="folder" data-go="build" style="--c:var(--c-v)"><span class="ic">🧩</span>
+      <span><b>Build the Sentence</b><small>Put the clues in order · 8 cases</small><small class="tr">Arma la oración en orden</small></span></button>
+    <button class="folder" data-go="quiz" style="--c:var(--c-a)"><span class="ic">🕵️‍♀️</span>
+      <span><b>Interrogation</b><small>12 questions · win your detective badge</small><small class="tr">12 preguntas · gana tu placa</small></span></button>
+  </div>
+
+  <details class="credits">
+    <summary>📷 Photo credits</summary>
+    <div id="creditList"></div>
+  </details>
+  <p class="foot"><a href="../">← Sofia's Apps</a></p>
+</div></section>
+
+<!-- LEARN -->
+<section class="screen" id="learn"><div class="wrap">
+  <article class="file" id="lCard"></article>
+  <div class="navrow">
+    <button class="rnd" id="lPrev" aria-label="Previous file">◀</button>
+    <button class="rnd go" id="lSpk" aria-label="Listen again">🔊</button>
+    <div class="dots" id="lDots"></div>
+    <button class="rnd go" id="lNext" aria-label="Next file">▶</button>
+  </div>
+</div></section>
+
+<!-- BUILD -->
+<section class="screen" id="build"><div class="wrap">
+  <div class="prog"><span id="bProg"></span><span id="bScore"></span></div>
+  <article class="file">
+    <div class="tab" id="bTab">CASE</div>
+    <div class="stamp" id="bStamp">SOLVED</div>
+    <figure class="polaroid"><img id="bImg" alt="" onerror="this.parentElement.hidden=true"></figure>
+    <p class="label">CLUE</p>
+    <p class="clue"><span id="bAff"></span><button class="spk" id="bAffSpk" aria-label="Listen">🔊</button></p>
+    <p class="task" id="bTask"></p>
+    <p class="tr" id="bTaskEs"></p>
+    <div class="slots" id="bSlots"></div>
+    <p class="fb" id="bFb"></p>
+    <p class="es" id="bEs"></p>
+  </article>
+  <div class="tray" id="bTray"></div>
+  <div id="bAns" hidden>
+    <div class="file" style="margin-top:22px">
+      <div class="tab">ANSWER</div>
+      <p class="label">Answer the question. Look at the clue!</p>
+      <p class="tr">Responde la pregunta. ¡Mira la pista!</p>
+      <p class="sticky" id="bClue"></p>
+      <div class="opts" id="bOpts"></div>
+    </div>
+  </div>
+  <button class="btn go wide" id="bNext" hidden>Next case ▶</button>
+</div></section>
+
+<!-- QUIZ -->
+<section class="screen" id="quiz"><div class="wrap">
+  <div class="prog"><span id="qProg"></span><span id="qScore"></span></div>
+  <article class="file">
+    <div class="tab">INTERROGATION</div>
+    <div class="stamp" id="qStamp">SOLVED</div>
+    <figure class="polaroid" id="qPic"><img id="qImg" alt="" onerror="this.parentElement.hidden=true"></figure>
+    <p class="label" id="qLabel"></p>
+    <p class="tr" id="qLabelEs"></p>
+    <div class="clue" id="qText"></div>
+    <p class="es" id="qEs"></p>
+    <p class="fb" id="qFb"></p>
+  </article>
+  <div class="opts" id="qOpts"></div>
+  <button class="btn go wide" id="qNext" hidden>Next ▶</button>
+</div></section>
+
+<!-- END -->
+<section class="screen" id="end"><div class="wrap done">
+  <div class="medal" id="endMedal">⭐</div>
+  <h2 id="endTitle">Case closed!</h2>
+  <p id="endText"></p>
+  <div class="review" id="endReview"></div>
+  <div class="endbtns">
+    <button class="btn" data-go="home">Menu</button>
+    <button class="btn go" id="again">Play again</button>
+  </div>
+</div></section>
+
+<!-- All study text lives here. Every string that is spoken is a literal in this block:
+     gen_audio.py reads it and names each mp3 slug(text). Wrong sentences are built in JS
+     (distractors) and are never spoken. -->
+<script type="application/json" id="content">
+{
+  "lessons": [
+    { "h": "The helping verb DID", "kind": "did",
+      "t": "An auxiliary verb is a helping verb. Did helps us to talk about the past when we make questions and negative sentences.",
+      "ex": ["cook", "pizza"],
+      "es": "Un verbo auxiliar es un verbo que ayuda. Did nos ayuda a hablar del pasado cuando hacemos preguntas y oraciones negativas." },
+    { "h": "Negative sentences",
+      "t": "Did not = didn't. We use didn't to say that an action did not happen in the past.",
+      "struct": [["s", "Subject"], ["a", "didn't"], ["v", "verb (infinitive)"], ["c", "complement"]],
+      "st": "Structure: subject + didn't + verb in infinitive + complement.",
+      "ex": ["soccer", "pizza", "clean3b"],
+      "es": "Did not = didn't (no). Usamos didn't para decir que una acción NO pasó en el pasado. Estructura: sujeto + didn't + verbo en infinitivo + complemento." },
+    { "h": "Questions",
+      "t": "We use did as a helping verb to ask questions about the past.",
+      "struct": [["a", "Did"], ["s", "subject"], ["v", "verb (infinitive)"], ["c", "complement"], ["q", "?"]],
+      "st": "Structure: did + subject + verb in infinitive + complement + question mark.",
+      "ex": ["sing", "topic", "cook"],
+      "es": "Usamos did como verbo ayudante para hacer preguntas sobre el pasado. Estructura: Did + sujeto + verbo en infinitivo + complemento + ?" },
+    { "h": "Short answers", "kind": "answers",
+      "t": "Positive answers: we use did to say that something did happen in the past. Answer: yes. Negative answers: we use didn't to say that something didn't happen in the past. Answer: no.",
+      "ex": ["tv", "nap"],
+      "es": "Respuesta positiva: usamos did para decir que algo SÍ pasó en el pasado (Yes). Respuesta negativa: usamos didn't para decir que algo NO pasó (No)." },
+    { "h": "The detective's secret", "kind": "secret",
+      "t": "After did or didn't, the verb goes back to the infinitive: listened → listen, built → build, did → do.",
+      "ex": ["camila", "shelf", "homework"],
+      "es": "El secreto: después de did o didn't, el verbo vuelve al infinitivo, sin -ed y sin forma de pasado. ¡Did ya dice que es pasado!" }
+  ],
+
+  "cases": [
+    { "id": "camila", "type": "neg", "img": "music", "past": "listened",
+      "aff": "Camila listened to music.", "neg": "Camila didn't listen to music.",
+      "parts": ["Camila", "didn't", "listen", "to music"], "es": "Camila no escuchó música." },
+    { "id": "cake", "type": "neg", "img": "cake", "past": "made",
+      "aff": "My dad made a cake last Sunday.", "neg": "My dad didn't make a cake last Sunday.",
+      "parts": ["My dad", "didn't", "make", "a cake last Sunday"], "es": "Mi papá no hizo una torta el domingo pasado." },
+    { "id": "children", "type": "neg", "img": "classroom", "past": "organized",
+      "aff": "The children organized the classroom yesterday.", "neg": "The children didn't organize the classroom yesterday.",
+      "parts": ["The children", "didn't", "organize", "the classroom yesterday"], "es": "Los niños no organizaron el salón ayer." },
+    { "id": "uniforms", "type": "neg", "img": "uniforms", "past": "wore",
+      "aff": "Peter and Sophie wore their uniforms on Monday.", "neg": "Peter and Sophie didn't wear their uniforms on Monday.",
+      "parts": ["Peter and Sophie", "didn't", "wear", "their uniforms on Monday"], "es": "Peter y Sophie no se pusieron sus uniformes el lunes." },
+    { "id": "teacher", "type": "neg", "img": "teacher", "past": "launched",
+      "aff": "Our teacher launched a new project last week.", "neg": "Our teacher didn't launch a new project last week.",
+      "parts": ["Our teacher", "didn't", "launch", "a new project last week"], "es": "Nuestra profe no lanzó un proyecto nuevo la semana pasada." },
+    { "id": "homework", "type": "neg", "img": "homework", "past": "did",
+      "aff": "My sister did her homework yesterday.", "neg": "My sister didn't do her homework yesterday.",
+      "parts": ["My sister", "didn't", "do", "her homework yesterday"], "es": "Mi hermana no hizo su tarea ayer." },
+    { "id": "team", "type": "neg", "img": "goal", "past": "scored",
+      "aff": "The school team scored three goals in the game.", "neg": "The school team didn't score three goals in the game.",
+      "parts": ["The school team", "didn't", "score", "three goals in the game"], "es": "El equipo del colegio no marcó tres goles en el partido." },
+    { "id": "cousins", "type": "neg", "img": "kitchen", "past": "cleaned",
+      "aff": "My cousins cleaned the kitchen.", "neg": "My cousins didn't clean the kitchen.",
+      "parts": ["My cousins", "didn't", "clean", "the kitchen"], "es": "Mis primos no limpiaron la cocina." },
+    { "id": "soccer", "type": "neg", "img": "soccer", "past": "played",
+      "aff": "She played soccer.", "neg": "She didn't play soccer.",
+      "parts": ["She", "didn't", "play", "soccer"], "es": "Ella no jugó fútbol." },
+    { "id": "pizza", "type": "neg", "img": "pizza", "past": "ate",
+      "aff": "He ate pizza.", "neg": "He didn't eat pizza.",
+      "parts": ["He", "didn't", "eat", "pizza"], "es": "Él no comió pizza." },
+    { "id": "clean3b", "type": "neg", "img": "classroom", "past": "cleaned",
+      "aff": "3-B cleaned the classroom.", "neg": "3-B didn't clean the classroom.",
+      "parts": ["3-B", "didn't", "clean", "the classroom"], "es": "3-B no limpió el salón." },
+
+    { "id": "grandparents", "type": "q", "img": "brazil", "past": "lived", "ans": "yes",
+      "aff": "My grandparents lived in Brazil.", "q": "Did my grandparents live in Brazil?",
+      "parts": ["Did", "my grandparents", "live", "in Brazil"],
+      "yes": "Yes, my grandparents did.", "no": "No, my grandparents didn't.", "es": "¿Mis abuelos vivieron en Brasil?" },
+    { "id": "shelf", "type": "q", "img": "shelf", "past": "built", "ans": "yes",
+      "aff": "My dad built a shelf for the house.", "q": "Did my dad build a shelf for the house?",
+      "parts": ["Did", "my dad", "build", "a shelf for the house"],
+      "yes": "Yes, my dad did.", "no": "No, my dad didn't.", "es": "¿Mi papá construyó una repisa para la casa?" },
+    { "id": "dishes", "type": "q", "img": "dishes", "past": "did", "ans": "yes",
+      "aff": "I did the dishes yesterday.", "q": "Did I do the dishes yesterday?",
+      "parts": ["Did", "I", "do", "the dishes yesterday"],
+      "yes": "Yes, I did.", "no": "No, I didn't.", "es": "¿Yo lavé los platos ayer?" },
+    { "id": "message", "type": "q", "img": "message", "past": "sent", "ans": "no",
+      "aff": "My sister sent a message to mom.", "q": "Did my sister send a message to mom?",
+      "parts": ["Did", "my sister", "send", "a message to mom"],
+      "yes": "Yes, my sister did.", "no": "No, my sister didn't.", "es": "¿Mi hermana le mandó un mensaje a mamá?" },
+    { "id": "toy", "type": "q", "img": "toy", "past": "hunted", "ans": "no",
+      "aff": "My brother hunted for his lost toy.", "q": "Did my brother hunt for his lost toy?",
+      "parts": ["Did", "my brother", "hunt", "for his lost toy"],
+      "yes": "Yes, my brother did.", "no": "No, my brother didn't.", "es": "¿Mi hermano buscó su juguete perdido?" },
+    { "id": "cleaning", "type": "q", "img": "cleaning", "past": "had", "ans": "no",
+      "aff": "We had a cleaning day at home.", "q": "Did we have a cleaning day at home?",
+      "parts": ["Did", "we", "have", "a cleaning day at home"],
+      "yes": "Yes, we did.", "no": "No, we didn't.", "es": "¿Tuvimos un día de limpieza en casa?" },
+    { "id": "sing", "type": "q", "img": "sing", "past": "sang",
+      "aff": "She sang a song.", "q": "Did she sing a song?",
+      "parts": ["Did", "she", "sing", "a song"],
+      "yes": "Yes, she did.", "no": "No, she didn't.", "es": "¿Ella cantó una canción?" },
+    { "id": "topic", "type": "q", "img": "understand", "past": "understood",
+      "aff": "3-B understood the topic.", "q": "Did 3-B understand the topic?",
+      "parts": ["Did", "3-B", "understand", "the topic"],
+      "yes": "Yes, 3-B did.", "no": "No, 3-B didn't.", "es": "¿3-B entendió el tema?" },
+    { "id": "cook", "type": "q", "img": "pizza", "past": "cooked",
+      "aff": "You cooked pizza.", "q": "Did you cook pizza?",
+      "parts": ["Did", "you", "cook", "pizza"],
+      "yes": "Yes, I did.", "no": "No, I didn't.", "es": "¿Tú cocinaste pizza?" },
+    { "id": "tv", "type": "q", "img": "tv", "past": "watched",
+      "aff": "She watched TV last night.", "q": "Did she watch TV last night?",
+      "parts": ["Did", "she", "watch", "TV last night"],
+      "yes": "Yes, she did.", "no": "No, she didn't.", "es": "¿Ella vio televisión anoche?" },
+    { "id": "nap", "type": "q", "img": "sleep", "past": "slept",
+      "aff": "Peter slept in the afternoon.", "q": "Did Peter sleep in the afternoon?",
+      "parts": ["Did", "Peter", "sleep", "in the afternoon"],
+      "yes": "Yes, Peter did.", "no": "No, Peter didn't.", "es": "¿Peter durmió en la tarde?" }
+  ],
+
+  "theory": [
+    { "q": "What is an auxiliary verb?", "o": ["A helping verb", "A verb in the past", "The name of a thing"], "es": "¿Qué es un verbo auxiliar?" },
+    { "q": "Did helps us to talk about…", "o": ["the past", "the future", "the present"], "es": "Did nos ayuda a hablar del…" },
+    { "q": "We use did to make…", "o": ["questions and negative sentences", "only positive sentences", "only commands"], "es": "Usamos did para hacer…" },
+    { "q": "Didn't is the short form of…", "o": ["did not", "do not", "does not"], "es": "Didn't es la forma corta de…" },
+    { "q": "We use didn't to say that an action…", "o": ["did not happen in the past", "happened in the past", "is happening now"], "es": "Usamos didn't para decir que una acción…" },
+    { "q": "What is the structure of a negative sentence?", "o": ["Subject + didn't + verb (infinitive) + complement", "Didn't + subject + verb + complement", "Subject + verb + didn't + complement"], "es": "¿Cuál es la estructura de una oración negativa?" },
+    { "q": "What is the structure of a question?", "o": ["Did + subject + verb (infinitive) + complement + ?", "Subject + did + verb + complement + ?", "Did + verb + subject + complement + ?"], "es": "¿Cuál es la estructura de una pregunta?" },
+    { "q": "After did or didn't, the verb is in the…", "o": ["infinitive: listen, build, do", "past: listened, built, did", "-ing form: listening, building"], "es": "Después de did o didn't, el verbo va en…" },
+    { "q": "A positive short answer uses…", "o": ["Yes + did", "No + didn't", "Yes + didn't"], "es": "Una respuesta corta positiva usa…" },
+    { "q": "A negative short answer uses…", "o": ["No + didn't", "Yes + did", "No + did"], "es": "Una respuesta corta negativa usa…" }
+  ],
+
+  "voice": {
+    "welcome": "Welcome to the Did Detective agency! Here we solve cases about the past with did and didn't.",
+    "makeNeg": "Make it negative!",
+    "makeQ": "Make it a question!",
+    "answerIt": "Now answer the question. Look at the clue!",
+    "spot": "Find the mistake! Tap the wrong word.",
+    "rule": "Remember: after did or didn't, the verb goes back to the infinitive.",
+    "orderNeg": "Check the order: subject, didn't, verb, complement.",
+    "orderQ": "Check the order: did, subject, verb, complement.",
+    "look": "Look! This is the right answer.",
+    "great": "Great job!",
+    "correct": "Correct!",
+    "solved": "Case solved!",
+    "super": "Super detective!",
+    "round": "Case closed! You earned a star!",
+    "perfect": "Perfect! You are a super detective! You earned two stars!",
+    "learnDone": "You read all the case files! Now go and solve some cases!"
+  }
+}
+</script>
+
+<script>
+const D = JSON.parse(document.getElementById("content").textContent);
+const V = D.voice, CASES = D.cases, C = Object.fromEntries(CASES.map(c => [c.id, c]));
+const PRAISE = [V.great, V.correct, V.solved, V.super];
+const $ = id => document.getElementById(id);
+const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+
+/* ---------- audio: mp3 per literal text, named slug(text) like gen_audio.py ---------- */
+const slug = t => t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
+let cur = null, gen = 0;
+function sayAll(list) {                       // a newer call cancels the rest of an older list
+  const g = ++gen;
+  return list.reduce((p, t) => p.then(() => g === gen && new Promise(res => {
+    if (cur) cur.pause();
+    cur = new Audio(`audio/${slug(t)}.mp3`);
+    cur.onended = cur.onerror = res;
+    cur.play().catch(res);
+  })), Promise.resolve());
+}
+const say = t => sayAll([t]);
+$("heroSpk").dataset.say = V.welcome;
+const hush = () => { gen++; if (cur) cur.pause(); };
+const spk = t => `<button class="spk" data-say="${esc(t)}" aria-label="Listen">🔊</button>`;
+document.addEventListener("click", e => { const b = e.target.closest("[data-say]"); if (b) say(b.dataset.say); });
+
+let ac;
+function beep(kind) {
+  try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); } catch { return; }
+  const notes = { ok: [[660, 0], [880, .09], [1180, .18]], bad: [[220, 0], [165, .12]], tap: [[900, 0]],
+                  win: [[523, 0], [659, .1], [784, .2], [1047, .3]] }[kind];
+  notes.forEach(([f, t]) => {
+    const o = ac.createOscillator(), g = ac.createGain(), s = ac.currentTime + t, len = kind === "tap" ? .05 : .3;
+    o.type = kind === "bad" ? "sawtooth" : "triangle"; o.frequency.value = f;
+    o.connect(g); g.connect(ac.destination);
+    g.gain.setValueAtTime(.0001, s); g.gain.exponentialRampToValueAtTime(kind === "tap" ? .08 : .22, s + .02);
+    g.gain.exponentialRampToValueAtTime(.0001, s + len);
+    o.start(s); o.stop(s + len + .02);
+  });
+}
+
+/* ---------- stars ---------- */
+const KEY = "did-detective-stars";
+let stars = 0;
+try { stars = +(localStorage.getItem(KEY) || 0); } catch {}
+$("starCount").textContent = stars;
+function addStar(n) {
+  stars += n; $("starCount").textContent = stars;
+  try { localStorage.setItem(KEY, stars); } catch {}
+  $("starCount").parentElement.animate([{ transform: "scale(1)" }, { transform: "scale(1.35)" }, { transform: "scale(1)" }], { duration: 450 });
+}
+
+/* ---------- sentences ---------- */
+const ROLES = { neg: ["s", "a", "v", "c"], q: ["a", "s", "v", "c"] };
+const target = c => c.type === "neg" ? c.neg : c.q;
+const punct = c => c.type === "neg" ? "." : "?";
+const colored = c => c.parts.map((w, i) => `<span class="r-${ROLES[c.type][i]}">${w}</span>`).join(" ") + punct(c);
+// the classic mistake (past verb after did/didn't): shown as a distractor, never spoken
+const withPast = c => [c.parts[0], c.parts[1], c.past, c.parts[3]].join(" ") + punct(c);
+const cap = s => s[0].toUpperCase() + s.slice(1);
+
+/* ---------- navigation ---------- */
+let screen = "home";
+function show(id) {
+  hush(); screen = id;
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id));
+  $("back").classList.toggle("on", id !== "home");
+  scrollTo(0, 0);
+  ({ learn: startLearn, build: startBuild, quiz: startQuiz })[id]?.();
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) show(b.dataset.go); });
+$("back").onclick = () => show("home");
+$("esBtn").onclick = () => $("esBtn").setAttribute("aria-pressed", document.body.classList.toggle("es-on"));
+
+// browsers block sound until the first tap: welcome on a first tap that isn't already a button
+let welcomed = false;
+document.addEventListener("click", e => {
+  if (welcomed) return;
+  welcomed = true;
+  if (!e.target.closest("button,a,summary")) say(V.welcome);
+}, true);
+
+/* ---------- LEARN: case files ---------- */
+let li = 0;
+function startLearn() { li = 0; paintLearn(); }
+function exRow(c, kind) {
+  let extra = "";
+  if (kind === "answers") extra =
+    `<p class="yn ok"><b>✓</b> ${c.yes} ${spk(c.yes)}</p><p class="yn no"><b>✗</b> ${c.no} ${spk(c.no)}</p>`;
+  if (kind === "secret") extra = `<p class="wrong">✗ <s>${withPast(c)}</s></p>`;
+  return `<div class="ex"><img src="img/${c.img}.jpg" alt="" onerror="this.remove()">
+    <div class="ex-t"><p>${kind === "secret" ? "✓ " : ""}${colored(c)} ${spk(target(c))}</p>${extra}<p class="es">${c.es}</p></div></div>`;
+}
+function paintLearn() {
+  const L = D.lessons[li];
+  $("lCard").innerHTML = `
+    <div class="tab">FILE ${li + 1} / ${D.lessons.length}</div>
+    ${L.kind === "did" ? `<div class="didbadge"><b>DID</b><span>helping<br>verb</span></div>` : ""}
+    <h2>${L.h}</h2>
+    <p class="t">${L.t}</p>
+    ${L.struct ? `<div class="struct">${L.struct.map(([r, w]) => `<span class="chip r-${r}">${w}</span>`).join('<span class="plus">+</span>')} ${spk(L.st)}</div>` : ""}
+    <p class="es">${L.es}</p>
+    <h3>Examples</h3>
+    ${L.ex.map(id => exRow(C[id], L.kind)).join("")}`;
+  $("lDots").innerHTML = D.lessons.map((_, i) => `<span class="dot${i === li ? " on" : ""}"></span>`).join("");
+  $("lPrev").disabled = li === 0;
+  $("lNext").textContent = li === D.lessons.length - 1 ? "✓" : "▶";
+  scrollTo(0, 0);
+  say(L.t);
+}
+$("lSpk").onclick = () => say(D.lessons[li].t);
+$("lPrev").onclick = () => { if (li) { li--; paintLearn(); } };
+$("lNext").onclick = () => { if (li < D.lessons.length - 1) { li++; paintLearn(); } else finish("learn", 0, 0, []); };
+
+/* ---------- BUILD: tiles = the structure blocks + the past verb as a trap ---------- */
+const SLOT_LABELS = { neg: ["Subject", "didn't", "Verb (infinitive)", "Complement"],
+                      q: ["Did", "Subject", "Verb (infinitive)", "Complement"] };
+let bList = [], bi = 0, bHits = 0, bMissed = [], bTiles = [], bPlaced = [], bTries = 0, bClean = true, bBusy = false, bTok = 0, bYes = true;
+function startBuild() {
+  const negs = shuffle(CASES.filter(c => c.type === "neg")), qs = shuffle(CASES.filter(c => c.type === "q"));
+  bList = shuffle([...negs.slice(0, 4), ...qs.slice(0, 4)]);
+  bi = 0; bHits = 0; bMissed = []; paintBuild();
+}
+function paintBuild() {
+  const c = bList[bi], neg = c.type === "neg";
+  bTok++; bTiles = shuffle([...c.parts, c.past]); bPlaced = []; bTries = 0; bClean = true; bBusy = false;
+  $("bProg").textContent = `Case ${bi + 1} / ${bList.length}`;
+  $("bScore").textContent = `✓ ${bHits}`;
+  $("bTab").textContent = `CASE #${String(bi + 1).padStart(2, "0")}`;
+  $("bImg").parentElement.hidden = false; $("bImg").src = `img/${c.img}.jpg`;
+  $("bAff").textContent = c.aff; $("bAffSpk").dataset.say = c.aff;
+  $("bTask").innerHTML = neg ? "Make it <b>negative</b> ✗" : "Make it a <b>question</b> ❓";
+  $("bTaskEs").textContent = neg ? "Conviértela en oración negativa" : "Conviértela en pregunta";
+  $("bEs").textContent = c.es;
+  $("bStamp").classList.remove("on");
+  $("bFb").className = "fb"; $("bFb").textContent = "";
+  $("bAns").hidden = true; $("bNext").hidden = true;
+  paintSlots(); paintTray();
+  sayAll([c.aff, neg ? V.makeNeg : V.makeQ]);
+}
+function paintSlots(solved) {
+  const c = bList[bi];
+  $("bSlots").innerHTML = SLOT_LABELS[c.type].map((lab, i) => {
+    const t = bPlaced[i];
+    return `<div class="slot"><small>${lab}</small>
+      <button data-slot="${i}" class="${solved ? "solved r-" + ROLES[c.type][i] : t != null ? "fill" : ""}"${solved ? " disabled" : ""}>${t != null ? bTiles[t] : ""}</button></div>`;
+  }).join("") + `<span class="punct">${punct(c)}</span>`;
+}
+function paintTray(lock) {
+  $("bTray").innerHTML = bTiles.map((w, i) =>
+    `<button class="tile${bPlaced.includes(i) ? " used" : ""}" data-tile="${i}" style="--r:${(i % 3 - 1) * 1.5}deg"${lock ? " disabled" : ""}>${w}</button>`).join("");
+}
+$("bTray").onclick = e => {
+  const b = e.target.closest("[data-tile]");
+  if (!b || b.disabled || bBusy) return;
+  const i = +b.dataset.tile;
+  if (bPlaced.includes(i) || bPlaced.length >= 4) return;
+  bPlaced.push(i); beep("tap"); paintSlots(); paintTray();
+  if (bPlaced.length === 4) checkBuild();
+};
+$("bSlots").onclick = e => {
+  const b = e.target.closest("[data-slot]");
+  if (!b || b.disabled || bBusy || bPlaced[+b.dataset.slot] == null) return;
+  bPlaced.splice(+b.dataset.slot, 1); paintSlots(); paintTray();
+};
+function checkBuild() {
+  const c = bList[bi];
+  // case-insensitive: "Did I do…" also has a "did" trap tile
+  if (bPlaced.every((t, k) => bTiles[t].toLowerCase() === c.parts[k].toLowerCase())) return solveBuild(c, true);
+  bTries++; bClean = false; bBusy = true; beep("bad");
+  $("bSlots").classList.remove("shake"); void $("bSlots").offsetWidth; $("bSlots").classList.add("shake");
+  const tok = bTok;
+  if (bTries >= 2) return setTimeout(() => tok === bTok && screen === "build" && solveBuild(c, false), 600);
+  const trap = bPlaced.some(t => bTiles[t] === c.past);
+  $("bFb").className = "fb bad";
+  $("bFb").innerHTML = trap
+    ? `🔎 After <b>${c.type === "neg" ? "didn't" : "did"}</b>, the verb goes back to the infinitive!`
+    : `🔎 Check the order: ${SLOT_LABELS[c.type].join(" + ")}`;
+  say(trap ? V.rule : c.type === "neg" ? V.orderNeg : V.orderQ);
+  setTimeout(() => { if (tok !== bTok || screen !== "build") return; bPlaced = []; bBusy = false; paintSlots(); paintTray(); }, 1400);
+}
+function solveBuild(c, good) {
+  bBusy = true;
+  bPlaced = c.parts.map(p => bTiles.indexOf(p));
+  paintSlots(true); paintTray(true);
+  $("bFb").className = "fb" + (good ? " ok" : "");
+  $("bFb").innerHTML = good ? colored(c) : `The answer is: ${colored(c)}`;
+  if (good) { $("bStamp").classList.add("on"); beep("ok"); }
+  const q = c.type === "q";
+  sayAll([...(good ? [pick(PRAISE)] : []), target(c), ...(q ? [V.answerIt] : [])]);
+  if (!q) return endCase(c);
+  bYes = c.ans ? c.ans === "yes" : Math.random() < .5;
+  $("bClue").textContent = bYes ? "Clue: ✓ it happened" : "Clue: ✗ it didn't happen";
+  $("bOpts").innerHTML = shuffle([c.yes, c.no]).map(t => `<button class="opt" data-ans="${esc(t)}">${t}</button>`).join("");
+  $("bAns").hidden = false;
+  setTimeout(() => $("bAns").scrollIntoView({ behavior: "smooth", block: "center" }), 350);
+}
+$("bOpts").onclick = e => {
+  const b = e.target.closest("[data-ans]");
+  if (!b || b.disabled) return;
+  const c = bList[bi], right = bYes ? c.yes : c.no, good = b.dataset.ans === right;
+  $("bOpts").querySelectorAll(".opt").forEach(x => { x.disabled = true; if (x.dataset.ans === right) x.classList.add("ok"); });
+  if (good) beep("ok"); else { b.classList.add("bad"); bClean = false; beep("bad"); }
+  sayAll(good ? [right, pick(PRAISE)] : [right]);
+  endCase(c);
+};
+function endCase(c) {
+  if (bClean) bHits++; else bMissed.push(colored(c) + (c.type === "q" ? ` → ${bYes ? c.yes : c.no}` : ""));
+  $("bScore").textContent = `✓ ${bHits}`;
+  $("bNext").hidden = false;
+}
+$("bNext").onclick = () => { if (++bi < bList.length) { paintBuild(); scrollTo(0, 0); } else finish("build", bHits, bList.length, bMissed); };
+
+/* ---------- QUIZ: interrogation ---------- */
+let qList = [], qi = 0, qHits = 0, qMissed = [], qRight = null;
+function startQuiz() {
+  const negs = shuffle(CASES.filter(c => c.type === "neg")), qs = shuffle(CASES.filter(c => c.type === "q"));
+  qList = shuffle([
+    ...shuffle(D.theory).slice(0, 3).map(t => ({ k: "theory", t })),
+    ...negs.slice(0, 2).map(c => ({ k: "neg", c })),
+    ...qs.slice(0, 2).map(c => ({ k: "ask", c })),
+    ...qs.slice(2, 4).map(c => ({ k: "answer", c, yes: c.ans ? c.ans === "yes" : Math.random() < .5 })),
+    ...[negs[2], negs[3], qs[4]].map(c => ({ k: "spot", c })),
+  ]);
+  qi = 0; qHits = 0; qMissed = []; paintQuiz();
+}
+const LABELS = {
+  theory: ["Detective question", "Pregunta de detective"],
+  neg: ["Make it negative ✗", "Conviértela en oración negativa"],
+  ask: ["Make it a question ❓", "Conviértela en pregunta"],
+  answer: ["Answer the question. Look at the clue!", "Responde la pregunta. ¡Mira la pista!"],
+  spot: ["Find the mistake! Tap the wrong word.", "¡Encuentra el error! Toca la palabra equivocada."],
+};
+function paintQuiz() {
+  const it = qList[qi], c = it.c;
+  $("qProg").textContent = `Question ${qi + 1} / ${qList.length}`;
+  $("qScore").textContent = `✓ ${qHits}`;
+  $("qStamp").classList.remove("on");
+  $("qPic").hidden = !c; if (c) $("qImg").src = `img/${c.img}.jpg`;
+  [$("qLabel").textContent, $("qLabelEs").textContent] = LABELS[it.k];
+  $("qFb").className = "fb"; $("qFb").textContent = "";
+  $("qEs").textContent = it.k === "theory" ? it.t.es : "";
+  $("qEs").hidden = it.k !== "theory";
+  $("qNext").hidden = true;
+  $("qOpts").innerHTML = "";
+  let opts = [];
+  if (it.k === "theory") {
+    $("qText").innerHTML = `${it.t.q} ${spk(it.t.q)}`;
+    opts = it.t.o; qRight = it.t.o[0]; say(it.t.q);
+  } else if (it.k === "neg" || it.k === "ask") {
+    $("qText").innerHTML = `${c.aff} ${spk(c.aff)}`;
+    opts = it.k === "neg"
+      ? [c.neg, withPast(c), [c.parts[0], "not", c.past, c.parts[3]].join(" ") + "."]
+      : [c.q, withPast(c), `${cap(c.parts[1])} did ${c.parts[2]} ${c.parts[3]}?`];
+    qRight = target(c); sayAll([it.k === "neg" ? V.makeNeg : V.makeQ, c.aff]);
+  } else if (it.k === "answer") {
+    $("qText").innerHTML = `${colored(c)} ${spk(c.q)}<br><span class="sticky">Clue: ${it.yes ? "✓ it happened" : "✗ it didn't happen"}</span>`;
+    qRight = it.yes ? c.yes : c.no;
+    opts = [c.yes, c.no, it.yes ? c.yes.replace(" did.", " didn't.") : c.no.replace(" didn't.", " did.")];
+    say(c.q);
+  } else {                                     // spot: the sentence with the past-verb mistake
+    const words = withPast(c).split(" ");
+    it.bad = `${c.parts[0]} ${c.parts[1]}`.split(" ").length;
+    $("qText").innerHTML = `<div class="words">${words.map((w, i) => `<button class="word" data-w="${i}">${w}</button>`).join("")}</div>`;
+    say(V.spot);
+    return;
+  }
+  $("qOpts").innerHTML = shuffle(opts).map(o => `<button class="opt" data-o="${esc(o)}">${o}</button>`).join("");
+}
+$("qOpts").onclick = e => {
+  const b = e.target.closest("[data-o]");
+  if (!b || b.disabled) return;
+  const good = b.dataset.o === qRight;
+  $("qOpts").querySelectorAll(".opt").forEach(x => { x.disabled = true; if (x.dataset.o === qRight) x.classList.add("ok"); });
+  if (!good) b.classList.add("bad");
+  const it = qList[qi];
+  // after a miss she hears the right sentence (never the wrong one)
+  answered(good, it.k === "theory" ? V.look : qRight,
+    it.k === "theory" ? `${it.t.q} <b>${it.t.o[0]}</b>` : it.k === "answer" ? `${it.c.q} → <b>${qRight}</b>` : colored(it.c));
+};
+$("qText").onclick = e => {
+  const b = e.target.closest("[data-w]");
+  if (!b || b.disabled) return;
+  const it = qList[qi], good = +b.dataset.w === it.bad;
+  $("qText").querySelectorAll(".word").forEach((x, i) => { x.disabled = true; if (i === it.bad) x.classList.add(good ? "ok" : "bad"); });
+  if (!good) b.classList.add("bad");
+  $("qFb").className = "fb";
+  $("qFb").innerHTML = `<s>${it.c.past}</s> → ${colored(it.c)}`;
+  answered(good, target(it.c), colored(it.c));
+};
+function answered(good, voiceText, review) {
+  const it = qList[qi];
+  if (good) { qHits++; $("qStamp").classList.add("on"); beep("ok"); sayAll([pick(PRAISE), ...(it.k === "spot" ? [target(it.c)] : [])]); }
+  else { qMissed.push(review); beep("bad"); say(voiceText); }
+  $("qScore").textContent = `✓ ${qHits}`;
+  $("qNext").hidden = false;
+}
+$("qNext").onclick = () => { if (++qi < qList.length) { paintQuiz(); scrollTo(0, 0); } else finish("quiz", qHits, qList.length, qMissed); };
+
+/* ---------- END ---------- */
+let lastMode = "quiz";
+function finish(mode, hits, total, missed) {
+  lastMode = mode;
+  const learn = mode === "learn", perfect = !learn && hits === total;
+  show("end");
+  addStar(perfect ? 2 : 1);
+  $("endMedal").textContent = learn ? "📂" : perfect ? (mode === "quiz" ? "🏅" : "🏆") : "⭐";
+  $("endTitle").textContent = learn ? "Files complete!" : perfect ? (mode === "quiz" ? "Detective badge!" : "Perfect work!") : "Case closed!";
+  $("endText").textContent = learn
+    ? "You read all the case files. You earned 1 ⭐"
+    : `${hits} of ${total} solved on the first try. You earned ${perfect ? 2 : 1} ⭐`;
+  $("endReview").innerHTML = missed.length ? `<h3>Review these clues:</h3>` + missed.map(m => `<p>${m}</p>`).join("") : "";
+  beep("win");
+  say(learn ? V.learnDone : perfect ? V.perfect : V.round);
+}
+$("again").onclick = () => show(lastMode);
+
+/* ---------- photo credits ---------- */
+fetch("img/credits.json")
+  .then(r => r.json())
+  .then(list => $("creditList").innerHTML = list.map(c =>
+    `<p>${esc(c.shows)}: <a href="${esc(c.source)}" target="_blank" rel="noopener">${esc(c.title)}</a>, ${esc(c.author || "Unknown")} (${esc(c.license)}), Wikimedia Commons.</p>`).join(""))
+  .catch(() => $("creditList").innerHTML = "<p>Photos from Wikimedia Commons under free licences (Public domain, CC0, CC BY, CC BY-SA).</p>");
+</script>
+</body>
+</html>
