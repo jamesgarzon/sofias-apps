@@ -206,6 +206,24 @@ body.es-on .es,body.es-on .tr{display:block}
 .btn:active{transform:translateY(3px)}
 
 /* ---------- end ---------- */
+/* ---------- verb lineup ---------- */
+.vgroup{margin-top:18px}
+.vrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;width:100%;min-height:54px;
+  margin-top:8px;padding:8px 12px;border-radius:12px;background:var(--slip);box-shadow:0 3px 0 var(--slip-d);text-align:left;color:var(--ink)}
+.vrow:active{transform:translateY(2px)}
+.vrow .vi{font-weight:700;font-size:1.12rem;color:var(--c-s)}
+.vrow .vp{font-weight:700;font-size:1.12rem;color:var(--c-v);text-align:right}
+.vrow .vp b{background:#c9f0d6;border-radius:4px;padding:0 2px}
+.vrow .arr{color:var(--muted)}
+.vrow .ves{grid-column:1/-1;font-size:.85rem;color:var(--muted);margin-top:-4px}
+.more{margin-top:18px;font-size:.95rem}
+.more a{color:var(--c-s);font-weight:600;display:inline-block;padding:10px 0}
+.gap{display:inline-block;min-width:3.2em;border-bottom:3px solid var(--ink);text-align:center;color:var(--c-v)}
+.hintv{display:inline-block;margin-left:4px;padding:2px 10px;border-radius:999px;background:#fff;border:2px dashed var(--edge);
+  font-size:1rem;color:var(--muted);vertical-align:middle}
+.opts.two{grid-template-columns:1fr 1fr}
+.opts.two .opt{text-align:center;font-size:1.35rem;min-height:72px}
+
 .done{text-align:center;padding-top:26px}
 .medal{font-size:4rem;animation:stamp .5s cubic-bezier(.2,1.6,.4,1) both;--r:0deg}
 .done h2{font-family:"Alfa Slab One",serif;font-weight:400;font-size:2rem;margin-top:6px}
@@ -245,6 +263,8 @@ body.es-on .es,body.es-on .tr{display:block}
   <div class="folders">
     <button class="folder" data-go="learn" style="--c:var(--c-s)"><span class="ic">📂</span>
       <span><b>Case Files</b><small>Learn the rules of did and didn't</small><small class="tr">Aprende las reglas</small></span></button>
+    <button class="folder" data-go="lineup" style="--c:var(--c-q)"><span class="ic">🗂️</span>
+      <span><b>The Verb Lineup</b><small>The 10 verbs · past form or infinitive?</small><small class="tr">Los 10 verbos · ¿pasado o infinitivo?</small></span></button>
     <button class="folder" data-go="build" style="--c:var(--c-v)"><span class="ic">🧩</span>
       <span><b>Build the Sentence</b><small>Put the clues in order · 8 cases</small><small class="tr">Arma la oración en orden</small></span></button>
     <button class="folder" data-go="quiz" style="--c:var(--c-a)"><span class="ic">🕵️‍♀️</span>
@@ -312,6 +332,35 @@ body.es-on .es,body.es-on .tr{display:block}
   </article>
   <div class="opts" id="qOpts"></div>
   <button class="btn go wide" id="qNext" hidden>Next ▶</button>
+</div></section>
+
+<!-- VERB LINEUP -->
+<section class="screen" id="lineup"><div class="wrap">
+  <article class="file">
+    <div class="tab">SUSPECT LIST</div>
+    <h2>The Verb Lineup</h2>
+    <p class="t" id="vIntro"></p>
+    <p class="es">Cada verbo tiene una forma en pasado. Los verbos regulares agregan -ed. Los irregulares cambian. Toca un verbo para escucharlo.</p>
+    <button class="btn go wide" data-go="switch">▶ Play: Verb Switch</button>
+    <div class="vgroup"><h3>Regular verbs · + ed</h3><div id="vReg"></div></div>
+    <div class="vgroup"><h3>Irregular verbs · they change!</h3><div id="vIrr"></div></div>
+    <p class="more">Want more practice with these verbs? <a href="../verbs/">⏳ La Máquina del Tiempo</a></p>
+  </article>
+</div></section>
+
+<!-- VERB SWITCH -->
+<section class="screen" id="switch"><div class="wrap">
+  <div class="prog"><span id="sProg"></span><span id="sScore"></span></div>
+  <article class="file">
+    <div class="tab">VERB SWITCH</div>
+    <div class="stamp" id="sStamp">SOLVED</div>
+    <p class="label">Past form or infinitive? Choose the right word.</p>
+    <p class="tr">¿Pasado o infinitivo? Elige la palabra correcta.</p>
+    <p class="clue" id="sText"></p>
+    <p class="fb" id="sFb"></p>
+  </article>
+  <div class="opts two" id="sOpts"></div>
+  <button class="btn go wide" id="sNext" hidden>Next ▶</button>
 </div></section>
 
 <!-- END -->
@@ -439,6 +488,30 @@ body.es-on .es,body.es-on .tr{display:block}
       "yes": "Yes, Peter did.", "no": "No, Peter didn't.", "es": "¿Peter durmió en la tarde?" }
   ],
 
+  "lineup": "Every verb has a past form. Regular verbs add -ed. Irregular verbs change. Tap a verb to hear it.",
+  "verbs": [
+    { "inf": "arrive", "past": "arrived", "es": "llegar", "type": "reg",
+      "s": ["We arrived at school early.", "We didn't arrive at school early.", "Did we arrive at school early?"] },
+    { "inf": "call", "past": "called", "es": "llamar", "type": "reg",
+      "s": ["She called her grandma yesterday.", "She didn't call her grandma yesterday.", "Did she call her grandma yesterday?"] },
+    { "inf": "clean", "past": "cleaned", "es": "limpiar", "type": "reg",
+      "s": ["I cleaned my room on Sunday.", "I didn't clean my room on Sunday.", "Did you clean your room on Sunday?"] },
+    { "inf": "close", "past": "closed", "es": "cerrar", "type": "reg",
+      "s": ["He closed the window.", "He didn't close the window.", "Did he close the window?"] },
+    { "inf": "cook", "past": "cooked", "es": "cocinar", "type": "reg",
+      "s": ["My dad cooked pasta for dinner.", "My dad didn't cook pasta for dinner.", "Did my dad cook pasta for dinner?"] },
+    { "inf": "be", "past": "was / were", "es": "ser / estar", "type": "irr",
+      "s": ["I was happy.", "My friends were happy."] },
+    { "inf": "build", "past": "built", "es": "construir", "type": "irr",
+      "s": ["They built a big sandcastle.", "They didn't build a big sandcastle.", "Did they build a big sandcastle?"] },
+    { "inf": "do", "past": "did", "es": "hacer", "type": "irr",
+      "s": ["I did my homework before dinner.", "I didn't do my homework before dinner.", "Did you do your homework before dinner?"] },
+    { "inf": "eat", "past": "ate", "es": "comer", "type": "irr",
+      "s": ["We ate pizza on Friday.", "We didn't eat pizza on Friday.", "Did you eat pizza on Friday?"] },
+    { "inf": "find", "past": "found", "es": "encontrar", "type": "irr",
+      "s": ["She found her lost cat in the garden.", "She didn't find her lost cat in the garden.", "Did she find her lost cat in the garden?"] }
+  ],
+
   "theory": [
     { "q": "What is an auxiliary verb?", "o": ["A helping verb", "A verb in the past", "The name of a thing"], "es": "¿Qué es un verbo auxiliar?" },
     { "q": "Did helps us to talk about…", "o": ["the past", "the future", "the present"], "es": "Did nos ayuda a hablar del…" },
@@ -468,7 +541,10 @@ body.es-on .es,body.es-on .tr{display:block}
     "super": "Super detective!",
     "round": "Case closed! You earned a star!",
     "perfect": "Perfect! You are a super detective! You earned two stars!",
-    "learnDone": "You read all the case files! Now go and solve some cases!"
+    "learnDone": "You read all the case files! Now go and solve some cases!",
+    "chooseForm": "Past form or infinitive? Choose the right word!",
+    "rulePast": "In a positive sentence about the past, use the past form.",
+    "ruleBe": "Use was with I, he, she and it. Use were with you, we and they."
   }
 }
 </script>
@@ -542,7 +618,7 @@ function show(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id));
   $("back").classList.toggle("on", id !== "home");
   scrollTo(0, 0);
-  ({ learn: startLearn, build: startBuild, quiz: startQuiz })[id]?.();
+  ({ learn: startLearn, build: startBuild, quiz: startQuiz, switch: startSwitch })[id]?.();
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) show(b.dataset.go); });
 $("back").onclick = () => show("home");
@@ -772,6 +848,61 @@ function answered(good, voiceText, review) {
   $("qNext").hidden = false;
 }
 $("qNext").onclick = () => { if (++qi < qList.length) { paintQuiz(); scrollTo(0, 0); } else finish("quiz", qHits, qList.length, qMissed); };
+
+/* ---------- VERB LINEUP + VERB SWITCH ---------- */
+const VERBS = D.verbs;
+const isBe = v => v.past.includes("/");
+$("vIntro").innerHTML = `${D.lineup} ${spk(D.lineup)}`;
+const vrow = (v, i) => {
+  const p = v.type === "reg" ? `${v.inf.replace(/e$/, "")}<b>${v.past.slice(v.inf.replace(/e$/, "").length)}</b>` : v.past;
+  return `<button class="vrow" data-v="${i}"><span class="vi">${v.inf}</span><span class="arr">→</span><span class="vp">${p}</span><span class="ves">${v.es}</span></button>`;
+};
+$("vReg").innerHTML = VERBS.map((v, i) => v.type === "reg" ? vrow(v, i) : "").join("");
+$("vIrr").innerHTML = VERBS.map((v, i) => v.type === "irr" ? vrow(v, i) : "").join("");
+document.getElementById("lineup").onclick = e => {
+  const b = e.target.closest("[data-v]");
+  if (b) { const v = VERBS[+b.dataset.v]; sayAll([v.inf, v.past]); }
+};
+
+// every sentence of every verb is a round: s[0] needs the past form, s[1] (didn't) and s[2] (Did) the infinitive.
+// "be" has no did-sentences: its two rounds are was vs were.
+const ITEMS = VERBS.flatMap(v => v.s.map((s, k) => {
+  const word = isBe(v) ? v.past.split(" / ")[k] : k ? v.inf : v.past;
+  return { v, s, k, word, opts: isBe(v) ? v.past.split(" / ") : [v.inf, v.past] };
+}));
+let sList = [], si = 0, sHits = 0, sMissed = [];
+function startSwitch() { sList = shuffle(ITEMS).slice(0, 12); si = 0; sHits = 0; sMissed = []; paintSwitch(); }
+const gapped = (it, fill) => it.s.replace(new RegExp(`\\b${it.word}\\b`), fill);
+function paintSwitch() {
+  const it = sList[si];
+  $("sProg").textContent = `Verb ${si + 1} / ${sList.length}`;
+  $("sScore").textContent = `✓ ${sHits}`;
+  $("sStamp").classList.remove("on");
+  $("sText").innerHTML = `${gapped(it, '<span class="gap">___</span>')} <span class="hintv">(${it.v.inf})</span> ${spk(it.v.inf)}`;
+  $("sFb").className = "fb"; $("sFb").textContent = "";
+  $("sOpts").innerHTML = shuffle(it.opts).map(o => `<button class="opt" data-o="${o}">${o}</button>`).join("");
+  $("sNext").hidden = true;
+  si === 0 ? sayAll([V.chooseForm, it.v.inf]) : say(it.v.inf);
+}
+$("sOpts").onclick = e => {
+  const b = e.target.closest("[data-o]");
+  if (!b || b.disabled) return;
+  const it = sList[si], good = b.dataset.o === it.word;
+  $("sOpts").querySelectorAll(".opt").forEach(x => { x.disabled = true; if (x.dataset.o === it.word) x.classList.add("ok"); });
+  $("sText").innerHTML = `${gapped(it, `<span class="gap">${it.word}</span>`)} ${spk(it.s)}`;
+  const why = isBe(it.v) ? `<b>was</b>: I, he, she, it · <b>were</b>: you, we, they`
+    : it.k === 0 ? `Positive sentence in the past → <b>past form</b>: ${it.v.past}`
+    : `After <span class="r-a">${it.k === 1 ? "didn't" : "Did"}</span> → <b>infinitive</b>: ${it.v.inf}`;
+  $("sFb").className = "fb" + (good ? " ok" : " bad"); $("sFb").innerHTML = why;
+  if (good) { sHits++; $("sStamp").classList.add("on"); beep("ok"); sayAll([pick(PRAISE), it.s]); }
+  else {
+    b.classList.add("bad"); beep("bad"); sMissed.push(`${it.s} <b>(${it.word})</b>`);
+    sayAll([it.s, isBe(it.v) ? V.ruleBe : it.k ? V.rule : V.rulePast]);
+  }
+  $("sScore").textContent = `✓ ${sHits}`;
+  $("sNext").hidden = false;
+};
+$("sNext").onclick = () => { if (++si < sList.length) { paintSwitch(); scrollTo(0, 0); } else finish("switch", sHits, sList.length, sMissed); };
 
 /* ---------- END ---------- */
 let lastMode = "quiz";

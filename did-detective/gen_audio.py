@@ -19,8 +19,8 @@ def slug(text):  # must match slug() in index.html
 
 
 def speakable(text):
-    return (text.replace("3-B", "three B").replace("→", " becomes ").replace("=", " is ")
-            .replace("+", " plus ").replace("…", "..."))
+    return (text.replace("3-B", "three B").replace(" / ", " or ").replace("-ed", " E D")
+            .replace("→", " becomes ").replace("=", " is ").replace("+", " plus ").replace("…", "..."))
 
 
 def content():
@@ -38,6 +38,16 @@ def jobs():
         assert " ".join(c["parts"]) + ("?" if q else ".") == target, f"tiles != sentence: {c['id']}"
         assert c["past"] not in c["parts"], f"trap tile equals a real tile: {c['id']}"
         texts += [c["aff"], target] + ([c["yes"], c["no"]] if q else [])
+    texts += [d["lineup"]]
+    for v in d["verbs"]:
+        be = "/" in v["past"]
+        for k, sentence in enumerate(v["s"]):
+            answer = v["past"].split(" / ")[k] if be else v["inf"] if k else v["past"]
+            other = [] if be else [v["past"] if k else v["inf"]]
+            words = re.findall(r"[A-Za-z']+", sentence)
+            # the gap must be unique, and the other option must not appear elsewhere in the sentence
+            assert words.count(answer) == 1 and not any(o in words for o in other), f"bad gap: {sentence}"
+        texts += [v["inf"], v["past"]] + v["s"]
     texts += [t["q"] for t in d["theory"]] + list(d["voice"].values())
     out = {}
     for t in texts:
