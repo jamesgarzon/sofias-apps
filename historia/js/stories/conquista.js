@@ -15,6 +15,7 @@ window.STORIES.conquista = {
     @keyframes st-conquista-trot { to { transform: translateY(-3px); } }
     .st-conquista-coin { animation: st-conquista-coin 1.1s ease-in-out both; opacity: 0; }
     @keyframes st-conquista-coin { 0% { opacity: 0; transform: translate(0, 0); } 10% { opacity: 1; } 50% { transform: translate(calc(var(--dx) * .5), calc(var(--dy) * .5 - 60px)); } 90% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)); } }
+    @media (prefers-reduced-motion: reduce) { .st-conquista-bob { animation: none !important; } }
   `,
   play: [
     // 0 · Llegan los barcos: Alonso de Ojeda, en la popa de su carabela, señala la costa («¡Tierra!»); llegan sus otros barcos (1499, La Guajira)
@@ -55,7 +56,7 @@ window.STORIES.conquista = {
           <path d="M-23,-68 Q-44,-66 -62,-66" stroke="#5b3a1a" stroke-width="1.6" fill="none"/>
           <path d="M6,-52 L4,-30 L-6,-28 L-6,-24 L8,-24 L10,-52Z" fill="#1f1a17"/>`, 'st-conquista-trot', 'animation-delay:.2s'), 'st-conquista-ride', 'animation-delay:.2s'))}
         ${[[254, 362, 1.9], [326, 410, 2.2], [292, 300, 2.6]].map(([x, y, d]) => at(x, y, 1, `<path d="M0,-10 L2.5,-2.5 L10,0 L2.5,2.5 L0,10 L-2.5,2.5 L-10,0 L-2.5,-2.5Z" fill="#fff"/>`, 's-flash', `animation-delay:${d}s`)).join('')}
-        ${at(162, 344, 1, `<circle r="15" fill="#fff" stroke="#e04e39" stroke-width="2.5"/><text y="7" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="20" fill="#e04e39">!</text><circle cx="10" cy="17" r="3.5" fill="#fff" stroke="#e04e39" stroke-width="2"/>`, 's-in', 'animation-delay:3.6s')}
+        ${at(168, 344, 1, `<circle r="15" fill="#fff" stroke="#e04e39" stroke-width="2.5"/><text y="7" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="20" fill="#e04e39">!</text><circle cx="10" cy="17" r="3.5" fill="#fff" stroke="#e04e39" stroke-width="2"/>`, 's-in', 'animation-delay:3.6s')}
         ${[[420, 290, 4.2], [380, 250, 4.5]].map(([x, y, d]) => at(x, y, 1, sparkle(0, 0, 0, '#fff6b0', 1.2), 's-in', `animation-delay:${d}s`)).join('')}`;
     },
     // 2 · Nuevas ciudades: el fundador alza la bandera, un constructor levanta una casa y aparecen Santa Marta, Cartagena y Bogotá con su año
@@ -74,16 +75,17 @@ window.STORIES.conquista = {
     },
     // 3 · En busca de El Dorado: un conquistador mira su mapa y sueña con la ciudad de oro, que nunca encuentra (?); el oro viaja en barco a España
     ({ at, person, sparkle }) => {
-      const city = `${[[-30, 16, 12], [-14, 26, 14], [2, 34, 12], [18, 22, 14], [32, 14, 10]].map(([x, h, w]) => `<rect x="${x - w / 2}" y="${-h}" width="${w}" height="${h}" fill="#f5c518" stroke="#c68a00" stroke-width="1"/><path d="M${x - w / 2 - 1},${-h} L${x},${-h - 8} L${x + w / 2 + 1},${-h}Z" fill="#ffd84a" stroke="#c68a00" stroke-width="1"/>`).join('')}`;
+      const cloud = [[370, 262, 20], [393, 246, 22], [421, 244, 22], [445, 258, 19], [407, 268, 22], [382, 274, 14], [434, 273, 15]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join('');
+      const city = `${[[-28, 12, 11], [-14, 20, 13], [0, 26, 11], [15, 18, 13], [28, 11, 9]].map(([x, h, w]) => `<rect x="${x - w / 2}" y="${-h}" width="${w}" height="${h}" fill="#f5c518" stroke="#c68a00" stroke-width="1"/><path d="M${x - w / 2 - 1},${-h} L${x},${-h - 8} L${x + w / 2 + 1},${-h}Z" fill="#ffd84a" stroke="#c68a00" stroke-width="1"/>`).join('')}`;
       const map = `<g transform="translate(32 -52) rotate(-8)"><rect x="-4" y="-16" width="30" height="22" rx="2" fill="#f3e3c3" stroke="#a8752a" stroke-width="1.4"/><path d="M0,0 Q8,-12 14,-4 T22,-12" stroke="#8a6a3a" stroke-width="1.4" stroke-dasharray="2 2" fill="none"/><path d="M19,-15 l5,5 M24,-15 l-5,5" stroke="#c62828" stroke-width="2"/></g>`;
       return `
-        ${at(0, 0, 1, `<circle cx="470" cy="290" r="4" fill="#fff" stroke="#7a6a5a" stroke-width="1.5"/><circle cx="454" cy="278" r="6" fill="#fff" stroke="#7a6a5a" stroke-width="1.5"/>
-          <path d="M350,232 Q346,206 372,204 Q384,188 406,196 Q426,184 442,198 Q466,198 462,222 Q472,242 448,250 Q438,266 412,258 Q394,268 378,256 Q350,260 350,232Z" fill="#fff" stroke="#7a6a5a" stroke-width="2"/>`, 's-in', 'animation-delay:.8s')}
-        ${at(0, 0, 1, at(406, 246, 1, `${city}<text y="-44" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="12" fill="#a87400">El Dorado</text>`), 's-out', 'animation-delay:2.6s')}
-        ${at(406, 224, 1, at(0, 0, 1, `<text y="14" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="40" fill="#7a6a5a">?</text>`, 's-in', 'animation-delay:3s'))}
+        ${at(0, 0, 1, `<circle cx="480" cy="294" r="3" fill="#fff" stroke="#7a6a5a" stroke-width="1.5"/><circle cx="468" cy="283" r="4.5" fill="#fff" stroke="#7a6a5a" stroke-width="1.5"/>
+          <g stroke="#7a6a5a" stroke-width="4" fill="#7a6a5a">${cloud}</g><g fill="#fff">${cloud}</g>`, 's-in', 'animation-delay:.8s')}
+        ${at(0, 0, 1, at(0, 0, 1, at(408, 276, 1, `${city}<text y="-38" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="12" fill="#a87400">El Dorado</text>`), 's-fade', 'animation-delay:1s'), 's-out', 'animation-delay:2.8s')}
+        ${at(408, 256, 1, at(0, 0, 1, `<text y="14" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="38" fill="#7a6a5a">?</text>`, 's-in', 'animation-delay:3.2s'))}
         ${person({ x: 500, y: 418, s: 1.15, skin: '#f0c49c', top: '#b03a2e', bottom: '#d9a441', armor: true, hat: 'morrion', boots: true, belt: '#5b3a1a', arm: 'out', act: 'look', delay: 0 })}
         <g transform="translate(500 418) scale(1.15)"><g class="pa pa-breathe" style="animation-delay:0s">${map}</g></g>
-        ${[0, 1, 2].map((i) => `<g transform="translate(${462 + i * 10} 436)"><g class="st-conquista-coin" style="--dx:${128 - i * 10}px;--dy:-130px;animation-delay:${3.6 + i * 0.45}s"><ellipse rx="7" ry="4.5" fill="#f5c518" stroke="#c68a00" stroke-width="1.2"/></g></g>`).join('')}
+        ${[0, 1, 2, 3, 4].map((i) => `<g transform="translate(${458 + i * 6} 436)"><g class="st-conquista-coin" style="--dx:${132 - i * 6 + (i % 2) * 14}px;--dy:-132px;animation-delay:${3.5 + i * 0.3}s"><ellipse rx="8" ry="5" fill="#f5c518" stroke="#c68a00" stroke-width="1.2"/></g></g>`).join('')}
         ${at(588, 392, 1, `<text text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="15" fill="#fff" stroke="#7a1f17" stroke-width="4" paint-order="stroke" stroke-linejoin="round">a España</text><path d="M-30,8 H26 M18,3 L26,8 L18,13" stroke="#7a1f17" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`, 's-in', 'animation-delay:4.4s')}
         ${[[600, 300, 4.8], [560, 330, 5.1]].map(([x, y, d]) => at(x, y, 1, sparkle(0, 0, 0, '#ffd84a', 1.3), 's-in', `animation-delay:${d}s`)).join('')}`;
     },
@@ -91,9 +93,9 @@ window.STORIES.conquista = {
     ({ at, person, sparkle }) => `
       ${at(0, 0, 1, person({ x: 130, y: 352, s: 0.8, skin: '#a96a40', top: '#e4d1a2', bottom: '#c8b07a', hair: '#1d120b', hat: 'feathers', item: 'spear', arm: 'up', act: 'shake', delay: 0 }), 's-from-l', 'animation-delay:1.2s')}
       ${at(0, 0, 1, person({ x: 216, y: 350, s: 0.8, skin: '#b9774a', top: '#efe2c0', dress: true, hair: '#1d120b', hairStyle: 'long', hat: 'feathers', item: 'bow', arm: 'out', act: 'raise', delay: 0 }), 's-from-l', 'animation-delay:1.6s')}
-      ${person({ x: 270, y: 432, s: 1.25, skin: '#a96a40', top: '#f1e6c8', dress: true, hair: '#1d120b', hairStyle: 'long', hat: 'feathers', item: 'spear', arm: 'up', act: 'shake', delay: 0 })}
-      <g transform="translate(270 432) scale(1.25)"><g class="pa pa-bob" style="animation-delay:0s"><path d="M-16,-44 L16,-44 M-19,-30 L19,-30" stroke="#e04e39" stroke-width="3"/><path d="M-15,-37 l5,-4 l5,4 l5,-4 l5,4 l5,-4 l5,4" stroke="#2e9d5b" stroke-width="2" fill="none"/></g></g>
-      ${at(214, 206, 1, `<text text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="20" fill="#fff" stroke="#7a1f17" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">La Gaitana</text>`, 's-in', 'animation-delay:.8s')}
+      ${person({ x: 270, y: 428, s: 1.25, skin: '#a96a40', top: '#f1e6c8', dress: true, hair: '#1d120b', hairStyle: 'long', hat: 'feathers', item: 'spear', arm: 'up', act: 'shake', delay: 0 })}
+      <g transform="translate(270 428) scale(1.25)"><g class="pa pa-bob" style="animation-delay:0s"><path d="M-16,-44 L16,-44 M-19,-30 L19,-30" stroke="#e04e39" stroke-width="3"/><path d="M-15,-37 l5,-4 l5,4 l5,-4 l5,4 l5,-4 l5,4" stroke="#2e9d5b" stroke-width="2" fill="none"/></g></g>
+      ${at(206, 216, 1, `<text text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="20" fill="#fff" stroke="#7a1f17" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">La Gaitana</text>`, 's-in', 'animation-delay:.8s')}
       ${[[250, 240, 2.4], [330, 230, 2.7], [180, 250, 3]].map(([x, y, d]) => at(x, y, 1, sparkle(0, 0, 0, '#ffd84a', 1.3), 's-in', `animation-delay:${d}s`)).join('')}`,
   ],
 };

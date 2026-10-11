@@ -23,6 +23,7 @@ window.STORIES.contemporanea = {
     @keyframes st-contemporanea-puff { 0% { opacity: 0; transform: translate(0, 0) scale(.5); } 20% { opacity: .9; } 100% { opacity: 0; transform: translate(14px, -46px) scale(1.6); } }
     .st-contemporanea-hi { transform-box: fill-box; transform-origin: 50% 100%; animation: st-contemporanea-hi .5s ease-in-out infinite alternate; }
     @keyframes st-contemporanea-hi { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
+    @media (prefers-reduced-motion: reduce) { .st-contemporanea-hop, .st-contemporanea-zip, .st-contemporanea-puff, .st-contemporanea-hi { animation: none !important; } }
   `,
   play: [
     // 0 · Revolución francesa: el pueblo celebra en una tarima, alguien escribe los «Derechos» y aparece el lema

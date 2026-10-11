@@ -24,6 +24,7 @@ window.STORIES.precolombina = {
     @keyframes st-precolombina-split-r { to { transform: translate(26px, 18px) rotate(24deg); opacity: 0; } }
     .st-precolombina-fly { animation: st-precolombina-fly .8s ease-out both; opacity: 0; }
     @keyframes st-precolombina-fly { 0% { opacity: 1; transform: translate(0, 0) scale(.6); } 90% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.2); } }
+    @media (prefers-reduced-motion: reduce) { .st-precolombina-dust { animation: none !important; } }
   `,
   play: [
     // 0 · Muiscas y El Dorado: en la balsa, una muisca sopla polvo de oro sobre el nuevo cacique, que queda dorado y navega por Guatavita
