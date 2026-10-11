@@ -117,31 +117,31 @@ window.APP_SCENES = (() => {
       story: [
         // 0 · Toma la forma del vaso: Leo inclina su botella y vierte el agua en el vaso vacío; la botella se vacía y el vaso se llena
         ({ at, person, sparkle }) => {
-          // botella con la mano en (0,0): el cuello apunta hacia arriba; st-tilt la gira para verter
-          const bottle = `<path d="M-10,-24 L-10,18 Q-10,24 -4,24 L4,24 Q10,24 10,18 L10,-24 L4,-30 L4,-40 L-4,-40 L-4,-30Z" fill="#e0f2fe" stroke="#7cc4ea" stroke-width="2.5" stroke-linejoin="round"/>
-            ${at(0, 22, 1, '<rect x="-8" y="-40" width="16" height="40" rx="2" fill="#3b82f6"/>', 'st-shrink', `--sy:0;animation-duration:2.6s;${delay(1.3)}`)}
-            <rect x="-11" y="-8" width="22" height="9" fill="#ffffff" stroke="#7cc4ea" stroke-width="1.5"/>`;
+          // botella agarrada por la base, con la mano en (0,0) y el cuello hacia arriba; st-tilt la gira para verter
+          const bottle = `<path d="M-10,-46 L-10,-6 Q-10,0 -4,0 L4,0 Q10,0 10,-6 L10,-46 L4,-52 L4,-62 L-4,-62 L-4,-52Z" fill="#e0f2fe" stroke="#7cc4ea" stroke-width="2.5" stroke-linejoin="round"/>
+            ${at(0, -2, 1, '<rect x="-8" y="-40" width="16" height="40" rx="2" fill="#3b82f6"/>', 'st-shrink', `--sy:0;animation-duration:2.6s;${delay(1.3)}`)}
+            <rect x="-11" y="-32" width="22" height="9" fill="#ffffff" stroke="#7cc4ea" stroke-width="1.5"/>`;
           return `
           <path d="M620,330 L700,330 L692,420 L628,420Z" fill="#eaf7ff" stroke="#bae6fd" stroke-width="3"/>
           ${at(0, 0, 1, '<path d="M627,374 L693,374 L690,417 L630,417Z" fill="#3b82f6" opacity=".85"/><path d="M628,376 q11,-4 22,0 t22,0 t21,0" stroke="#bfdbfe" stroke-width="2" fill="none"/>', 's-grow', `animation-duration:2.8s;animation-timing-function:ease-in-out;${delay(1.4)}`)}
           ${at(0, 0, 1, '<path d="M470,446 Q478,424 530,423 Q586,422 600,446Z" fill="#6ab85e"/>', 's-fade')}
-          ${at(0, 0, 1, person({ ...kids.leo, x: 546, y: 430, s: 1.45, arm: 'wave', act: 'none' }), 's-fade')}
-          ${at(591, 306, 1.1, bottle, 'st-tilt', `--rot:105deg;animation-duration:1.1s;${delay(0.4)}`)}
-          ${at(0, 0, 1, '<path d="M633,311 Q644,316 646,330 L650,416" pathLength="1" stroke="#3b82f6" stroke-width="6" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:.5s;animation-delay:1.3s"/>', 's-out', delay(4))}
-          ${label(640, 262, '¡La misma agua!', 4.6)}
+          ${at(0, 0, 1, person({ ...kids.leo, x: 534, y: 430, s: 1.45, arm: 'wave', act: 'none' }), 's-fade')}
+          ${at(579, 307, 1, bottle, 'st-tilt', `--rot:100deg;animation-duration:1.1s;${delay(0.4)}`)}
+          ${at(0, 0, 1, '<path d="M640,318 Q648,322 650,334 L652,416" pathLength="1" stroke="#3b82f6" stroke-width="6" fill="none" class="s-draw" style="animation-duration:.5s;animation-delay:1.3s"/>', 's-out', delay(4))}
+          ${label(648, 280, '¡La misma agua!', 4.6)}
           ${[[628, 350, 4.8], [690, 360, 5.1]].map(([x, y, d]) => at(x, y, 1, sparkle(0, 0, 0, '#ffffff', 1.3), 's-in', delay(d))).join('')}`;
         },
         // 1 · El agua fluye: un barquito de papel baja con la corriente desde la cascada hacia el mar; Mía lo señala desde la orilla
         ({ at, person }) => {
-          const path = 'M276,200 Q280,280 282,326 Q290,356 360,362 Q450,368 530,386';
+          const path = 'M276,200 Q280,280 282,326 Q290,356 360,360 Q450,364 514,371';
           const boat = `<path d="M-24,-8 L24,-8 L14,6 L-14,6Z" fill="#fef3c7" stroke="#d97706" stroke-width="2" stroke-linejoin="round"/><path d="M-12,-8 L0,-30 L12,-8Z" fill="#fde68a" stroke="#d97706" stroke-width="2" stroke-linejoin="round"/>`;
           return `
           <path d="${path}" pathLength="1" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:2.4s;animation-delay:.3s"/>
           <path d="${path}" pathLength="1" stroke="#1e3a8a" stroke-width="5" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:2.4s;animation-delay:.3s"/>
-          ${at(532, 386, 1, '<path d="M-14,-12 L6,1 L-12,12" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M-14,-12 L6,1 L-12,12" stroke="#1e3a8a" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>', 's-in', delay(2.6))}
-          ${at(0, 0, 1, person({ ...kids.mia, x: 470, y: 358, s: 1.05, act: 'point' }), 's-from-r')}
-          ${at(410, 368, 1, at(0, 0, 1, boat, 'a-rock'), 'st-move', `--dx:-128px;--dy:-14px;animation-duration:4.2s;animation-timing-function:ease-out;${delay(0.6)}`)}
-          ${label(520, 282, '¡Al mar!', 3.2)}`;
+          ${at(516, 371, 1, '<g transform="rotate(7)" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M-12,-12 L4,0 L-12,12" stroke="#ffffff" stroke-width="11"/><path d="M-12,-12 L4,0 L-12,12" stroke="#1e3a8a" stroke-width="5"/></g>', 's-in', delay(2.6))}
+          ${at(0, 0, 1, person({ ...kids.mia, x: 362, y: 344, s: 1.05, act: 'point' }), 's-from-r')}
+          ${at(430, 367, 1, at(0, 0, 1, boat, 'a-rock'), 'st-move', `--dx:-134px;--dy:-15px;animation-duration:4.2s;animation-timing-function:ease-out;${delay(0.6)}`)}
+          ${label(500, 320, '¡Al mar!', 3.2)}`;
         },
         // 2 · La lluvia: llega una nube gris y llueve; Ana se cubre con su paraguas y a sus pies se forma un charco
         ({ at, person, cloud }) => {
@@ -153,7 +153,7 @@ window.APP_SCENES = (() => {
           ${at(0, 0, 1, [328, 340, 452, 464].map((x, i) => rain(x, 142, 150, -(i * 0.37) % 1)).join('') + [354, 372, 390, 408, 426, 444].map((x, i) => rain(x, 142, 22, -(i * 0.21) % 0.6)).join(''), 's-fade', delay(0.9))}
           ${at(370, 303, 1, '<ellipse rx="46" ry="7" fill="#60a5fa" opacity=".85"/><ellipse cx="-12" cy="-2" rx="16" ry="2.4" fill="#dbeafe"/>', 's-in', `animation-duration:2s;${delay(1.6)}`)}
           ${person({ ...kids.ana, x: 370, y: 302, s: 0.95, arm: 'up', act: 'idle' })}
-          ${at(394, 210, 1, umbrella, 's-in', delay(0.4))}
+          ${at(394, 210, 1, umbrella, 's-in')}
           ${label(250, 292, '¡Agua líquida!', 4.2)}`;
         },
       ],
@@ -176,6 +176,52 @@ window.APP_SCENES = (() => {
         ${[0, 1, 2, 3, 4].map((i) => at(150 + i * 20, 356, 1.1, `<circle r="12" fill="#ffffff"/><circle cx="10" cy="-6" r="9" fill="#ffffff"/>`, 'a-rise', `animation-duration:3.4s;${delay(-i * 0.68)}`)).join('')}
         ${grass(424, 14, '#a3843f', 0, 800)}
         ${[[420, 200], [520, 240], [300, 230]].map(([x, y], i) => sparkle(x, y, i * 0.6, '#ffffff', 1.4)).join('')}`,
+      story: [
+        // 0 · El agua hierve: el termómetro de la olla sube hasta 100 °C, el agua borbotea y sale mucho vapor; Mía, de chef, lo señala
+        ({ at, person }) => {
+          const ticks = [0, 1, 2, 3, 4].map((i) => `<path d="M6,${-i * 20} h6" stroke="#64748b" stroke-width="2"/>`).join('');
+          // la olla se vuelve a dibujar encima del termómetro para que este quede "dentro"
+          const pot = '<path d="M134,372 L246,372 L240,432 Q190,442 140,432Z" fill="#94a3b8"/><rect x="126" y="364" width="128" height="12" rx="6" fill="#64748b"/><path d="M128,388 h-14 M252,388 h14" stroke="#475569" stroke-width="6" stroke-linecap="round"/>';
+          const bubble = '<circle r="7" fill="#eff6ff" stroke="#60a5fa" stroke-width="2.5"/>';
+          const steam = (x, y, d) => at(x, y, 1, '<g fill="#ffffff" stroke="#d6cbff" stroke-width="1.5"><circle r="14"/><circle cx="12" cy="-7" r="10"/></g>', 'a-smoke', `animation-duration:3s;${delay(d)}`);
+          return `
+          ${at(226, 356, 1, `<rect x="-7" y="-96" width="14" height="110" rx="7" fill="#ffffff" stroke="#64748b" stroke-width="2.5"/>${ticks}<rect x="-3" y="-20" width="6" height="30" rx="3" fill="#ef4444"/>${at(0, -18, 1, '<rect x="-3" y="-66" width="6" height="66" rx="3" fill="#ef4444"/>', 's-grow', `animation-duration:2.6s;animation-timing-function:ease-in-out;${delay(0.4)}`)}`, 's-fade')}
+          ${pot}
+          ${[150, 172, 194, 214, 234].map((x, i) => at(x, 364, 0.3, `<g transform="scale(3.3)">${bubble}</g>`, 'a-rise', `animation-duration:1s;${delay(2.6 + i * 0.19)}`)).join('')}
+          ${at(0, 0, 1, [0, 1, 2, 3, 4, 5].map((i) => steam(142 + (i % 3) * 22, 346, -i * 0.5)).join(''), 's-fade', delay(2.8))}
+          ${at(0, 0, 1, person({ ...kids.mia, x: 344, y: 404, s: 1.1, flip: true, hat: 'chef', act: 'point' }), 's-from-r')}
+          ${label(226, 248, '100 °C', 3, '#b91c1c', 20)}
+          ${label(140, 224, '¡Vapor!', 4.2)}`;
+        },
+        // 1 · La evaporación: el sol calienta el charco, el agua sube como vapor y el charco se achica; arriba se forma una nube
+        ({ at, person, hill, lin, cloud }) => {
+          const wisp = '<path d="M0,0 q-7,-10 0,-20 q7,-10 0,-20" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round"/>';
+          return `
+          <defs>${lin('st-ga-ray', [[0, '#fff7c2', 0], [1, '#fde047', 0.55]])}</defs>
+          ${hill(370, '#8fd486', 24)}<path d="M0,410 Q300,392 560,420 Q700,436 800,420 L800,500 L0,500Z" fill="#e7cf9f"/>
+          ${at(0, 0, 1, '<path d="M660,150 L730,150 L650,436 L560,436Z" fill="url(#st-ga-ray)" class="a-glow"/>', 's-fade', delay(0.2))}
+          ${at(600, 446, 1, '<ellipse cy="-16" rx="90" ry="16" fill="#60a5fa"/><ellipse cx="-16" cy="-20" rx="40" ry="5" fill="#bfdbfe"/>', 'st-shrink', `transform-origin:50% 50%;--sx:.22;--sy:.3;animation-duration:4.6s;${delay(0.8)}`)}
+          ${[548, 580, 612, 644].map((x, i) => at(x, 424, 1.2, wisp, 'a-rise', `animation-duration:2.6s;${delay(0.9 + i * 0.5)}`)).join('')}
+          ${[[540, 262], [566, 252], [592, 264], [556, 270], [580, 258]].map(([x, y], i) => at(x, y, 1, '<circle r="10" fill="#ffffff" stroke="#b9a7f5" stroke-width="2"/>', 'st-move', `--dx:${600 - x}px;--dy:${420 - y}px;--s0:.3;animation-duration:2s;${delay(1.2 + i * 0.5)}`)).join('')}
+          ${at(0, 0, 1, cloud(560, 262, 1.05, 1, '', 0, '#ffffff'), 's-in', `animation-duration:1s;${delay(3.6)}`)}
+          ${at(0, 0, 1, person({ ...kids.ana, x: 414, y: 426, s: 1.1, hat: 'straw', arm: 'up', act: 'raise' }), 's-from-l')}
+          ${label(560, 222, '¡Se evapora!', 4.2)}`;
+        },
+        // 2 · Se esparce: de la tetera de Leo sale vapor que se va a todas partes hasta llenar el aire
+        ({ at, person }) => {
+          const kettle = '<path d="M-15,12 Q-16,-4 0,-4 Q16,-4 15,12" stroke="#3a3f5c" stroke-width="3.5" fill="none"/><path d="M16,22 Q30,18 34,6" stroke="#e76f51" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cy="24" rx="21" ry="15" fill="#e76f51"/><ellipse cy="11" rx="10" ry="3.5" fill="#c2553b"/><circle cy="7" r="3" fill="#3a3f5c"/><ellipse cx="-8" cy="20" rx="5" ry="7" fill="#fff" opacity=".35"/>';
+          const puff = '<g fill="#ffffff" stroke="#b9a7f5" stroke-width="2"><circle r="11"/><circle cx="10" cy="-5" r="8"/></g>';
+          const [sx, sy] = [304, 252]; // pico de la tetera
+          const spots = [[340, 230], [372, 170], [404, 260], [430, 110], [446, 196], [480, 250], [500, 140], [526, 200], [380, 95], [536, 96], [470, 290], [410, 140], [330, 140], [530, 280], [356, 280], [488, 80], [276, 178], [210, 140], [296, 100]];
+          return `
+          ${at(0, 0, 1, '<path d="M150,330 Q238,270 330,330Z" fill="#a7e3a0"/>', 's-fade')}
+          ${at(0, 0, 1, person({ ...kids.leo, x: 236, y: 304, s: 1.05, arm: 'out', act: 'none' }), 's-from-l')}
+          ${at(270, 250, 1, kettle, 's-from-l')}
+          ${at(sx, sy, 1, '<path d="M0,0 q-6,-8 0,-16 q6,-8 0,-16" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round"/>', 'a-rise', 'animation-duration:1.6s;animation-delay:1.2s')}
+          ${spots.map(([x, y], i) => at(x, y, 1, at(0, 0, 1, puff, 'a-bob', delay(-i * 0.4)), 'st-move', `--dx:${sx - x}px;--dy:${sy - y}px;--s0:.2;animation-duration:2.4s;${delay(1 + i * 0.2)}`)).join('')}
+          ${label(430, 300, '¡Se esparce!', 4.8)}`;
+        },
+      ],
     },
   };
   return S;
