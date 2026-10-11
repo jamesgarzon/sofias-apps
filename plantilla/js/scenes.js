@@ -1,5 +1,8 @@
-// Escenas SVG de cada tema (viewBox 800×500) y sus puntos ✨ (hs: [x, y] en el mismo viewBox).
+// Escenas SVG de cada tema (viewBox 800×500), sus puntos ✨ (hs: [x, y] en el mismo viewBox) y sus historias
+// (story: una por chispa, en el orden de hs; se reproducen al tocarla — ver «Historias» en kit/v1/README.md).
 // Reglas: hs separados ≥110 unidades, sin tapar caras; lo animado va con at(..., 'a-clase').
+// Historias: con el zoom ×1,9 sobre la chispa (hx, hy) solo se ve x ∈ [0,474·hx, hx + 0,526·(800−hx)] e
+// y ∈ [0,474·hy, hy + 0,526·(500−hy)]; la persona va grande, haciendo la acción, en el centro de esa ventana.
 window.APP_SCENES = (() => {
   const { lin, rad, at, delay, sun, cloud, birds, hill, waves, grass, sparkle, tree } = KitSVG;
 
@@ -17,6 +20,8 @@ window.APP_SCENES = (() => {
   // Cubo de hielo con la base en (0,0): ancho ≈ 34, alto ≈ 38.
   const iceCube = `<g stroke="#5aa9d6" stroke-width="1.5" stroke-linejoin="round"><path d="M-17,-30 L-9,-38 L17,-38 L9,-30Z" fill="#f4fcff"/><path d="M9,-30 L17,-38 L17,-8 L9,0Z" fill="#a9daf6"/><rect x="-17" y="-30" width="26" height="30" fill="#d4f0ff"/></g><path d="M-12,-24 h12 M-12,-18 h6" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>`;
   // Ropa de los niños de las historias (se combinan con { x, y, s, act… } en person()).
+  // Para que sostengan algo propio (cubo, botella, tetera): act 'none' o 'idle' y el objeto dibujado en la mano:
+  // brazo 'out' → (x + 32·s, y − 52·s) · 'up' → (x + 25·s, y − 89·s) · 'wave' → (x + 31·s, y − 85·s) · 'down' → (x ± 22·s, y − 37,5·s).
   const kids = {
     ana: { skin: '#f1c7a5', hair: '#6b3a1e', hairStyle: 'pigtails', top: '#ef476f', bottom: '#3a3f5c', shoe: '#5b3a29' },
     leo: { skin: '#8d5a3b', hair: '#1f140d', top: '#2a9d8f', bottom: '#264653', shoe: '#2b2622' },
@@ -121,6 +126,7 @@ window.APP_SCENES = (() => {
           const bottle = `<path d="M-10,-46 L-10,-6 Q-10,0 -4,0 L4,0 Q10,0 10,-6 L10,-46 L4,-52 L4,-62 L-4,-62 L-4,-52Z" fill="#e0f2fe" stroke="#7cc4ea" stroke-width="2.5" stroke-linejoin="round"/>
             ${at(0, -2, 1, '<rect x="-8" y="-40" width="16" height="40" rx="2" fill="#3b82f6"/>', 'st-shrink', `--sy:0;animation-duration:2.6s;${delay(1.3)}`)}
             <rect x="-11" y="-32" width="22" height="9" fill="#ffffff" stroke="#7cc4ea" stroke-width="1.5"/>`;
+          // el vaso de la escena se tapa con uno vacío para que se vea cómo se llena
           return `
           <path d="M620,330 L700,330 L692,420 L628,420Z" fill="#eaf7ff" stroke="#bae6fd" stroke-width="3"/>
           ${at(0, 0, 1, '<path d="M627,374 L693,374 L690,417 L630,417Z" fill="#3b82f6" opacity=".85"/><path d="M628,376 q11,-4 22,0 t22,0 t21,0" stroke="#bfdbfe" stroke-width="2" fill="none"/>', 's-grow', `animation-duration:2.8s;animation-timing-function:ease-in-out;${delay(1.4)}`)}
@@ -196,6 +202,7 @@ window.APP_SCENES = (() => {
         // 1 · La evaporación: el sol calienta el charco, el agua sube como vapor y el charco se achica; arriba se forma una nube
         ({ at, person, hill, lin, cloud }) => {
           const wisp = '<path d="M0,0 q-7,-10 0,-20 q7,-10 0,-20" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round"/>';
+          // se repinta el suelo (tapa el charco de la escena) y encima va un charco propio que se achica
           return `
           <defs>${lin('st-ga-ray', [[0, '#fff7c2', 0], [1, '#fde047', 0.55]])}</defs>
           ${hill(370, '#8fd486', 24)}<path d="M0,410 Q300,392 560,420 Q700,436 800,420 L800,500 L0,500Z" fill="#e7cf9f"/>
@@ -218,8 +225,8 @@ window.APP_SCENES = (() => {
           ${at(0, 0, 1, person({ ...kids.leo, x: 236, y: 304, s: 1.05, arm: 'out', act: 'none' }), 's-from-l')}
           ${at(270, 250, 1, kettle, 's-from-l')}
           ${at(sx, sy, 1, '<path d="M0,0 q-6,-8 0,-16 q6,-8 0,-16" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round"/>', 'a-rise', 'animation-duration:1.6s;animation-delay:1.2s')}
-          ${spots.map(([x, y], i) => at(x, y, 1, at(0, 0, 1, puff, 'a-bob', delay(-i * 0.4)), 'st-move', `--dx:${sx - x}px;--dy:${sy - y}px;--s0:.2;animation-duration:2.4s;${delay(1 + i * 0.2)}`)).join('')}
-          ${label(430, 300, '¡Se esparce!', 4.8)}`;
+          ${spots.map(([x, y], i) => at(x, y, 1, at(0, 0, 1, puff, 'a-bob', delay(-i * 0.4)), 'st-move', `--dx:${sx - x}px;--dy:${sy - y}px;--s0:.2;animation-duration:2.2s;${delay(1 + i * 0.14)}`)).join('')}
+          ${label(430, 300, '¡Se esparce!', 4.6)}`;
         },
       ],
     },
