@@ -64,7 +64,7 @@ window.STORIES.media = {
       return `
         ${[[276, 422], [298, 418], [320, 422], [286, 404], [308, 402]].map(([x, y], i) => at(x, y, 1, wheat, 's-grow', `animation-delay:${1.4 + i * 0.3}s`)).join('')}
         ${at(0, 0, 1, person({ x: 236, y: 416, s: 1.05, skin: '#e0a57a', top: '#8b6a45', bottom: '#5b4630', hair: '#5a3a22', hat: 'straw', item: 'pouch', act: 'sow', delay: 0 }), 's-from-l')}
-        ${[0, 1, 2, 3].map((i) => at(262 + i * 7, 362, 1, `<circle r="2.4" fill="#f2c14e"/>`, 'a-drip', `animation-duration:1.4s;animation-delay:${0.8 + i * 0.35}s`)).join('')}
+        ${[0, 1, 2, 3].map((i) => at(262 + i * 7, 362, 0.62, `<circle r="3.8" fill="#f2c14e"/>`, 'a-drip', `animation-duration:1.4s;animation-delay:${0.8 + i * 0.35}s`)).join('')}
         ${at(0, 0, 1, person({ x: 436, y: 416, s: 0.98, skin: '#efc39b', top: '#c1c8d3', sleeve: '#aab3bf', bottom: '#8d96a3', armor: true, hat: 'knight', item: 'sword', shield: '#3b5bdb', boots: true, flip: true, act: 'look' }), 's-from-r', 'animation-delay:2.2s')}
         ${label(236, 282, 'Trabajo', '#7a5230', 3.4)}
         ${label(436, 282, 'Protección', '#2f5fb3', 3.8)}
