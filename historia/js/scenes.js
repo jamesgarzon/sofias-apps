@@ -95,6 +95,7 @@ window.SCENES = (() => {
     press: { body: 'pa-press-body', arm: 'pa-press-arm', pose: 'out' },
     hammer: { body: 'pa-bob', arm: 'pa-hammer-arm', pose: 'up', chips: true },
     cook: { body: 'pa-breathe', arm: 'pa-cook-arm', head: 'pa-read-head', pose: 'out', item: 'skewer' },
+    write: { body: 'pa-breathe', arm: 'pa-write-arm', head: 'pa-read-head', pose: 'out', item: 'stylus' },
     sow: { body: 'pa-sow-body', legs: true, arm: 'pa-sow-arm', pose: 'out' },
     point: { body: 'pa-breathe', arm: 'pa-point-arm', head: 'pa-talk-head', pose: 'out' },
   };
@@ -155,6 +156,7 @@ window.SCENES = (() => {
       case 'straw': return `<ellipse cx="0" cy="-99" rx="28" ry="6.5" fill="#e6bd5f"/><path d="M-13,-100 Q-12,-116 0,-116 Q12,-116 13,-100Z" fill="#d9a441"/><rect x="-13" y="-104" width="26" height="3" fill="#a8752a"/>`;
       case 'widebrim': return `<ellipse cx="0" cy="-100" rx="27" ry="5.5" fill="#2b2622"/><path d="M-12,-101 Q-11,-116 0,-116 Q11,-116 12,-101Z" fill="#2b2622"/><path d="M8,-112 Q20,-124 26,-112 Q18,-114 10,-106Z" fill="#fff" opacity=".9"/>`;
       case 'beret': return `<ellipse cx="-2" cy="-100" rx="21" ry="8" fill="${d.hatColor || '#5b2a86'}" transform="rotate(-10 -2 -100)"/><rect x="-3" y="-111" width="4" height="5" rx="2" fill="${d.hatColor || '#5b2a86'}"/>`;
+      case 'laurel': return `<path d="M-19,-90 Q0,-106 19,-90" stroke="#3f7a32" stroke-width="2.4" fill="none"/>${[-16, -10, -4, 4, 10, 16].map((x, i) => `<ellipse cx="${x}" cy="${-95 - (3 - Math.abs(x) / 6)}" rx="5" ry="2.6" fill="${i % 2 ? '#5cae45' : '#3f8a3a'}" transform="rotate(${x < 0 ? -30 : 30} ${x} ${-95 - (3 - Math.abs(x) / 6)})"/>`).join('')}`;
       case 'crown': return `<path d="M-14,-100 L-14,-114 L-7,-106 L0,-117 L7,-106 L14,-114 L14,-100Z" fill="#f5c518"/><circle cx="0" cy="-108" r="2" fill="#e23b3b"/>`;
       case 'scarf': return `<path d="M-20,-86 Q-22,-110 0,-110 Q22,-110 20,-86 Q18,-72 14,-70 Q16,-96 0,-98 Q-16,-96 -14,-70 Q-18,-72 -20,-86Z" fill="${d.scarfColor || '#f2e6d0'}"/>`;
       default: return '';
@@ -177,6 +179,7 @@ window.SCENES = (() => {
       case 'bow': return `<path d="M${hx + 3},${hy - 32} Q${hx + 20},${hy} ${hx + 3},${hy + 32}" stroke="#7a4a22" stroke-width="3" fill="none" stroke-linecap="round"/><line x1="${hx + 3}" y1="${hy - 32}" x2="${hx + 3}" y2="${hy + 32}" stroke="#f1ead8" stroke-width="1"/>`;
       case 'cane': return `<line x1="${hx}" y1="${hy - 4}" x2="${hx + 4}" y2="${hy + 38}" stroke="#2b1d12" stroke-width="2.6"/><circle cx="${hx}" cy="${hy - 5}" r="2.8" fill="#e8b931"/>`;
       case 'ballot': return `<rect x="${hx - 4}" y="${hy - 18}" width="14" height="18" rx="1.5" fill="#fff" stroke="#b9c2d0"/><path d="M${hx - 1},${hy - 9} l3,3 l5,-7" stroke="#2e9d5b" stroke-width="2" fill="none"/>`;
+      case 'stylus': return `<line x1="${hx - 3}" y1="${hy + 3}" x2="${hx + 17}" y2="${hy - 3}" stroke="#c9a46a" stroke-width="3" stroke-linecap="round"/><path d="M${hx + 16},${hy - 5} l5,1 l-4,3Z" fill="#8a6a3a"/>`;
       case 'skewer': return `<line x1="${hx - 6}" y1="${hy + 3}" x2="${hx + 50}" y2="${hy + 13}" stroke="#7a5230" stroke-width="3" stroke-linecap="round"/><ellipse cx="${hx + 36}" cy="${hy + 10}" rx="10" ry="7.5" fill="#9a4a2a" transform="rotate(10 ${hx + 36} ${hy + 10})"/><ellipse cx="${hx + 33}" cy="${hy + 7}" rx="4" ry="2.4" fill="#d27a4e" opacity=".8"/>`;
       case 'torch': return `<line x1="${hx}" y1="${hy + 4}" x2="${hx}" y2="${hy - 24}" stroke="#6b4423" stroke-width="4" stroke-linecap="round"/>${at(hx, hy - 24, 1, `<path d="M-6,0 Q-8,-12 0,-22 Q8,-12 6,0Z" fill="#ffb52e"/><path d="M-3,0 Q-3,-8 0,-13 Q3,-8 3,0Z" fill="#fff1a0"/>`, 'a-flicker')}`;
       default: return '';
@@ -390,11 +393,12 @@ window.SCENES = (() => {
       const x = 624 + c * 13 + (r % 2) * 4, y = 400 + r * 13;
       return (r * 5 + c) % 3 === 0 ? `<path d="M${x},${y} l8,0 l-4,7Z"/>` : `<path d="M${x},${y} l3,-1 l1,8 l-2,0Z"/><path d="M${x + 4},${y + 1} l6,0 l-3,4Z"/>`;
     }).join('')).join('')}</g>
+    ${person({ x: 576, y: 479, s: 0.95, skin: '#c58a5c', top: '#e4d3a8', dress: true, hair: '#1b1209', belt: '#3f6db3', shoe: '#7a5230', act: 'write' })}
     <!-- columna rota (fin de Roma) -->
     ${at(748, 470, 1, `<rect x="-34" y="-14" width="60" height="16" rx="8" fill="#efe6d6" transform="rotate(-8)"/><path d="M26,-22 L30,-8 L22,-6Z" fill="#d8ccb5"/><rect x="-44" y="-4" width="20" height="10" rx="3" fill="#e2d6c0"/>`)}
     `;
   };
-  HS.antigua = [[652, 430], [234, 228], [236, 368], [662, 262], [452, 270]];
+  HS.antigua = [[652, 454], [234, 228], [236, 368], [662, 262], [452, 270]];
 
   // ================= EDAD MEDIA =================
   S.media = () => {
