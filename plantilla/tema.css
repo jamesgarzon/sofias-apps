@@ -15,3 +15,16 @@ body[data-k-theme="light"] {
 .termo-panel p { margin-top: 8px; line-height: 1.4; }
 .termo input[type="range"] { width: 100%; margin-top: 16px; height: 44px; accent-color: var(--tc); }
 .termo-scale { display: flex; justify-content: space-between; font-size: .85rem; color: var(--k-ink-2); }
+
+/* ===== Historias de las chispas (story en js/scenes.js): animaciones propias, prefijo st- =====
+   Como las s-* del kit, se disparan una vez y se quedan en su estado final (fill both).
+   Se ajustan con variables CSS en el style: at(x, y, 1, dibujo, 'st-move', '--dx:-120px;--dy:30px;animation-delay:1s'). */
+/* st-move: llega deslizando desde (--dx, --dy) hasta donde está dibujado (barco río abajo, vapor que se esparce) */
+.st-move { transform-box: fill-box; transform-origin: 50% 50%; animation: st-move 2s ease-in-out both; }
+@keyframes st-move { from { transform: translate(var(--dx, 0), var(--dy, 0)) scale(var(--s0, 1)); opacity: 0; } 20% { opacity: 1; } }
+/* st-shrink: se encoge hacia abajo hasta --sx × --sy (el hielo que se derrite, el charco que se evapora) */
+.st-shrink { transform-box: fill-box; transform-origin: 50% 100%; animation: st-shrink 3s ease-in-out both; }
+@keyframes st-shrink { to { transform: scale(var(--sx, 1), var(--sy, 0)); opacity: var(--o1, 1); } }
+/* st-tilt: gira --rot alrededor del (0,0) del dibujo (inclinar la botella para verter) */
+.st-tilt { transform-box: view-box; transform-origin: 0 0; animation: st-tilt 1s ease-in-out both; }
+@keyframes st-tilt { to { transform: rotate(var(--rot, 90deg)); } }

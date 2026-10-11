@@ -10,6 +10,19 @@ window.APP_SCENES = (() => {
     <ellipse cx="-9" cy="0" rx="9" ry="4" fill="#f59e0b"/><ellipse cx="9" cy="0" rx="9" ry="4" fill="#f59e0b"/>`;
   const flake = (x, y, s, d) => at(x, y, s, `<g stroke="#7cc4ea" stroke-width="2.4" stroke-linecap="round">${[0, 60, 120].map((a) => `<path d="M0,-9 V9 M-4,-6 L0,-9 L4,-6 M-4,6 L0,9 L4,6" transform="rotate(${a})"/>`).join('')}</g>`, 'a-drip', `animation-duration:${5 + (d % 3)}s;${delay(-d)}`);
 
+  // ---------- piezas de las historias (story): se reproducen al tocar cada chispa ----------
+  // Etiqueta corta (1–2 palabras) que aparece con rebote; el borde blanco la hace legible sobre cualquier fondo.
+  const label = (x, y, t, d, fill = '#0c4a6e', size = 19) => at(x, y, 1, `<text text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="${size}" fill="${fill}" stroke="#fff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">${t}</text>`, 's-in', delay(d));
+  const drop = (c = '#3b82f6') => `<path d="M0,-8 Q-6,1 0,5 Q6,1 0,-8Z" fill="${c}"/>`;
+  // Cubo de hielo con la base en (0,0): ancho ≈ 34, alto ≈ 38.
+  const iceCube = `<g stroke="#5aa9d6" stroke-width="1.5" stroke-linejoin="round"><path d="M-17,-30 L-9,-38 L17,-38 L9,-30Z" fill="#f4fcff"/><path d="M9,-30 L17,-38 L17,-8 L9,0Z" fill="#a9daf6"/><rect x="-17" y="-30" width="26" height="30" fill="#d4f0ff"/></g><path d="M-12,-24 h12 M-12,-18 h6" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>`;
+  // Ropa de los niños de las historias (se combinan con { x, y, s, act… } en person()).
+  const kids = {
+    ana: { skin: '#f1c7a5', hair: '#6b3a1e', hairStyle: 'pigtails', top: '#ef476f', bottom: '#3a3f5c', shoe: '#5b3a29' },
+    leo: { skin: '#8d5a3b', hair: '#1f140d', top: '#2a9d8f', bottom: '#264653', shoe: '#2b2622' },
+    mia: { skin: '#c68a5e', hair: '#2b1b12', hairStyle: 'long', dress: true, top: '#ffb703', shoe: '#7a4f28' },
+  };
+
   const S = {
     solido: {
       hs: [[600, 250], [300, 120], [168, 372]],
@@ -28,6 +41,57 @@ window.APP_SCENES = (() => {
         ${at(330, 452, 1, penguin, 'a-bob')}${at(400, 460, 0.7, penguin, 'a-bob', delay(-0.8))}
         ${at(300, 120, 2.4, `<circle r="13" fill="#fff" opacity=".7"/><g stroke="#38a3e0" stroke-width="2.4" stroke-linecap="round">${[0, 60, 120].map((a) => `<path d="M0,-9 V9 M-4,-6 L0,-9 L4,-6 M-4,6 L0,9 L4,6" transform="rotate(${a})"/>`).join('')}</g>`, 'a-spin-slow')}
         ${[[60, 30], [200, 10], [470, 40], [560, 0], [720, 20], [140, 150], [520, 150], [760, 180]].map(([x, y], i) => flake(x, y, 0.8 + (i % 3) * 0.3, i)).join('')}`,
+      // Historias: una por chispa, en el orden de hs. Solo se ve la ventana del zoom alrededor de la chispa.
+      story: [
+        // 0 · El hielo: dos niños en un témpano; Ana sostiene un cubo de hielo con las manos y Leo golpea un bloque: ¡toc, toc, es duro!
+        ({ at, person, sparkle }) => {
+          const block = `<g stroke="#4a9bd0" stroke-width="2" stroke-linejoin="round"><path d="M0,-74 L12,-84 L60,-84 L48,-74Z" fill="#eefaff"/><path d="M48,-74 L60,-84 L60,-10 L48,0Z" fill="#8ccbf0"/><rect y="-74" width="48" height="74" fill="#bfe6ff"/></g><path d="M9,-62 v36 M17,-64 v16" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
+          const mitten = (x) => `<circle cx="${x}" cy="-37.5" r="6" fill="#ffd166" stroke="#e0a526" stroke-width="1.5"/>`;
+          // astillas de hielo al ritmo del golpe: usan la misma animación que las del kit (pa-chip) y el mismo delay que Leo (0)
+          const chips = [[-14, -26], [10, -30], [22, -10]].map(([dx, dy]) => `<path d="M0,-4 L4,0 L0,4 L-4,0Z" fill="#5aa9d6" class="pa pa-chip" style="animation-delay:0s;--dx:${dx}px;--dy:${dy}px"/>`).join('');
+          return `
+          ${at(452, 362, 1, `<ellipse rx="156" ry="15" fill="#f4fbff" stroke="#9fd3f2" stroke-width="2"/><path d="M-144,6 Q0,24 144,6 Q120,20 0,22 Q-120,20 -144,6Z" fill="#7cc4ea" opacity=".6"/>`, 's-fade')}
+          ${at(520, 356, 1, block, 's-drop', delay(0.3))}
+          ${at(0, 0, 1, person({ ...kids.leo, x: 478, y: 356, s: 1.1, item: 'stone', act: 'hammer', delay: 0 }), 's-from-l', delay(0.5))}
+          ${at(526, 283, 1, chips, 's-fade', delay(1.9))}
+          ${at(368, 356, 1.15, `${person({ ...kids.ana })}${at(2, -22, 1.15, iceCube)}${mitten(-22)}${mitten(22)}`, 's-from-l')}
+          ${label(552, 254, '¡Duro!', 2.2)}
+          ${label(368, 212, 'Forma propia', 3.4)}
+          ${[[328, 298, 3.6], [416, 292, 3.9], [420, 336, 4.2]].map(([x, y, d]) => at(x, y, 1, sparkle(0, 0, 0, '#ffffff', 1.4), 's-in', delay(d))).join('')}`;
+        },
+        // 1 · La nieve: Mía atrapa copos con la mano y cada uno sale en grande, como con lupa: ¡ninguno es igual!
+        ({ at, person }) => {
+          const six = (f) => [0, 60, 120, 180, 240, 300].map((a) => `<g transform="rotate(${a})">${f}</g>`).join('');
+          const crystals = [
+            six('<path d="M0,0 V-24 M0,-10 L-7,-16 M0,-10 L7,-16 M0,-17 L-5,-22 M0,-17 L5,-22"/>'),
+            `<path d="M0,-22 L19,-11 L19,11 L0,22 L-19,11 L-19,-11Z" fill="#dff3ff"/><path d="M0,-12 L10,-6 L10,6 L0,12 L-10,6 L-10,-6Z"/>${six('<path d="M0,0 V-12"/>')}`,
+            six('<path d="M0,0 V-16"/><path d="M0,-16 L-6,-22 L0,-26 L6,-22Z" fill="#dff3ff"/>'),
+          ];
+          const lens = (c) => `<circle r="34" fill="#ffffff" stroke="#7cc4ea" stroke-width="3.5"/><g stroke="#2b8fd0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">${c}</g>`;
+          const tiny = `<g stroke="#2b8fd0" stroke-width="2.6" stroke-linecap="round">${six('<path d="M0,0 V-9"/>')}</g>`;
+          const [hx, hy] = [256, 236]; // la mano de Mía (brazo 'out')
+          return `
+          ${at(0, 0, 1, `<path d="M130,330 Q150,288 230,286 Q320,284 360,330Z" fill="#ffffff"/><path d="M150,312 Q240,300 340,316" stroke="#cfe8f8" stroke-width="3" fill="none"/>`, 's-fade')}
+          ${[[180, 80], [250, 60], [330, 175], [420, 70], [510, 90], [460, 230], [200, 150], [540, 200]].map(([x, y], i) => flake(x, y, 0.9, i * 0.7)).join('')}
+          ${at(0, 0, 1, person({ ...kids.mia, x: 222, y: 292, s: 1.05, arm: 'out', act: 'warm' }), 's-from-l')}
+          ${[[388, 112], [484, 168], [392, 228]].map(([x, y], i) => `
+            ${at(hx, hy - 6, 1, at(0, 0, 1, tiny, 's-out', delay(1.6 + i * 1.3)), 's-drop', delay(0.7 + i * 1.3))}
+            ${at(x, y, 1, lens(crystals[i]), 'st-move', `--dx:${hx - x}px;--dy:${hy - y}px;--s0:.15;animation-duration:1s;${delay(1.6 + i * 1.3)}`)}`).join('')}
+          ${label(440, 292, '¡Ninguno es igual!', 5)}`;
+        },
+        // 2 · Se derrite: el sol calienta el cubo de hielo en la mano de Ana; se encoge, gotea y queda un charco (fusión)
+        ({ at, person, rad, lin }) => `
+          <defs>${rad('st-so-warm', [[0, '#ffd166', 0.75], [1, '#ffd166', 0]])}${lin('st-so-ray', [[0, '#fff3b0', 0], [1, '#ffd166', 0.6]])}</defs>
+          ${at(0, 0, 1, `<path d="M70,150 L150,150 L292,330 L254,344Z" fill="url(#st-so-ray)" class="a-glow"/>`, 's-fade', delay(0.2))}
+          ${at(270, 330, 1, '<circle r="44" fill="url(#st-so-warm)"/>', 's-fade', delay(0.6))}
+          ${person({ ...kids.ana, x: 232, y: 410, s: 1.05, arm: 'out' })}
+          ${at(268, 352, 1.3, iceCube, 'st-shrink', `--sx:.5;--sy:0;--o1:0;animation-duration:3.4s;${delay(1)}`)}
+          ${at(268, 354, 1, '<ellipse rx="10" ry="3.5" fill="#60a5fa"/>', 's-in', delay(2.6))}
+          ${[0, 0.7, 1.4].map((d) => at(268, 360, 0.55, drop('#3b82f6'), 'a-drip', `animation-duration:2.1s;${delay(1.6 + d)}`)).join('')}
+          ${at(268, 414, 1, '<ellipse rx="30" ry="7" fill="#93c5fd" stroke="#60a5fa" stroke-width="2"/><ellipse cx="-8" cy="-2" rx="10" ry="2" fill="#dbeafe"/>', 's-in', `animation-duration:1.6s;${delay(2.2)}`)}
+          ${label(372, 236, 'Fusión', 4.2, '#0c4a6e', 26)}
+          ${at(372, 264, 1, `<g font-family="Fredoka, sans-serif" font-weight="600" font-size="16" text-anchor="middle" stroke="#fff" stroke-width="5" stroke-linejoin="round" paint-order="stroke"><text x="-36" fill="#0369a1">hielo</text><text fill="#0c4a6e">→</text><text x="36" fill="#2563eb">agua</text></g>`, 's-in', delay(4.6))}`,
+      ],
     },
     liquido: {
       hs: [[660, 380], [330, 290], [150, 120]],
@@ -50,6 +114,49 @@ window.APP_SCENES = (() => {
         <path d="M620,330 L700,330 L692,420 L628,420Z" fill="url(#li-glass)" stroke="#bae6fd" stroke-width="3"/>
         <path d="M624,366 L696,366 L692,420 L628,420Z" fill="#3b82f6" opacity=".75"/>${at(0, 0, 1, `<path d="M626,368 q12,-5 24,0 t24,0 t24,0" stroke="#bfdbfe" stroke-width="2" fill="none"/>`, 'a-bob')}
         <path d="M708,340 L708,322 L716,314 L716,300 L728,300 L728,314 L736,322 L736,420 L708,420Z" fill="url(#li-glass)" stroke="#bae6fd" stroke-width="3"/><path d="M709,380 L735,380 L735,419 L709,419Z" fill="#3b82f6" opacity=".75"/>`,
+      story: [
+        // 0 · Toma la forma del vaso: Leo inclina su botella y vierte el agua en el vaso vacío; la botella se vacía y el vaso se llena
+        ({ at, person, sparkle }) => {
+          // botella con la mano en (0,0): el cuello apunta hacia arriba; st-tilt la gira para verter
+          const bottle = `<path d="M-10,-24 L-10,18 Q-10,24 -4,24 L4,24 Q10,24 10,18 L10,-24 L4,-30 L4,-40 L-4,-40 L-4,-30Z" fill="#e0f2fe" stroke="#7cc4ea" stroke-width="2.5" stroke-linejoin="round"/>
+            ${at(0, 22, 1, '<rect x="-8" y="-40" width="16" height="40" rx="2" fill="#3b82f6"/>', 'st-shrink', `--sy:0;animation-duration:2.6s;${delay(1.3)}`)}
+            <rect x="-11" y="-8" width="22" height="9" fill="#ffffff" stroke="#7cc4ea" stroke-width="1.5"/>`;
+          return `
+          <path d="M620,330 L700,330 L692,420 L628,420Z" fill="#eaf7ff" stroke="#bae6fd" stroke-width="3"/>
+          ${at(0, 0, 1, '<path d="M627,374 L693,374 L690,417 L630,417Z" fill="#3b82f6" opacity=".85"/><path d="M628,376 q11,-4 22,0 t22,0 t21,0" stroke="#bfdbfe" stroke-width="2" fill="none"/>', 's-grow', `animation-duration:2.8s;animation-timing-function:ease-in-out;${delay(1.4)}`)}
+          ${at(0, 0, 1, '<path d="M470,446 Q478,424 530,423 Q586,422 600,446Z" fill="#6ab85e"/>', 's-fade')}
+          ${at(0, 0, 1, person({ ...kids.leo, x: 546, y: 430, s: 1.45, arm: 'wave', act: 'none' }), 's-fade')}
+          ${at(591, 306, 1.1, bottle, 'st-tilt', `--rot:105deg;animation-duration:1.1s;${delay(0.4)}`)}
+          ${at(0, 0, 1, '<path d="M633,311 Q644,316 646,330 L650,416" pathLength="1" stroke="#3b82f6" stroke-width="6" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:.5s;animation-delay:1.3s"/>', 's-out', delay(4))}
+          ${label(640, 262, '¡La misma agua!', 4.6)}
+          ${[[628, 350, 4.8], [690, 360, 5.1]].map(([x, y, d]) => at(x, y, 1, sparkle(0, 0, 0, '#ffffff', 1.3), 's-in', delay(d))).join('')}`;
+        },
+        // 1 · El agua fluye: un barquito de papel baja con la corriente desde la cascada hacia el mar; Mía lo señala desde la orilla
+        ({ at, person }) => {
+          const path = 'M276,200 Q280,280 282,326 Q290,356 360,362 Q450,368 530,386';
+          const boat = `<path d="M-24,-8 L24,-8 L14,6 L-14,6Z" fill="#fef3c7" stroke="#d97706" stroke-width="2" stroke-linejoin="round"/><path d="M-12,-8 L0,-30 L12,-8Z" fill="#fde68a" stroke="#d97706" stroke-width="2" stroke-linejoin="round"/>`;
+          return `
+          <path d="${path}" pathLength="1" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:2.4s;animation-delay:.3s"/>
+          <path d="${path}" pathLength="1" stroke="#1e3a8a" stroke-width="5" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:2.4s;animation-delay:.3s"/>
+          ${at(532, 386, 1, '<path d="M-14,-12 L6,1 L-12,12" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M-14,-12 L6,1 L-12,12" stroke="#1e3a8a" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>', 's-in', delay(2.6))}
+          ${at(0, 0, 1, person({ ...kids.mia, x: 470, y: 358, s: 1.05, act: 'point' }), 's-from-r')}
+          ${at(410, 368, 1, at(0, 0, 1, boat, 'a-rock'), 'st-move', `--dx:-128px;--dy:-14px;animation-duration:4.2s;animation-timing-function:ease-out;${delay(0.6)}`)}
+          ${label(520, 282, '¡Al mar!', 3.2)}`;
+        },
+        // 2 · La lluvia: llega una nube gris y llueve; Ana se cubre con su paraguas y a sus pies se forma un charco
+        ({ at, person, cloud }) => {
+          // gota que cae `fall` unidades (a-drip baja 90: se escala el recorrido y se compensa el tamaño de la gota)
+          const rain = (x, y, fall, d) => at(x, y, fall / 90, `<g transform="scale(${(90 / fall).toFixed(2)})">${drop('#2563eb')}</g>`, 'a-drip', `animation-duration:${(0.5 + fall / 220).toFixed(2)}s;${delay(d)}`);
+          const umbrella = `<path d="M-50,0 Q-48,-38 0,-40 Q48,-38 50,0 Q38,-8 25,0 Q12,-8 0,0 Q-12,-8 -25,0 Q-38,-8 -50,0Z" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2" stroke-linejoin="round"/><path d="M0,-40 Q-14,-20 -25,0 M0,-40 Q14,-20 25,0" stroke="#6d28d9" stroke-width="1.5" fill="none"/><path d="M0,-40 V-46" stroke="#6d28d9" stroke-width="3" stroke-linecap="round"/><path d="M0,0 V58 Q0,66 -7,64" stroke="#4c1d95" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+          return `
+          ${at(0, 0, 1, cloud(392, 116, 1.35, 1, '', 0, '#8494aa'), 's-from-r')}
+          ${at(0, 0, 1, [328, 340, 452, 464].map((x, i) => rain(x, 142, 150, -(i * 0.37) % 1)).join('') + [354, 372, 390, 408, 426, 444].map((x, i) => rain(x, 142, 22, -(i * 0.21) % 0.6)).join(''), 's-fade', delay(0.9))}
+          ${at(370, 303, 1, '<ellipse rx="46" ry="7" fill="#60a5fa" opacity=".85"/><ellipse cx="-12" cy="-2" rx="16" ry="2.4" fill="#dbeafe"/>', 's-in', `animation-duration:2s;${delay(1.6)}`)}
+          ${person({ ...kids.ana, x: 370, y: 302, s: 0.95, arm: 'up', act: 'idle' })}
+          ${at(394, 210, 1, umbrella, 's-in', delay(0.4))}
+          ${label(250, 292, '¡Agua líquida!', 4.2)}`;
+        },
+      ],
     },
     gaseoso: {
       hs: [[190, 330], [600, 386], [330, 120]],
