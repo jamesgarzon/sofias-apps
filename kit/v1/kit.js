@@ -512,6 +512,8 @@ window.Kit = (() => {
         if (wr.top < 0 || wr.bottom > innerHeight * 0.5) scrollTo({ top: Math.max(0, scrollY + wr.top - 12), behavior: REDUCED ? 'auto' : 'smooth' });
         $('.scene-tip', v)?.remove();
         zoom.style.transformOrigin = `${x / 8}% ${y / 5}%`; zoom.style.transform = 'scale(1.9)'; layer.classList.add('hide');
+        const story = SC[id]?.story?.[k]; // historia animada de esta chispa (opcional): se inserta encima de la escena
+        if (story) $('.scene-svg', zoom)?.insertAdjacentHTML('beforeend', `<g class="story">${story(window.KitSVG)}</g>`);
         openOverlay(`<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetT" style="--era:${e.color}">
             ${first ? '<div class="reward">+1 ⭐</div>' : ''}<div class="sheet-emoji">${h.emoji}</div><h3 id="sheetT">${h.title}</h3><p>${h.text}</p>
             ${h.photo ? `<figure><img src="${esc(h.photo.src)}" alt="${esc(h.title)}" loading="lazy"><figcaption>${esc(h.photo.credit)}</figcaption></figure>` : ''}
@@ -519,6 +521,7 @@ window.Kit = (() => {
           light: true,
           onClose: () => {
             stopVoice(); zoom.style.transform = ''; layer.classList.remove('hide');
+            $$('.story', zoom).forEach((n) => n.remove());
             const b = $(`.hs[data-hs="${k}"]`, layer); if (b) { b.classList.add('seen'); $('span', b).textContent = '✓'; }
             renderCard();
             if (justDone) setTimeout(() => stampCeremony(id), 450);

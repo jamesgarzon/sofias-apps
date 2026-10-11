@@ -520,7 +520,55 @@ h1, h2, h3 { font-family: var(--k-font-h); }
 @keyframes pa-walk-body { to { transform: translateY(-3px); } }
 .pa-pull-body { animation: pa-pull-body .7s ease-in-out infinite alternate; }
 @keyframes pa-pull-body { from { transform: rotate(10deg); } to { transform: rotate(14deg) translateY(-2px); } }
-@media (prefers-reduced-motion: reduce) { .pa { animation: none !important; } .pa-dirt, .pa-clash { opacity: 0; } }
+/* más acciones: pintar con palito, estampar, tallar (con astillas), sembrar, señalar, asar */
+.pa-dab-arm { animation: pa-dab-arm 1s ease-in-out infinite; }
+@keyframes pa-dab-arm { 0%, 100% { transform: rotate(-6deg); } 25% { transform: rotate(6deg); } 50% { transform: rotate(-3deg); } 75% { transform: rotate(8deg); } }
+.pa-press-arm { animation: pa-press-arm 1.2s ease-in-out infinite; }
+@keyframes pa-press-arm { 0%, 100% { transform: rotate(12deg); } 45%, 60% { transform: rotate(-35deg); } }
+.pa-press-body { animation: pa-press-body 1.2s ease-in-out infinite; }
+@keyframes pa-press-body { 45%, 60% { transform: translateX(3px) rotate(2deg); } }
+.pa-hammer-arm { animation: pa-hammer-arm .8s infinite; }
+.pa-chip { animation: pa-chip .8s ease-out infinite; opacity: 0; }
+@keyframes pa-chip { 0%, 42% { opacity: 0; transform: translate(0, 0) scale(.5); } 46% { opacity: 1; transform: translate(0, 0) scale(1.2); } 85% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1); } 100% { opacity: 0; } }
+.pa-cook-arm { animation: pa-cook-arm 1.6s ease-in-out infinite alternate; }
+@keyframes pa-cook-arm { from { transform: rotate(-5deg); } to { transform: rotate(6deg); } }
+@keyframes pa-hammer-arm { 0%, 100% { transform: rotate(-25deg); animation-timing-function: cubic-bezier(.6, 0, 1, 1); } 45% { transform: rotate(55deg); animation-timing-function: ease-out; } }
+.pa-sow-arm { animation: pa-sow-arm 1.4s ease-in-out infinite; }
+@keyframes pa-sow-arm { 0%, 100% { transform: rotate(-35deg); } 50% { transform: rotate(25deg); } }
+.pa-sow-body { animation: pa-walk-body .35s ease-in-out infinite alternate; }
+.pa-point-arm { animation: pa-point-arm 2s ease-in-out infinite; }
+@keyframes pa-point-arm { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(-16deg); } }
+@media (prefers-reduced-motion: reduce) { .pa { animation: none !important; } .pa-dirt, .pa-chip, .pa-clash { opacity: 0; } }
+
+/* ===== Historias: escena animada al tocar una chispa (story en js/scenes.js) =====
+   Se insertan al abrir el dato y se borran al cerrarlo, así que empiezan desde cero cada vez.
+   Uso: at(x, y, s, dibujo, 's-in', 'animation-delay:1.2s'). Terminan quietas en su estado final
+   (fill both); lo que deba seguir moviéndose usa las clases a-* o personajes con act. */
+.story { animation: s-fade .35s ease-out both; }
+.s-in, .s-stamp, .s-grow, .s-out { transform-box: fill-box; transform-origin: 50% 50%; }
+.s-in { animation: s-in .55s cubic-bezier(.3, 1.6, .5, 1) both; }
+@keyframes s-in { from { opacity: 0; transform: scale(.3); } }
+.s-fade { animation: s-fade .7s ease-out both; }
+@keyframes s-fade { from { opacity: 0; } }
+.s-stamp { animation: s-stamp .4s ease-out both; }
+@keyframes s-stamp { 0% { opacity: 0; transform: scale(1.7); } 60% { opacity: 1; transform: scale(.9); } 100% { opacity: 1; transform: scale(1); } }
+.s-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: s-draw 1.8s ease-in-out both; }
+@keyframes s-draw { to { stroke-dashoffset: 0; } }
+.s-grow { transform-origin: 50% 100%; animation: s-grow 1s cubic-bezier(.3, 1.4, .5, 1) both; }
+@keyframes s-grow { from { transform: scaleY(0); opacity: 0; } 20% { opacity: 1; } }
+.s-from-l { animation: s-from-l 1.4s ease-out both; }
+@keyframes s-from-l { from { transform: translateX(-180px); opacity: 0; } 25% { opacity: 1; } }
+.s-from-r { animation: s-from-r 1.4s ease-out both; }
+@keyframes s-from-r { from { transform: translateX(180px); opacity: 0; } 25% { opacity: 1; } }
+.s-drop { animation: s-drop .9s cubic-bezier(.5, 0, .7, 1.4) both; }
+@keyframes s-drop { from { transform: translateY(-80px); opacity: 0; } 30% { opacity: 1; } }
+.s-up { animation: s-up 1.4s ease-out both; }
+@keyframes s-up { from { transform: translateY(50px); opacity: 0; } }
+.s-out { animation: s-out .6s ease-in both; }
+@keyframes s-out { to { opacity: 0; transform: scale(.6); } }
+.s-flash { animation: s-flash .9s ease-out both; }
+@keyframes s-flash { 0% { opacity: 0; } 20% { opacity: 1; } 100% { opacity: 0; } }
+
 
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) {

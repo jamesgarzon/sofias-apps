@@ -60,7 +60,10 @@
     read: ['Leer', { item: 'book', arm: 'out', top: '#6b4a2b', dress: true }], look: ['Mirar a los lados', { top: '#a855f7' }], angry: ['Negar enojado', { top: '#64748b', arm: 'out' }],
     warm: ['Calentarse las manos', { arm: 'out', top: '#a46a32' }], shake: ['Blandir la lanza', { item: 'spear', arm: 'up', top: '#8a5a2b' }], row: ['Remar', { top: '#0891b2' }],
     vote: ['Votar', { item: 'ballot', arm: 'out', top: '#e05297', dress: true, hairStyle: 'long' }], walk: ['Caminar', { top: '#16a34a', hat: 'cap' }],
-    pull: ['Jalar una cuerda', { top: '#b07a4a', bottom: '#f4efe2' }], paint: ['Pintar', { hat: 'beret', top: '#7a2e3a', dress: true }] };
+    pull: ['Jalar una cuerda', { top: '#b07a4a', bottom: '#f4efe2' }], paint: ['Pintar', { hat: 'beret', top: '#7a2e3a', dress: true }],
+    dab: ['Pintar en la pared', { item: 'stick', itemColor: '#c0452b', top: '#a46a32', dress: true, hairStyle: 'long' }], press: ['Estampar la mano', { top: '#8a5a2b' }],
+    hammer: ['Tallar una piedra', { item: 'stone', top: '#d0a36a', hairStyle: 'curly' }], sow: ['Sembrar', { item: 'pouch', hat: 'straw', top: '#a46a32' }],
+    point: ['Señalar', { top: '#0ea5e9' }], cook: ['Asar en el fuego', { top: '#f59e0b', dress: true, hairStyle: 'long' }] };
   const mini = (inner, vb = '-60 -150 120 158') => `<svg viewBox="${vb}"><rect x="-200" y="0" width="400" height="20" fill="#9bd38a"/>${inner}</svg>`;
   document.getElementById('acts').innerHTML =
     `<div class="act-card wide">${mini(S.person({ x: -38, hat: 'knight', armor: true, top: '#c1c8d3', item: 'sword', shield: '#3b5bdb', boots: true, act: 'fight', delay: 0 }) + S.person({ x: 50, hat: 'knight', armor: true, top: '#b9a9a9', item: 'sword', shield: '#c62828', boots: true, flip: true, act: 'fight', delay: 0 }) + S.clash(6, -78, 0.8), '-110 -150 220 158')}<b>Luchar</b><code>act: 'fight', delay: 0 · clash()</code></div>` +

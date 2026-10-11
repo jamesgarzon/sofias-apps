@@ -8,7 +8,7 @@ Apps educativas para Sofía (≈8 años). Hub en `index.html`, desplegado en Git
 
 - **Kit compartido** `kit/v1/` (API y esquema en `kit/v1/README.md`): pantallas, juegos, sonido, voz, estrellas, pasaporte y Cronos. Cada app = `js/data.js` (contenido) + `js/scenes.js` (escenas) + `tema.css` (estética). Se empieza copiando `plantilla/`.
 - **Estructura**: una carpeta por app con `index.html`, `tema.css`, `js/`, `audio/` (y `img/` si hay fotos). HTML/CSS/JS vanilla, sin frameworks, sin build, sin npm. Google Fonts permitido (Fredoka + Nunito).
-- **Aprende**: escenas **ilustradas en SVG y animadas**, propias de cada tema, con chispas ✨ que hacen zoom al dato, lo leen en voz alta y dan un sello 🛂 al completar el tema.
+- **Aprende**: escenas **ilustradas en SVG y animadas**, propias de cada tema, con personajes haciendo cosas, y chispas ✨ que hacen zoom al dato, reproducen una **historia animada** que lo muestra sucediendo (`story`), lo leen en voz alta y dan un sello 🛂 al completar el tema.
 - **Juegos**: los del kit (Quiz con explicación, Ordena arrastrando, Portales para clasificar, Memoria) y, si aporta, una pantalla propia interactiva.
 - **Guía**: Cronos, el búho, con el disfraz de la materia (`meta.costume`); el mismo personaje en todas las apps.
 - **Diseño**: cada app con estética propia (paleta, escenas, tema claro u oscuro); mobile-first (teléfono/tablet), botones ≥44 px, contraste suficiente, funciona sin sonido y respeta «reducir movimiento».

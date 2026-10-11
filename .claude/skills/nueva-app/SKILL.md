@@ -26,6 +26,7 @@ cp -r plantilla <app>      # nombre corto, en minúsculas
 - Una escena por tema en `js/scenes.js`, viewBox 800×500, con capas (cielo → fondo → medio → primer plano) y 3–6 elementos animados.
 - Usa `KitSVG` (personas, nubes, árboles, banderas…) y dibuja a mano lo característico del tema.
 - **Los personajes deben estar haciendo algo** propio del tema con `person({ act })`: campesinos cavando, caballeros luchando, gente celebrando, alguien leyendo o pintando. Revisa la pose congelando la animación en varios instantes (`document.getAnimations().forEach(a => { a.pause(); a.currentTime = t })`) y capturando.
+- **Una historia animada por chispa** (`story` en cada tema, ver «Historias al tocar una chispa» en `kit/v1/README.md`): 4–6 s que muestran el dato sucediendo, con una persona grande haciendo la acción (estampar manos en la cueva, asar carne, tallar una piedra, imprimir, votar…). Ejemplos: `historia/js/stories/*.js` y `plantilla/js/scenes.js`. Revísalas con el zoom real (solo se ve la ventana alrededor de la chispa).
 - Proceso iterativo: dibuja → captura → mira la imagen → corrige. Revisa: proporciones, que nada quede cortado, contraste, chispas sobre el objeto correcto (sin tapar caras, ≥110 unidades entre sí).
 - Representa a las personas con respeto (mismo estilo de cara para todos; sin estereotipos).
 - Fotos reales solo cuando el realismo importa (cuerpo humano, animales, plantas): Wikimedia Commons, ~640 px JPEG en `img/`, en `hotspots[].photo` con autor + licencia. Revisa cada foto antes de usarla.

@@ -4,7 +4,7 @@ Extraído de `historia/` («Viajera del Tiempo»). Una app nueva = **contenido**
 **escenas SVG** (`js/scenes.js`) + **tema** (`tema.css`). El kit pone todo lo demás:
 
 - Inicio con Cronos (búho guía con disfraz), viajes, juegos, extras y créditos de fotos.
-- **Aprende**: escenas animadas con chispas ✨ → zoom + dato + voz; sello 🛂 al descubrir todo; viaje con túnel (con contador de años si los temas tienen `year`).
+- **Aprende**: escenas animadas con chispas ✨ → zoom + **historia animada** del dato + tarjeta + voz; sello 🛂 al descubrir todo; viaje con túnel (con contador de años si los temas tienen `year`).
 - **4 juegos**: Quiz (con explicación), Ordena (arrastrar), Portales (clasificar), Memoria.
 - Pasaporte con sellos y trofeos, estrellas ⭐ en `localStorage`, confeti, sonidos WebAudio, voz (mp3 o del dispositivo), español/inglés, tema oscuro o claro.
 
@@ -49,7 +49,7 @@ Un juego aparece sólo si tiene datos (`questions`, `order.rounds`, `sort.items`
 ## Escenas (`js/scenes.js`)
 
 ```js
-window.APP_SCENES = { topicId: { svg: () => '<rect …/>…', hs: [[x, y], …] } };
+window.APP_SCENES = { topicId: { svg: () => '<rect …/>…', hs: [[x, y], …], story: [(S) => '…', …] } };
 ```
 
 - viewBox **800×500**; `hs` en esas coordenadas, uno por hotspot del tema.
@@ -57,13 +57,36 @@ window.APP_SCENES = { topicId: { svg: () => '<rect …/>…', hs: [[x, y], …] 
 - **Personajes que se mueven**: `person({ …, act })` articula brazo (hombro), cabeza (cuello), piernas (cadera) y cuerpo (pies).
   Acciones: `idle` (respira, por defecto) · `hoe` (cavar con azada, salta tierra) · `fight` (tajo con espada) · `raise` (alzar bandera o espada) ·
   `wave` · `cheer` (saltar con los brazos arriba) · `talk` · `read` · `look` (mirar a los lados) · `angry` (negar) · `warm` (manos al fuego) ·
-  `shake` (blandir lanza) · `row` (remar) · `vote` · `walk` · `pull` (jalar cuerda) · `paint` · `none` (estatuas).
+  `shake` (blandir lanza) · `row` (remar) · `vote` · `walk` · `pull` (jalar cuerda) · `paint` · `dab` (pintar con un palito, brazo arriba) ·
+  `press` (estampar o empujar con la mano) · `hammer` (golpear una piedra: saltan astillas) · `sow` (sembrar caminando) · `point` (señalar) ·
+  `cook` (asar con una brocheta) · `none` (estatuas). Objetos (`item`): flag, book, ball, apple, flower, azada, brush, ballot, sword, spear, letter, stone, stick, basket, pouch, skewer, torch.
   Dos que luchan: el segundo con `flip: true`, ambos con `delay: 0`, y `KitSVG.clash(x, y)` entre las espadas. Para cruzar la escena caminando: `at(0, 0, 1, person({ act: 'walk' }), 'a-fly')`.
   Sin `delay`, cada personaje arranca en un momento distinto para que no se muevan todos a la vez.
 - Animaciones: clases `a-bob a-drift a-flicker a-spin a-sway a-twinkle a-glow a-smoke a-wave a-rock a-fly a-flap a-flag a-pulse a-rise a-drip a-flow…` (en `kit.css`).
 - **Una animación CSS reemplaza el `transform` del mismo elemento**: lo animado va dentro de un `<g>` posicionado → `at(x, y, s, inner, 'a-bob')`.
 - En SVG, `transform-origin: center` NO es el centro del dibujo; con `transform-box: view-box` usa `0 0` si el dibujo está centrado en el origen.
 - Chispas: ≥110 unidades entre sí (en teléfono miden 46 px) y sin tapar caras.
+
+### Historias al tocar una chispa (`story`)
+
+Cada chispa puede tener una **historia animada** de 4–6 s que muestra el dato *sucediendo* (en `historia/`: gente estampando
+sus manos en la cueva, alguien asando carne, un tallador golpeando la piedra…). `story[k]` es una función que recibe `KitSVG`
+y devuelve SVG; el kit la inserta encima de la escena al abrir el dato y la borra al cerrarlo, así que se repite cada vez.
+
+```js
+story: [
+  // 0 · Se derrite: el cubo se encoge y aparece el charco
+  ({ at, person, sparkle }) => `${at(600, 300, 1, cubo, 's-out', 'animation-delay:1s')}${at(600, 330, 1, charco, 's-grow', 'animation-delay:1.4s')}…`,
+],
+```
+
+- Clases de un disparo (terminan quietas en su estado final; se encadenan con `animation-delay`): `s-in` (aparece con rebote), `s-fade`,
+  `s-stamp` (sello), `s-draw` (dibuja un trazo: el `<path>` lleva `pathLength="1"` y la clase), `s-grow` (crece desde abajo),
+  `s-from-l` / `s-from-r` (entra deslizando), `s-drop` (cae), `s-up` (sube), `s-out` (desaparece), `s-flash` (destello). En bucle: `a-*` y `person({ act })`.
+- **Encuadre**: con el zoom ×1,9 sobre la chispa (hx, hy) sólo se ve x ∈ [0,474·hx, hx + 0,526·(800−hx)], y ∈ [0,474·hy, hy + 0,526·(500−hy)].
+  Deja ≥15 unidades de margen y pon la acción en el centro de esa ventana.
+- La persona protagonista grande y haciendo la acción con las manos (Sofía lo pide así); no tapes caras de la escena.
+- CSS propio de las historias en `tema.css`, con prefijo `st-`.
 
 ## Pantallas propias y API
 

@@ -107,6 +107,12 @@ window.KitSVG = (() => {
     walk: { body: 'pa-walk-body', legs: true, arm: 'pa-swing-arm' },
     pull: { body: 'pa-pull-body', legs: true },
     paint: { body: 'pa-breathe', arm: 'pa-paint-arm', head: 'pa-read-head', pose: 'out', item: 'brush' },
+    dab: { body: 'pa-breathe', arm: 'pa-dab-arm', head: 'pa-read-head', pose: 'up' },
+    press: { body: 'pa-press-body', arm: 'pa-press-arm', pose: 'out' },
+    hammer: { body: 'pa-bob', arm: 'pa-hammer-arm', pose: 'up', chips: true },
+    sow: { body: 'pa-sow-body', legs: true, arm: 'pa-sow-arm', pose: 'out' },
+    point: { body: 'pa-breathe', arm: 'pa-point-arm', head: 'pa-talk-head', pose: 'out' },
+    cook: { body: 'pa-breathe', arm: 'pa-cook-arm', head: 'pa-read-head', pose: 'out', item: 'skewer' },
   };
   const piv = (x, y, cls, inner, st) => (cls ? `<g transform="translate(${x} ${y})"><g class="pa ${cls}" style="${st}"><g transform="translate(${-x} ${-y})">${inner}</g></g></g>` : inner);
   function person(o) {
@@ -140,7 +146,8 @@ window.KitSVG = (() => {
     head += personHat(d);
     const body = back + legs + torso + piv(-13, -63, A.armL, armL, st) + shield + piv(13, -63, A.arm, armR, st) + piv(0, -70, A.head, head, st);
     const dirt = A.dirt ? [[8, '#8b5a2b'], [-4, '#a0703c'], [14, '#6e4524']].map(([dx, c], i) => `<g transform="translate(${60 + i * 5} -3)"><circle r="${2.8 - i * 0.5}" fill="${c}" class="pa pa-dirt" style="${st};--dx:${dx}px"/></g>`).join('') : '';
-    return `<g transform="translate(${d.x} ${d.y}) scale(${d.flip ? -d.s : d.s} ${d.s})">${piv(0, 0, A.body, body, st)}${dirt}</g>`;
+    const chips = A.chips ? [[14, -20, '#ffffff'], [-8, -22, '#dfe3e7'], [22, -8, '#f4f6f8']].map(([dx, dy, c]) => `<g transform="translate(44 -66)"><path d="M0,-3.5 L4,0 L0,3.5 L-4,0Z" fill="${c}" class="pa pa-chip" style="${st};--dx:${dx}px;--dy:${dy}px"/></g>`).join('') : '';
+    return `<g transform="translate(${d.x} ${d.y}) scale(${d.flip ? -d.s : d.s} ${d.s})">${piv(0, 0, A.body, body, st)}${dirt}${chips}</g>`;
   }
   function hairFront(d) {
     const h = d.hair, top = `<path d="M-18.6,-87 Q-20,-107 0,-107.5 Q20,-107 18.6,-87 Q15,-98 4,-99 Q-8,-101 -18.6,-87Z" fill="${h}"/>`;
@@ -179,6 +186,12 @@ window.KitSVG = (() => {
       case 'sword': return `<path d="M${hx - 2.5},${hy - 4} L${hx - 2.5},${hy - 46} L${hx},${hy - 53} L${hx + 2.5},${hy - 46} L${hx + 2.5},${hy - 4}Z" fill="#e8edf3"/><rect x="${hx - 8}" y="${hy - 7}" width="16" height="4" rx="1.6" fill="#d4a52c"/>`;
       case 'spear': return `<line x1="${hx}" y1="${hy + 30}" x2="${hx}" y2="${hy - 62}" stroke="#7a5230" stroke-width="3.5" stroke-linecap="round"/><path d="M${hx - 5},${hy - 60} L${hx},${hy - 80} L${hx + 5},${hy - 60}Z" fill="#8d949c"/>`;
       case 'letter': return `<rect x="${hx - 2}" y="${hy - 12}" width="20" height="14" rx="1.5" fill="#fffaf0" stroke="#c9b28a"/><circle cx="${hx + 8}" cy="${hy - 4}" r="2.6" fill="#c62828"/>`;
+      case 'stone': return `<path d="M${hx - 6},${hy - 2} q2,-9 10,-8 q7,2 5,10 q-6,5 -15,-2Z" fill="#8d949c"/>`;
+      case 'stick': return `<line x1="${hx - 6}" y1="${hy + 10}" x2="${hx + 14}" y2="${hy - 22}" stroke="#7a5230" stroke-width="3" stroke-linecap="round"/><circle cx="${hx + 14}" cy="${hy - 22}" r="2.6" fill="${d.itemColor}"/>`;
+      case 'basket': return `<path d="M${hx - 12},${hy - 2} L${hx + 14},${hy - 2} L${hx + 10},${hy + 14} L${hx - 8},${hy + 14}Z" fill="#c99a4b"/><path d="M${hx - 10},${hy + 4} h22 M${hx - 9},${hy + 9} h20" stroke="#9c7130" stroke-width="1.5"/><path d="M${hx - 10},${hy - 2} Q${hx + 1},${hy - 16} ${hx + 12},${hy - 2}" stroke="#9c7130" stroke-width="2" fill="none"/>`;
+      case 'pouch': return `<path d="M${hx - 7},${hy - 4} q-3,12 7,13 q10,-1 7,-13Z" fill="#c4a06a"/><path d="M${hx - 6},${hy - 4} h12" stroke="#7a5230" stroke-width="2"/>`;
+      case 'skewer': return `<line x1="${hx - 6}" y1="${hy + 3}" x2="${hx + 50}" y2="${hy + 13}" stroke="#7a5230" stroke-width="3" stroke-linecap="round"/><ellipse cx="${hx + 36}" cy="${hy + 10}" rx="10" ry="7.5" fill="#9a4a2a" transform="rotate(10 ${hx + 36} ${hy + 10})"/><ellipse cx="${hx + 33}" cy="${hy + 7}" rx="4" ry="2.4" fill="#d27a4e" opacity=".8"/>`;
+      case 'torch': return `<line x1="${hx}" y1="${hy + 4}" x2="${hx}" y2="${hy - 24}" stroke="#6b4423" stroke-width="4" stroke-linecap="round"/>${at(hx, hy - 24, 1, `<path d="M-6,0 Q-8,-12 0,-22 Q8,-12 6,0Z" fill="#ffb52e"/><path d="M-3,0 Q-3,-8 0,-13 Q3,-8 3,0Z" fill="#fff1a0"/>`, 'a-flicker')}`;
       default: return '';
     }
   }
