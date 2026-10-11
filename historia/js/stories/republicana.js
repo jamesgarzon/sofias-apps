@@ -6,7 +6,7 @@ window.STORIES.republicana = (() => {
   const HAND = { down: [22, -37.5], up: [25, -89], out: [32, -52], wave: [31, -85] };
   const LETTER = /<rect x="[-\d.]+" y="[-\d.]+" width="20" height="14" rx="1.5" fill="#fffaf0" stroke="#c9b28a"\/><path d="[^"]*" stroke="#c9b28a" fill="none"\/><circle cx="[-\d.]+" cy="[-\d.]+" r="2.6" fill="#c62828"\/>/;
   const BRUSH = /<line x1="([-\d.]+)" y1="([-\d.]+)" x2="[-\d.]+" y2="[-\d.]+" stroke="#c99a2e" stroke-width="3" stroke-linecap="round"\/><path d="M[-\d.]+,[-\d.]+ l4,-6 l2,2Z" fill="#c0452b"\/>/;
-  const hold = (person, o, pose, svg) => { const [hx, hy] = HAND[pose]; return person({ ...o, item: 'letter' }).replace(LETTER, `<g transform="translate(${hx} ${hy})">${svg}</g>`); };
+  const hold = (person, o, pose, svg) => { const [hx, hy] = HAND[pose]; return person({ ...o, arm: pose, item: 'letter' }).replace(LETTER, `<g transform="translate(${hx} ${hy})">${svg}</g>`); };
   const withPen = (svg, pen) => svg.replace(BRUSH, (m, x1, y1) => `<g transform="translate(${+x1 + 4} ${+y1 - 6})">${pen}</g>`);
   const txt = (x, y, t, fs, c, w = 600) => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="${w}" font-size="${fs}" fill="${c}">${t}</text>`;
   const label = (x, y, t, c, fs = 15) => {

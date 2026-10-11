@@ -5,7 +5,7 @@ window.STORIES.colonia = (() => {
   // Objeto propio en la mano de un personaje: se dibuja una carta (o pincel) y se cambia por `svg` (coordenadas locales de la mano).
   const HAND = { down: [22, -37.5], up: [25, -89], out: [32, -52], wave: [31, -85] };
   const LETTER = /<rect x="[-\d.]+" y="[-\d.]+" width="20" height="14" rx="1.5" fill="#fffaf0" stroke="#c9b28a"\/><path d="[^"]*" stroke="#c9b28a" fill="none"\/><circle cx="[-\d.]+" cy="[-\d.]+" r="2.6" fill="#c62828"\/>/;
-  const hold = (person, o, pose, svg) => { const [hx, hy] = HAND[pose]; return person({ ...o, item: 'letter' }).replace(LETTER, `<g transform="translate(${hx} ${hy})">${svg}</g>`); };
+  const hold = (person, o, pose, svg) => { const [hx, hy] = HAND[pose]; return person({ ...o, arm: pose, item: 'letter' }).replace(LETTER, `<g transform="translate(${hx} ${hy})">${svg}</g>`); };
   const label = (x, y, t, c = '#7a3d00', fs = 15, bg = '#fff8e6') => {
     const w = t.length * fs * 0.56 + 18;
     return `<rect x="${x - w / 2}" y="${y - fs * 0.9 - 4}" width="${w}" height="${fs * 1.25 + 8}" rx="${fs * 0.7}" fill="${bg}" stroke="${c}" stroke-width="2.5"/><text x="${x}" y="${y + 2}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="${fs}" fill="${c}">${t}</text>`;
