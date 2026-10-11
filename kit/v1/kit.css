@@ -450,6 +450,78 @@ h1, h2, h3 { font-family: var(--k-font-h); }
 @keyframes a-flow { to { stroke-dashoffset: -48; } }
 @keyframes a-drip { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(90px); opacity: 0; } }
 
+/* ===== Acciones de los personajes: person({ act }) =====
+   Cada parte gira desde su articulación (pies, hombro, cuello, cadera): el <g class="pa …"> está
+   centrado en ese punto, así que basta transform-origin 0 0 en el sistema local. */
+.pa { transform-box: view-box; transform-origin: 0 0; }
+.pa-breathe { animation: pa-breathe 3.4s ease-in-out infinite; }
+@keyframes pa-breathe { 50% { transform: scale(1, 1.025); } }
+.pa-bob { animation: pa-bob 1.1s ease-in-out infinite; }
+@keyframes pa-bob { 50% { transform: translateY(-3px); } }
+.pa-jump { animation: pa-jump .9s ease-in-out infinite; }
+@keyframes pa-jump { 0%, 100% { transform: translateY(0) scale(1.03, .97); } 40% { transform: translateY(-12px) scale(.98, 1.03); } 60% { transform: translateY(-11px); } }
+/* cavar con azada: subir despacio, golpe rápido, tierra que salta */
+.pa-hoe-body { animation: pa-hoe-body 1.5s ease-in-out infinite; }
+@keyframes pa-hoe-body { 0%, 100% { transform: rotate(5deg); } 45%, 55% { transform: rotate(-3deg); } 66% { transform: rotate(7deg); } }
+.pa-hoe-arm { animation: pa-hoe-arm 1.5s infinite; }
+@keyframes pa-hoe-arm { 0%, 100% { transform: rotate(4deg); animation-timing-function: ease-in-out; } 45% { transform: rotate(-78deg); } 55% { transform: rotate(-80deg); animation-timing-function: cubic-bezier(.6, 0, 1, 1); } 66% { transform: rotate(4deg); } }
+.pa-dirt { animation: pa-dirt 1.5s ease-out infinite; opacity: 0; }
+@keyframes pa-dirt { 0%, 64% { opacity: 0; transform: translate(0, 0) scale(.4); } 68% { opacity: 1; transform: translate(0, -3px) scale(1); } 92% { opacity: 0; transform: translate(var(--dx), -16px) scale(1.2); } 100% { opacity: 0; } }
+/* luchar con espada: tomar impulso y tajo hacia adelante */
+.pa-fight-body { animation: pa-fight-body 1.2s ease-in-out infinite; }
+@keyframes pa-fight-body { 0%, 100% { transform: translateX(0) rotate(-2deg); } 35% { transform: translateX(-3px) rotate(-4deg); } 45%, 55% { transform: translateX(6px) rotate(3deg); } }
+.pa-fight-arm { animation: pa-fight-arm 1.2s infinite; }
+@keyframes pa-fight-arm { 0%, 100% { transform: rotate(-15deg); animation-timing-function: ease-in-out; } 35% { transform: rotate(-35deg); animation-timing-function: cubic-bezier(.5, 0, 1, 1); } 45% { transform: rotate(72deg); } 55% { transform: rotate(66deg); animation-timing-function: ease-in-out; } }
+.pa-clash { animation: pa-clash 1.2s infinite; opacity: 0; }
+@keyframes pa-clash { 0%, 42% { opacity: 0; transform: scale(.2); } 46% { opacity: 1; transform: scale(1.3) rotate(25deg); } 62% { opacity: 0; transform: scale(.7); } 100% { opacity: 0; } }
+/* brazo: levantar espada/bandera, saludar, celebrar, hablar, leer, calentarse, blandir lanza, remar, votar, pintar */
+.pa-raise-arm { animation: pa-raise-arm 1.8s ease-in-out infinite alternate; }
+@keyframes pa-raise-arm { from { transform: rotate(-10deg); } to { transform: rotate(14deg); } }
+.pa-wave-arm { animation: pa-wave-arm .55s ease-in-out infinite alternate; }
+@keyframes pa-wave-arm { from { transform: rotate(-20deg); } to { transform: rotate(14deg); } }
+.pa-cheer-arm { animation: pa-cheer-arm .9s ease-in-out infinite; }
+@keyframes pa-cheer-arm { 0%, 100% { transform: rotate(10deg); } 45% { transform: rotate(-18deg); } }
+.pa-cheer-arml { animation: pa-cheer-arml .9s ease-in-out infinite; }
+@keyframes pa-cheer-arml { 0%, 100% { transform: rotate(-10deg); } 45% { transform: rotate(18deg); } }
+.pa-talk-arm { animation: pa-talk-arm 1.6s ease-in-out infinite; }
+@keyframes pa-talk-arm { 0%, 100% { transform: rotate(0); } 30% { transform: rotate(-22deg); } 60% { transform: rotate(-8deg); } }
+.pa-read-arm { animation: pa-read-arm 3s ease-in-out infinite; }
+@keyframes pa-read-arm { 50% { transform: rotate(-6deg); } }
+.pa-warm-arm { animation: pa-warm-arm 2s ease-in-out infinite alternate; }
+@keyframes pa-warm-arm { from { transform: rotate(-6deg); } to { transform: rotate(8deg); } }
+.pa-shake-arm { animation: pa-shake-arm 1.1s ease-in-out infinite; }
+@keyframes pa-shake-arm { 0%, 100% { transform: rotate(-4deg) translateY(0); } 50% { transform: rotate(6deg) translateY(-6px); } }
+.pa-row-arm { animation: pa-row-arm 1.6s ease-in-out infinite; }
+@keyframes pa-row-arm { 0%, 100% { transform: rotate(-25deg); } 50% { transform: rotate(25deg); } }
+.pa-row-body { animation: pa-row-body 1.6s ease-in-out infinite; }
+@keyframes pa-row-body { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(5deg); } }
+.pa-vote-arm { animation: pa-vote-arm 2.6s ease-in-out infinite; }
+@keyframes pa-vote-arm { 0%, 15%, 85%, 100% { transform: rotate(0); } 40%, 60% { transform: rotate(-28deg); } }
+.pa-paint-arm { animation: pa-paint-arm 2s ease-in-out infinite; }
+@keyframes pa-paint-arm { 0%, 100% { transform: rotate(-14deg); } 20% { transform: rotate(6deg); } 40% { transform: rotate(-8deg); } 60% { transform: rotate(10deg); } 80% { transform: rotate(-4deg); } }
+.pa-swing-arm { animation: pa-swing .7s ease-in-out infinite alternate-reverse; }
+@keyframes pa-swing { from { transform: rotate(-18deg); } to { transform: rotate(18deg); } }
+/* cabeza: hablar, leer, mirar a los lados, negar enojado */
+.pa-talk-head { animation: pa-talk-head 1.6s ease-in-out infinite; }
+@keyframes pa-talk-head { 0%, 100% { transform: rotate(-3deg); } 25% { transform: rotate(4deg); } 50% { transform: rotate(-1deg); } 75% { transform: rotate(5deg); } }
+.pa-read-head { animation: pa-read-head 3s ease-in-out infinite; }
+@keyframes pa-read-head { 0%, 100% { transform: rotate(5deg); } 50% { transform: rotate(10deg); } }
+.pa-look-head { animation: pa-look-head 4s ease-in-out infinite; }
+@keyframes pa-look-head { 0%, 20%, 90%, 100% { transform: rotate(0); } 30%, 45% { transform: rotate(-9deg); } 60%, 75% { transform: rotate(9deg); } }
+.pa-angry-head { animation: pa-angry-head 2.4s ease-in-out infinite; }
+@keyframes pa-angry-head { 0%, 40%, 100% { transform: rotate(0); } 5%, 15%, 25% { transform: rotate(-9deg); } 10%, 20%, 30% { transform: rotate(9deg); } }
+.pa-angry-arm { animation: pa-angry-arm 2.4s ease-in-out infinite; }
+@keyframes pa-angry-arm { 0%, 40%, 100% { transform: rotate(0); } 10%, 30% { transform: rotate(-25deg); } 20% { transform: rotate(5deg); } }
+/* piernas: caminar o jalar una cuerda */
+.pa-leg-a { animation: pa-leg .7s ease-in-out infinite alternate; }
+.pa-leg-b { animation: pa-leg .7s ease-in-out infinite alternate-reverse; }
+@keyframes pa-leg { from { transform: rotate(-20deg); } to { transform: rotate(20deg); } }
+.pa-walk-body { animation: pa-walk-body .35s ease-in-out infinite alternate; }
+@keyframes pa-walk-body { to { transform: translateY(-3px); } }
+.pa-pull-body { animation: pa-pull-body .7s ease-in-out infinite alternate; }
+@keyframes pa-pull-body { from { transform: rotate(10deg); } to { transform: rotate(14deg) translateY(-2px); } }
+@media (prefers-reduced-motion: reduce) { .pa { animation: none !important; } .pa-dirt, .pa-clash { opacity: 0; } }
+
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

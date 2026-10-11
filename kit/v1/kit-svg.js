@@ -86,38 +86,61 @@ window.KitSVG = (() => {
   const flagPole = (x, y, h, type, w = 46, fh = 30, pole = '#5f5248', d = 0) =>
     `<line x1="${x}" y1="${y}" x2="${x}" y2="${y - h}" stroke="${pole}" stroke-width="3" stroke-linecap="round"/><circle cx="${x}" cy="${y - h - 2}" r="3.2" fill="#e8b931"/>${at(x + 1.5, y - h + 1, 1, flagBody(type, w, fh), 'a-flag', delay(d))}`;
 
-  // ---------- personaje (muñequito) — pies en (x,y), ~110 de alto con s=1 ----------
+  // ---------- personaje (estilo muñequito) — pies en (x,y) ----------
+  // act: acción animada. Cada una mueve el cuerpo (desde los pies), el brazo derecho (desde el hombro),
+  // el izquierdo, la cabeza (desde el cuello) o las piernas (desde la cadera). Clases p-* en scene-anim.css.
+  const ACTS = {
+    idle: { body: 'pa-breathe' }, none: {},
+    hoe: { body: 'pa-hoe-body', arm: 'pa-hoe-arm', pose: 'out', item: 'azada', dirt: true },
+    fight: { body: 'pa-fight-body', arm: 'pa-fight-arm', pose: 'up' },
+    raise: { body: 'pa-breathe', arm: 'pa-raise-arm' },
+    wave: { body: 'pa-breathe', arm: 'pa-wave-arm', pose: 'wave' },
+    cheer: { body: 'pa-jump', arm: 'pa-cheer-arm', armL: 'pa-cheer-arml', pose: 'wave', poseL: 'up' },
+    talk: { body: 'pa-breathe', arm: 'pa-talk-arm', head: 'pa-talk-head' },
+    read: { body: 'pa-breathe', arm: 'pa-read-arm', head: 'pa-read-head' },
+    look: { body: 'pa-breathe', head: 'pa-look-head' },
+    angry: { body: 'pa-breathe', arm: 'pa-angry-arm', head: 'pa-angry-head' },
+    warm: { body: 'pa-breathe', arm: 'pa-warm-arm' },
+    shake: { body: 'pa-bob', arm: 'pa-shake-arm' },
+    row: { body: 'pa-row-body', arm: 'pa-row-arm', pose: 'out' },
+    vote: { body: 'pa-breathe', arm: 'pa-vote-arm' },
+    walk: { body: 'pa-walk-body', legs: true, arm: 'pa-swing-arm' },
+    pull: { body: 'pa-pull-body', legs: true },
+    paint: { body: 'pa-breathe', arm: 'pa-paint-arm', head: 'pa-read-head', pose: 'out', item: 'brush' },
+  };
+  const piv = (x, y, cls, inner, st) => (cls ? `<g transform="translate(${x} ${y})"><g class="pa ${cls}" style="${st}"><g transform="translate(${-x} ${-y})">${inner}</g></g></g>` : inner);
   function person(o) {
-    const d = Object.assign({ x: 0, y: 0, s: 1, skin: '#e3a97c', top: '#4f7cff', sleeve: null, bottom: '#3a3f5c', shoe: '#3b2a20', hair: '#2b1b12', hairStyle: 'short', hat: null, dress: false, item: null, arm: 'down', flip: false, armor: false, cape: null, belt: null, itemColor: '#2f5fb3', shield: null, epaulettes: false, flag: 'col', boots: false }, o);
-    const sl = d.sleeve || d.top;
-    let p = '';
-    if (d.cape) p += `<path d="M-14,-66 Q-28,-36 -25,-6 L25,-6 Q28,-36 14,-66Z" fill="${d.cape}"/>`;
-    if (d.hairStyle === 'long') p += `<path d="M-20,-90 Q-26,-62 -15,-55 L15,-55 Q26,-62 20,-90Z" fill="${d.hair}"/>`;
-    if (d.dress) p += `<rect x="-9" y="-16" width="7.5" height="15" rx="3" fill="${d.skin}"/><rect x="1.5" y="-16" width="7.5" height="15" rx="3" fill="${d.skin}"/>`;
-    else {
-      p += `<rect x="-11" y="-35" width="9.5" height="34" rx="4" fill="${d.bottom}"/><rect x="1.5" y="-35" width="9.5" height="34" rx="4" fill="${d.bottom}"/>`;
-      if (d.boots) p += `<rect x="-11.5" y="-16" width="10.5" height="15" rx="3" fill="#1f1a17"/><rect x="1" y="-16" width="10.5" height="15" rx="3" fill="#1f1a17"/>`;
-    }
-    const shoe = d.boots ? '#1f1a17' : d.shoe;
-    p += `<ellipse cx="-6.5" cy="-2" rx="7" ry="3.8" fill="${shoe}"/><ellipse cx="6.5" cy="-2" rx="7" ry="3.8" fill="${shoe}"/>`;
+    const d = Object.assign({ x: 0, y: 0, s: 1, skin: '#e3a97c', top: '#4f7cff', sleeve: null, bottom: '#3a3f5c', shoe: '#3b2a20', hair: '#2b1b12', hairStyle: 'short', hat: null, dress: false, item: null, arm: 'down', armL: 'down', flip: false, armor: false, cape: null, belt: null, itemColor: '#2f5fb3', shield: null, epaulettes: false, flag: 'col', boots: false, act: 'idle', delay: null }, o);
+    const A = ACTS[d.act] || ACTS.idle, st = `animation-delay:${d.delay ?? -(rnd() * 3).toFixed(2)}s`;
+    const sl = d.sleeve || d.top, pose = A.pose || d.arm, poseL = A.poseL || d.armL, itm = A.item || d.item, shoe = d.boots ? '#1f1a17' : d.shoe;
+    let back = '';
+    if (d.cape) back += `<path d="M-14,-66 Q-28,-36 -25,-6 L25,-6 Q28,-36 14,-66Z" fill="${d.cape}"/>`;
+    if (d.hairStyle === 'long') back += `<path d="M-20,-90 Q-26,-62 -15,-55 L15,-55 Q26,-62 20,-90Z" fill="${d.hair}"/>`;
+    const leg = (x) => (d.dress ? `<rect x="${x < 0 ? -9 : 1.5}" y="-16" width="7.5" height="15" rx="3" fill="${d.skin}"/>`
+      : `<rect x="${x < 0 ? -11 : 1.5}" y="-35" width="9.5" height="34" rx="4" fill="${d.bottom}"/>${d.boots ? `<rect x="${x < 0 ? -11.5 : 1}" y="-16" width="10.5" height="15" rx="3" fill="#1f1a17"/>` : ''}`)
+      + `<ellipse cx="${x}" cy="-2" rx="7" ry="3.8" fill="${shoe}"/>`;
+    const legs = A.legs ? piv(-6, -35, 'pa-leg-a', leg(-6.5), st) + piv(6, -35, 'pa-leg-b', leg(6.5), st) : leg(-6.5) + leg(6.5);
     const ARMS = { down: ['M13,-63 Q21,-51 22,-39', 22, -37.5], up: ['M13,-63 Q23,-72 25,-87', 25, -89], out: ['M13,-63 Q24,-60 31,-53', 32, -52], wave: ['M13,-63 Q27,-68 31,-83', 31, -85] };
-    const [ad, hx, hy] = ARMS[d.arm];
-    p += personItem(d.item, hx, hy, d);
-    p += d.dress ? `<path d="M-14,-67 Q-18,-48 -26,-13 Q0,-7 26,-13 Q18,-48 14,-67 Q0,-72 -14,-67Z" fill="${d.top}"/>` : `<path d="M-15,-67 Q-17,-48 -15,-31 Q0,-28 15,-31 Q17,-48 15,-67 Q0,-72 -15,-67Z" fill="${d.top}"/>`;
-    if (d.armor) p += `<path d="M-12,-64 Q-13,-46 -9,-36 Q0,-33 9,-36 Q13,-46 12,-64 Q0,-68 -12,-64Z" fill="#d7dde6"/><path d="M0,-66 L0,-35" stroke="#a9b2bf" stroke-width="1.5"/>`;
-    if (d.belt) p += `<rect x="-15.5" y="-37" width="31" height="5" rx="2" fill="${d.belt}"/>`;
-    if (d.epaulettes) p += `<ellipse cx="-14" cy="-66" rx="6" ry="3.2" fill="#f2c230"/><ellipse cx="14" cy="-66" rx="6" ry="3.2" fill="#f2c230"/>`;
-    p += `<path d="M-13,-63 Q-21,-51 -22,-39" stroke="${sl}" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="-22" cy="-37.5" r="4.6" fill="${d.skin}"/>`;
-    if (d.shield) p += `<path d="M-38,-62 L-12,-62 L-12,-44 Q-12,-29 -25,-22 Q-38,-29 -38,-44Z" fill="${d.shield}"/><path d="M-25,-60 L-25,-26 M-36,-48 L-14,-48" stroke="#f5c518" stroke-width="4"/>`;
-    p += `<path d="${ad}" stroke="${sl}" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="${hx}" cy="${hy}" r="4.6" fill="${d.skin}"/>`;
+    const ARMSL = { down: ['M-13,-63 Q-21,-51 -22,-39', -22, -37.5], up: ['M-13,-63 Q-23,-72 -25,-87', -25, -89] };
+    const [ad, hx, hy] = ARMS[pose], [adL, lx, ly] = ARMSL[poseL] || ARMSL.down;
+    const armR = `${personItem(itm, hx, hy, d)}<path d="${ad}" stroke="${sl}" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="${hx}" cy="${hy}" r="4.6" fill="${d.skin}"/>`;
+    const armL = `<path d="${adL}" stroke="${sl}" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="${lx}" cy="${ly}" r="4.6" fill="${d.skin}"/>`;
+    let torso = d.dress ? `<path d="M-14,-67 Q-18,-48 -26,-13 Q0,-7 26,-13 Q18,-48 14,-67 Q0,-72 -14,-67Z" fill="${d.top}"/>` : `<path d="M-15,-67 Q-17,-48 -15,-31 Q0,-28 15,-31 Q17,-48 15,-67 Q0,-72 -15,-67Z" fill="${d.top}"/>`;
+    if (d.armor) torso += `<path d="M-12,-64 Q-13,-46 -9,-36 Q0,-33 9,-36 Q13,-46 12,-64 Q0,-68 -12,-64Z" fill="#d7dde6"/><path d="M0,-66 L0,-35" stroke="#a9b2bf" stroke-width="1.5"/><path d="M-9,-61 Q-10,-52 -7,-45" stroke="#fff" stroke-width="2.2" opacity=".7" fill="none" stroke-linecap="round"/>`;
+    if (d.belt) torso += `<rect x="-15.5" y="-37" width="31" height="5" rx="2" fill="${d.belt}"/>`;
+    if (d.epaulettes) torso += `<ellipse cx="-14" cy="-66" rx="6" ry="3.2" fill="#f2c230"/><ellipse cx="14" cy="-66" rx="6" ry="3.2" fill="#f2c230"/><rect x="-6" y="-69" width="12" height="5" rx="2" fill="#c62828"/>${[-58, -50, -42].map((yy) => `<circle cx="0" cy="${yy}" r="1.4" fill="#f2c230"/>`).join('')}`;
+    const shield = d.shield ? `<path d="M-38,-62 L-12,-62 L-12,-44 Q-12,-29 -25,-22 Q-38,-29 -38,-44Z" fill="${d.shield}"/><path d="M-25,-60 L-25,-26 M-36,-48 L-14,-48" stroke="#f5c518" stroke-width="4"/>` : '';
+    let head = '';
     if (d.hat !== 'knight') {
-      p += `<circle cx="0" cy="-86" r="18" fill="${d.skin}"/>`;
-      p += `<g class="a-blink" style="${delay((rnd() * 4).toFixed(2))}"><circle cx="-6.5" cy="-86" r="2.4" fill="#2a1c14"/><circle cx="6.5" cy="-86" r="2.4" fill="#2a1c14"/></g>`;
-      p += `<circle cx="-11" cy="-80" r="3.2" fill="#ff6f6f" opacity=".32"/><circle cx="11" cy="-80" r="3.2" fill="#ff6f6f" opacity=".32"/><path d="M-4,-78.5 Q0,-75 4,-78.5" stroke="#5a2e1e" stroke-width="1.7" fill="none" stroke-linecap="round"/>`;
-      p += hairFront(d);
+      head += `<circle cx="0" cy="-86" r="18" fill="${d.skin}"/>`;
+      head += `<g class="a-blink" style="${delay((rnd() * 4).toFixed(2))}"><circle cx="-6.5" cy="-86" r="2.4" fill="#2a1c14"/><circle cx="6.5" cy="-86" r="2.4" fill="#2a1c14"/></g>`;
+      head += `<circle cx="-11" cy="-80" r="3.2" fill="#ff6f6f" opacity=".32"/><circle cx="11" cy="-80" r="3.2" fill="#ff6f6f" opacity=".32"/><path d="M-4,-78.5 Q0,-75 4,-78.5" stroke="#5a2e1e" stroke-width="1.7" fill="none" stroke-linecap="round"/>`;
+      head += hairFront(d);
     }
-    p += personHat(d);
-    return `<g transform="translate(${d.x} ${d.y}) scale(${d.flip ? -d.s : d.s} ${d.s})">${p}</g>`;
+    head += personHat(d);
+    const body = back + legs + torso + piv(-13, -63, A.armL, armL, st) + shield + piv(13, -63, A.arm, armR, st) + piv(0, -70, A.head, head, st);
+    const dirt = A.dirt ? [[8, '#8b5a2b'], [-4, '#a0703c'], [14, '#6e4524']].map(([dx, c], i) => `<g transform="translate(${60 + i * 5} -3)"><circle r="${2.8 - i * 0.5}" fill="${c}" class="pa pa-dirt" style="${st};--dx:${dx}px"/></g>`).join('') : '';
+    return `<g transform="translate(${d.x} ${d.y}) scale(${d.flip ? -d.s : d.s} ${d.s})">${piv(0, 0, A.body, body, st)}${dirt}</g>`;
   }
   function hairFront(d) {
     const h = d.hair, top = `<path d="M-18.6,-87 Q-20,-107 0,-107.5 Q20,-107 18.6,-87 Q15,-98 4,-99 Q-8,-101 -18.6,-87Z" fill="${h}"/>`;
@@ -135,6 +158,7 @@ window.KitSVG = (() => {
       case 'cap': return `<path d="M-19,-92 Q-18,-110 0,-110 Q18,-110 19,-92Z" fill="${d.capColor || '#e23b3b'}"/><path d="M4,-93 Q24,-96 30,-90 Q20,-88 4,-90Z" fill="${d.capColor || '#e23b3b'}"/>`;
       case 'straw': return `<ellipse cx="0" cy="-99" rx="28" ry="6.5" fill="#e6bd5f"/><path d="M-13,-100 Q-12,-116 0,-116 Q12,-116 13,-100Z" fill="#d9a441"/>`;
       case 'chef': return `<rect x="-14" y="-110" width="28" height="12" fill="#fff"/><path d="M-16,-108 Q-24,-122 -10,-126 Q-4,-136 6,-128 Q20,-132 18,-116 Q22,-110 14,-108Z" fill="#fff"/>`;
+      case 'beret': return `<ellipse cx="-2" cy="-100" rx="21" ry="8" fill="${d.hatColor || '#5b2a86'}" transform="rotate(-10 -2 -100)"/><rect x="-3" y="-111" width="4" height="5" rx="2" fill="${d.hatColor || '#5b2a86'}"/>`;
       case 'crown': return `<path d="M-14,-100 L-14,-114 L-7,-106 L0,-117 L7,-106 L14,-114 L14,-100Z" fill="#f5c518"/>`;
       case 'helmet': return `<path d="M-20,-90 Q-21,-112 0,-113 Q21,-112 20,-90Z" fill="${d.helmetColor || '#f5c518'}"/><rect x="-22" y="-92" width="44" height="5" rx="2.5" fill="${d.helmetColor || '#f5c518'}"/>`;
       case 'widebrim': return `<ellipse cx="0" cy="-100" rx="27" ry="5.5" fill="#2b2622"/><path d="M-12,-101 Q-11,-116 0,-116 Q11,-116 12,-101Z" fill="#2b2622"/>`;
@@ -149,12 +173,18 @@ window.KitSVG = (() => {
       case 'ball': return `<circle cx="${hx + 6}" cy="${hy - 6}" r="9" fill="${d.itemColor}"/><path d="M${hx - 3},${hy - 6} h18" stroke="#fff" stroke-width="2"/>`;
       case 'apple': return `<circle cx="${hx + 5}" cy="${hy - 5}" r="7" fill="#e23b3b"/><path d="M${hx + 5},${hy - 12} q2,-5 6,-6" stroke="#3f8a3a" stroke-width="2" fill="none"/>`;
       case 'flower': return `<line x1="${hx}" y1="${hy + 4}" x2="${hx + 2}" y2="${hy - 26}" stroke="#3f8a3a" stroke-width="2.4"/>${[0, 72, 144, 216, 288].map((a) => `<ellipse cx="${hx + 2}" cy="${hy - 32}" rx="3" ry="6" fill="${d.itemColor}" transform="rotate(${a} ${hx + 2} ${hy - 26})"/>`).join('')}<circle cx="${hx + 2}" cy="${hy - 26}" r="3" fill="#f5c518"/>`;
+      case 'azada': return `<line x1="${hx - 13}" y1="${hy - 16}" x2="${hx + 37}" y2="${hy + 46}" stroke="#7a5230" stroke-width="3.5" stroke-linecap="round"/><path d="M${hx + 38},${hy + 45} L${hx + 29},${hy + 53} L${hx + 26},${hy + 49} L${hx + 34},${hy + 42}Z" fill="#8d949c"/>`;
+      case 'brush': return `<line x1="${hx - 4}" y1="${hy + 6}" x2="${hx + 14}" y2="${hy - 16}" stroke="#c99a2e" stroke-width="3" stroke-linecap="round"/><path d="M${hx + 13},${hy - 15} l4,-6 l2,2Z" fill="#c0452b"/>`;
+      case 'ballot': return `<rect x="${hx - 4}" y="${hy - 18}" width="14" height="18" rx="1.5" fill="#fff" stroke="#b9c2d0"/><path d="M${hx - 1},${hy - 9} l3,3 l5,-7" stroke="#2e9d5b" stroke-width="2" fill="none"/>`;
       case 'sword': return `<path d="M${hx - 2.5},${hy - 4} L${hx - 2.5},${hy - 46} L${hx},${hy - 53} L${hx + 2.5},${hy - 46} L${hx + 2.5},${hy - 4}Z" fill="#e8edf3"/><rect x="${hx - 8}" y="${hy - 7}" width="16" height="4" rx="1.6" fill="#d4a52c"/>`;
       case 'spear': return `<line x1="${hx}" y1="${hy + 30}" x2="${hx}" y2="${hy - 62}" stroke="#7a5230" stroke-width="3.5" stroke-linecap="round"/><path d="M${hx - 5},${hy - 60} L${hx},${hy - 80} L${hx + 5},${hy - 60}Z" fill="#8d949c"/>`;
       case 'letter': return `<rect x="${hx - 2}" y="${hy - 12}" width="20" height="14" rx="1.5" fill="#fffaf0" stroke="#c9b28a"/><circle cx="${hx + 8}" cy="${hy - 4}" r="2.6" fill="#c62828"/>`;
       default: return '';
     }
   }
+
+  /** Chispa que destella cuando dos personajes con act 'fight' (y delay 0) chocan sus espadas. */
+  const clash = (x, y, s = 1) => at(x, y, s, `<path d="M0,-16 L4,-4 L16,0 L4,4 L0,16 L-4,4 L-16,0 L-4,-4Z" fill="#fff6b0"/><circle r="5" fill="#fff"/>`, 'pa pa-clash');
 
   // ---------- Cronos, el búho guía (con disfraz según la materia) ----------
   // Disfraces: viajero (por defecto) · explorador · cientifico · doctor · chef · detective · artista · actor · profe · astronauta · jardinero
@@ -215,5 +245,5 @@ window.KitSVG = (() => {
     </svg>`;
   }
 
-  return { rnd, setSeed, uid, lin, rad, at, delay, sun, cloud, stars, birds, smoke, palm, tree, hill, waves, grass, sparkle, house, flagBody, flagPole, person, owl, COSTUMES };
+  return { rnd, setSeed, uid, lin, rad, at, delay, sun, cloud, stars, birds, smoke, palm, tree, hill, waves, grass, sparkle, house, flagBody, flagPole, person, ACTS, clash, owl, COSTUMES };
 })();

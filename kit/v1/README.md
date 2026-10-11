@@ -54,6 +54,12 @@ window.APP_SCENES = { topicId: { svg: () => '<rect …/>…', hs: [[x, y], …] 
 
 - viewBox **800×500**; `hs` en esas coordenadas, uno por hotspot del tema.
 - Ayudantes en `KitSVG`: `lin`, `rad`, `at`, `sun`, `cloud`, `stars`, `birds`, `smoke`, `palm`, `tree`, `hill`, `waves`, `grass`, `sparkle`, `house`, `flagBody`, `flagPole`, `person({...})`, `owl(costume)`. Mira `catalogo.html`.
+- **Personajes que se mueven**: `person({ …, act })` articula brazo (hombro), cabeza (cuello), piernas (cadera) y cuerpo (pies).
+  Acciones: `idle` (respira, por defecto) · `hoe` (cavar con azada, salta tierra) · `fight` (tajo con espada) · `raise` (alzar bandera o espada) ·
+  `wave` · `cheer` (saltar con los brazos arriba) · `talk` · `read` · `look` (mirar a los lados) · `angry` (negar) · `warm` (manos al fuego) ·
+  `shake` (blandir lanza) · `row` (remar) · `vote` · `walk` · `pull` (jalar cuerda) · `paint` · `none` (estatuas).
+  Dos que luchan: el segundo con `flip: true`, ambos con `delay: 0`, y `KitSVG.clash(x, y)` entre las espadas. Para cruzar la escena caminando: `at(0, 0, 1, person({ act: 'walk' }), 'a-fly')`.
+  Sin `delay`, cada personaje arranca en un momento distinto para que no se muevan todos a la vez.
 - Animaciones: clases `a-bob a-drift a-flicker a-spin a-sway a-twinkle a-glow a-smoke a-wave a-rock a-fly a-flap a-flag a-pulse a-rise a-drip a-flow…` (en `kit.css`).
 - **Una animación CSS reemplaza el `transform` del mismo elemento**: lo animado va dentro de un `<g>` posicionado → `at(x, y, s, inner, 'a-bob')`.
 - En SVG, `transform-origin: center` NO es el centro del dibujo; con `transform-box: view-box` usa `0 0` si el dibujo está centrado en el origen.

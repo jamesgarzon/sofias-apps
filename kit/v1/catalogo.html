@@ -20,6 +20,12 @@
   .owl-card code { font-size: .78rem; color: var(--k-ink-3); }
   .scene-demo { aspect-ratio: 8 / 5; border-radius: 22px; overflow: hidden; border: 3px solid var(--k-line); box-shadow: var(--k-shadow); }
   .scene-demo svg { width: 100%; height: 100%; display: block; }
+  .acts { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+  .act-card { border-radius: 18px; padding: 6px 6px 8px; text-align: center; background: linear-gradient(180deg, #bde7ff, #e9f9e4); border: 2px solid var(--k-line); color: #2b1a5a; }
+  .act-card.wide { grid-column: span 2; }
+  .act-card svg { width: 100%; height: 130px; display: block; }
+  .act-card b { font-family: var(--k-font-h); font-size: .95rem; display: block; }
+  .act-card code { font-size: .75rem; color: #5b4a8a; }
   .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 </style>
 </head>
@@ -31,6 +37,8 @@
   <div class="owls" id="owls"></div>
   <h3 class="section-h">🧍 Muñequitos para las escenas <small style="font-size:.9rem;opacity:.7">(KitSVG.person)</small></h3>
   <div class="scene-demo" id="people"></div>
+  <h3 class="section-h">🎬 Acciones de los muñequitos <small style="font-size:.9rem;opacity:.7">(person({ act }))</small></h3>
+  <div class="acts" id="acts"></div>
   <h3 class="section-h">🎨 Piezas de escena <small style="font-size:.9rem;opacity:.7">(sun, cloud, tree, palm, birds, waves, flagPole…)</small></h3>
   <div class="scene-demo" id="pieces"></div>
   <h3 class="section-h">🔘 Botones</h3>
@@ -47,6 +55,16 @@
     const o = e.target.closest('.owl-card')?.querySelector('.owl'); if (!o) return;
     o.classList.remove('happy'); void o.offsetWidth; o.classList.add('happy', 'talk'); setTimeout(() => o.classList.remove('talk'), 1500);
   });
+  const ACT_ES = { idle: ['Respirar', {}], hoe: ['Cavar la tierra', { hat: 'straw', top: '#8b6a45', bottom: '#5b4630' }], raise: ['Alzar bandera o espada', { item: 'flag', arm: 'up', top: '#e23b3b' }],
+    wave: ['Saludar', { top: '#22c55e' }], cheer: ['Celebrar', { top: '#f97316', hairStyle: 'pigtails', dress: true }], talk: ['Hablar', { top: '#3b82f6', arm: 'out' }],
+    read: ['Leer', { item: 'book', arm: 'out', top: '#6b4a2b', dress: true }], look: ['Mirar a los lados', { top: '#a855f7' }], angry: ['Negar enojado', { top: '#64748b', arm: 'out' }],
+    warm: ['Calentarse las manos', { arm: 'out', top: '#a46a32' }], shake: ['Blandir la lanza', { item: 'spear', arm: 'up', top: '#8a5a2b' }], row: ['Remar', { top: '#0891b2' }],
+    vote: ['Votar', { item: 'ballot', arm: 'out', top: '#e05297', dress: true, hairStyle: 'long' }], walk: ['Caminar', { top: '#16a34a', hat: 'cap' }],
+    pull: ['Jalar una cuerda', { top: '#b07a4a', bottom: '#f4efe2' }], paint: ['Pintar', { hat: 'beret', top: '#7a2e3a', dress: true }] };
+  const mini = (inner, vb = '-60 -150 120 158') => `<svg viewBox="${vb}"><rect x="-200" y="0" width="400" height="20" fill="#9bd38a"/>${inner}</svg>`;
+  document.getElementById('acts').innerHTML =
+    `<div class="act-card wide">${mini(S.person({ x: -38, hat: 'knight', armor: true, top: '#c1c8d3', item: 'sword', shield: '#3b5bdb', boots: true, act: 'fight', delay: 0 }) + S.person({ x: 50, hat: 'knight', armor: true, top: '#b9a9a9', item: 'sword', shield: '#c62828', boots: true, flip: true, act: 'fight', delay: 0 }) + S.clash(6, -78, 0.8), '-110 -150 220 158')}<b>Luchar</b><code>act: 'fight', delay: 0 · clash()</code></div>` +
+    Object.entries(ACT_ES).map(([k, [name, o]]) => `<div class="act-card">${mini(S.person(Object.assign({ act: k }, o)))}<b>${name}</b><code>'${k}'</code></div>`).join('');
   S.setSeed(3);
   document.getElementById('people').innerHTML = `<svg viewBox="0 0 800 500">${S.lin('pp', [[0, '#bde7ff'], [1, '#fff7e6']])}<rect width="800" height="500" fill="url(#pp)"/>${S.hill(330, '#9be08a', 30)}${S.hill(380, '#7cc96f', 20)}
     ${S.person({ x: 90, y: 440, hairStyle: 'pigtails', hair: '#5b3a1a', top: '#ff7cc0', dress: true, item: 'flower', arm: 'out', itemColor: '#ffd23f' })}

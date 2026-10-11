@@ -71,39 +71,60 @@ window.SCENES = (() => {
   }
 
   // ---------- personaje (estilo muñequito) — pies en (x,y) ----------
+  // act: acción animada. Cada una mueve el cuerpo (desde los pies), el brazo derecho (desde el hombro),
+  // el izquierdo, la cabeza (desde el cuello) o las piernas (desde la cadera). Clases p-* en scene-anim.css.
+  const ACTS = {
+    idle: { body: 'pa-breathe' }, none: {},
+    hoe: { body: 'pa-hoe-body', arm: 'pa-hoe-arm', pose: 'out', item: 'azada', dirt: true },
+    fight: { body: 'pa-fight-body', arm: 'pa-fight-arm', pose: 'up' },
+    raise: { body: 'pa-breathe', arm: 'pa-raise-arm' },
+    wave: { body: 'pa-breathe', arm: 'pa-wave-arm', pose: 'wave' },
+    cheer: { body: 'pa-jump', arm: 'pa-cheer-arm', armL: 'pa-cheer-arml', pose: 'wave', poseL: 'up' },
+    talk: { body: 'pa-breathe', arm: 'pa-talk-arm', head: 'pa-talk-head' },
+    read: { body: 'pa-breathe', arm: 'pa-read-arm', head: 'pa-read-head' },
+    look: { body: 'pa-breathe', head: 'pa-look-head' },
+    angry: { body: 'pa-breathe', arm: 'pa-angry-arm', head: 'pa-angry-head' },
+    warm: { body: 'pa-breathe', arm: 'pa-warm-arm' },
+    shake: { body: 'pa-bob', arm: 'pa-shake-arm' },
+    row: { body: 'pa-row-body', arm: 'pa-row-arm', pose: 'out' },
+    vote: { body: 'pa-breathe', arm: 'pa-vote-arm' },
+    walk: { body: 'pa-walk-body', legs: true, arm: 'pa-swing-arm' },
+    pull: { body: 'pa-pull-body', legs: true },
+    paint: { body: 'pa-breathe', arm: 'pa-paint-arm', head: 'pa-read-head', pose: 'out', item: 'brush' },
+  };
+  const piv = (x, y, cls, inner, st) => (cls ? `<g transform="translate(${x} ${y})"><g class="pa ${cls}" style="${st}"><g transform="translate(${-x} ${-y})">${inner}</g></g></g>` : inner);
   function person(o) {
-    const d = Object.assign({ x: 0, y: 0, s: 1, skin: '#e3a97c', top: '#4f7cff', sleeve: null, bottom: '#3a3f5c', shoe: '#3b2a20', hair: '#2b1b12', hairStyle: 'short', hat: null, dress: false, item: null, arm: 'down', flip: false, armor: false, cape: null, belt: null, itemColor: '#2f5fb3', shield: null, epaulettes: false, flag: 'col', boots: false }, o);
-    const sl = d.sleeve || d.top;
-    let p = '';
-    if (d.cape) p += `<path d="M-14,-66 Q-28,-36 -25,-6 L25,-6 Q28,-36 14,-66Z" fill="${d.cape}"/>`;
-    if (d.hairStyle === 'long' || d.hairStyle === 'messy') p += `<path d="M-20,-90 Q-26,-62 -15,-55 L15,-55 Q26,-62 20,-90Z" fill="${d.hair}"/>`;
-    if (d.dress) {
-      p += `<rect x="-9" y="-16" width="7.5" height="15" rx="3" fill="${d.skin}"/><rect x="1.5" y="-16" width="7.5" height="15" rx="3" fill="${d.skin}"/>`;
-    } else {
-      p += `<rect x="-11" y="-35" width="9.5" height="34" rx="4" fill="${d.bottom}"/><rect x="1.5" y="-35" width="9.5" height="34" rx="4" fill="${d.bottom}"/>`;
-      if (d.boots) p += `<rect x="-11.5" y="-16" width="10.5" height="15" rx="3" fill="#1f1a17"/><rect x="1" y="-16" width="10.5" height="15" rx="3" fill="#1f1a17"/>`;
-    }
-    p += `<ellipse cx="-6.5" cy="-2" rx="7" ry="3.8" fill="${d.boots ? '#1f1a17' : d.shoe}"/><ellipse cx="6.5" cy="-2" rx="7" ry="3.8" fill="${d.boots ? '#1f1a17' : d.shoe}"/>`;
+    const d = Object.assign({ x: 0, y: 0, s: 1, skin: '#e3a97c', top: '#4f7cff', sleeve: null, bottom: '#3a3f5c', shoe: '#3b2a20', hair: '#2b1b12', hairStyle: 'short', hat: null, dress: false, item: null, arm: 'down', armL: 'down', flip: false, armor: false, cape: null, belt: null, itemColor: '#2f5fb3', shield: null, epaulettes: false, flag: 'col', boots: false, act: 'idle', delay: null }, o);
+    const A = ACTS[d.act] || ACTS.idle, st = `animation-delay:${d.delay ?? -(rnd() * 3).toFixed(2)}s`;
+    const sl = d.sleeve || d.top, pose = A.pose || d.arm, poseL = A.poseL || d.armL, itm = A.item || d.item, shoe = d.boots ? '#1f1a17' : d.shoe;
+    let back = '';
+    if (d.cape) back += `<path d="M-14,-66 Q-28,-36 -25,-6 L25,-6 Q28,-36 14,-66Z" fill="${d.cape}"/>`;
+    if (d.hairStyle === 'long' || d.hairStyle === 'messy') back += `<path d="M-20,-90 Q-26,-62 -15,-55 L15,-55 Q26,-62 20,-90Z" fill="${d.hair}"/>`;
+    const leg = (x) => (d.dress ? `<rect x="${x < 0 ? -9 : 1.5}" y="-16" width="7.5" height="15" rx="3" fill="${d.skin}"/>`
+      : `<rect x="${x < 0 ? -11 : 1.5}" y="-35" width="9.5" height="34" rx="4" fill="${d.bottom}"/>${d.boots ? `<rect x="${x < 0 ? -11.5 : 1}" y="-16" width="10.5" height="15" rx="3" fill="#1f1a17"/>` : ''}`)
+      + `<ellipse cx="${x}" cy="-2" rx="7" ry="3.8" fill="${shoe}"/>`;
+    const legs = A.legs ? piv(-6, -35, 'pa-leg-a', leg(-6.5), st) + piv(6, -35, 'pa-leg-b', leg(6.5), st) : leg(-6.5) + leg(6.5);
     const ARMS = { down: ['M13,-63 Q21,-51 22,-39', 22, -37.5], up: ['M13,-63 Q23,-72 25,-87', 25, -89], out: ['M13,-63 Q24,-60 31,-53', 32, -52], wave: ['M13,-63 Q27,-68 31,-83', 31, -85] };
-    const [ad, hx, hy] = ARMS[d.arm];
-    p += item(d.item, hx, hy, d);
-    if (d.dress) p += `<path d="M-14,-67 Q-18,-48 -26,-13 Q0,-7 26,-13 Q18,-48 14,-67 Q0,-72 -14,-67Z" fill="${d.top}"/>`;
-    else p += `<path d="M-15,-67 Q-17,-48 -15,-31 Q0,-28 15,-31 Q17,-48 15,-67 Q0,-72 -15,-67Z" fill="${d.top}"/>`;
-    if (d.armor) p += `<path d="M-12,-64 Q-13,-46 -9,-36 Q0,-33 9,-36 Q13,-46 12,-64 Q0,-68 -12,-64Z" fill="#d7dde6"/><path d="M0,-66 L0,-35" stroke="#a9b2bf" stroke-width="1.5"/><path d="M-9,-61 Q-10,-52 -7,-45" stroke="#fff" stroke-width="2.2" opacity=".7" fill="none" stroke-linecap="round"/>`;
-    if (d.belt) p += `<rect x="-15.5" y="-37" width="31" height="5" rx="2" fill="${d.belt}"/>`;
-    if (d.epaulettes) p += `<ellipse cx="-14" cy="-66" rx="6" ry="3.2" fill="#f2c230"/><ellipse cx="14" cy="-66" rx="6" ry="3.2" fill="#f2c230"/><rect x="-6" y="-69" width="12" height="5" rx="2" fill="#c62828"/>${[-58, -50, -42].map((yy) => `<circle cx="0" cy="${yy}" r="1.4" fill="#f2c230"/>`).join('')}`;
-    p += `<path d="M-13,-63 Q-21,-51 -22,-39" stroke="${sl}" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="-22" cy="-37.5" r="4.6" fill="${d.skin}"/>`;
-    if (d.shield) p += `<path d="M-38,-62 L-12,-62 L-12,-44 Q-12,-29 -25,-22 Q-38,-29 -38,-44Z" fill="${d.shield}"/><path d="M-25,-60 L-25,-26 M-36,-48 L-14,-48" stroke="#f5c518" stroke-width="4"/>`;
-    p += `<path d="${ad}" stroke="${sl}" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="${hx}" cy="${hy}" r="4.6" fill="${d.skin}"/>`;
-    // cabeza
+    const ARMSL = { down: ['M-13,-63 Q-21,-51 -22,-39', -22, -37.5], up: ['M-13,-63 Q-23,-72 -25,-87', -25, -89] };
+    const [ad, hx, hy] = ARMS[pose], [adL, lx, ly] = ARMSL[poseL] || ARMSL.down;
+    const armR = `${item(itm, hx, hy, d)}<path d="${ad}" stroke="${sl}" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="${hx}" cy="${hy}" r="4.6" fill="${d.skin}"/>`;
+    const armL = `<path d="${adL}" stroke="${sl}" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="${lx}" cy="${ly}" r="4.6" fill="${d.skin}"/>`;
+    let torso = d.dress ? `<path d="M-14,-67 Q-18,-48 -26,-13 Q0,-7 26,-13 Q18,-48 14,-67 Q0,-72 -14,-67Z" fill="${d.top}"/>` : `<path d="M-15,-67 Q-17,-48 -15,-31 Q0,-28 15,-31 Q17,-48 15,-67 Q0,-72 -15,-67Z" fill="${d.top}"/>`;
+    if (d.armor) torso += `<path d="M-12,-64 Q-13,-46 -9,-36 Q0,-33 9,-36 Q13,-46 12,-64 Q0,-68 -12,-64Z" fill="#d7dde6"/><path d="M0,-66 L0,-35" stroke="#a9b2bf" stroke-width="1.5"/><path d="M-9,-61 Q-10,-52 -7,-45" stroke="#fff" stroke-width="2.2" opacity=".7" fill="none" stroke-linecap="round"/>`;
+    if (d.belt) torso += `<rect x="-15.5" y="-37" width="31" height="5" rx="2" fill="${d.belt}"/>`;
+    if (d.epaulettes) torso += `<ellipse cx="-14" cy="-66" rx="6" ry="3.2" fill="#f2c230"/><ellipse cx="14" cy="-66" rx="6" ry="3.2" fill="#f2c230"/><rect x="-6" y="-69" width="12" height="5" rx="2" fill="#c62828"/>${[-58, -50, -42].map((yy) => `<circle cx="0" cy="${yy}" r="1.4" fill="#f2c230"/>`).join('')}`;
+    const shield = d.shield ? `<path d="M-38,-62 L-12,-62 L-12,-44 Q-12,-29 -25,-22 Q-38,-29 -38,-44Z" fill="${d.shield}"/><path d="M-25,-60 L-25,-26 M-36,-48 L-14,-48" stroke="#f5c518" stroke-width="4"/>` : '';
+    let head = '';
     if (d.hat !== 'knight') {
-      p += `<circle cx="0" cy="-86" r="18" fill="${d.skin}"/>`;
-      p += `<g class="a-blink" style="${delay((rnd() * 4).toFixed(2))}"><circle cx="-6.5" cy="-86" r="2.4" fill="#2a1c14"/><circle cx="6.5" cy="-86" r="2.4" fill="#2a1c14"/></g>`;
-      p += `<circle cx="-11" cy="-80" r="3.2" fill="#ff6f6f" opacity=".32"/><circle cx="11" cy="-80" r="3.2" fill="#ff6f6f" opacity=".32"/><path d="M-4,-78.5 Q0,-75 4,-78.5" stroke="#5a2e1e" stroke-width="1.7" fill="none" stroke-linecap="round"/>`;
-      p += hairFront(d);
+      head += `<circle cx="0" cy="-86" r="18" fill="${d.skin}"/>`;
+      head += `<g class="a-blink" style="${delay((rnd() * 4).toFixed(2))}"><circle cx="-6.5" cy="-86" r="2.4" fill="#2a1c14"/><circle cx="6.5" cy="-86" r="2.4" fill="#2a1c14"/></g>`;
+      head += `<circle cx="-11" cy="-80" r="3.2" fill="#ff6f6f" opacity=".32"/><circle cx="11" cy="-80" r="3.2" fill="#ff6f6f" opacity=".32"/><path d="M-4,-78.5 Q0,-75 4,-78.5" stroke="#5a2e1e" stroke-width="1.7" fill="none" stroke-linecap="round"/>`;
+      head += hairFront(d);
     }
-    p += hat(d);
-    return `<g transform="translate(${d.x} ${d.y}) scale(${d.flip ? -d.s : d.s} ${d.s})">${p}</g>`;
+    head += hat(d);
+    const body = back + legs + torso + piv(-13, -63, A.armL, armL, st) + shield + piv(13, -63, A.arm, armR, st) + piv(0, -70, A.head, head, st);
+    const dirt = A.dirt ? [[8, '#8b5a2b'], [-4, '#a0703c'], [14, '#6e4524']].map(([dx, c], i) => `<g transform="translate(${60 + i * 5} -3)"><circle r="${2.8 - i * 0.5}" fill="${c}" class="pa pa-dirt" style="${st};--dx:${dx}px"/></g>`).join('') : '';
+    return `<g transform="translate(${d.x} ${d.y}) scale(${d.flip ? -d.s : d.s} ${d.s})">${piv(0, 0, A.body, body, st)}${dirt}</g>`;
   }
   function hairFront(d) {
     const h = d.hair;
@@ -126,6 +147,7 @@ window.SCENES = (() => {
       case 'hood': return `<path d="M-21,-84 Q-24,-111 0,-112 Q24,-111 21,-84 Q19,-64 12,-62 L12,-84 Q12,-99 0,-99 Q-12,-99 -12,-84 L-12,-62 Q-19,-64 -21,-84Z" fill="${d.top}"/>`;
       case 'straw': return `<ellipse cx="0" cy="-99" rx="28" ry="6.5" fill="#e6bd5f"/><path d="M-13,-100 Q-12,-116 0,-116 Q12,-116 13,-100Z" fill="#d9a441"/><rect x="-13" y="-104" width="26" height="3" fill="#a8752a"/>`;
       case 'widebrim': return `<ellipse cx="0" cy="-100" rx="27" ry="5.5" fill="#2b2622"/><path d="M-12,-101 Q-11,-116 0,-116 Q11,-116 12,-101Z" fill="#2b2622"/><path d="M8,-112 Q20,-124 26,-112 Q18,-114 10,-106Z" fill="#fff" opacity=".9"/>`;
+      case 'beret': return `<ellipse cx="-2" cy="-100" rx="21" ry="8" fill="${d.hatColor || '#5b2a86'}" transform="rotate(-10 -2 -100)"/><rect x="-3" y="-111" width="4" height="5" rx="2" fill="${d.hatColor || '#5b2a86'}"/>`;
       case 'crown': return `<path d="M-14,-100 L-14,-114 L-7,-106 L0,-117 L7,-106 L14,-114 L14,-100Z" fill="#f5c518"/><circle cx="0" cy="-108" r="2" fill="#e23b3b"/>`;
       case 'scarf': return `<path d="M-20,-86 Q-22,-110 0,-110 Q22,-110 20,-86 Q18,-72 14,-70 Q16,-96 0,-98 Q-16,-96 -14,-70 Q-18,-72 -20,-86Z" fill="${d.scarfColor || '#f2e6d0'}"/>`;
       default: return '';
@@ -139,6 +161,8 @@ window.SCENES = (() => {
       case 'book': return `<rect x="${hx - 3}" y="${hy - 12}" width="17" height="22" rx="2" fill="${d.itemColor}"/><rect x="${hx - 1}" y="${hy - 10}" width="2.4" height="18" fill="#fff" opacity=".55"/>`;
       case 'letter': return `<rect x="${hx - 2}" y="${hy - 12}" width="20" height="14" rx="1.5" fill="#fffaf0" stroke="#c9b28a"/><path d="M${hx - 2},${hy - 12} L${hx + 8},${hy - 4} L${hx + 18},${hy - 12}" stroke="#c9b28a" fill="none"/><circle cx="${hx + 8}" cy="${hy - 4}" r="2.6" fill="#c62828"/>`;
       case 'hoe': return `<line x1="${hx - 16}" y1="${hy + 40}" x2="${hx + 8}" y2="${hy - 46}" stroke="#7a5230" stroke-width="3.5" stroke-linecap="round"/><path d="M${hx + 8},${hy - 46} L${hx + 22},${hy - 40} L${hx + 18},${hy - 32}Z" fill="#8d949c"/>`;
+      case 'azada': return `<line x1="${hx - 13}" y1="${hy - 16}" x2="${hx + 37}" y2="${hy + 46}" stroke="#7a5230" stroke-width="3.5" stroke-linecap="round"/><path d="M${hx + 38},${hy + 45} L${hx + 29},${hy + 53} L${hx + 26},${hy + 49} L${hx + 34},${hy + 42}Z" fill="#8d949c"/>`;
+      case 'brush': return `<line x1="${hx - 4}" y1="${hy + 6}" x2="${hx + 14}" y2="${hy - 16}" stroke="#c99a2e" stroke-width="3" stroke-linecap="round"/><path d="M${hx + 13},${hy - 15} l4,-6 l2,2Z" fill="#c0452b"/>`;
       case 'bow': return `<path d="M${hx + 3},${hy - 32} Q${hx + 20},${hy} ${hx + 3},${hy + 32}" stroke="#7a4a22" stroke-width="3" fill="none" stroke-linecap="round"/><line x1="${hx + 3}" y1="${hy - 32}" x2="${hx + 3}" y2="${hy + 32}" stroke="#f1ead8" stroke-width="1"/>`;
       case 'cane': return `<line x1="${hx}" y1="${hy - 4}" x2="${hx + 4}" y2="${hy + 38}" stroke="#2b1d12" stroke-width="2.6"/><circle cx="${hx}" cy="${hy - 5}" r="2.8" fill="#e8b931"/>`;
       case 'ballot': return `<rect x="${hx - 4}" y="${hy - 18}" width="14" height="18" rx="1.5" fill="#fff" stroke="#b9c2d0"/><path d="M${hx - 1},${hy - 9} l3,3 l5,-7" stroke="#2e9d5b" stroke-width="2" fill="none"/>`;
@@ -295,8 +319,8 @@ window.SCENES = (() => {
       <g class="a-flicker" style="${delay(-0.25)}"><path d="M-12,0 Q-14,-22 0,-42 Q12,-22 12,0Z" fill="#fff1a0"/></g>
       ${[-10, 4, 14, -2].map((x, i) => at(x, -40, 1, `<circle r="2" fill="#ffd36b"/>`, 'a-spark', delay(i * 0.45))).join('')}`)}
     <!-- personas -->
-    ${person({ x: 300, y: 458, s: 1.05, skin: '#c78b5c', top: '#8a5a2b', bottom: '#6e4524', hair: '#3a2414', hairStyle: 'messy', item: 'spear', arm: 'up', shoe: '#5a3a22' })}
-    ${person({ x: 476, y: 462, s: 0.95, skin: '#b97b50', top: '#a46a32', dress: true, hair: '#2a180e', hairStyle: 'long', arm: 'out', flip: true, shoe: '#5a3a22' })}
+    ${person({ x: 300, y: 458, s: 1.05, skin: '#c78b5c', top: '#8a5a2b', bottom: '#6e4524', hair: '#3a2414', hairStyle: 'messy', item: 'spear', arm: 'up', shoe: '#5a3a22', act: 'shake' })}
+    ${person({ x: 476, y: 462, s: 0.95, skin: '#b97b50', top: '#a46a32', dress: true, hair: '#2a180e', hairStyle: 'long', arm: 'out', flip: true, shoe: '#5a3a22', act: 'warm' })}
     `;
   };
   HS.prehistoria = [[148, 232], [388, 400], [570, 322], [222, 452], [742, 330]];
@@ -327,6 +351,10 @@ window.SCENES = (() => {
     ${pyramid(374, 196, 304, 446, 302, 384)}
     ${pyramid(86, 236, 36, 140, 302, 94)}
     <path d="M0,302 Q200,292 380,306 L380,330 Q180,318 0,326Z" fill="#e8b363" opacity=".6"/>
+    ${at(150, 338, 0.9, `<rect x="-26" y="-34" width="52" height="34" rx="2" fill="#e8c27a"/><path d="M-26,-17 h52 M0,-34 v17 M-13,-17 v17 M13,-17 v17" stroke="#b98a3e" stroke-width="1.5" opacity=".7"/><rect x="-26" y="-34" width="52" height="34" rx="2" fill="none" stroke="#b98a3e" stroke-width="2"/><rect x="-32" y="0" width="64" height="6" rx="3" fill="#7a5230"/><path d="M-32,6 q-7,0 -7,-6" stroke="#7a5230" stroke-width="3" fill="none"/>`)}
+    <path d="M173,322 Q190,322 203,317 Q220,320 238,319" stroke="#8a6a3a" stroke-width="2.4" fill="none"/>
+    ${person({ x: 210, y: 340, s: 0.5, skin: '#b07a4a', top: '#b07a4a', sleeve: '#b07a4a', bottom: '#f4efe2', hair: '#1b1209', belt: '#d4a52c', act: 'pull' })}
+    ${person({ x: 246, y: 342, s: 0.5, skin: '#9c6a40', top: '#9c6a40', sleeve: '#9c6a40', bottom: '#f4efe2', hair: '#1b1209', belt: '#d4a52c', act: 'pull', delay: -0.35 })}
     <!-- colina con templo griego -->
     <path d="M470,336 Q600,276 800,296 L800,420 L470,420Z" fill="#e7b25f"/>
     <rect x="548" y="318" width="226" height="9" fill="#efe4cf"/><rect x="556" y="309" width="210" height="10" fill="#f6eedd"/>
@@ -406,12 +434,14 @@ window.SCENES = (() => {
     ${[0, 1, 2, 3, 4, 5, 6, 7].map((i) => at(40 + i * 34, 410 + (i % 3) * 22, 0.8, `<path d="M0,0 Q-2,-14 0,-22" stroke="#4f8f3a" stroke-width="3" fill="none"/><circle cx="0" cy="-24" r="5" fill="#f2c14e"/>`, 'a-sway', delay(i * 0.2))).join('')}
     <path d="M330,430 Q560,410 800,440 L800,500 L330,500Z" fill="#5aa65a"/>
     ${grassTufts(440, 18, '#3f8a45', 340, 800)}
-    ${person({ x: 132, y: 452, s: 0.95, skin: '#e0a57a', top: '#8b6a45', bottom: '#5b4630', hat: 'straw', item: 'hoe', arm: 'down' })}
-    ${person({ x: 352, y: 448, s: 0.85, skin: '#efc39b', top: '#6b4a2b', dress: true, hat: 'hood', item: 'book', arm: 'out', itemColor: '#a8322d' })}
-    ${person({ x: 650, y: 470, s: 1.12, skin: '#efc39b', top: '#c1c8d3', sleeve: '#aab3bf', bottom: '#8d96a3', armor: true, hat: 'knight', item: 'sword', arm: 'up', shield: '#3b5bdb', boots: true })}
+    ${person({ x: 132, y: 452, s: 0.95, skin: '#e0a57a', top: '#8b6a45', bottom: '#5b4630', hat: 'straw', item: 'hoe', arm: 'down', act: 'hoe' })}
+    ${person({ x: 352, y: 448, s: 0.85, skin: '#efc39b', top: '#6b4a2b', dress: true, hat: 'hood', item: 'book', arm: 'out', itemColor: '#a8322d', act: 'read' })}
+    ${person({ x: 612, y: 470, s: 1.12, skin: '#efc39b', top: '#c1c8d3', sleeve: '#aab3bf', bottom: '#8d96a3', armor: true, hat: 'knight', item: 'sword', arm: 'up', shield: '#3b5bdb', boots: true, act: 'fight', delay: 0 })}
+    ${person({ x: 738, y: 474, s: 1.08, skin: '#efc39b', top: '#b9a9a9', sleeve: '#9e8f8f', bottom: '#7d6f6f', armor: true, hat: 'knight', item: 'sword', arm: 'up', shield: '#c62828', boots: true, flip: true, act: 'fight', delay: 0 })}
+    ${at(676, 392, 1, `<path d="M0,-16 L4,-4 L16,0 L4,4 L0,16 L-4,4 L-16,0 L-4,-4Z" fill="#fff6b0"/><circle r="5" fill="#fff"/>`, 'pa pa-clash')}
     `;
   };
-  HS.media = [[562, 170], [604, 330], [176, 372], [252, 250]];
+  HS.media = [[562, 170], [556, 352], [176, 372], [252, 250]];
 
   // ================= EDAD MODERNA =================
   S.moderna = () => {
@@ -463,6 +493,7 @@ window.SCENES = (() => {
     <path d="M700,450 L720,342 M760,450 L740,342 M730,450 L730,360" stroke="#6b4423" stroke-width="4" stroke-linecap="round"/>
     ${at(730, 382, 0.82, monaLisa)}
     <rect x="696" y="420" width="68" height="5" fill="#6b4423"/>
+    ${person({ x: 664, y: 438, s: 0.78, skin: '#efc39b', top: '#7a2e3a', dress: true, hair: '#6b4a2b', hairStyle: 'long', hat: 'beret', act: 'paint' })}
     <!-- terraza del científico -->
     <path d="M0,380 L400,392 L400,500 L0,500Z" fill="#d8c29a"/>
     <path d="M0,380 L400,392 L400,398 L0,388Z" fill="#b89b6c"/>
@@ -660,17 +691,17 @@ window.SCENES = (() => {
       ${at(0, 0, 1, `<path d="M-80,330 q20,-6 40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0 t40,0"/>`, 'a-wave', 'animation-duration:8s')}
     </g>
     ${caravel(604, 322, 0.95, { flag: 'burgundy', cross: '#c8102e' })}
-    ${at(430, 356, 0.8, `<path d="M-34,0 Q0,12 34,0 L28,-8 L-28,-8Z" fill="#7a4a22"/>${person({ x: -12, y: -6, s: 0.42, top: '#b03a2e', armor: true, hat: 'morrion', skin: '#f0c49c' })}${person({ x: 12, y: -6, s: 0.42, top: '#7a2e8e', hat: 'morrion', skin: '#e9b48a' })}<line x1="20" y1="-4" x2="44" y2="10" stroke="#5b3a1a" stroke-width="2.5"/>`, 'a-rock', delay(-1))}
+    ${at(430, 356, 0.8, `<path d="M-34,0 Q0,12 34,0 L28,-8 L-28,-8Z" fill="#7a4a22"/>${person({ x: -12, y: -6, s: 0.42, top: '#b03a2e', armor: true, hat: 'morrion', skin: '#f0c49c', act: 'row' })}${person({ x: 12, y: -6, s: 0.42, top: '#7a2e8e', hat: 'morrion', skin: '#e9b48a', act: 'row' })}<line x1="20" y1="-4" x2="44" y2="10" stroke="#5b3a1a" stroke-width="2.5"/>`, 'a-rock', delay(-1))}
     <!-- playa -->
     <path d="M0,360 Q240,332 420,372 Q610,414 800,398 L800,500 L0,500Z" fill="url(#cq-sand)"/>
     <g fill="none" stroke="#fff" stroke-width="4" opacity=".75" stroke-linecap="round">${at(0, 0, 1, `<path d="M380,370 Q420,366 450,378 M520,394 Q560,390 600,404 M660,402 Q700,398 740,404"/>`, 'a-foam')}</g>
     ${at(736, 390, 1, village)}
     ${palm(58, 420, 1.15, 0, 18)}${palm(150, 424, 0.95, -1.5, -12)}${palm(250, 380, 0.7, -0.7, 10)}
     <!-- pueblo indígena -->
-    ${person({ x: 112, y: 474, s: 0.95, skin: '#b9774a', top: '#efe2c0', dress: true, hair: '#1d120b', hairStyle: 'long', hat: 'feathers', item: 'bow', arm: 'out' })}
-    ${person({ x: 186, y: 468, s: 0.9, skin: '#a96a40', top: '#e4d1a2', bottom: '#c8b07a', hair: '#1d120b', hairStyle: 'short', hat: 'feathers', item: 'spear', arm: 'up' })}
+    ${person({ x: 112, y: 474, s: 0.95, skin: '#b9774a', top: '#efe2c0', dress: true, hair: '#1d120b', hairStyle: 'long', hat: 'feathers', item: 'bow', arm: 'out', act: 'look' })}
+    ${person({ x: 186, y: 468, s: 0.9, skin: '#a96a40', top: '#e4d1a2', bottom: '#c8b07a', hair: '#1d120b', hairStyle: 'short', hat: 'feathers', item: 'spear', arm: 'up', act: 'shake' })}
     <!-- conquistador -->
-    ${person({ x: 330, y: 470, s: 1.08, skin: '#f0c49c', top: '#b03a2e', sleeve: '#b03a2e', bottom: '#d9a441', armor: true, hat: 'morrion', item: 'flag', flag: 'burgundy', arm: 'up', boots: true, belt: '#5b3a1a' })}
+    ${person({ x: 330, y: 470, s: 1.08, skin: '#f0c49c', top: '#b03a2e', sleeve: '#b03a2e', bottom: '#d9a441', armor: true, hat: 'morrion', item: 'flag', flag: 'burgundy', arm: 'up', boots: true, belt: '#5b3a1a', act: 'raise' })}
     ${at(470, 478, 1, chest)}
     `;
   };
@@ -726,7 +757,7 @@ window.SCENES = (() => {
     ${[446, 480, 514, 548, 582].map((x) => `<path d="M${x - 10},360 v-30 a10,10 0 0 1 20,0 v30Z" fill="#c9a26b"/>`).join('')}
     <rect x="440" y="276" width="154" height="10" fill="#e6d2b0"/>
     <rect x="478" y="236" width="78" height="10" fill="#7a4a24"/>${[...Array(12)].map((_, i) => `<rect x="${481 + i * 6.3}" y="246" width="2" height="12" fill="#7a4a24"/>`).join('')}<rect x="478" y="256" width="78" height="4" fill="#7a4a24"/>
-    ${person({ x: 517, y: 258, s: 0.42, skin: '#f1c6a0', top: '#b0263a', bottom: '#f1f1f4', hairStyle: 'wig', hat: 'tricorn', arm: 'wave' })}
+    ${person({ x: 517, y: 258, s: 0.42, skin: '#f1c6a0', top: '#b0263a', bottom: '#f1f1f4', hairStyle: 'wig', hat: 'tricorn', arm: 'wave', act: 'wave' })}
     ${at(517, 190, 1, `<path d="M-12,-8 L12,-8 L12,6 Q12,16 0,20 Q-12,16 -12,6Z" fill="#c62828"/><path d="M0,-8 V18 M-12,4 H12" stroke="#f5c518" stroke-width="3"/><path d="M-12,-10 L-12,-20 L-6,-14 L0,-22 L6,-14 L12,-20 L12,-10Z" fill="#f5c518"/>`)}
     ${colonialHouse(606, 360, 62, 88, '#5cc8a8', { flowerC: '#ec3d8c' })}
     ${colonialHouse(668, 360, 56, 70, '#ef6fa0', { flowerC: '#fff' })}
@@ -741,9 +772,9 @@ window.SCENES = (() => {
     <g transform="translate(600 400)"><rect x="-6" y="-24" width="64" height="16" rx="7" fill="#2b2b33" transform="rotate(-10)"/><circle cx="0" cy="-8" r="12" fill="#5b3a1a"/><circle cx="0" cy="-8" r="5" fill="#2b1d12"/><rect x="-26" y="-6" width="40" height="8" rx="3" fill="#6b4423"/></g>
     ${[[628, 420], [640, 424], [634, 412]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5.5" fill="#2b2b33"/>`).join('')}
     <!-- personas: mezcla de culturas -->
-    ${person({ x: 76, y: 468, s: 0.92, skin: '#a86b45', top: '#f2ecdc', dress: true, hair: '#1b120c', hairStyle: 'long', arm: 'out' })}
-    ${person({ x: 132, y: 474, s: 0.98, skin: '#5a3825', top: '#f6f3ea', bottom: '#7a6a52', hair: '#16100b', hairStyle: 'curly', hat: 'straw', arm: 'wave' })}
-    ${person({ x: 190, y: 470, s: 0.96, skin: '#f1c6a0', top: '#3a5a8a', bottom: '#2b2b3a', hat: 'widebrim', arm: 'down', boots: true })}
+    ${person({ x: 76, y: 468, s: 0.92, skin: '#a86b45', top: '#f2ecdc', dress: true, hair: '#1b120c', hairStyle: 'long', arm: 'out', act: 'talk' })}
+    ${person({ x: 132, y: 474, s: 0.98, skin: '#5a3825', top: '#f6f3ea', bottom: '#7a6a52', hair: '#16100b', hairStyle: 'curly', hat: 'straw', arm: 'wave', act: 'wave' })}
+    ${person({ x: 190, y: 470, s: 0.96, skin: '#f1c6a0', top: '#3a5a8a', bottom: '#2b2b3a', hat: 'widebrim', arm: 'down', boots: true, act: 'look' })}
     ${at(318, 480, 1, notice)}
     ${at(470, 488, 0.9, plant)}${at(548, 486, 0.8, easel)}
     `;
@@ -782,12 +813,12 @@ window.SCENES = (() => {
       ${[264, 296, 344, 376].map((x) => `<rect x="${x - 8}" y="258" width="16" height="22" rx="2" fill="#3a6ea5"/>`).join('')}
       ${cobble(366, 500, '#b9b1a3', '#a59c8c')}
       <!-- multitud del 20 de julio -->
-      ${person({ x: 52, y: 470, s: 0.86, skin: '#e9b48a', top: '#3a5a8a', bottom: '#2b2b3a', hat: 'widebrim', arm: 'wave' })}
-      ${person({ x: 104, y: 480, s: 0.82, skin: '#c58a5c', top: '#a8322d', bottom: '#5b4630', hair: '#2b1b12', arm: 'up', item: 'flag', flag: 'col' })}
-      ${person({ x: 262, y: 474, s: 0.86, skin: '#f1c6a0', top: '#6b4a2b', bottom: '#3b2a20', hat: 'tricorn', arm: 'out', flip: true })}
+      ${person({ x: 52, y: 470, s: 0.86, skin: '#e9b48a', top: '#3a5a8a', bottom: '#2b2b3a', hat: 'widebrim', arm: 'wave', act: 'cheer' })}
+      ${person({ x: 104, y: 480, s: 0.82, skin: '#c58a5c', top: '#a8322d', bottom: '#5b4630', hair: '#2b1b12', arm: 'up', item: 'flag', flag: 'col', act: 'raise' })}
+      ${person({ x: 262, y: 474, s: 0.86, skin: '#f1c6a0', top: '#6b4a2b', bottom: '#3b2a20', hat: 'tricorn', arm: 'out', flip: true, act: 'angry' })}
       ${at(184, 462, 1, florero)}
       <!-- La Pola -->
-      ${person({ x: 322, y: 478, s: 0.9, skin: '#efc39b', top: '#2f7a6a', dress: true, hair: '#3a2416', hairStyle: 'bun', cape: '#f2e6d0', item: 'letter', arm: 'out' })}
+      ${person({ x: 322, y: 478, s: 0.9, skin: '#efc39b', top: '#2f7a6a', dress: true, hair: '#3a2416', hairStyle: 'bun', cape: '#f2e6d0', item: 'letter', arm: 'out', act: 'look' })}
       ${at(30, 36, 1, `<path d="M0,0 H170 L160,14 L170,28 H0 L10,14Z" fill="#c62828"/><text x="86" y="19" font-family="Fredoka, sans-serif" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">20 de julio de 1810</text>`)}
     </g>
     <g clip-path="url(#in-right)">
@@ -802,8 +833,8 @@ window.SCENES = (() => {
       ${flagPole(700, 296, 64, 'col', 44, 29, '#5b3a1a', 0.3)}
       <path d="M370,420 Q560,400 800,430 L800,500 L370,500Z" fill="#5a9e4c"/>
       ${grassTufts(430, 16, '#3f8a3a', 400, 800)}
-      ${person({ x: 520, y: 476, s: 1.08, skin: '#e3b08a', top: '#1f3a8a', sleeve: '#1f3a8a', bottom: '#f4f1e8', hair: '#1d120b', hat: 'bicorne', epaulettes: true, item: 'sword', arm: 'up', boots: true, cape: '#a8322d' })}
-      ${person({ x: 724, y: 480, s: 1.02, skin: '#f1c6a0', top: '#24407a', sleeve: '#24407a', bottom: '#f4f1e8', hair: '#3a2416', hat: 'bicorne', epaulettes: true, item: 'book', arm: 'out', boots: true, itemColor: '#c62828' })}
+      ${person({ x: 520, y: 476, s: 1.08, skin: '#e3b08a', top: '#1f3a8a', sleeve: '#1f3a8a', bottom: '#f4f1e8', hair: '#1d120b', hat: 'bicorne', epaulettes: true, item: 'sword', arm: 'up', boots: true, cape: '#a8322d' , act: 'raise' })}
+      ${person({ x: 724, y: 480, s: 1.02, skin: '#f1c6a0', top: '#24407a', sleeve: '#24407a', bottom: '#f4f1e8', hair: '#3a2416', hat: 'bicorne', epaulettes: true, item: 'book', arm: 'out', boots: true, itemColor: '#c62828' , act: 'talk' })}
       ${at(614, 36, 1, `<path d="M0,0 H170 L160,14 L170,28 H0 L10,14Z" fill="#1f3a8a"/><text x="86" y="19" font-family="Fredoka, sans-serif" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">7 de agosto de 1819</text>`)}
     </g>
     <path d="M430,0 L370,500" stroke="#fff" stroke-width="7"/><path d="M430,0 L370,500" stroke="#ffd23f" stroke-width="2.5"/>
@@ -853,7 +884,7 @@ window.SCENES = (() => {
     ${[380, 404, 436, 476].map((y) => `<path d="M0,${y} H800" stroke="#b0a797" stroke-width="1.5"/>`).join('')}
     <!-- estatua de Bolívar con paloma -->
     <rect x="218" y="402" width="44" height="64" fill="#9a9488"/><rect x="210" y="396" width="60" height="10" fill="#b5ae9f"/><rect x="210" y="462" width="60" height="10" fill="#b5ae9f"/>
-    ${person({ x: 240, y: 398, s: 0.58, skin: '#5f7a6a', top: '#4f6a5a', bottom: '#5f7a6a', hair: '#4f6a5a', hat: 'bicorne', item: 'sword', arm: 'down', boots: true, cape: '#4a6354' }).replace(/#1d2033|#e8b931|#fcd116|#003893|#ce1126|#1f1a17|#2a1c14|#ff6f6f|#5a2e1e|#e8edf3|#d4a52c/g, '#425a4c')}
+    ${person({ x: 240, y: 398, s: 0.58, skin: '#5f7a6a', top: '#4f6a5a', bottom: '#5f7a6a', hair: '#4f6a5a', hat: 'bicorne', item: 'sword', arm: 'down', boots: true, cape: '#4a6354', act: 'none' }).replace(/#1d2033|#e8b931|#fcd116|#003893|#ce1126|#1f1a17|#2a1c14|#ff6f6f|#5a2e1e|#e8edf3|#d4a52c/g, '#425a4c')}
     ${at(250, 330, 1, dove, 'a-bob')}
     <!-- palomas volando -->
     ${at(0, 120, 1, `${[0, 1, 2].map((i) => at(i * 34, (i % 2) * 14, 0.6, dove)).join('')}`, 'a-fly', 'animation-duration:26s')}
@@ -861,7 +892,7 @@ window.SCENES = (() => {
     ${flagPole(660, 360, 230, 'col', 96, 62, '#e6e6ee')}
     ${at(92, 470, 1, board)}
     ${at(560, 470, 1, book)}
-    ${person({ x: 690, y: 478, s: 0.92, skin: '#c58a5c', top: '#e05297', dress: true, hair: '#2b1b12', hairStyle: 'long', item: 'ballot', arm: 'out' })}
+    ${person({ x: 690, y: 478, s: 0.92, skin: '#c58a5c', top: '#e05297', dress: true, hair: '#2b1b12', hairStyle: 'long', item: 'ballot', arm: 'out', act: 'vote' })}
     ${at(752, 476, 1, urna)}
     `;
   };
