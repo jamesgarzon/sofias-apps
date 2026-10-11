@@ -91,6 +91,12 @@ window.SCENES = (() => {
     walk: { body: 'pa-walk-body', legs: true, arm: 'pa-swing-arm' },
     pull: { body: 'pa-pull-body', legs: true },
     paint: { body: 'pa-breathe', arm: 'pa-paint-arm', head: 'pa-read-head', pose: 'out', item: 'brush' },
+    dab: { body: 'pa-breathe', arm: 'pa-dab-arm', head: 'pa-read-head', pose: 'up' },
+    press: { body: 'pa-press-body', arm: 'pa-press-arm', pose: 'out' },
+    hammer: { body: 'pa-bob', arm: 'pa-hammer-arm', pose: 'up', chips: true },
+    cook: { body: 'pa-breathe', arm: 'pa-cook-arm', head: 'pa-read-head', pose: 'out', item: 'skewer' },
+    sow: { body: 'pa-sow-body', legs: true, arm: 'pa-sow-arm', pose: 'out' },
+    point: { body: 'pa-breathe', arm: 'pa-point-arm', head: 'pa-talk-head', pose: 'out' },
   };
   const piv = (x, y, cls, inner, st) => (cls ? `<g transform="translate(${x} ${y})"><g class="pa ${cls}" style="${st}"><g transform="translate(${-x} ${-y})">${inner}</g></g></g>` : inner);
   function person(o) {
@@ -124,7 +130,8 @@ window.SCENES = (() => {
     head += hat(d);
     const body = back + legs + torso + piv(-13, -63, A.armL, armL, st) + shield + piv(13, -63, A.arm, armR, st) + piv(0, -70, A.head, head, st);
     const dirt = A.dirt ? [[8, '#8b5a2b'], [-4, '#a0703c'], [14, '#6e4524']].map(([dx, c], i) => `<g transform="translate(${60 + i * 5} -3)"><circle r="${2.8 - i * 0.5}" fill="${c}" class="pa pa-dirt" style="${st};--dx:${dx}px"/></g>`).join('') : '';
-    return `<g transform="translate(${d.x} ${d.y}) scale(${d.flip ? -d.s : d.s} ${d.s})">${piv(0, 0, A.body, body, st)}${dirt}</g>`;
+    const chips = A.chips ? [[14, -20, '#ffffff'], [-8, -22, '#dfe3e7'], [22, -8, '#f4f6f8']].map(([dx, dy, c]) => `<g transform="translate(44 -66)"><path d="M0,-3.5 L4,0 L0,3.5 L-4,0Z" fill="${c}" class="pa pa-chip" style="${st};--dx:${dx}px;--dy:${dy}px"/></g>`).join('') : '';
+    return `<g transform="translate(${d.x} ${d.y}) scale(${d.flip ? -d.s : d.s} ${d.s})">${piv(0, 0, A.body, body, st)}${dirt}${chips}</g>`;
   }
   function hairFront(d) {
     const h = d.hair;
@@ -163,9 +170,14 @@ window.SCENES = (() => {
       case 'hoe': return `<line x1="${hx - 16}" y1="${hy + 40}" x2="${hx + 8}" y2="${hy - 46}" stroke="#7a5230" stroke-width="3.5" stroke-linecap="round"/><path d="M${hx + 8},${hy - 46} L${hx + 22},${hy - 40} L${hx + 18},${hy - 32}Z" fill="#8d949c"/>`;
       case 'azada': return `<line x1="${hx - 13}" y1="${hy - 16}" x2="${hx + 37}" y2="${hy + 46}" stroke="#7a5230" stroke-width="3.5" stroke-linecap="round"/><path d="M${hx + 38},${hy + 45} L${hx + 29},${hy + 53} L${hx + 26},${hy + 49} L${hx + 34},${hy + 42}Z" fill="#8d949c"/>`;
       case 'brush': return `<line x1="${hx - 4}" y1="${hy + 6}" x2="${hx + 14}" y2="${hy - 16}" stroke="#c99a2e" stroke-width="3" stroke-linecap="round"/><path d="M${hx + 13},${hy - 15} l4,-6 l2,2Z" fill="#c0452b"/>`;
+      case 'stone': return `<path d="M${hx - 6},${hy - 2} q2,-9 10,-8 q7,2 5,10 q-6,5 -15,-2Z" fill="#8d949c"/>`;
+      case 'stick': return `<line x1="${hx - 6}" y1="${hy + 10}" x2="${hx + 14}" y2="${hy - 22}" stroke="#7a5230" stroke-width="3" stroke-linecap="round"/><circle cx="${hx + 14}" cy="${hy - 22}" r="2.6" fill="${d.itemColor}"/>`;
+      case 'basket': return `<path d="M${hx - 12},${hy - 2} L${hx + 14},${hy - 2} L${hx + 10},${hy + 14} L${hx - 8},${hy + 14}Z" fill="#c99a4b"/><path d="M${hx - 10},${hy + 4} h22 M${hx - 9},${hy + 9} h20" stroke="#9c7130" stroke-width="1.5"/><path d="M${hx - 10},${hy - 2} Q${hx + 1},${hy - 16} ${hx + 12},${hy - 2}" stroke="#9c7130" stroke-width="2" fill="none"/>`;
+      case 'pouch': return `<path d="M${hx - 7},${hy - 4} q-3,12 7,13 q10,-1 7,-13Z" fill="#c4a06a"/><path d="M${hx - 6},${hy - 4} h12" stroke="#7a5230" stroke-width="2"/>`;
       case 'bow': return `<path d="M${hx + 3},${hy - 32} Q${hx + 20},${hy} ${hx + 3},${hy + 32}" stroke="#7a4a22" stroke-width="3" fill="none" stroke-linecap="round"/><line x1="${hx + 3}" y1="${hy - 32}" x2="${hx + 3}" y2="${hy + 32}" stroke="#f1ead8" stroke-width="1"/>`;
       case 'cane': return `<line x1="${hx}" y1="${hy - 4}" x2="${hx + 4}" y2="${hy + 38}" stroke="#2b1d12" stroke-width="2.6"/><circle cx="${hx}" cy="${hy - 5}" r="2.8" fill="#e8b931"/>`;
       case 'ballot': return `<rect x="${hx - 4}" y="${hy - 18}" width="14" height="18" rx="1.5" fill="#fff" stroke="#b9c2d0"/><path d="M${hx - 1},${hy - 9} l3,3 l5,-7" stroke="#2e9d5b" stroke-width="2" fill="none"/>`;
+      case 'skewer': return `<line x1="${hx - 6}" y1="${hy + 3}" x2="${hx + 50}" y2="${hy + 13}" stroke="#7a5230" stroke-width="3" stroke-linecap="round"/><ellipse cx="${hx + 36}" cy="${hy + 10}" rx="10" ry="7.5" fill="#9a4a2a" transform="rotate(10 ${hx + 36} ${hy + 10})"/><ellipse cx="${hx + 33}" cy="${hy + 7}" rx="4" ry="2.4" fill="#d27a4e" opacity=".8"/>`;
       case 'torch': return `<line x1="${hx}" y1="${hy + 4}" x2="${hx}" y2="${hy - 24}" stroke="#6b4423" stroke-width="4" stroke-linecap="round"/>${at(hx, hy - 24, 1, `<path d="M-6,0 Q-8,-12 0,-22 Q8,-12 6,0Z" fill="#ffb52e"/><path d="M-3,0 Q-3,-8 0,-13 Q3,-8 3,0Z" fill="#fff1a0"/>`, 'a-flicker')}`;
       default: return '';
     }
@@ -307,9 +319,12 @@ window.SCENES = (() => {
         <path d="M88,288 l4,-10 l4,10 M92,278 l0,-9 M86,273 l14,-3"/><circle cx="92" cy="266" r="2.6" fill="#2b160e"/>
       </g>
     </g>
-    <!-- hacha de piedra -->
-    <ellipse cx="222" cy="478" rx="40" ry="9" fill="#3f2414" opacity=".5"/>
-    ${at(222, 466, 1, `<path d="M-24,4 Q-26,-10 -6,-22 Q14,-30 26,-12 Q30,4 -24,4Z" fill="#9aa1a8"/><path d="M-14,-4 L-4,-18 L8,-20 L2,-6Z" fill="#c2c8ce"/><path d="M8,-20 L20,-12 L14,0 L2,-6Z" fill="#7d858d"/>`)}
+    <!-- taller de herramientas: alguien talla una piedra sobre una roca -->
+    <ellipse cx="206" cy="472" rx="62" ry="9" fill="#3f2414" opacity=".5"/>
+    ${person({ x: 170, y: 472, s: 0.95, skin: '#a96a40', top: '#d0a36a', bottom: '#7a5230', hair: '#1d120b', hairStyle: 'curly', shoe: '#5a3a22', item: 'stone', act: 'hammer', delay: 0 })}
+    ${at(230, 472, 1, `<path d="M-30,0 Q-36,-34 -22,-56 Q0,-66 22,-56 Q36,-34 30,0Z" fill="#7d6a5e"/><path d="M-22,-56 Q0,-66 22,-56 Q8,-58 -4,-54 Q-16,-50 -22,-56Z" fill="#a08b7d"/><path d="M-20,-34 L-12,-28 M12,-22 L20,-12" stroke="#5f4f45" stroke-width="2.4" stroke-linecap="round"/>`)}
+    ${at(212, 414, 1, `<path d="M-11,3 Q-13,-6 -4,-12 Q6,-16 12,-6 Q14,2 -11,3Z" fill="#9aa1a8"/><path d="M-5,-2 L-1,-10 L6,-11 L3,-3Z" fill="#c2c8ce"/>`)}
+    ${at(272, 470, 0.8, `<path d="M-24,4 Q-26,-10 -6,-22 Q14,-30 26,-12 Q30,4 -24,4Z" fill="#9aa1a8"/><path d="M-14,-4 L-4,-18 L8,-20 L2,-6Z" fill="#c2c8ce"/><path d="M8,-20 L20,-12 L14,0 L2,-6Z" fill="#7d858d"/>`)}
     <!-- fogata -->
     ${at(388, 446, 1, `
       <ellipse cx="0" cy="-12" rx="96" ry="64" fill="url(#ph-fire)" class="a-glow"/>
@@ -320,7 +335,7 @@ window.SCENES = (() => {
       ${[-10, 4, 14, -2].map((x, i) => at(x, -40, 1, `<circle r="2" fill="#ffd36b"/>`, 'a-spark', delay(i * 0.45))).join('')}`)}
     <!-- personas -->
     ${person({ x: 300, y: 458, s: 1.05, skin: '#c78b5c', top: '#8a5a2b', bottom: '#6e4524', hair: '#3a2414', hairStyle: 'messy', item: 'spear', arm: 'up', shoe: '#5a3a22', act: 'shake' })}
-    ${person({ x: 476, y: 462, s: 0.95, skin: '#b97b50', top: '#a46a32', dress: true, hair: '#2a180e', hairStyle: 'long', arm: 'out', flip: true, shoe: '#5a3a22', act: 'warm' })}
+    ${person({ x: 476, y: 462, s: 0.95, skin: '#b97b50', top: '#a46a32', dress: true, hair: '#2a180e', hairStyle: 'long', flip: true, shoe: '#5a3a22', act: 'cook' })}
     `;
   };
   HS.prehistoria = [[148, 232], [388, 400], [570, 322], [222, 452], [742, 330]];
@@ -919,7 +934,19 @@ window.SCENES = (() => {
     <path d="M46,117 l-4,8 M50,118 l0,8 M54,117 l4,8 M66,117 l-4,8 M70,118 l0,8 M74,117 l4,8" stroke="#f6ad55" stroke-width="3" stroke-linecap="round"/>
   </svg>`;
 
+  const sparkle = (x, y, d = 0, c = '#fff6b0', sc = 1) => at(x, y, sc, `<path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2Z" fill="${c}"/>`, 'a-twinkle', delay(d));
+  /** Ayudantes para las historias (js/stories/*.js). */
+  const H = { lin, rad, at, delay, sun, cloud, stars, birds, smoke, palm, person, flagBody, flagPole, caravel, house, colonialHouse, sparkle, rnd };
+  let storyCss = false;
+  /** Escena animada que se reproduce al tocar la chispa k (o '' si no hay). */
+  function story(id, k) {
+    const st = window.STORIES?.[id], f = st?.play?.[k];
+    if (!f) return '';
+    if (!storyCss) { storyCss = true; document.head.insertAdjacentHTML('beforeend', `<style>${Object.values(window.STORIES).map((x) => x.css || '').join('\n')}</style>`); }
+    return `<g class="story" data-k="${k}">${f(H)}</g>`;
+  }
   return {
+    story, H,
     scene: (id) => `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" class="scene-svg" role="img" aria-label="Ilustración">${S[id]()}</svg>`,
     hotspots: HS,
     owl,

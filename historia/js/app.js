@@ -409,12 +409,14 @@
       if (wr.top < 0 || wr.bottom > innerHeight * 0.5) scrollTo({ top: Math.max(0, scrollY + wr.top - 12), behavior: REDUCED ? 'auto' : 'smooth' });
       $('.scene-tip', v)?.remove();
       zoom.style.transformOrigin = `${x / 8}% ${y / 5}%`; zoom.style.transform = 'scale(1.9)'; layer.classList.add('hide');
+      $('.scene-svg', zoom)?.insertAdjacentHTML('beforeend', SC.story(id, k)); // escena animada de esta chispa
       openOverlay(`<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetT" style="--era:${e.color}">
           ${first ? '<div class="reward">+1 ⭐</div>' : ''}
           <div class="sheet-emoji">${h.emoji}</div><h3 id="sheetT">${h.title}</h3><p>${h.text}</p>
           <div class="sheet-actions"><button class="icon-btn" data-say aria-label="Escuchar">🔊</button><button class="btn" data-close>¡Entendido! ✨</button></div></div>`, {
         onClose: () => {
           stopVoice(); zoom.style.transform = ''; layer.classList.remove('hide');
+          $$('.story', zoom).forEach((n) => n.remove());
           const b = $(`.hs[data-hs="${k}"]`, layer); if (b) { b.classList.add('seen'); $('span', b).textContent = '✓'; }
           renderCard();
           if (justDone) setTimeout(() => stampCeremony(id), 450);
