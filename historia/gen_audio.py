@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Genera las voces (mp3) de Viajera del Tiempo con edge-tts.
 
-Uso:  pip install edge-tts   y luego, desde esta carpeta:   python3 gen_audio.py
+Uso:  pipx install edge-tts   y luego, desde esta carpeta:   python3 gen_audio.py
 
 Lee los textos de js/data.js (el bloque JSON) y crea audio/<clave>.mp3 con la voz
 es-CO-SalomeNeural. Al terminar marca audio/ready.js para que la app use los mp3;
