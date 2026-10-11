@@ -2,29 +2,31 @@
 
 Apps educativas para Sofía (≈8 años). Hub en `index.html`, desplegado en GitHub Pages: https://jamesgarzon.github.io/sofias-apps/
 
-## Estructura
+## Estándar para apps nuevas (desde «Viajera del Tiempo», octubre 2026)
 
-- Una carpeta por app (`teatro/`, `dog-presentation/`, …) con un único `index.html` autocontenido.
-- Assets opcionales (audio pregenerado, imágenes) en subcarpetas dentro de la app (`audio/`).
-- Cada app nueva se enlaza desde el hub `index.html` con su emoji.
+**Toda app nueva o renovada se hace con el kit v1** — sigue la skill `nueva-app` (`.claude/skills/nueva-app/SKILL.md`).
 
-## Estándares de las apps
+- **Kit compartido** `kit/v1/` (API y esquema en `kit/v1/README.md`): pantallas, juegos, sonido, voz, estrellas, pasaporte y Cronos. Cada app = `js/data.js` (contenido) + `js/scenes.js` (escenas) + `tema.css` (estética). Se empieza copiando `plantilla/`.
+- **Estructura**: una carpeta por app con `index.html`, `tema.css`, `js/`, `audio/` (y `img/` si hay fotos). HTML/CSS/JS vanilla, sin frameworks, sin build, sin npm. Google Fonts permitido (Fredoka + Nunito).
+- **Aprende**: escenas **ilustradas en SVG y animadas**, propias de cada tema, con chispas ✨ que hacen zoom al dato, lo leen en voz alta y dan un sello 🛂 al completar el tema.
+- **Juegos**: los del kit (Quiz con explicación, Ordena arrastrando, Portales para clasificar, Memoria) y, si aporta, una pantalla propia interactiva.
+- **Guía**: Cronos, el búho, con el disfraz de la materia (`meta.costume`); el mismo personaje en todas las apps.
+- **Diseño**: cada app con estética propia (paleta, escenas, tema claro u oscuro); mobile-first (teléfono/tablet), botones ≥44 px, contraste suficiente, funciona sin sonido y respeta «reducir movimiento».
+- **Fotos reales**: opcionales, solo cuando el realismo importa (cuerpo, animales, plantas). Wikimedia Commons, ~640 px JPEG en `img/`, con autor + licencia (`hotspots[].photo`; el kit muestra los créditos). Revisar cada foto visualmente.
+- **Idioma**: según el curso (español o inglés: `meta.lang`). Textos de estudio literales de los apuntes de Sofía cuando los haya (es preparación de examen).
+- **Progreso**: estrellas ⭐ en `localStorage` con claves `<app>-stars`, `<app>-seen`, `<app>-stamps`, `<app>-best`.
+- **Voz**: mp3 pregenerados con `python3 ../kit/v1/gen_audio.py` (edge-tts instalado con pipx; `es-CO-SalomeNeural` -8 %, `en-US-JennyNeural` -10 %). Sin mp3 la app usa la mejor voz del dispositivo. Desde las sesiones en la nube edge-tts no funciona: lo corre James en su computador.
+- **Verificación**: antes de publicar, capturas en teléfono y tablet con `kit/v1/tools/capturas.js` y revisarlas; jugar cada juego completo.
 
-- **Stack**: HTML/CSS/JS vanilla en un solo archivo. Sin frameworks, sin build step, sin dependencias npm. Google Fonts está permitido.
-- **Idioma**: según el curso — español para clases en español, inglés para clases en inglés. Textos de estudio tomados literalmente de los apuntes de Sofía (es preparación de examen).
-- **Diseño**: cada app tiene una estética temática propia y profesional (no plantilla genérica). Botones grandes, emojis, tipografía legible, mobile-first (se usa en teléfono/tablet).
-- **Imágenes**: el contenido de estudio usa fotos reales, no emojis/iconos. Fuente: Wikimedia Commons (licencias libres), descargadas y comprimidas a `img/` dentro de la app (~640px, JPEG), con créditos (autor + licencia) visibles en la app (p. ej. un `<details>` en el inicio). Revisar cada foto visualmente antes de usarla — la búsqueda de Commons devuelve mucho ruido (libros escaneados, b/n). Ver `teatro/` como referencia.
-- **Didáctica**: siempre un modo "Aprende" (contenido) + al menos un modo de juego (quiz, emparejar, hablar). Feedback inmediato con animación y sonido.
-- **Progreso**: estrellas ⭐ acumuladas en `localStorage` (clave `<app>-stars`).
-- **Sonido**: WebAudio para efectos (ding/buzz/aplausos) sin archivos.
-- **Voz**: siempre audio pregenerado con `edge-tts` (script `gen_audio.py` en la carpeta de la app, mp3 en `audio/`), no Web Speech API. Voz estándar en español: **`es-CO-SalomeNeural`** (rate -8%, ver `teatro/gen_audio.py`); en inglés: `en-US-JennyNeural`/`en-US-AnaNeural` (ver `dog-presentation/gen_audio.py`). El contenido de estudio (lecciones, preguntas) se lee solo al mostrarse, con botón 🔊 para repetir, y hay frases de feedback con voz.
-- **Accesibilidad mínima**: contraste suficiente, tamaños táctiles ≥44px, funciona sin sonido.
+## Apps anteriores
+
+Las apps hechas antes del kit (`teatro/`, `dog-presentation/`, `economia/`, …) son de un solo `index.html` con fotos de Wikimedia y audio propio (`gen_audio.py` en su carpeta). No se migran todas: se renuevan con el kit una por una cuando Sofía vaya a usarlas para un examen. `historia/` es la app original del estándar (no usa el kit, pero el kit salió de ella).
 
 ## Deploy
 
-1. Enlazar la app en el hub `index.html`.
+1. Enlazar la app en el hub `index.html` con su emoji (la `plantilla/` y el `kit/` no van en el hub).
 2. Commit y push a `main` → GitHub Pages publica automáticamente.
-3. Verificar en https://jamesgarzon.github.io/sofias-apps/
+3. Verificar en https://jamesgarzon.github.io/sofias-apps/ (desde la nube `github.io` está bloqueado: revisar la Action «pages build and deployment»).
 
 ## No trackear
 

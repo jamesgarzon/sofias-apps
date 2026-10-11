@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Catálogo del kit v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .cat-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 8px 0 4px; }
+  .cat-h h1 { font-size: clamp(1.6rem, 6vw, 2.4rem); }
+  .cat-sub { color: var(--k-ink-2); margin-bottom: 8px; line-height: 1.4; }
+  .owls { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .owl-card { border-radius: 22px; padding: 14px 10px 12px; text-align: center; background: var(--k-panel); border: 2px solid var(--k-line); box-shadow: var(--k-shadow); cursor: pointer; }
+  .owl-card .owl { width: 110px; margin: 0 auto; }
+  .owl-card b { display: block; font-family: var(--k-font-h); font-size: 1.05rem; margin-top: 6px; }
+  .owl-card small { color: var(--k-ink-2); font-size: .82rem; display: block; line-height: 1.25; }
+  .owl-card code { font-size: .78rem; color: var(--k-ink-3); }
+  .scene-demo { aspect-ratio: 8 / 5; border-radius: 22px; overflow: hidden; border: 3px solid var(--k-line); box-shadow: var(--k-shadow); }
+  .scene-demo svg { width: 100%; height: 100%; display: block; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+</style>
+</head>
+<body>
+<main id="app">
+  <div class="cat-h"><h1>🧰 Catálogo del kit v1</h1><button class="btn btn-ghost" id="theme">🌗 Tema claro / oscuro</button></div>
+  <p class="cat-sub">Piezas compartidas para las apps de Sofía. Toca a Cronos para ver cómo celebra. El código y el esquema están en <code>kit/v1/README.md</code>; la app de ejemplo completa está en <a href="../../plantilla/" style="color:inherit">/plantilla/</a>.</p>
+  <h3 class="section-h">🦉 Cronos y sus disfraces <small style="font-size:.9rem;opacity:.7">(meta.costume)</small></h3>
+  <div class="owls" id="owls"></div>
+  <h3 class="section-h">🧍 Muñequitos para las escenas <small style="font-size:.9rem;opacity:.7">(KitSVG.person)</small></h3>
+  <div class="scene-demo" id="people"></div>
+  <h3 class="section-h">🎨 Piezas de escena <small style="font-size:.9rem;opacity:.7">(sun, cloud, tree, palm, birds, waves, flagPole…)</small></h3>
+  <div class="scene-demo" id="pieces"></div>
+  <h3 class="section-h">🔘 Botones</h3>
+  <div class="row"><button class="btn">Principal ✨</button><button class="btn btn-pink">Rosa</button><button class="btn btn-cyan">Cian</button><button class="btn btn-ghost">Secundario</button><button class="icon-btn">🔊</button></div>
+  <p class="foot">Kit v1 · extraído de «Viajera del Tiempo»</p>
+</main>
+<script src="kit-svg.js"></script>
+<script>
+  const S = KitSVG;
+  const SUBJ = { viajero: 'Sociales · historia', explorador: 'Sociales · geografía', cientifico: 'Ciencias Naturales', doctor: 'El cuerpo humano', chef: 'Alimentación', detective: 'Inglés · gramática', artista: 'Artes', actor: 'Español · teatro', profe: 'Matemáticas', astronauta: 'El espacio', jardinero: 'Plantas · tablas' };
+  document.getElementById('owls').innerHTML = Object.entries(S.COSTUMES).map(([k, c]) =>
+    `<div class="owl-card" data-k="${k}"><span class="owl">${S.owl(k)}</span><b>${c.label}</b><small>${SUBJ[k] || ''}</small><code>"${k}"</code></div>`).join('');
+  document.getElementById('owls').addEventListener('click', (e) => {
+    const o = e.target.closest('.owl-card')?.querySelector('.owl'); if (!o) return;
+    o.classList.remove('happy'); void o.offsetWidth; o.classList.add('happy', 'talk'); setTimeout(() => o.classList.remove('talk'), 1500);
+  });
+  S.setSeed(3);
+  document.getElementById('people').innerHTML = `<svg viewBox="0 0 800 500">${S.lin('pp', [[0, '#bde7ff'], [1, '#fff7e6']])}<rect width="800" height="500" fill="url(#pp)"/>${S.hill(330, '#9be08a', 30)}${S.hill(380, '#7cc96f', 20)}
+    ${S.person({ x: 90, y: 440, hairStyle: 'pigtails', hair: '#5b3a1a', top: '#ff7cc0', dress: true, item: 'flower', arm: 'out', itemColor: '#ffd23f' })}
+    ${S.person({ x: 190, y: 440, hat: 'cap', capColor: '#3b82f6', top: '#22c55e', item: 'ball', arm: 'out', itemColor: '#f97316' })}
+    ${S.person({ x: 290, y: 440, hat: 'chef', top: '#fff', bottom: '#475569', item: 'apple', arm: 'out' })}
+    ${S.person({ x: 390, y: 440, hat: 'straw', top: '#a16207', item: 'book', arm: 'out', skin: '#c58a5c' })}
+    ${S.person({ x: 490, y: 440, hat: 'crown', top: '#7c3aed', cape: '#dc2626', hairStyle: 'long', hair: '#f5c518', dress: true, arm: 'wave' })}
+    ${S.person({ x: 590, y: 440, hat: 'helmet', helmetColor: '#facc15', top: '#f97316', bottom: '#1e3a8a', skin: '#8d5524', arm: 'up', item: 'flag', flag: 'col' })}
+    ${S.person({ x: 700, y: 440, hat: 'knight', top: '#cbd5e1', armor: true, shield: '#3b5bdb', item: 'sword', arm: 'up', boots: true })}</svg>`;
+  document.getElementById('pieces').innerHTML = `<svg viewBox="0 0 800 500">${S.lin('pc', [[0, '#6ec6ff'], [1, '#e9f7ff']])}<rect width="800" height="500" fill="url(#pc)"/>
+    ${S.sun(680, 90, 40)}${S.cloud(160, 80)}${S.cloud(420, 60, 0.7, 0.9, 'a-drift2')}${S.birds(140, 3, '#334155', 18)}
+    ${S.hill(300, '#9be08a', 40)}<rect y="340" width="800" height="160" fill="#2b8fd6"/>${S.waves(370, '#cdeeff', 6)}${S.waves(410, '#cdeeff', 8)}
+    ${S.tree(110, 320, 1)}${S.palm(260, 330, 0.9)}${S.house(380, 320, 70, 50, '#fde68a', '#dc2626', { win: '#7dd3fc' })}${S.flagPole(520, 320, 110, 'col')}${S.flagPole(600, 320, 90, 'red', 34, 22)}
+    ${S.sparkle(700, 250)}${S.sparkle(730, 280, 0.6)}${S.smoke(470, 260, 3, 10, '#ffffff')}</svg>`;
+  document.getElementById('theme').onclick = () => { const b = document.body; b.dataset.kTheme = b.dataset.kTheme === 'light' ? '' : 'light'; };
+</script>
+</body>
+</html>

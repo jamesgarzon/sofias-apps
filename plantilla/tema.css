@@ -1,0 +1,17 @@
+/* Estética propia de la app: sobrescribe las variables --k-* del kit. */
+body[data-k-theme="light"] {
+  --k-hero: #38bdf8;
+  --k-acc-top: #7dd3fc; --k-acc-bot: #3b82f6; --k-acc-edge: #1e40af; --k-acc-ink: #fff;
+}
+/* pantalla propia: el termómetro mágico */
+.termo { display: grid; gap: 16px; }
+@media (min-width: 820px) { .termo { grid-template-columns: 1fr 1.2fr; align-items: center; } }
+.termo-stage { position: relative; aspect-ratio: 1; max-width: 360px; width: 100%; margin: 0 auto; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle, #fff 30%, var(--tc) 100%); box-shadow: var(--k-shadow), inset 0 0 0 6px rgba(255, 255, 255, .7); transition: background .6s; }
+.termo-emoji { font-size: clamp(5rem, 30vw, 9rem); transition: transform .5s cubic-bezier(.3, 1.6, .5, 1); }
+.termo-emoji.pop { transform: scale(1.25) rotate(-8deg); }
+.termo-panel { border-radius: 24px; padding: 18px; background: var(--k-panel); border: 2px solid var(--k-line); box-shadow: var(--k-shadow); }
+.termo-temp { font-family: var(--k-font-h); font-size: 3rem; font-weight: 700; color: var(--tc); filter: brightness(.8); }
+.termo-state { font-family: var(--k-font-h); font-size: 1.6rem; font-weight: 600; }
+.termo-panel p { margin-top: 8px; line-height: 1.4; }
+.termo input[type="range"] { width: 100%; margin-top: 16px; height: 44px; accent-color: var(--tc); }
+.termo-scale { display: flex; justify-content: space-between; font-size: .85rem; color: var(--k-ink-2); }
