@@ -1,0 +1,61 @@
+/* ===== Animaciones de las escenas SVG (clases a-*) ===== */
+.a-bob, .a-bob-s, .a-drift, .a-drift2, .a-flicker, .a-spin, .a-spin-slow, .a-sway, .a-smoke, .a-wave, .a-wave-s,
+.a-rock, .a-fly, .a-flap, .a-swing, .a-spark, .a-flag, .a-blink, .a-globe, .a-rocket, .a-shimmer, .a-foam,
+.a-fall, .a-pulse, .a-vote, .a-wing, .a-twinkle, .a-glow { transform-box: fill-box; }
+.a-bob { animation: a-bob 3s ease-in-out infinite; }
+.a-bob-s { animation: a-bob 4.6s ease-in-out infinite; }
+@keyframes a-bob { 50% { transform: translateY(-6px); } }
+.a-drift { animation: a-drift 16s ease-in-out infinite alternate; }
+.a-drift2 { animation: a-drift2 20s ease-in-out infinite alternate; }
+@keyframes a-drift { to { transform: translateX(70px); } }
+@keyframes a-drift2 { to { transform: translateX(-60px); } }
+.a-flicker { transform-origin: 50% 100%; animation: a-flicker .45s ease-in-out infinite alternate; }
+@keyframes a-flicker { 0% { transform: scale(1, 1) skewX(0); } 50% { transform: scale(.9, 1.1) skewX(4deg); } 100% { transform: scale(1.06, .92) skewX(-4deg); } }
+.a-spin { transform-origin: 50% 50%; animation: a-spin 7s linear infinite; }
+.a-spin-slow { transform-origin: 50% 50%; animation: a-spin 50s linear infinite; }
+@keyframes a-spin { to { transform: rotate(360deg); } }
+.a-sway { transform-origin: 50% 100%; animation: a-sway 3.6s ease-in-out infinite alternate; }
+@keyframes a-sway { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+.a-twinkle { animation: a-twinkle 2.4s ease-in-out infinite; }
+@keyframes a-twinkle { 50% { opacity: .15; } }
+.a-glow { animation: a-glow 2.2s ease-in-out infinite; }
+@keyframes a-glow { 50% { opacity: .55; } }
+.a-smoke { transform-origin: 50% 50%; animation: a-smoke 4s ease-out infinite; opacity: 0; }
+@keyframes a-smoke { 0% { transform: translate(0, 0) scale(.4); opacity: 0; } 15% { opacity: .85; } 100% { transform: translate(34px, -96px) scale(1.7); opacity: 0; } }
+.a-wave { animation: a-wave 6s linear infinite; }
+.a-wave-s { animation: a-wave 10s linear infinite; }
+@keyframes a-wave { to { transform: translateX(-80px); } }
+.a-rock { transform-origin: 50% 90%; animation: a-rock 4.2s ease-in-out infinite; }
+@keyframes a-rock { 0%, 100% { transform: rotate(-2deg) translateY(0); } 50% { transform: rotate(2deg) translateY(-4px); } }
+.a-fly { animation: a-fly 22s linear infinite; }
+@keyframes a-fly { from { transform: translateX(-160px); } to { transform: translateX(980px); } }
+.a-flap { transform-origin: 50% 50%; animation: a-flap .5s ease-in-out infinite alternate; }
+@keyframes a-flap { to { transform: scaleY(-.6); } }
+.a-swing { transform-origin: 30% 0%; animation: a-swing 3s ease-in-out infinite alternate; }
+@keyframes a-swing { from { transform: rotate(-7deg); } to { transform: rotate(9deg); } }
+.a-spark { animation: a-spark 1.8s ease-out infinite; opacity: 0; }
+@keyframes a-spark { 0% { transform: translate(0, 0); opacity: 1; } 100% { transform: translate(8px, -70px); opacity: 0; } }
+.a-flag { transform-origin: 0% 50%; animation: a-flag 1.4s ease-in-out infinite; }
+@keyframes a-flag { 0%, 100% { transform: skewY(0) scaleX(1); } 50% { transform: skewY(-7deg) scaleX(.9); } }
+.a-blink { transform-origin: 50% 50%; animation: a-blink 4.5s infinite; }
+@keyframes a-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+.a-globe { animation: a-globe 9s linear infinite; }
+@keyframes a-globe { from { transform: translateX(0); } to { transform: translateX(-120px); } }
+.a-rocket { animation: a-rocket 5s ease-in-out infinite; }
+@keyframes a-rocket { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(22px, -22px); } }
+.a-shimmer { animation: a-shimmer 3s ease-in-out infinite; }
+@keyframes a-shimmer { 50% { transform: translateX(10px); opacity: .3; } }
+.a-foam { animation: a-foam 3.5s ease-in-out infinite; }
+@keyframes a-foam { 50% { transform: translate(-10px, 6px); opacity: .3; } }
+.a-fall { animation: a-fall 3s ease-in infinite; }
+@keyframes a-fall { 0% { transform: translate(0, 0) rotate(0); opacity: 1; } 100% { transform: translate(18px, 50px) rotate(160deg); opacity: 0; } }
+.a-pulse { transform-origin: 50% 50%; animation: a-pulse 1.6s ease-in-out infinite; }
+@keyframes a-pulse { 50% { transform: scale(1.12) rotate(8deg); } }
+.a-vote { animation: a-vote 2.6s ease-in-out infinite; }
+@keyframes a-vote { 0% { transform: translateY(-14px); opacity: 0; } 25% { opacity: 1; } 70% { transform: translateY(10px); opacity: 1; } 85%, 100% { transform: translateY(18px); opacity: 0; } }
+.a-wing { transform-origin: 0% 100%; animation: a-wing .6s ease-in-out infinite alternate; }
+@keyframes a-wing { to { transform: rotate(-30deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  [class^="a-"], [class*=" a-"] { animation: none !important; }
+}
