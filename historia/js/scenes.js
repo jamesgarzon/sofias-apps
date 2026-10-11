@@ -351,10 +351,10 @@ window.SCENES = (() => {
     ${pyramid(374, 196, 304, 446, 302, 384)}
     ${pyramid(86, 236, 36, 140, 302, 94)}
     <path d="M0,302 Q200,292 380,306 L380,330 Q180,318 0,326Z" fill="#e8b363" opacity=".6"/>
-    ${at(150, 338, 0.9, `<rect x="-26" y="-34" width="52" height="34" rx="2" fill="#e8c27a"/><path d="M-26,-17 h52 M0,-34 v17 M-13,-17 v17 M13,-17 v17" stroke="#b98a3e" stroke-width="1.5" opacity=".7"/><rect x="-26" y="-34" width="52" height="34" rx="2" fill="none" stroke="#b98a3e" stroke-width="2"/><rect x="-32" y="0" width="64" height="6" rx="3" fill="#7a5230"/><path d="M-32,6 q-7,0 -7,-6" stroke="#7a5230" stroke-width="3" fill="none"/>`)}
-    <path d="M173,322 Q190,322 203,317 Q220,320 238,319" stroke="#8a6a3a" stroke-width="2.4" fill="none"/>
-    ${person({ x: 210, y: 340, s: 0.5, skin: '#b07a4a', top: '#b07a4a', sleeve: '#b07a4a', bottom: '#f4efe2', hair: '#1b1209', belt: '#d4a52c', act: 'pull' })}
-    ${person({ x: 246, y: 342, s: 0.5, skin: '#9c6a40', top: '#9c6a40', sleeve: '#9c6a40', bottom: '#f4efe2', hair: '#1b1209', belt: '#d4a52c', act: 'pull', delay: -0.35 })}
+    ${at(100, 338, 0.9, `<rect x="-26" y="-34" width="52" height="34" rx="2" fill="#e8c27a"/><path d="M-26,-17 h52 M0,-34 v17 M-13,-17 v17 M13,-17 v17" stroke="#b98a3e" stroke-width="1.5" opacity=".7"/><rect x="-26" y="-34" width="52" height="34" rx="2" fill="none" stroke="#b98a3e" stroke-width="2"/><rect x="-32" y="0" width="64" height="6" rx="3" fill="#7a5230"/><path d="M-32,6 q-7,0 -7,-6" stroke="#7a5230" stroke-width="3" fill="none"/>`)}
+    <path d="M123,322 Q134,322 145,317 Q163,320 181,319" stroke="#8a6a3a" stroke-width="2.4" fill="none"/>
+    ${person({ x: 152, y: 340, s: 0.5, skin: '#b07a4a', top: '#b07a4a', sleeve: '#b07a4a', bottom: '#f4efe2', hair: '#1b1209', belt: '#d4a52c', act: 'pull' })}
+    ${person({ x: 188, y: 342, s: 0.5, skin: '#9c6a40', top: '#9c6a40', sleeve: '#9c6a40', bottom: '#f4efe2', hair: '#1b1209', belt: '#d4a52c', act: 'pull', delay: -0.35 })}
     <!-- colina con templo griego -->
     <path d="M470,336 Q600,276 800,296 L800,420 L470,420Z" fill="#e7b25f"/>
     <rect x="548" y="318" width="226" height="9" fill="#efe4cf"/><rect x="556" y="309" width="210" height="10" fill="#f6eedd"/>
@@ -366,7 +366,7 @@ window.SCENES = (() => {
     <g opacity=".55" stroke="#bfe8ff" stroke-width="2.4" fill="none" stroke-linecap="round">
       ${at(0, 0, 1, `<path d="M-40,400 q20,-6 40,0 t40,0 t40,0 M60,440 q20,-6 40,0 t40,0 M220,420 q20,-6 40,0 t40,0 M20,470 q20,-6 40,0 t40,0 t40,0 M300,465 q20,-6 40,0 t40,0"/>`, 'a-wave-s')}
     </g>
-    ${at(196, 414, 1, `<path d="M-48,0 Q0,20 48,0 L40,-7 L-40,-7Z" fill="#8a5a2c"/><path d="M-40,-7 L40,-7" stroke="#6b4320" stroke-width="2"/><line x1="0" y1="-7" x2="2" y2="-92" stroke="#5b3a1a" stroke-width="3"/><path d="M2,-90 L44,-16 L2,-20Z" fill="#fbf4e2"/><path d="M-2,-74 L-30,-18 L-2,-22Z" fill="#f1e6cf"/>`, 'a-rock')}
+    ${at(236, 414, 1, `<path d="M-48,0 Q0,20 48,0 L40,-7 L-40,-7Z" fill="#8a5a2c"/><path d="M-40,-7 L40,-7" stroke="#6b4320" stroke-width="2"/><line x1="0" y1="-7" x2="2" y2="-92" stroke="#5b3a1a" stroke-width="3"/><path d="M2,-90 L44,-16 L2,-20Z" fill="#fbf4e2"/><path d="M-2,-74 L-30,-18 L-2,-22Z" fill="#f1e6cf"/>`, 'a-rock')}
     ${palm(330, 376, 0.8, 0)}${palm(52, 362, 0.9, -1.2, -16)}${palm(460, 400, 0.65, -2)}
     <!-- tablilla cuneiforme -->
     <ellipse cx="652" cy="482" rx="58" ry="10" fill="#b07a3a" opacity=".45"/>
@@ -379,7 +379,7 @@ window.SCENES = (() => {
     ${at(748, 470, 1, `<rect x="-34" y="-14" width="60" height="16" rx="8" fill="#efe6d6" transform="rotate(-8)"/><path d="M26,-22 L30,-8 L22,-6Z" fill="#d8ccb5"/><rect x="-44" y="-4" width="20" height="10" rx="3" fill="#e2d6c0"/>`)}
     `;
   };
-  HS.antigua = [[652, 430], [234, 228], [196, 368], [662, 262], [452, 270]];
+  HS.antigua = [[652, 430], [234, 228], [236, 368], [662, 262], [452, 270]];
 
   // ================= EDAD MEDIA =================
   S.media = () => {
