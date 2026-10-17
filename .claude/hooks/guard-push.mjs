@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// PreToolUse(Bash) guardrail for AI agents: never push to the prod branch or merge a PR (deny);
+// PreToolUse(Bash) guardrail for agent sessions: never push to the prod branch or merge a PR (deny);
 // force/delete pushes, deploys and pushes whose target can't be told ask James first.
 // An accident guard, not a security boundary: the agent runs as the same user. The real gate
 // is the merge by James plus the `gate` step in deploy.yml. Test: node check-guard-push.mjs
