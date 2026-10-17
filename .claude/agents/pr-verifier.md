@@ -56,7 +56,10 @@ Then `TREE=$(git rev-parse "$TARGET^{tree}")`.
 mkdir -p "$HOME/.cache/pr-verifier"
 [ "$(df -Pk "$HOME" | awk 'NR==2{print int($4/1048576)}')" -ge 2 ] || { post failure "menos de 2 GB libres en disco"; exit; }
 W="$HOME/.cache/pr-verifier/$(basename "$REPO_DIR")-$N"
-git worktree remove --force "$W" 2>/dev/null; git worktree add -q --detach "$W" "$TARGET"
+git worktree remove --force "$W" 2>/dev/null
+# hooksPath=/dev/null: some repos' post-checkout links the real .env files into new worktrees
+git -c core.hooksPath=/dev/null worktree add -q --detach "$W" "$TARGET"
+[ -z "$(git -C "$W" status --porcelain --ignored | grep -E '(^|/)\.env')" ] || { post failure "el worktree tiene .env sin trackear"; exit; }
 ```
 
 - Read the `## Verificación` (or `## Verification`) section of `$W/CLAUDE.md`.
