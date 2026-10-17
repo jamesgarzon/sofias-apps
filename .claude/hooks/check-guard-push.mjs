@@ -38,7 +38,7 @@ const cases = [
   ['pnpm run desplegar', 'ask'],
   ['bash scripts/desplegar.sh', 'ask'],
   ['./scripts/deploy.sh --prod', 'ask'],
-  ['gh workflow run deploy.yml -R jamesgarzon/Ledger', 'ask'],
+  ['gh workflow run deploy.yml -R owner/repo', 'ask'],
   ['git push origin feat/x', null],
   ['git push -u origin claude/abc', null],
   ['git push origin maintenance', null],

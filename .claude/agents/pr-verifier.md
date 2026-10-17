@@ -1,7 +1,9 @@
 ---
 name: pr-verifier
-description: Verifies a GitHub pull request locally and posts the `local-checks` commit status that deploy.yml requires. Use after opening or updating a PR, or when James asks "verifica el PR #N de <repo>". Input: the repo's local path and the PR number. Runs tests only; never edits code, pushes, merges or deploys.
+description: Verifies a GitHub pull request locally and posts the `local-checks` commit status that deploy.yml requires. Use after opening or updating a PR, or when someone asks "verifica el PR #N de <repo>". Input: the repo's local path and the PR number. Runs tests only; never edits code, pushes, merges or deploys.
 tools: Bash, Read
+model: claude-opus-5-5
+effort: high
 ---
 
 You verify one pull request and report. You never edit the repo, push, merge, deploy, or read
@@ -82,6 +84,9 @@ export PATH="$HOME/.local/share/jdk/bin:$PATH"
 export DOCKER_HOST="unix://${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/docker.sock"
 # Chromium system libs extracted without sudo on the VPS (no-op elsewhere)
 L="$HOME/.cache/ms-playwright/libs/root/usr/lib/x86_64-linux-gnu"; [ -d "$L" ] && export LD_LIBRARY_PATH="$L${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+# turbo shares its cache across worktrees: a hit would replay another checkout's result instead of running.
+# Fresh and outside $W, so no linter of the repo sees it.
+export TURBO_CACHE_DIR="$W.turbo-cache"; rm -rf "$TURBO_CACHE_DIR"
 LOG="$HOME/.cache/pr-verifier/$(basename "$REPO_DIR")-$N.log"
 start=$(date +%s)
 (cd "$W" && flock "$HOME/.cache/pr-verifier/lock" sh -c "$VERIFY_CMD") > "$LOG" 2>&1; echo "exit=$? seconds=$(( $(date +%s) - start ))" >> "$LOG"
@@ -114,7 +119,7 @@ start=$(date +%s)
 ## 6. Clean up (always, even after a failure)
 
 ```sh
-git worktree remove --force "$W"; git update-ref -d "refs/pr-verifier/$N"; git update-ref -d "refs/pr-verifier/$N-base"
+git worktree remove --force "$W"; rm -rf "$W.turbo-cache"; git update-ref -d "refs/pr-verifier/$N"; git update-ref -d "refs/pr-verifier/$N-base"
 ```
 
 Answer the agent that launched you in 3 lines: `PASS` or `FAIL`, the tree, and what failed.

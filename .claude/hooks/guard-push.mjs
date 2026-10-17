@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // PreToolUse(Bash) guardrail for agent sessions: never push to the prod branch or merge a PR (deny);
-// force/delete pushes, deploys and pushes whose target can't be told ask James first.
+// force/delete pushes, deploys and pushes whose target can't be told ask first.
 // An accident guard, not a security boundary: the agent runs as the same user. The real gate
-// is the merge by James plus the `gate` step in deploy.yml. Test: node check-guard-push.mjs
+// is the merge by a person plus the `gate` step in deploy.yml. Test: node check-guard-push.mjs
 import { execFileSync } from 'node:child_process'
 import { pathToFileURL } from 'node:url'
 
@@ -10,8 +10,8 @@ const PROD = /^(main|master)$/
 const RANK = { ask: 1, deny: 2 }
 const DEPLOY = /^(deploy|desplegar)$/ // package scripts that publish (trazo's `desplegar` pushes main itself)
 const DENY_PUSH = 'Los agentes no hacen push a main/master: haz push de una rama y abre un PR.'
-const DENY_MERGE = 'El merge lo hace James desde GitHub.'
-const ASK = 'Esto puede publicar o reescribir el remoto: confirma, James.'
+const DENY_MERGE = 'El merge lo hace una persona del equipo desde GitHub.'
+const ASK = 'Esto puede publicar o reescribir el remoto: confírmalo.'
 // Tokens after which the next word is a command, not an argument (`grep "git push"` is not a push).
 const LAUNCHERS = new Set(['-c', 'sudo', 'exec', 'command', 'time', 'nohup', 'env', 'xargs', '(', '{', '!'])
 const GIT_OPTS_WITH_VALUE = new Set(['-c', '--git-dir', '--work-tree', '--namespace', '--exec-path'])
