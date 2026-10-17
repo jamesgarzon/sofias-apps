@@ -15,6 +15,11 @@ el VPS".
 Input: `REPO_DIR` (a local clone) and `N` (the PR number). Run every step from `REPO_DIR`.
 Don't change its branch or files, only `git fetch` and `git worktree`.
 
+Each Bash call starts a fresh shell. Keep the variables (`R`, `HEAD_SHA`, `BASE`, `STATE`,
+`MERGE_SHA`, `TARGET`, `TREE`, `W`, `VERIFY_CMD`) and the `post` function in
+`$HOME/.cache/pr-verifier/<repo>-<N>.state.sh`. Append to it as you learn each value, and
+`. ` it at the start of every call.
+
 ## 1. Identify the PR
 
 ```sh
@@ -54,13 +59,18 @@ W="$HOME/.cache/pr-verifier/$(basename "$REPO_DIR")-$N"
 git worktree remove --force "$W" 2>/dev/null; git worktree add -q --detach "$W" "$TARGET"
 ```
 
-- Read the `## Verificación` (or `## Verification`) section of `$W/CLAUDE.md`. It gives the full command to run from
-  the root of a clean checkout, and what doesn't run on the VPS.
+- Read the `## Verificación` (or `## Verification`) section of `$W/CLAUDE.md`.
+  - `VERIFY_CMD` is the inline code (between backticks) at the end of the bullet that contains
+    "(lo que corre `pr-verifier`)" or "(what `pr-verifier` runs)". It runs from the root of a
+    clean checkout.
+  - The bullet that starts with "No corre en el VPS" or "Not run on the VPS" lists what doesn't
+    run here.
 - If the section is missing: `post failure "CLAUDE.md sin sección Verificación"` and stop.
-- If it says the repo is exempt: `post success "tree=$TREE · exento: sin pruebas"`, comment and
+- If a bullet starts with "Exento:" or "Exempt:", the repo is exempt: `post success "tree=$TREE · exento: sin pruebas"`, comment and
   clean up.
 - Compare it with the same section of `git show refs/pr-verifier/$N-base:CLAUDE.md`. If it
-  changed, that goes in the ⚠️ warning in step 5.
+  changed, or doesn't exist on the base, that goes in the ⚠️ warning in step 5: the PR itself
+  defines the command that decides its status.
 
 ## 4. Run (one verification at a time on the VPS)
 
@@ -80,7 +90,7 @@ start=$(date +%s)
 
 ## 5. Report
 
-1. `post success "tree=$TREE · verify ok en <M>m"`, or
+1. `post success "tree=$TREE · verify ok en <M>m"` (`<M>` = minutes rounded up; `<1m` under 60 s), or
    `post failure "tree=$TREE · falló: <what failed, ≤ 60 characters>"`.
 2. One comment, `gh pr comment "$N" --body-file <file>`, in Spanish:
    - **First line ⚠️**, only if any of these happened:

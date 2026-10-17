@@ -8,6 +8,7 @@ import { pathToFileURL } from 'node:url'
 
 const PROD = /^(main|master)$/
 const RANK = { ask: 1, deny: 2 }
+const DEPLOY = /^(deploy|desplegar)$/ // package scripts that publish (trazo's `desplegar` pushes main itself)
 const DENY_PUSH = 'Los agentes no hacen push a main/master: haz push de una rama y abre un PR.'
 const DENY_MERGE = 'El merge lo hace James desde GitHub.'
 const ASK = 'Esto puede publicar o reescribir el remoto: confirma, James.'
@@ -82,8 +83,9 @@ export function classify(command, cwd, target = pushTarget) {
     tokens.forEach((tok, i) => {
       const next = tokens.slice(i + 1)
       if (base(tok) === 'firebase' && next[0] === 'deploy') raise('ask')
-      if (['npm', 'pnpm', 'yarn'].includes(tok) && (next[0] === 'deploy' || (next[0] === 'run' && next[1] === 'deploy')))
+      if (['npm', 'pnpm', 'yarn'].includes(tok) && (DEPLOY.test(next[0]) || (next[0] === 'run' && DEPLOY.test(next[1]))))
         raise('ask')
+      if (/(^|\/)(deploy|desplegar)\.sh$/.test(tok)) raise('ask')
       if (!atCommand(tokens, i)) return
       if (tok === 'cd' || tok === 'pushd') movedDir = true
       if (tok === 'gh') {
