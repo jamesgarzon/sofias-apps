@@ -15,7 +15,7 @@ Apps educativas para Sofía (≈8 años). Hub en `index.html`, desplegado en Git
 - **Fotos reales**: opcionales, solo cuando el realismo importa (cuerpo, animales, plantas). Wikimedia Commons, ~640 px JPEG en `img/`, con autor + licencia (`hotspots[].photo`; el kit muestra los créditos). Revisar cada foto visualmente.
 - **Idioma**: según el curso (español o inglés: `meta.lang`). Textos de estudio literales de los apuntes de Sofía cuando los haya (es preparación de examen).
 - **Progreso**: estrellas ⭐ en `localStorage` con claves `<app>-stars`, `<app>-seen`, `<app>-stamps`, `<app>-best`.
-- **Voz**: mp3 pregenerados con `python3 ../kit/v1/gen_audio.py` (edge-tts instalado con pipx; `es-CO-SalomeNeural` -8 %, `en-US-JennyNeural` -10 %). Sin mp3 la app usa la mejor voz del dispositivo. Desde las sesiones en la nube edge-tts no funciona: lo corre James en su computador.
+- **Voz**: mp3 pregenerados con `python3 ../kit/v1/gen_audio.py` (edge-tts instalado con pipx; `es-CO-SalomeNeural` -8 %, `en-US-JennyNeural` -10 %). Sin mp3 la app usa la mejor voz del dispositivo. Desde las sesiones en la nube edge-tts no funciona: lo corre alguien del equipo en su computador.
 - **Verificación**: antes de publicar, capturas en teléfono y tablet con `kit/v1/tools/capturas.js` y revisarlas; jugar cada juego completo.
 
 ## Apps anteriores
