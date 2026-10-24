@@ -160,7 +160,7 @@ Object.assign(window.APP_SCENES, (() => {
           ${at(146, 326, 0.9, SCN.maceta('#e11d48', '#fff1f2'))}
           ${at(452, 250, 1, fuego('#f472b6', 26, '#fff'), 's-in', delay(1.6))}${at(404, 300, 1, fuego('#fde047', 18), 's-in', delay(2.4))}
           ${[[420, 372, 1.2], [462, 380, 1.9], [440, 376, 2.6]].map(([x, y, d]) => at(x, y, 1.2, nota('#fde68a'), 'a-rise', `animation-duration:2.4s;${delay(d)}`)).join('')}
-          ${label(436, 222, 'En vigilia', 0.9, '#4c1d95', 21)}
+          ${label(438, 224, 'En vigilia', 0.9, '#4c1d95', 19)}
           ${label(282, 374, '¡No les fue fácil!', 3, '#9f1239', 22)}`,
         // 1 · Reventaban los geranios: en el balcón, los botones se abren uno tras otro, ¡pop, pop!, y la vecina los señala
         ({ at, person, sparkle }) => {
@@ -177,25 +177,26 @@ Object.assign(window.APP_SCENES, (() => {
           ${pots.map((x, i) => at(x, 188, 1, sparkle(0, 0, 0, '#fff7c2', 1.8), 's-flash', delay(1 + i * 0.5))).join('')}
           ${label(400, 132, '¡Reventaban los geranios!', 3.9, '#9f1239', 22)}`;
         },
-        // 2 · Brazos y palmas: dos amigos llegan corriendo y se abrazan; alrededor todos aplauden y saltan de alegría
+        // 2 · Brazos y palmas: dos amigos llegan corriendo y se abrazan (sus brazos se cruzan); alrededor todos aplauden y saltan de alegría
         ({ at, person, sparkle }) => `
           ${at(0, 0, 1, e2Plaza(250, 700, 336, 470), 's-fade', 'animation-duration:.5s')}
-          ${at(0, 0, 1, person({ ...gente[1], x: 440, y: 450, s: 1.25, arm: 'out', act: 'idle' }), 's-from-l', 'animation-duration:1.2s')}
-          ${at(0, 0, 1, person({ ...gente[0], x: 520, y: 450, s: 1.25, arm: 'out', flip: true, act: 'idle' }), 's-from-r', 'animation-duration:1.2s')}
+          ${at(0, 0, 1, person({ ...gente[1], x: 455, y: 450, s: 1.25, arm: 'out', act: 'idle' }), 's-from-l', 'animation-duration:1.2s')}
+          ${at(0, 0, 1, person({ ...gente[0], x: 505, y: 450, s: 1.25, arm: 'out', flip: true, act: 'idle' }), 's-from-r', 'animation-duration:1.2s')}
           ${[[456, 1.4], [504, 1.9], [480, 2.5]].map(([x, d]) => at(x, 320, 0.6, `<g transform="scale(1.9)">${corazon()}</g>`, 'a-rise', `animation-duration:2.2s;${delay(d)}`)).join('')}
           ${at(0, 0, 1, person({ ...gente[4], x: 322, y: 450, s: 1.05, act: 'cheer' }), 's-up', delay(2))}
           ${at(0, 0, 1, person({ ...gente[3], x: 640, y: 450, s: 1.05, act: 'cheer', flip: true }), 's-up', delay(2.4))}
           ${[[296, 346, 2.4], [348, 346, 2.6], [614, 346, 2.8], [666, 346, 3]].map(([x, y, d]) => at(x, y, 1, sparkle(0, 0, 0, '#fde047', 1.6), 's-in', delay(d))).join('')}
           ${label(480, 244, '¡Brazos y palmas!', 3.2, '#9f1239', 24)}`,
         // 3 · Petardos: suben tres cohetes y revientan en el cielo: ¡pum, pum, pum! ¡Es fiesta!
-        ({ at }) => {
+        ({ at, stars }) => {
           const cohete = (path, x, y, c, r, d) => `
-            <path d="${path}" pathLength="1" stroke="#fff7c2" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="1" class="s-draw" style="animation-duration:.7s;${delay(d)}"/>
-            ${at(0, 0, 1, `<path d="${path}" stroke="#fff7c2" stroke-width="3" fill="none" stroke-linecap="round"/>`, 's-out', delay(d + 0.8))}
+            ${at(0, 0, 1, `<path d="${path}" pathLength="1" stroke="#fff7c2" stroke-width="3" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:.7s;${delay(d)}"/>`, 's-out', delay(d + 0.9))}
             ${at(x, y, 1, fuego(c, r), 'st-boom', delay(d + 0.7))}
             ${[0, 1, 2, 3].map((k) => at(x - r * 0.5 + k * r * 0.33, y + r * 0.5, 1, `<circle r="2.4" fill="${c}"/>`, 'a-fall', `animation-duration:1.6s;${delay(d + 1 + k * 0.2)}`)).join('')}
             ${label(x, y + 8, '¡Pum!', d + 0.9, '#7c2d12', 22)}`;
           return `
+          <defs><linearGradient id="st-e2-sky" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="500"><stop offset="0" stop-color="#1e1b4b"/><stop offset=".22" stop-color="#3b1f6e"/><stop offset=".34" stop-color="#7c3a8a"/></linearGradient></defs>
+          ${at(0, 0, 1, `<path d="M296,24 L744,24 L744,158 L680,146 L566,168 L566,130 L405,100 L296,121Z" fill="url(#st-e2-sky)"/>${stars(16, 96, 310, 730)}`, 's-fade', 'animation-duration:.4s')}
           ${cohete('M432,176 Q440,140 455,102', 455, 100, '#fde047', 44, 0.2)}
           ${cohete('M642,178 Q632,140 625,108', 625, 106, '#f472b6', 40, 1.3)}
           ${cohete('M372,160 Q366,140 362,124', 362, 122, '#67e8f9', 28, 2.4)}

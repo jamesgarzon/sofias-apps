@@ -24,7 +24,7 @@ Object.assign(window.APP_SCENES, (() => {
     <path d="M-7,-14 L-9,0 M7,-14 L9,0" stroke="#3f6212" stroke-width="4" stroke-linecap="round"/>
     <ellipse cx="0" cy="-38" rx="17" ry="26" fill="#65a30d"/><ellipse cx="2" cy="-36" rx="9" ry="17" fill="#bef264"/>
     <path d="M-12,-52 Q-24,-44 -24,-34" stroke="#3f6212" stroke-width="4" fill="none" stroke-linecap="round"/>
-    ${escribe ? at(13, -52, 1, `<path d="M0,0 Q12,4 18,12" stroke="#3f6212" stroke-width="4" fill="none" stroke-linecap="round"/><g transform="translate(19 14) rotate(-20)">${lapiz}</g>`, 'a-rock', 'animation-duration:.9s') : '<path d="M12,-52 Q24,-44 24,-34" stroke="#3f6212" stroke-width="4" fill="none" stroke-linecap="round"/>'}
+    ${escribe ? at(13, -52, 1, `<path d="M0,0 Q12,6 18,18" stroke="#3f6212" stroke-width="4" fill="none" stroke-linecap="round"/><g transform="translate(19 20) rotate(-20)">${lapiz}</g>`, 'a-rock', 'animation-duration:.9s') : '<path d="M12,-52 Q24,-44 24,-34" stroke="#3f6212" stroke-width="4" fill="none" stroke-linecap="round"/>'}
     ${at(0, -88, 1, '<path d="M-5,0 Q-12,-26 -30,-34 M5,0 Q10,-28 30,-38" stroke="#3f6212" stroke-width="2.4" fill="none" stroke-linecap="round"/>', 'a-sway')}
     <circle cx="0" cy="-74" r="17" fill="#65a30d"/>
     <circle cx="-6" cy="-77" r="6.5" fill="#fff"/><circle cx="7" cy="-77" r="6.5" fill="#fff"/><circle cx="-4.5" cy="-77" r="3.4" fill="#1a1a1a"/><circle cx="8.5" cy="-77" r="3.4" fill="#1a1a1a"/><circle cx="-3.5" cy="-78.5" r="1.1" fill="#fff"/><circle cx="9.5" cy="-78.5" r="1.1" fill="#fff"/>
@@ -155,9 +155,9 @@ Object.assign(window.APP_SCENES, (() => {
           ${at(0, 0, 1, '<rect x="160" y="30" width="480" height="320" fill="#fce7f3"/><g fill="#f9a8d4" opacity=".35"><circle cx="220" cy="90" r="5"/><circle cx="560" cy="80" r="5"/><circle cx="600" cy="170" r="5"/></g><rect x="160" y="300" width="480" height="50" fill="#e7c9a0"/><path d="M160,312 H640" stroke="#d4b183" stroke-width="2"/>', 's-fade')}
           ${at(0, 0, 1, '<rect x="330" y="232" width="282" height="12" rx="3" fill="#b45309"/><path d="M350,244 l10,18 M590,244 l-10,18" stroke="#92400e" stroke-width="6" stroke-linecap="round"/>', 's-fade', delay(0.2))}
           ${at(0, 0, 1, person({ ...mariela, x: 262, y: 318, s: 1.15, arm: 'up', item: 'book', itemColor: '#f59e0b', act: 'raise' }), 's-from-l', delay(0.1))}
-          ${at(372, 232, 1, cuento, 's-drop', delay(0.7))}${at(470, 232, 1, poemas, 's-drop', delay(1.7))}${at(568, 232, 1, novela, 's-drop', delay(2.7))}
-          ${label(372, 120, 'Cuentos', 1.2, '#0369a1', 19)}${label(470, 120, 'Poemas', 2.2, '#be123c', 19)}${label(568, 120, 'Novelas', 3.2, '#15803d', 19)}
-          ${[[420, 170], [520, 186], [600, 140]].map(([x, y], i) => at(x, y, 1, sparkle(0, 0, 0, '#facc15', 1.5), 's-in', delay(3.8 + i * 0.25))).join('')}`;
+          ${at(366, 232, 1, cuento, 's-drop', delay(0.7))}${at(462, 232, 1, poemas, 's-drop', delay(1.7))}${at(558, 232, 1, novela, 's-drop', delay(2.7))}
+          ${label(366, 120, 'Cuentos', 1.2, '#0369a1', 19)}${label(462, 120, 'Poemas', 2.2, '#be123c', 19)}${label(558, 120, 'Novelas', 3.2, '#15803d', 19)}
+          ${[[414, 170], [510, 186], [596, 150]].map(([x, y], i) => at(x, y, 1, sparkle(0, 0, 0, '#facc15', 1.5), 's-in', delay(3.8 + i * 0.25))).join('')}`;
         },
         // 1 · «El país de los días eternos»: la portada se abre y el sol baja… pero vuelve a subir: ¡nunca se pone! Los niños juegan
         () => `<defs>${lin('st-ob1-sky', [[0, '#fde68a'], [1, '#bae6fd']])}</defs>
@@ -169,7 +169,7 @@ Object.assign(window.APP_SCENES, (() => {
           ${at(300, 200, 1, at(0, 0, 1, solcito(26), 'st-nosun', delay(0.8)), 's-in', delay(0.4))}
           ${at(0, 0, 1, person({ ...ninos[1], x: 210, y: 372, s: 0.95, act: 'cheer' }), 's-in', delay(0.8))}
           ${at(0, 0, 1, person({ ...ninos[3], x: 408, y: 380, s: 0.9, act: 'wave', flip: true }), 's-in', delay(1.1))}
-          ${label(320, 395, 'El país de los días eternos', 3.2, '#b45309', 18)}${label(210, 196, '¡Nunca anochece!', 4.4, '#0369a1', 17)}`,
+          ${label(320, 395, 'El país de los días eternos', 3.2, '#b45309', 18)}${label(196, 228, '¡Nunca anochece!', 4.4, '#0369a1', 17)}`,
         // 2 · «Gente que camina»: la portada se abre y por el camino pasa una fila de gente caminando con sus cosas
         () => {
           const caminantes = [
@@ -197,8 +197,9 @@ Object.assign(window.APP_SCENES, (() => {
             <g fill="#ddd6fe">${[[-150, -80], [-60, -96], [120, -84], [150, -30]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5"/>`).join('')}</g>`, 's-in')}
           ${at(0, 0, 1, '<rect x="476" y="290" width="112" height="9" rx="3" fill="#b45309"/><rect x="484" y="299" width="7" height="37" fill="#92400e"/><rect x="573" y="299" width="7" height="37" fill="#92400e"/>', 's-fade', delay(0.3))}
           ${at(448, 336, 1.3, grillo(true), 's-from-l', delay(0.2))}
-          ${at(538, 283, 1, carta(false), 's-in', delay(0.9))}
-          ${vuelos.map(([x, y], i) => at(x, y, 1, at(0, 0, 1, carta(true), 'a-bob', delay(-i * 0.7)), 'st-move', `--dx:${538 - x}px;--dy:${283 - y}px;--s0:.5;animation-duration:1.3s;${delay(1.5 + i * 0.9)}`)).join('')}
+          ${at(0, 0, 1, '<path d="M478,290 L524,290 L519,283 L483,283Z" fill="#fffdf6" stroke="#d6c7a8"/>', 's-fade', delay(0.3))}${[0, 1].map((i) => `<path d="M${489 + i * 2},${287.5 - i * 2.6} q3,-2.5 6,0 t6,0 t6,0" pathLength="1" stroke="#475569" stroke-width="1.3" fill="none" class="s-draw" style="animation-duration:.8s;${delay(0.8 + i * 0.9)}"/>`).join('')}
+          ${at(554, 283, 1, carta(false), 's-in', delay(0.9))}
+          ${vuelos.map(([x, y], i) => at(x, y, 1, at(0, 0, 1, carta(true), 'a-bob', delay(-i * 0.7)), 'st-move', `--dx:${554 - x}px;--dy:${283 - y}px;--s0:.5;animation-duration:1.3s;${delay(1.5 + i * 0.9)}`)).join('')}
           ${label(492, 371, 'Las cartas de Grillo', 3.8, '#6d28d9', 19)}`;
         },
       ],
@@ -206,7 +207,7 @@ Object.assign(window.APP_SCENES, (() => {
 
     // ===== Mi opinión: en el salón, una niña como Sofía presenta su cartelera «BIOGRAFÍA» =====
     opinion: {
-      hs: [[300, 230], [470, 238], [652, 456]],
+      hs: [[262, 262], [500, 276], [662, 456]],
       svg: () => `<defs><linearGradient id="op-wall" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="400"><stop offset="0" stop-color="#fdf4ff"/><stop offset="1" stop-color="#f5d0fe"/></linearGradient>
           ${lin('op-sky', [[0, '#7dd3fc'], [1, '#e0f2fe']])}<clipPath id="op-win"><rect x="610" y="62" width="120" height="116"/></clipPath></defs>
         <rect width="800" height="400" fill="url(#op-wall)"/>
@@ -217,7 +218,7 @@ Object.assign(window.APP_SCENES, (() => {
         <rect x="52" y="202" width="268" height="8" rx="3" fill="#ca8a04"/>
         <rect x="602" y="54" width="136" height="132" rx="4" fill="#ffffff"/><rect x="610" y="62" width="120" height="116" fill="url(#op-sky)"/>
         <g clip-path="url(#op-win)">${cloud(640, 100, 0.55, 0.95, 'a-drift')}${cloud(700, 150, 0.4, 0.9, 'a-drift2', -6)}</g><path d="M670,62 V178 M610,120 H730" stroke="#ffffff" stroke-width="6"/>
-        <path d="M475,148 L428,400 M475,148 L522,400" stroke="#92400e" stroke-width="7" stroke-linecap="round"/>
+        <g transform="translate(0 14)"><path d="M475,148 L428,400 M475,148 L522,400" stroke="#92400e" stroke-width="7" stroke-linecap="round"/>
         <rect x="395" y="158" width="160" height="182" rx="4" fill="#fffdf6" stroke="#d6c7a8" stroke-width="2"/>
         <path d="M404,170 q8,-4 16,0 t16,0 t16,0 t16,0 t16,0 t16,0 t16,0 t16,0 t16,0 M404,330 q8,-4 16,0 t16,0 t16,0 t16,0 t16,0 t16,0 t16,0 t16,0 t16,0" stroke="#a78bfa" stroke-width="1.5" fill="none"/>
         ${[[404, 166], [546, 166], [404, 332], [546, 332]].map(([x, y]) => at(x, y, 1, estrella('#a78bfa', 6))).join('')}
@@ -226,36 +227,36 @@ Object.assign(window.APP_SCENES, (() => {
         <g clip-path="url(#op-foto)">${person({ ...mariela, x: 428, y: 290, s: 0.52, act: 'none' })}</g>
         <path d="M458,216 h86 M458,228 h80 M458,240 h86 M458,252 h70 M408,276 h136 M408,288 h128 M408,300 h136" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/>
         ${at(430, 324, 0.5, libro('#f59e0b', 26, 30))}${at(475, 324, 0.5, libro('#16a34a', 26, 30))}${at(520, 324, 0.5, libro('#7c3aed', 26, 30))}
-        <rect x="388" y="338" width="174" height="8" rx="3" fill="#b45309"/>
-        ${person({ ...sofia, x: 330, y: 426, s: 1.12, act: 'point' })}
-        ${person({ ...ninoL, x: 104, y: 484, s: 0.85, act: 'look' })}${pupitre(104)}
-        ${person({ ...ninoA, x: 588, y: 482, s: 0.85, act: 'look', flip: true })}${pupitre(588)}
-        ${person({ ...ninoB, x: 718, y: 484, s: 0.85, arm: 'up', act: 'raise', flip: true })}${pupitre(718)}`,
+        <rect x="388" y="338" width="174" height="8" rx="3" fill="#b45309"/></g>
+        ${person({ ...sofia, x: 320, y: 440, s: 1.3, act: 'point' })}
+        ${person({ ...ninoL, x: 104, y: 466, s: 0.85, act: 'look' })}${pupitre(104)}
+        ${person({ ...ninoA, x: 588, y: 466, s: 0.85, act: 'look', flip: true })}${pupitre(588)}
+        ${person({ ...ninoB, x: 718, y: 466, s: 0.85, arm: 'up', act: 'raise', flip: true })}${pupitre(718)}`,
       story: [
         // 0 · Me gustó saber de su vida: Sofía piensa en la vida de Mariela (que lee y escribe) y le salen corazones
         () => `
-          ${at(0, 0, 1, '<circle cx="352" cy="292" r="7" fill="#fff" stroke="#e9d5ff" stroke-width="2.5"/><circle cx="374" cy="268" r="11" fill="#fff" stroke="#e9d5ff" stroke-width="2.5"/>', 's-in', delay(0.3))}
-          ${at(460, 196, 1, `<ellipse rx="104" ry="66" fill="#fff" stroke="#e9d5ff" stroke-width="3"/>
+          ${at(0, 0, 1, '<circle cx="346" cy="290" r="7" fill="#fff" stroke="#e9d5ff" stroke-width="2.5"/><circle cx="366" cy="266" r="11" fill="#fff" stroke="#e9d5ff" stroke-width="2.5"/>', 's-in', delay(0.3))}
+          ${at(440, 200, 1, `<ellipse rx="104" ry="66" fill="#fff" stroke="#e9d5ff" stroke-width="3"/>
             <clipPath id="st-op0"><ellipse rx="98" ry="60"/></clipPath><g clip-path="url(#st-op0)"><path d="M-110,40 Q0,20 110,42 L110,70 L-110,70Z" fill="#bbf7d0"/>
             ${person({ ...mariela, x: -38, y: 52, s: 0.62, arm: 'out', item: 'book', itemColor: '#7c3aed', act: 'read' })}${at(54, -28, 1, solcito(13))}${at(40, 36, 0.8, libroAbierto(26, '#e11d48'))}</g>`, 's-in', delay(0.6))}
-          ${[[300, 352], [268, 330], [312, 312]].map(([x, y], i) => at(x, y, 1.4, corazon(['#ec4899', '#a855f7', '#f43f5e'][i]), 'a-rise', `animation-duration:2.6s;${delay(1 + i * 0.7)}`)).join('')}
+          ${[[266, 372], [240, 350], [268, 326]].map(([x, y], i) => at(x, y, 1.4, corazon(['#ec4899', '#a855f7', '#f43f5e'][i]), 'a-rise', `animation-duration:2.6s;${delay(1 + i * 0.7)}`)).join('')}
           ${at(228, 214, 1, at(0, 0, 2.4, corazon('#ec4899'), 'a-pulse'), 's-in', delay(2.4))}
           ${label(232, 158, '¡Me gustó!', 3, '#a21caf', 26)}`,
         // 1 · Me gusta lo que escribe, como sus poemas: sobre la cartelera aparece una hoja; se escriben los versos y florecen geranios
         () => `
-          ${at(380, 128, 1, hoja(184, 216), 's-in')}
-          <text x="485" y="164" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="20" fill="#be123c" class="s-in" style="${delay(0.5)}">Poemas</text>
-          ${[0, 1, 2, 3, 4].map((i) => `<path d="M${424},${196 + i * 26} q7,-6 14,0 t14,0 t14,0 t14,0 t14,0 t14,0${i % 2 ? '' : ' t14,0'}" pathLength="1" stroke="#475569" stroke-width="2.4" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:.6s;${delay(0.8 + i * 0.45)}"/>`).join('')}
-          <path d="M394,140 Q404,190 392,236 T396,330" pathLength="1" stroke="#16a34a" stroke-width="3" fill="none" class="s-draw" style="animation-duration:1.2s;${delay(2.9)}"/>
-          ${[[392, 150], [548, 146], [396, 330], [550, 330], [394, 238]].map(([x, y], i) => at(x, y, 1.15, geranio(i % 2 ? '#f43f5e' : '#e11d48', '#fde68a'), 's-in', delay(3.2 + i * 0.22))).join('')}
-          ${label(470, 126, '¡Sus poemas!', 4.3, '#be123c', 22)}`,
+          ${at(380, 142, 1, hoja(184, 216), 's-in')}
+          <text x="485" y="178" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="20" fill="#be123c" class="s-in" style="${delay(0.5)}">Poemas</text>
+          ${[0, 1, 2, 3, 4].map((i) => `<path d="M${424},${210 + i * 26} q7,-6 14,0 t14,0 t14,0 t14,0 t14,0 t14,0${i % 2 ? '' : ' t14,0'}" pathLength="1" stroke="#475569" stroke-width="2.4" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:.6s;${delay(0.8 + i * 0.45)}"/>`).join('')}
+          <path d="M394,154 Q404,204 392,250 T396,344" pathLength="1" stroke="#16a34a" stroke-width="3" fill="none" class="s-draw" style="animation-duration:1.2s;${delay(2.9)}"/>
+          ${[[392, 164], [548, 160], [396, 344], [550, 344], [394, 252]].map(([x, y], i) => at(x, y, 1.15, geranio(i % 2 ? '#f43f5e' : '#e11d48', '#fde68a'), 's-in', delay(3.2 + i * 0.22))).join('')}
+          ${label(306, 214, '¡Sus poemas!', 4.3, '#be123c', 22)}`,
         // 2 · Bonitas y grandes historias: de un libro crece un castillo enorme con arcoíris y los compañeros aplauden felices
         () => `
           <rect x="530" y="330" width="270" height="70" fill="url(#op-wall)"/><rect x="530" y="400" width="270" height="50" fill="#e9d5b0"/><path d="M530,430 H800" stroke="#dcc49a" stroke-width="2"/><rect x="530" y="394" width="270" height="8" fill="#e9a8f7" opacity=".6"/>
-          ${person({ ...ninoA, x: 588, y: 482, s: 0.85, act: 'cheer', flip: true })}${pupitre(588)}
-          ${person({ ...ninoB, x: 718, y: 484, s: 0.85, act: 'cheer', flip: true, delay: -0.4 })}${pupitre(718)}
+          ${person({ ...ninoA, x: 588, y: 466, s: 0.85, act: 'cheer', flip: true })}${pupitre(588)}
+          ${person({ ...ninoB, x: 718, y: 466, s: 0.85, act: 'cheer', flip: true, delay: -0.4 })}${pupitre(718)}
           ${at(450, 452, 1, libroAbierto(48, '#c026d3'), 's-in', delay(0.2))}
-          ${['#ef4444', '#f97316', '#facc15', '#22c55e', '#3b82f6', '#8b5cf6'].map((c, i) => { const r = 120 - i * 10; return at(0, 0, 1, `<path d="M${450 - r},440 A${r},${r} 0 0 1 ${450 + r},440" stroke="${c}" stroke-width="10" fill="none"/>`, 's-fade', delay(0.6 + i * 0.12)); }).join('')}
+          ${['#ef4444', '#f97316', '#facc15', '#22c55e', '#3b82f6', '#8b5cf6'].map((c, i) => { const r = 100 - i * 9; return at(0, 0, 1, `<path d="M${450 - r},440 A${r},${r} 0 0 1 ${450 + r},440" stroke="${c}" stroke-width="10" fill="none"/>`, 's-fade', delay(0.6 + i * 0.12)); }).join('')}
           ${at(450, 436, 1, `<rect x="-26" y="-118" width="52" height="118" fill="#fde68a" stroke="#d97706" stroke-width="2"/><path d="M-26,-118 v-12 h10 v8 h10 v-8 h12 v8 h10 v-8 h10 v12Z" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
             <path d="M-8,0 v-26 q8,-12 16,0 v26Z" fill="#92400e"/><rect x="-14" y="-90" width="10" height="14" rx="5" fill="#7dd3fc"/><rect x="4" y="-90" width="10" height="14" rx="5" fill="#7dd3fc"/>
             <path d="M0,-130 v-26" stroke="#92400e" stroke-width="2.5"/><path d="M0,-156 l18,6 l-18,6Z" fill="#e11d48"/>`, 's-grow', `animation-duration:1.4s;${delay(1)}`)}

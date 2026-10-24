@@ -102,7 +102,7 @@ Object.assign(window.APP_SCENES, (() => {
           ${label(222, 172, 'Villavicencio', 1.2, '#9f1239', 27)}
           ${label(222, 304, 'capital del Meta', 2.3, '#7c2d12', 17)}
           ${label(452, 208, 'los Llanos', 3.4, '#166534', 19)}${label(452, 230, 'Orientales', 3.6, '#166534', 19)}
-          ${at(0, 0, 1, '<path d="M452,240 Q462,262 470,286" pathLength="1" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:.7s;animation-delay:4s"/><path d="M452,240 Q462,262 470,286" pathLength="1" stroke="#15803d" stroke-width="4" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:.7s;animation-delay:4s"/>')}
+          ${at(0, 0, 1, at(0, 0, 1, '<path d="M452,240 Q462,262 470,286" pathLength="1" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:.7s;animation-delay:4s"/><path d="M452,240 Q462,262 470,286" pathLength="1" stroke="#15803d" stroke-width="4" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:.7s;animation-delay:4s"/>'), 's-fade', delay(4))}
           ${at(472, 292, 1, '<path d="M-9,-10 L0,2 L9,-10" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M-9,-10 L0,2 L9,-10" stroke="#15803d" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>', 's-in', delay(4.6))}`,
         // 3 · En 1948: el calendario pasa 1946, 1947… ¡1948! y una mamá llega con su bebé en brazos: ¡nació Mariela!
         ({ at, person }) => {
@@ -147,15 +147,16 @@ Object.assign(window.APP_SCENES, (() => {
         ${at(690, 458, 0.85, garza)}${at(744, 440, 0.75, garza, 'a-bob', delay(-1))}
         ${grass(440, 18, '#5e9e46', 0, 560)}`,
       story: [
-        // 0 · Leer: el libro de la mesa se abre en grande y de sus páginas salen volando letras, una estrella y un pajarito
+        // 0 · Leer: Mariela levanta un libro grande y de sus páginas salen volando letras, una estrella y un pajarito
         ({ at }) => {
-          const salen = [['A', 286, 300, '#e11d48'], ['b', 330, 262, '#2563eb'], ['c', 380, 300, '#16a34a']];
+          const letra = (t, c) => `<text text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="36" fill="${c}" stroke="#fff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">${t}</text>`;
+          const salen = [['A', 300, 300, '#e11d48'], ['b', 352, 250, '#2563eb'], ['c', 500, 290, '#16a34a']];
           return `
-          ${at(346, 404, 1, libroAbierto(60, '#e11d48'), 's-in', delay(0.2))}
-          ${salen.map(([t, x, y, c], i) => at(x, y, 1, txt(0, 0, t, 34, c), 'st-move', `--dx:${346 - x}px;--dy:${380 - y}px;--s0:.2;animation-duration:1.1s;${delay(0.8 + i * 0.4)}`)).join('')}
-          ${at(240, 276, 1.4, '<path d="M0,-9 L2.6,-3 L9,-2.6 L4,1.6 L5.6,8 L0,4.6 L-5.6,8 L-4,1.6 L-9,-2.6 L-2.6,-3Z" fill="#fbbf24"/>', 'st-move', `--dx:106px;--dy:104px;--s0:.2;animation-duration:1.1s;${delay(2)}`)}
-          ${at(430, 256, 1, at(0, 0, 1, '<path d="M-9,0 Q-4.5,-6 0,0 Q4.5,-6 9,0" fill="none" stroke="#334155" stroke-width="2.6" stroke-linecap="round"/>', 'a-flap'), 'st-move', `--dx:-84px;--dy:124px;--s0:.2;animation-duration:1.3s;${delay(2.4)}`)}
-          ${label(330, 226, '¡Le gustaba leer!', 3.4, '#be123c', 22)}`;
+          ${at(420, 428, 1, libroAbierto(50, '#e11d48'), 's-up', delay(0.2))}
+          ${salen.map(([t, x, y, c], i) => at(x, y, 1, letra(t, c), 'st-move', `--dx:${420 - x}px;--dy:${400 - y}px;--s0:.2;animation-duration:1.1s;${delay(0.9 + i * 0.4)}`)).join('')}
+          ${at(250, 262, 1.6, '<path d="M0,-9 L2.6,-3 L9,-2.6 L4,1.6 L5.6,8 L0,4.6 L-5.6,8 L-4,1.6 L-9,-2.6 L-2.6,-3Z" fill="#fbbf24" stroke="#fff" stroke-width="1.5"/>', 'st-move', `--dx:170px;--dy:138px;--s0:.2;animation-duration:1.1s;${delay(2.1)}`)}
+          ${at(548, 236, 1.6, at(0, 0, 1, '<path d="M-9,0 Q-4.5,-6 0,0 Q4.5,-6 9,0" fill="none" stroke="#334155" stroke-width="2.6" stroke-linecap="round"/>', 'a-flap'), 'st-move', `--dx:-128px;--dy:164px;--s0:.2;animation-duration:1.3s;${delay(2.5)}`)}
+          ${label(330, 222, '¡Le gustaba leer!', 3.4, '#be123c', 22)}`;
         },
         // 1 · Escribir: el cuaderno se ve en grande y el lápiz de Mariela escribe «Mariela», «a e i o u» y «mi llano»
         ({ at }) => {
@@ -164,22 +165,22 @@ Object.assign(window.APP_SCENES, (() => {
           ${at(500, 230, 1, hoja(124, 150), 's-in')}
           ${lines.map(([t, sz], i) => at(0, 0, 1, txt(526, 270 + i * 32, t, sz, '#1e3a8a', 600, 'start'), 'st-reveal', delay(0.7 + i * 1.1))).join('')}
           ${at(526, 274, 1, lapiz(1.5, 28), 'st-write3', '--w1:76px;--w2:72px;--w3:68px;animation-delay:.7s')}
-          ${label(426, 222, '¡Le gustaba escribir!', 3.8, '#1d4ed8', 21)}`;
+          ${label(392, 222, '¡Le gustaba escribir!', 3.8, '#1d4ed8', 21)}`;
         },
         // 2 · Historias: la abuela le cuenta un cuento a Mariela y en el globo aparecen una canoa en el río, el sol y la luna
         ({ at }) => `
           ${at(0, 0, 1, globo(110, 160, 290, 136, 262, 322), 's-in', delay(0.2))}
           ${at(0, 0, 1, txt(255, 188, 'Había una vez…', 17, '#7c2d12', 600), 'st-reveal', delay(0.7))}
-          ${at(170, 262, 1, '<path d="M-36,10 q9,-4 18,0 t18,0 t18,0 t18,0" stroke="#3b9ad9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M-26,0 L26,0 L18,9 L-18,9Z" fill="#8b5a2b"/><path d="M-4,0 V-26 L14,-6Z" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>', 's-in', delay(1.6))}
-          ${at(258, 248, 1, '<circle r="16" fill="#fbbf24"/><g stroke="#f59e0b" stroke-width="3" stroke-linecap="round">' + [0, 45, 90, 135, 180, 225, 270, 315].map((a) => `<path d="M0,-21 V-27" transform="rotate(${a})"/>`).join('') + '</g><circle cx="-5" cy="-3" r="2" fill="#7c2d12"/><circle cx="5" cy="-3" r="2" fill="#7c2d12"/><path d="M-6,5 Q0,10 6,5" stroke="#7c2d12" stroke-width="2" fill="none"/>', 's-in', delay(2.4))}
-          ${at(346, 250, 1, '<path d="M8,-18 A18,18 0 1 0 8,18 A14,14 0 1 1 8,-18Z" fill="#fde68a" stroke="#eab308" stroke-width="1.5"/><path d="M22,-12 l2,4 l4,1 l-3,3 l1,4 l-4,-2 l-4,2 l1,-4 l-3,-3 l4,-1Z" fill="#fde047"/>', 's-in', delay(3.2))}
-          ${[0, 0.5].map((d) => at(446 + d * 16, 318, 0.8, corazon(), 'a-rise', `animation-duration:2.2s;${delay(3.8 + d)}`)).join('')}
+          ${at(172, 258, 1.4, '<path d="M-36,10 q9,-4 18,0 t18,0 t18,0 t18,0" stroke="#3b9ad9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M-26,0 L26,0 L18,9 L-18,9Z" fill="#8b5a2b"/><path d="M-4,0 V-26 L14,-6Z" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>', 's-in', delay(1.6))}
+          ${at(262, 244, 1.3, '<circle r="16" fill="#fbbf24"/><g stroke="#f59e0b" stroke-width="3" stroke-linecap="round">' + [0, 45, 90, 135, 180, 225, 270, 315].map((a) => `<path d="M0,-21 V-27" transform="rotate(${a})"/>`).join('') + '</g><circle cx="-5" cy="-3" r="2" fill="#7c2d12"/><circle cx="5" cy="-3" r="2" fill="#7c2d12"/><path d="M-6,5 Q0,10 6,5" stroke="#7c2d12" stroke-width="2" fill="none"/>', 's-in', delay(2.4))}
+          ${at(346, 246, 1.3, '<circle r="18" fill="#fde68a" stroke="#eab308" stroke-width="1.5"/><circle cx="9" cy="-5" r="15" fill="#fff"/><path d="M22,-12 l2,4 l4,1 l-3,3 l1,4 l-4,-2 l-4,2 l1,-4 l-3,-3 l4,-1Z" fill="#fde047"/>', 's-in', delay(3.2))}
+          ${[0, 0.5].map((d) => at(450 + d * 20, 316, 1.2, corazon(), 'a-rise', `animation-duration:2.2s;${delay(3.8 + d)}`)).join('')}
           ${label(176, 388, 'Historias', 4.2, '#7c2d12', 21)}`,
         // 3 · La naturaleza: brota una flor grande, una mariposa llega a ella y una garza levanta el vuelo sobre el río
         ({ at }) => `
           ${at(0, 0, 1, '<path d="M548,446 Q590,432 632,446Z" fill="#7cbf5c"/>', 's-fade')}
           ${at(590, 442, 1.9, flor('#ec4899', 40), 's-grow', `animation-duration:1.6s;${delay(0.3)}`)}
-          ${at(592, 352, 1.3, mariposa('#8b5cf6'), 'st-move', `--dx:-160px;--dy:-60px;animation-duration:2.2s;${delay(1.4)}`)}
+          ${at(600, 328, 1.3, mariposa('#8b5cf6'), 'st-move', `--dx:-168px;--dy:-36px;animation-duration:2.2s;${delay(1.4)}`)}
           ${at(560, 262, 1.1, garzaVuela, 'st-move', `--dx:130px;--dy:190px;--s0:.6;animation-duration:2.6s;${delay(1.8)}`)}
           ${[[540, 330, 3.2], [650, 310, 3.5], [620, 400, 3.8]].map(([x, y, d]) => at(x, y, 1, sparkle(0, 0, 0, '#fde047', 1.4), 's-in', delay(d))).join('')}
           ${label(520, 228, '¡La naturaleza!', 4, '#166534', 22)}`,
@@ -188,7 +189,7 @@ Object.assign(window.APP_SCENES, (() => {
 
     // ====================== Cuando creció — la sala de noticias y la clase de lectura ======================
     crecio: {
-      hs: [[300, 392], [352, 282], [696, 452]],
+      hs: [[238, 398], [352, 282], [696, 446]],
       svg: () => `<defs>${lin('cr-win', [[0, '#9fd3f7'], [1, '#e0f4ff']])}</defs>
         <rect width="402" height="500" fill="#fbe7c6"/><rect x="402" width="398" height="500" fill="#e2f4e3"/>
         <g stroke="#f3d6a8" stroke-width="2">${[30, 90, 150, 210, 270, 330].map((x) => `<path d="M${x},0 V440"/>`).join('')}</g>
@@ -207,9 +208,9 @@ Object.assign(window.APP_SCENES, (() => {
         <rect x="56" y="418" width="270" height="9" rx="3" fill="#8b5a2b"/><rect x="64" y="427" width="254" height="44" fill="#a0662f"/><path d="M78,442 H304" stroke="#8b5a2b" stroke-width="2"/>
         ${at(230, 420, 1, maquina)}<rect x="212" y="358" width="36" height="22" fill="#fff"/><path d="M218,366 h22 M218,372 h16" stroke="#94a3b8" stroke-width="1.5"/>
         <g><rect x="276" y="410" width="44" height="8" rx="1.5" fill="#f8f5ee" stroke="#9ca3af"/><rect x="278" y="403" width="42" height="8" rx="1.5" fill="#f8f5ee" stroke="#9ca3af"/><rect x="275" y="396" width="44" height="8" rx="1.5" fill="#f8f5ee" stroke="#9ca3af"/></g>
-        <rect x="432" y="56" width="356" height="226" rx="8" fill="#8b5a2b"/><rect x="442" y="66" width="336" height="206" rx="4" fill="#2f5d46"/>
-        <g opacity=".93">${txt(468, 114, 'a  e  i  o  u', 32, '#fff', 600, 'start')}${txt(468, 160, 'ma  me  mi  mo  mu', 24, '#fde68a', 600, 'start')}</g>
-        <rect x="448" y="272" width="324" height="8" rx="2" fill="#a0662f"/><rect x="700" y="267" width="22" height="5" rx="2" fill="#fff"/>
+        <rect x="432" y="76" width="356" height="226" rx="8" fill="#8b5a2b"/><rect x="442" y="86" width="336" height="206" rx="4" fill="#2f5d46"/>
+        <g opacity=".93">${txt(468, 136, 'a  e  i  o  u', 32, '#fff', 600, 'start')}${txt(468, 182, 'ma  me  mi  mo  mu', 24, '#fde68a', 600, 'start')}</g>
+        <rect x="448" y="292" width="324" height="8" rx="2" fill="#a0662f"/><rect x="700" y="287" width="22" height="5" rx="2" fill="#fff"/>
         ${person({ ...gente[0], x: 520, y: 476, s: 1.3, act: 'read', item: 'book', arm: 'out', itemColor: '#e11d48' })}
         ${person({ ...gente[3], x: 638, y: 476, s: 1.3, act: 'read', item: 'book', arm: 'out', itemColor: '#2563eb' })}
         ${person({ ...gente[4], x: 750, y: 476, s: 1.3, act: 'raise', arm: 'up' })}
@@ -217,10 +218,10 @@ Object.assign(window.APP_SCENES, (() => {
       story: [
         // 0 · Periodista: Mariela teclea, la hoja sube en la máquina (¡clac, clac!) y sale volando un periódico con las noticias
         ({ at }) => `
-          ${at(0, 0, 1, '<rect x="192" y="292" width="36" height="74" fill="#fff" stroke="#cbd5e1"/>', 's-grow', `animation-duration:1.6s;${delay(0.2)}`)}
-          ${[0, 1, 2, 3].map((i) => at(0, 0, 1, `<rect x="197" y="${302 + i * 12}" width="${i % 2 ? 18 : 26}" height="3" fill="#334155"/>`, 's-fade', delay(0.6 + i * 0.35))).join('')}
-          ${[[262, 330, 0.5], [150, 318, 1.1], [266, 300, 1.7]].map(([x, y, d]) => at(x, y, 1, at(0, 0, 1, txt(0, 0, '¡clac!', 15, '#7c2d12'), 's-in', delay(d)), 's-out', delay(d + 0.6))).join('')}
-          ${at(298, 200, 1, periodico(182, 124, 'EL PERIÓDICO'), 'st-move', `--dx:-160px;--dy:110px;--s0:.15;animation-duration:1.2s;${delay(2.3)}`)}
+          ${at(0, 0, 1, '<rect x="212" y="286" width="36" height="74" fill="#fff" stroke="#cbd5e1"/>', 's-grow', `animation-duration:1.6s;${delay(0.2)}`)}
+          ${[0, 1, 2, 3].map((i) => at(0, 0, 1, `<rect x="217" y="${296 + i * 12}" width="${i % 2 ? 18 : 26}" height="3" fill="#334155"/>`, 's-fade', delay(0.6 + i * 0.35))).join('')}
+          ${[[290, 340, 0.5], [178, 296, 1.1], [292, 308, 1.7]].map(([x, y, d]) => at(x, y, 1, at(0, 0, 1, txt(0, 0, '¡clac!', 15, '#7c2d12'), 's-in', delay(d)), 's-out', delay(d + 0.6))).join('')}
+          ${at(298, 200, 1, periodico(182, 124, 'EL PERIÓDICO'), 'st-move', `--dx:-150px;--dy:100px;--s0:.15;animation-duration:1.2s;${delay(2.3)}`)}
           ${label(390, 354, '¡Periodista!', 3.6, '#c2410c', 24)}`,
         // 1 · ¿Qué hace una periodista?: aparece un televisor y en él Mariela entrevista con su micrófono a un campesino: pregunta, escucha y escribe
         ({ at, person, lin }) => {
@@ -232,7 +233,7 @@ Object.assign(window.APP_SCENES, (() => {
               ${person({ ...gente[2], x: 44, y: 66, s: 0.8, act: 'talk', flip: true })}
               ${at(-30, -50, 1, at(0, 0, 1, globo(-22, -20, 44, 30, -14, 18) + txt(0, 2, '¿?', 18, '#1d4ed8'), 's-in', delay(1.2)), 's-out', delay(2.4))}
               ${at(0, 0, 1, '<g fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"><path d="M14,4 q6,6 0,12"/><path d="M20,0 q10,10 0,20"/></g>', 'a-pulse')}
-              ${at(-104, -66, 1, '<rect width="56" height="18" rx="5" fill="#dc2626"/>' + txt(28, 13.5, 'EN VIVO', 11, '#fff'), 'a-glow')}</g>`;
+              ${at(-104, -66, 1, '<rect width="66" height="18" rx="5" fill="#dc2626"/>' + txt(33, 13.5, 'EN  VIVO', 11, '#fff'), 'a-glow')}</g>`;
           return `
           ${at(375, 262, 1, `<rect x="-136" y="-92" width="272" height="184" rx="20" fill="#374151"/><path d="M-30,-92 L-58,-116 M30,-92 L58,-116" stroke="#4b5563" stroke-width="4" stroke-linecap="round"/><circle cx="-58" cy="-116" r="5" fill="#4b5563"/><circle cx="58" cy="-116" r="5" fill="#4b5563"/>${pantalla}`, 's-in', delay(0.2))}
           ${label(272, 386, '¡Pregunta!', 1.4, '#1d4ed8', 20)}
@@ -244,11 +245,11 @@ Object.assign(window.APP_SCENES, (() => {
         ({ at, person }) => {
           const tiza = [['m', 492], ['+', 528], ['a', 562], ['=', 598], ['ma', 646]];
           return `
-          ${tiza.map(([t, x], i) => at(0, 0, 1, txt(x, 272, t, 30, '#fde047', 600), 's-in', delay(1 + i * 0.4))).join('')}
+          ${tiza.map(([t, x], i) => at(0, 0, 1, txt(x, 278, t, 30, '#fde047', 600), 's-in', delay(1 + i * 0.4))).join('')}
           ${at(0, 0, 1, person({ ...mariela, x: 440, y: 456, s: 1.2, act: 'point', item: 'stick', itemColor: '#fff' }), 's-from-l', delay(0.1))}
           ${at(0, 0, 1, globo(578, 296, 92, 36, 618, 346) + txt(624, 320, '¡ma-má!', 17, '#be185d'), 's-in', delay(3.3))}
           ${[[700, 330, 3.6], [560, 334, 3.9]].map(([x, y, d]) => at(x, y, 0.9, corazon(), 'a-rise', `animation-duration:2.2s;${delay(d)}`)).join('')}
-          ${label(600, 232, '¡A leer y escribir!', 2.6, '#166534', 22)}`;
+          ${label(610, 244, '¡A leer y escribir!', 2.6, '#166534', 22)}`;
         },
       ],
     },
