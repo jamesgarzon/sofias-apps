@@ -30,7 +30,7 @@ window.Kit = (() => {
       orderSub: 'Toca una tarjeta o arrástrala a su lugar.', top: '⬆ Primero', bottom: '⬇ Último',
       item: (i, n) => `Objeto ${i} de ${n}`, sortHint: 'Arrastra el objeto hasta su portal… ¡o toca el portal!', roundDone: '¡Ronda completa!', roundDoneText: (s, n, nx) => `Acertaste ${s} de ${n}. Ahora: ${nx}`, go: '¡Vamos! ➜',
       memSub: 'Voltea dos cartas: une cada tema 🎨 con su pista 🔍.', moves: (n) => `Jugadas: ${n}`, pairs: (d, n) => `Parejas: ${d} de ${n}`, memTitle: '¡Memoria de elefante! 🐘', memText: (n, m) => `Encontraste las ${n} parejas en <b>${m} jugadas</b>.`, card: (k) => `Carta ${k}`,
-      ppTitle: 'PASAPORTE', ppWho: (s) => `Viajera: Sofía · ⭐ ${s} estrellas`, trophies: '🏆 Trofeos', playToWin: '¡Juega para ganarlo!', reset: 'Borrar mi progreso', resetConfirm: '¿Borrar todas las estrellas, sellos y trofeos?', perfect: 'perfectas', movesShort: 'jugadas', noStamp: 'sin sello',
+      ppTitle: 'PASAPORTE', ppWho: (s) => `Viajera: Sofía · ⭐ ${s} estrellas`, trophies: '🏆 Trofeos', playToWin: '¡Juega para ganarlo!', reset: 'Borrar mi progreso', resetConfirm: '¿Borrar los sellos, los trofeos y lo descubierto? Tus estrellas ⭐ se quedan.', perfect: 'perfectas', movesShort: 'jugadas', noStamp: 'sin sello',
       games4: { quiz: ['❓', 'Quiz', 'Responde y gana estrellas'], order: ['🧩', 'Ordena', '¿Qué va primero?'], sort: ['🌀', 'Portales', '¿A dónde pertenece?'], memory: ['🃏', 'Memoria', 'Encuentra las parejas'] },
       voice: { 'ok-0': '¡Correcto!', 'ok-1': '¡Excelente!', 'ok-2': '¡Muy bien, Sofía!', 'ok-3': '¡Eso es!', 'ok-4': '¡Genial! Sabes mucho.', 'ok-5': '¡Perfecto!', 'bad-0': '¡Uy, casi!', 'bad-1': 'No era esa, ¡pero ahora ya lo sabes!', 'bad-2': '¡Ups! Mira cuál era la correcta.', win: '¡Lo lograste! ¡Lo hiciste increíble!', good: '¡Muy bien! Sigue practicando y serás experta.', stamp: '¡Descubriste todo! Ganaste un sello para tu pasaporte.', 'order-ok': '¡Orden perfecto!', 'order-bad': 'Algunas no están en su lugar. ¡Inténtalo otra vez!', sort: '¿A dónde pertenece? ¡Mándalo al portal correcto!', memory: 'Encuentra las parejas: cada tema con su pista.', pair: '¡Pareja encontrada!', passport: 'Este es tu pasaporte. Explora cada tema para ganar todos los sellos.' },
     },
@@ -50,7 +50,7 @@ window.Kit = (() => {
       orderSub: 'Tap a card or drag it to its place.', top: '⬆ First', bottom: '⬇ Last',
       item: (i, n) => `Item ${i} of ${n}`, sortHint: 'Drag the item to its portal… or tap the portal!', roundDone: 'Round complete!', roundDoneText: (s, n, nx) => `You got ${s} of ${n}. Next: ${nx}`, go: "Let's go! ➜",
       memSub: 'Flip two cards: match each topic 🎨 with its clue 🔍.', moves: (n) => `Moves: ${n}`, pairs: (d, n) => `Pairs: ${d} of ${n}`, memTitle: 'Elephant memory! 🐘', memText: (n, m) => `You found all ${n} pairs in <b>${m} moves</b>.`, card: (k) => `Card ${k}`,
-      ppTitle: 'PASSPORT', ppWho: (s) => `Explorer: Sofia · ⭐ ${s} stars`, trophies: '🏆 Trophies', playToWin: 'Play to win it!', reset: 'Reset my progress', resetConfirm: 'Delete all stars, stamps and trophies?', perfect: 'perfect', movesShort: 'moves', noStamp: 'no stamp yet',
+      ppTitle: 'PASSPORT', ppWho: (s) => `Explorer: Sofia · ⭐ ${s} stars`, trophies: '🏆 Trophies', playToWin: 'Play to win it!', reset: 'Reset my progress', resetConfirm: 'Delete stamps, trophies and discoveries? Your stars ⭐ stay.', perfect: 'perfect', movesShort: 'moves', noStamp: 'no stamp yet',
       games4: { quiz: ['❓', 'Quiz', 'Answer and win stars'], order: ['🧩', 'In Order', 'What comes first?'], sort: ['🌀', 'Portals', 'Where does it belong?'], memory: ['🃏', 'Memory', 'Find the pairs'] },
       voice: { 'ok-0': 'Correct!', 'ok-1': 'Excellent!', 'ok-2': 'Great job, Sofia!', 'ok-3': "That's right!", 'ok-4': 'Awesome! You know a lot.', 'ok-5': 'Perfect!', 'bad-0': 'Oops, almost!', 'bad-1': "Not that one, but now you know!", 'bad-2': "Oops! Look at the right answer.", win: 'You did it! Amazing work!', good: 'Good job! Keep practicing.', stamp: 'You found everything! You earned a passport stamp.', 'order-ok': 'Perfect order!', 'order-bad': 'Some cards are not in place. Try again!', sort: 'Where does it belong? Send it to the right portal!', memory: 'Find the pairs: each topic with its clue.', pair: 'You found a pair!', passport: 'This is your passport. Explore every topic to earn all the stamps.' },
     },
@@ -778,10 +778,11 @@ window.Kit = (() => {
           ${GROUPS.map((g) => `<div class="pp-h">${g.emoji} ${g.name} <small>${g.topics.filter((id) => stamps[id]).length} / ${g.topics.length}</small></div><div class="stamps">${g.topics.map(slot).join('')}</div>`).join('')}
           ${available().length ? `<div class="pp-h">${T_.trophies}</div><div class="trophies">${available().map((k) => tro(k, fmts[k])).join('')}</div>` : ''}
           <div class="pp-foot"><button class="btn-text" data-reset>${T_.reset}</button></div></div>`;
+      // «Borrar mi progreso» borra sellos, trofeos y lo descubierto; las estrellas ⭐ se quedan
       v.addEventListener('click', (e) => {
         const b = e.target.closest('button'); if (!b || b.dataset.back) return;
         if (b.dataset.topic) { const g = groupOf(b.dataset.topic); SFX.tap(); go('learn', { set: g.id, i: g.topics.indexOf(b.dataset.topic) }); }
-        else if ('reset' in b.dataset && confirm(T_.resetConfirm)) { ['stars', 'seen', 'stamps', 'best'].forEach((k) => { try { localStorage.removeItem(`${M.id}-${k}`); } catch { /* nada */ } }); location.reload(); }
+        else if ('reset' in b.dataset && confirm(T_.resetConfirm)) { ['seen', 'stamps', 'best'].forEach((k) => { try { localStorage.removeItem(`${M.id}-${k}`); } catch { /* nada */ } }); location.reload(); }
       });
       setTimeout(() => { if (v.isConnected) say(T.v('passport')); }, 500);
     };
