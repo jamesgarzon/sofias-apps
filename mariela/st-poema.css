@@ -1,0 +1,10 @@
+/* Animaciones st-* de las escenas e historias del poema (js/scenes-poema.js). */
+/* st-wing: ala de la paloma que aletea desde su base */
+.st-wing { transform-box: fill-box; transform-origin: 50% 100%; animation: st-wing .45s ease-in-out infinite alternate; }
+@keyframes st-wing { to { transform: scaleY(-.45); } }
+/* st-burst: petardo que revienta en el cielo una y otra vez (escena) */
+.st-burst { transform-box: fill-box; transform-origin: 50% 50%; animation: st-burst 2.8s ease-out infinite; }
+@keyframes st-burst { 0% { transform: scale(.15); opacity: 0; } 12% { opacity: 1; } 70% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.12); opacity: 0; } }
+/* st-boom: petardo que revienta una sola vez y queda brillando (historias) */
+.st-boom { transform-box: fill-box; transform-origin: 50% 50%; animation: st-boom 1s cubic-bezier(.2, .9, .3, 1.2) both; }
+@keyframes st-boom { 0% { transform: scale(.1); opacity: 0; } 15% { opacity: 1; } 100% { transform: scale(1); opacity: .95; } }
