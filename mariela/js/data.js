@@ -48,13 +48,15 @@ window.APP_DATA = /*JSON*/{
       ]
     },
     "estrofa3": {
-      "name": "Estrofa 3", "short": "Estrofa 3", "emoji": "🚩", "color": "#d97706", "dark": "#451a03", "chips": ["empieza así"], "reveal": "No les era fácil…",
-      "intro": "No les era fácil <br>marchar…",
-      "note": "Esta estrofa sigue en la otra hoja de tu cuaderno.",
+      "name": "Estrofa 3", "short": "Estrofa 3", "emoji": "🚩", "color": "#d97706", "dark": "#451a03", "chips": ["7 versos"], "reveal": "No les era fácil…",
+      "intro": "No les era fácil <br>marchar <br>apenas iniciada la jornada, <br>pero el tiempo <br>a destiempo terminó <br>y sembró sus semillas <br>más temprano.",
+      "note": "Truco: el poema empieza y termina con semillas: «se siembra con él semilla buena»… «y sembró sus semillas más temprano».",
       "hotspots": [
         { "emoji": "👣", "title": "Marchar", "text": "Marchar es caminar junto a otras personas, todos al mismo paso, por algo en lo que creen." },
+        { "emoji": "🌅", "title": "Apenas iniciada la jornada", "text": "La jornada es el día de trabajo. «Apenas iniciada» quiere decir que el día acababa de empezar: ¡era muy temprano para irse!" },
+        { "emoji": "⏳", "title": "A destiempo… más temprano", "text": "«A destiempo» quiere decir antes de tiempo. Su tiempo terminó muy pronto, pero así sembró sus semillas más temprano: lo bueno que hicieron empezó a crecer antes." },
         { "emoji": "🔁", "title": "¿Fue o era?", "text": "¡Ojo! La estrofa 2 dice «No les fue fácil» y la estrofa 3 dice «No les era fácil». ¡No los confundas!" },
-        { "emoji": "📏", "title": "Versos y estrofas", "text": "Cada renglón del poema es un verso, y un grupo de versos es una estrofa. Un poema se aprende estrofa por estrofa." }
+        { "emoji": "📏", "title": "Versos y estrofas", "text": "Cada renglón del poema es un verso, y un grupo de versos es una estrofa. Las estrofas 2 y 3 tienen 7 versos cada una." }
       ]
     },
     "quien": {
@@ -124,7 +126,7 @@ window.APP_DATA = /*JSON*/{
       "parts": [
         { "id": "e1", "topic": "estrofa1", "name": "Estrofa 1", "lines": ["poema-1-1", "poema-1-2"] },
         { "id": "e2", "topic": "estrofa2", "name": "Estrofa 2", "lines": ["poema-2-1", "poema-2-2", "poema-2-3", "poema-2-4", "poema-2-5", "poema-2-6", "poema-2-7"] },
-        { "id": "e3", "topic": "estrofa3", "name": "Estrofa 3", "lines": ["poema-3-1", "poema-3-2"], "more": "Sigue en la otra hoja de tu cuaderno ✏️" }
+        { "id": "e3", "topic": "estrofa3", "name": "Estrofa 3", "lines": ["poema-3-1", "poema-3-2", "poema-3-3", "poema-3-4", "poema-3-5", "poema-3-6", "poema-3-7"] }
       ]
     },
     "bio": {
@@ -159,7 +161,14 @@ window.APP_DATA = /*JSON*/{
     { "id": "p17", "topic": "estrofa2", "emoji": "🔢", "q": "¿Cuántos versos tiene la estrofa 2?", "opts": ["7", "2", "5", "10"], "why": "No les fue fácil / dormirse en la vigilia / cuando aún / reventaban los geranios / y el amor batía brazos / y palmas / y petardos: ¡7 versos!" },
     { "id": "p18", "topic": "estrofa1", "emoji": "🔢", "q": "¿Cuántos versos tiene la estrofa 1?", "opts": ["2", "7", "4", "1"], "why": "«Cuando un luchador muere» y «se siembra con él semilla buena»: 2 versos." },
     { "id": "p19", "topic": "estrofa3", "emoji": "🔍", "q": "¿Cómo empieza la estrofa 3?", "opts": ["No les era fácil", "No les fue fácil", "cuando aún", "y palmas"], "why": "La estrofa 3 empieza «No les ERA fácil». ¡No la confundas con la 2, que dice «fue»!" },
-    { "id": "p20", "topic": "estrofa3", "emoji": "🧩", "q": "Completa: «No les era fácil…»", "opts": ["marchar", "dormirse", "cantar", "sembrar"], "why": "«No les era fácil / marchar…»." },
+    { "id": "p20", "topic": "estrofa3", "emoji": "🧩", "q": "Completa: «No les era fácil…»", "opts": ["marchar", "dormirse", "cantar", "sembrar"], "why": "«No les era fácil / marchar / apenas iniciada la jornada»." },
+    { "id": "p21", "topic": "estrofa3", "emoji": "🧩", "q": "Completa: «marchar / apenas iniciada la…»", "opts": ["jornada", "mañana", "vigilia", "semana"], "why": "«No les era fácil / marchar / apenas iniciada la jornada»." },
+    { "id": "p22", "topic": "estrofa3", "emoji": "🧩", "q": "Completa: «pero el tiempo / a destiempo…»", "opts": ["terminó", "corrió", "llegó", "volvió"], "why": "«pero el tiempo / a destiempo terminó»." },
+    { "id": "p23", "topic": "estrofa3", "emoji": "➡️", "q": "¿Qué verso sigue después de «pero el tiempo»?", "opts": ["a destiempo terminó", "más temprano", "marchar", "cuando aún"], "why": "«pero el tiempo / a destiempo terminó / y sembró sus semillas / más temprano»." },
+    { "id": "p24", "topic": "estrofa3", "emoji": "🔚", "q": "¿Cómo termina el poema?", "opts": ["y sembró sus semillas / más temprano", "y palmas / y petardos", "se siembra con él / semilla buena", "a destiempo / terminó"], "why": "El poema termina: «y sembró sus semillas / más temprano»." },
+    { "id": "p25", "topic": "estrofa3", "emoji": "🤔", "q": "¿Qué quiere decir «a destiempo»?", "opts": ["Antes de tiempo, cuando no tocaba", "Muy despacio", "Con mucha alegría", "A la hora exacta"], "why": "«A destiempo» es antes de tiempo: su tiempo terminó muy pronto." },
+    { "id": "p26", "topic": "estrofa3", "emoji": "🔢", "q": "¿Cuántos versos tiene la estrofa 3?", "opts": ["7", "2", "5", "4"], "why": "No les era fácil / marchar / apenas iniciada la jornada / pero el tiempo / a destiempo terminó / y sembró sus semillas / más temprano: ¡7 versos!" },
+    { "id": "p27", "topic": "estrofa3", "emoji": "🔁", "q": "El poema empieza y termina hablando de…", "opts": ["semillas que se siembran", "petardos de fiesta", "geranios en el balcón", "palmas y brazos"], "why": "Empieza con «se siembra con él semilla buena» y termina con «y sembró sus semillas más temprano»." },
     { "id": "b1", "topic": "quien", "emoji": "🤔", "q": "¿Quién es Mariela Zuluaga?", "opts": ["Una escritora colombiana", "Una cantante mexicana", "Una científica española", "Una futbolista argentina"], "why": "Mariela Zuluaga, ella es una escritora, también es poeta y periodista colombiana." },
     { "id": "b2", "topic": "quien", "emoji": "🖋️", "q": "Además de escritora, Mariela Zuluaga es…", "opts": ["poeta y periodista", "pintora y doctora", "cantante y actriz", "profesora de inglés"], "why": "También es poeta y periodista colombiana." },
     { "id": "b3", "topic": "quien", "emoji": "🗺️", "q": "¿Dónde nació Mariela Zuluaga?", "opts": ["En Villavicencio", "En Bogotá", "En Medellín", "En Cali"], "why": "Nació en Villavicencio en 1948." },
@@ -202,7 +211,22 @@ window.APP_DATA = /*JSON*/{
           { "e": "📜", "t": "y palmas", "y": 8, "c": "#f97316" },
           { "e": "📜", "t": "y petardos", "y": 9, "c": "#f97316" },
           { "e": "📜", "t": "No les era fácil", "y": 10, "c": "#f97316" },
-          { "e": "📜", "t": "marchar", "y": 11, "c": "#f97316" }
+          { "e": "📜", "t": "marchar", "y": 11, "c": "#f97316" },
+          { "e": "📜", "t": "apenas iniciada la jornada", "y": 12, "c": "#f97316" },
+          { "e": "📜", "t": "pero el tiempo", "y": 13, "c": "#f97316" },
+          { "e": "📜", "t": "a destiempo terminó", "y": 14, "c": "#f97316" },
+          { "e": "📜", "t": "y sembró sus semillas", "y": 15, "c": "#f97316" },
+          { "e": "📜", "t": "más temprano", "y": 16, "c": "#f97316" }
+        ] },
+      { "set": "poema", "title": "Ordena los versos de la estrofa 3 🚩", "top": "⬆ Primer verso", "bottom": "⬇ Último verso", "say": "order-7",
+        "events": [
+          { "e": "🚩", "t": "No les era fácil", "y": 1, "c": "#d97706" },
+          { "e": "🚩", "t": "marchar", "y": 2, "c": "#d97706" },
+          { "e": "🚩", "t": "apenas iniciada la jornada", "y": 3, "c": "#d97706" },
+          { "e": "🚩", "t": "pero el tiempo", "y": 4, "c": "#d97706" },
+          { "e": "🚩", "t": "a destiempo terminó", "y": 5, "c": "#d97706" },
+          { "e": "🚩", "t": "y sembró sus semillas", "y": 6, "c": "#d97706" },
+          { "e": "🚩", "t": "más temprano", "y": 7, "c": "#d97706" }
         ] },
       { "set": "poema", "title": "Arma el segundo verso 🌱", "sub": "Ordena las palabras.", "top": "⬆ Primera palabra", "bottom": "⬇ Última palabra", "say": "order-3",
         "events": [
@@ -247,6 +271,10 @@ window.APP_DATA = /*JSON*/{
       { "topic": "estrofa2", "e": "📜", "t": "y petardos" },
       { "topic": "estrofa3", "e": "📜", "t": "No les era fácil" },
       { "topic": "estrofa3", "e": "📜", "t": "marchar" },
+      { "topic": "estrofa3", "e": "📜", "t": "apenas iniciada la jornada" },
+      { "topic": "estrofa3", "e": "📜", "t": "pero el tiempo" },
+      { "topic": "estrofa3", "e": "📜", "t": "a destiempo terminó" },
+      { "topic": "estrofa3", "e": "📜", "t": "y sembró sus semillas más temprano" },
       { "topic": "quien", "e": "📝", "t": "Es escritora, poeta y periodista colombiana" },
       { "topic": "quien", "e": "📝", "t": "Nació en Villavicencio en 1948" },
       { "topic": "vida", "e": "📝", "t": "Desde pequeña le gustaba leer y escribir" },
@@ -269,7 +297,7 @@ window.APP_DATA = /*JSON*/{
   "clues": {
     "estrofa1": [["💪", "Cuando un luchador muere"], ["🌾", "se siembra con él semilla buena"]],
     "estrofa2": [["🌙", "dormirse en la vigilia"], ["🌸", "reventaban los geranios"], ["🎆", "y palmas y petardos"]],
-    "estrofa3": [["👣", "No les era fácil marchar"]],
+    "estrofa3": [["👣", "No les era fácil marchar"], ["🌅", "apenas iniciada la jornada"], ["⏳", "a destiempo terminó"]],
     "quien": [["🇨🇴", "Escritora, poeta y periodista colombiana"], ["🏞️", "Nació en Villavicencio en 1948"]],
     "vida": [["👧", "Desde pequeña le gustaba leer y escribir"], ["🌳", "Le gustaba mucho la naturaleza"]],
     "crecio": [["🎤", "Consiguió trabajo como periodista"], ["✏️", "Ayudó a personas a aprender a escribir y leer"]],
@@ -282,6 +310,7 @@ window.APP_DATA = /*JSON*/{
     "Truco para memorizar: lee una estrofa en voz alta, tápala y dila otra vez. ¡Repetir es como regar la semilla!",
     "¿Sabías que el poema «Mártires» está en un libro de Mariela Zuluaga que se llama «La palabra del sol»?",
     "¿Sabías que a Villavicencio la llaman «la puerta del Llano»? Es la capital del departamento del Meta.",
+    "Truco: el poema empieza y termina con semillas: «se siembra con él semilla buena»… y al final, «y sembró sus semillas más temprano».",
     "Truco: en la estrofa 2 hay tres versos que empiezan con «y»: y el amor, y palmas, y petardos. ¡Cuéntalos con los dedos!",
     "¿Sabías que los geranios son flores que se siembran mucho en los balcones y las ventanas?",
     "Truco para tu exposición: habla despacio, en voz alta y mirando a tus compañeros. ¡Lo vas a hacer muy bien!"
@@ -294,6 +323,7 @@ window.APP_DATA = /*JSON*/{
     "order-4": "Ordena las partes de la biografía, como en tu cuaderno.",
     "order-5": "Arma la frase de ¿Quién es?, pedacito a pedacito.",
     "order-6": "Ahora arma tu opinión, pedacito a pedacito.",
+    "order-7": "Ordena los versos de la estrofa tres, del primero al último.",
     "memoria": "Elige qué quieres memorizar y sube los escalones. ¡Cada vez escondo más palabras!",
     "mem-1": "Escucha y lee en voz alta. Toca un verso para oírlo otra vez.",
     "mem-2": "Escondí algunas palabras. Recita y toca una palabra solo si no te acuerdas.",
@@ -317,6 +347,11 @@ window.APP_DATA = /*JSON*/{
     "poema-2-7": "y petardos.",
     "poema-3-1": "No les era fácil",
     "poema-3-2": "marchar",
+    "poema-3-3": "apenas iniciada la jornada,",
+    "poema-3-4": "pero el tiempo",
+    "poema-3-5": "a destiempo terminó",
+    "poema-3-6": "y sembró sus semillas",
+    "poema-3-7": "más temprano.",
     "bio-titulo": "Biografía de Mariela Zuluaga.",
     "bio-h-quien": "¿Quién es?",
     "bio-h-vida": "Su vida.",

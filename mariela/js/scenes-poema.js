@@ -205,9 +205,9 @@ Object.assign(window.APP_SCENES, (() => {
       ],
     },
 
-    // =================== ESTROFA 3 · No les era fácil / marchar… ===================
+    // =================== ESTROFA 3 · No les era fácil / marchar / apenas iniciada la jornada, / pero el tiempo / a destiempo terminó / y sembró sus semillas / más temprano. ===================
     estrofa3: {
-      hs: [[410, 436], [696, 398], [150, 422]],
+      hs: [[410, 436], [650, 222], [262, 372], [696, 398], [150, 422]],
       svg: () => `<defs>${lin('e3-sky', [[0, '#f9c5dd'], [0.35, '#fed7aa'], [0.53, '#fde68a']])}${lin('e3-land', [[0, '#c4e59e'], [1, '#7fbe62']])}</defs>
         <rect width="800" height="500" fill="url(#e3-sky)"/>
         ${at(640, 262, 1, [...Array(14)].map((_, i) => `<path d="M-4,-66 L0,-104 L4,-66Z" fill="#fff7c2" opacity=".6" transform="rotate(${i * (360 / 14)})"/>`).join(''), 'a-spin-slow')}
@@ -217,6 +217,7 @@ Object.assign(window.APP_SCENES, (() => {
         ${sun(640, 262, 50, '#fff7c2', '#fde68a')}
         ${e3Land()}
         ${palm(70, 284, 0.36)}${palm(112, 282, 0.28, -1)}${palm(726, 280, 0.32, -2)}${palm(768, 284, 0.26, -0.6)}
+        <path d="M204,394 Q262,384 320,394" stroke="#8b5a2b" stroke-width="7" fill="none" stroke-linecap="round" opacity=".55"/>${[218, 244, 270, 296].map((x, i) => at(x, 392, 0.8, brote(), 'a-sway', delay(-i * 0.4))).join('')}
         <ellipse cx="262" cy="322" rx="62" ry="12" fill="#7dd3fc"/><ellipse cx="248" cy="319" rx="26" ry="3.5" fill="#e0f2fe"/>${at(236, 330, 0.85, garza)}${at(284, 328, 0.75, garza)}
         ${[[200, 470], [180, 380], [640, 470], [700, 470], [760, 455], [250, 330], [600, 395]].map(([x, y], i) => at(x, y, 0.8, `<path d="M0,0 l-5,-11 m5,11 l0,-14 m0,14 l5,-11" stroke="#3f8a3a" stroke-width="2.2" fill="none"/><g transform="translate(${i % 2 ? 6 : -6} -14)">${flor(['#f472b6', '#facc15', '#fb923c'][i % 3], 4)}</g>`)).join('')}
         ${e3Marcher({ ...gente[3], x: 610, y: 315, s: 0.4 })}${e3Marcher({ ...gente[2], x: 595, y: 340, s: 0.5 })}
@@ -236,7 +237,39 @@ Object.assign(window.APP_SCENES, (() => {
           ${at(0, 0, 1, [[262, 3, { item: 'flag', flag: 'col' }], [352, 0, {}], [442, 1, { item: 'flag', flag: '#ffffff' }], [532, 4, {}]].map(([x, g, o]) => e3Marcher({ ...gente[g], ...o, x, y: 445, s: 1.05 })).join(''), 'st-move', '--dx:-240px;animation-duration:4s;animation-timing-function:ease-out')}
           ${label(405, 252, '¡Marchar!', 1.2, '#9a3412', 28)}
           ${label(405, 286, 'todos al mismo paso', 3, '#14532d', 18)}`,
-        // 1 · ¿Fue o era?: llegan dos tarjetas; la estrofa 2 dice FUE y la estrofa 3 dice ERA (¡sello!)
+        // 1 · Apenas iniciada la jornada: amanece, el reloj marca las 6 y alguien sale a caminar con su canasta: ¡el día apenas empieza!
+        ({ at, person, sparkle }) => {
+          const reloj = `<circle r="34" fill="#fffdf6" stroke="#d97706" stroke-width="4"/>${[...Array(12)].map((_, i) => `<path d="M0,-29 V-24" stroke="#9a3412" stroke-width="2.4" transform="rotate(${i * 30})"/>`).join('')}<path d="M0,0 V18" stroke="#3a2216" stroke-width="4.5" stroke-linecap="round"/>`;
+          return `
+          ${at(0, 0, 1, e3Land(), 's-fade', 'animation-duration:.5s')}
+          ${at(408, 190, 1, reloj, 's-in', delay(0.2))}
+          ${at(408, 190, 1, '<path d="M0,0 V-26" stroke="#e11d48" stroke-width="3.4" stroke-linecap="round"/>', 'st-tilt', `--rot:360deg;animation-duration:1.6s;${delay(0.5)}`)}
+          ${at(408, 190, 1, '<circle r="4" fill="#3a2216"/>', 's-in', delay(0.2))}
+          ${label(408, 250, '6:00', 2.1, '#9a3412', 20)}
+          ${label(650, 140, '¡Amanece!', 0.8, '#b45309', 22)}
+          ${at(0, 0, 1, person({ ...gente[2], x: 590, y: 350, s: 1.1, act: 'walk', item: 'basket', delay: 0 }), 'st-move', `--dx:-170px;animation-duration:2.6s;animation-timing-function:ease-out;${delay(0.4)}`)}
+          ${label(455, 305, '¡Empieza la jornada!', 3, '#7c2d12', 21)}
+          ${[[560, 178, 2.4], [705, 232, 2.7], [600, 120, 3]].map(([x, y, d]) => at(x, y, 1, sparkle(0, 0, 0, '#fff7c2', 1.5), 's-in', delay(d))).join('')}`;
+        },
+        // 2 · A destiempo… más temprano: el reloj de arena se vacía de golpe (¡antes de tiempo!); una sembradora riega semillas y brotan enseguida en flores
+        ({ at, person }) => {
+          const reloj = `<rect x="-26" y="-48" width="52" height="8" rx="3" fill="#8b5a2b"/><rect x="-26" y="40" width="52" height="8" rx="3" fill="#8b5a2b"/>
+            <path d="M-20,-40 L20,-40 Q20,-14 3,0 Q20,14 20,40 L-20,40 Q-20,14 -3,0 Q-20,-14 -20,-40Z" fill="#e0f2fe" stroke="#7dd3fc" stroke-width="2.5"/>`;
+          const arriba = '<path d="M-16,-34 L16,-34 Q14,-14 2,-3 L-2,-3 Q-14,-14 -16,-34Z" fill="#f59e0b"/>';
+          const abajo = '<path d="M-17,38 Q-13,20 0,16 Q13,20 17,38Z" fill="#f59e0b"/>';
+          const xs = [240, 274, 308]; // en el pasto, a la izquierda del camino
+          return `
+          ${at(0, 0, 1, e3Land(), 's-fade', 'animation-duration:.5s')}
+          ${at(440, 300, 1.2, `${reloj}${at(0, 0, 1, arriba, 'st-shrink', `--sy:0;animation-duration:1.2s;${delay(0.6)}`)}${at(0, 0, 1, abajo, 's-grow', `animation-duration:1.2s;${delay(0.7)}`)}${at(0, 0, 1, at(0, 0, 1, '<rect x="-1.5" y="-1" width="3" height="36" fill="#f59e0b"/>', 's-out', delay(1.8)), 's-fade', delay(0.6))}`, 's-in', delay(0.1))}
+          ${label(440, 212, 'a destiempo', 1.6, '#9a3412', 22)}
+          ${label(440, 238, '= antes de tiempo', 2.1, '#7c2d12', 15)}
+          ${at(0, 0, 1, person({ ...gente[1], x: 190, y: 420, s: 1.15, act: 'sow', delay: 0 }), 's-from-l', delay(0.3))}
+          ${xs.map((x, i) => at(x, 416, 1.3, semilla, 's-drop', delay(2.2 + i * 0.3))).join('')}
+          ${xs.map((x, i) => at(x, 420, 0.95, brote(), 's-grow', delay(2.9 + i * 0.3))).join('')}
+          ${xs.map((x, i) => at(x + 2, 380, 1, flor(['#f43f5e', '#facc15', '#a855f7'][i], 9), 's-in', delay(3.6 + i * 0.3))).join('')}
+          ${label(300, 330, '¡más temprano!', 4.4, '#15803d', 24)}`;
+        },
+        // 3 · ¿Fue o era?: llegan dos tarjetas; la estrofa 2 dice FUE y la estrofa 3 dice ERA (¡sello!)
         ({ at, sparkle }) => {
           const Y = 206; // borde de arriba de las tarjetas
           const card = (x, c, n) => `<rect x="${x}" y="${Y}" width="175" height="150" rx="14" fill="#fffdf6" stroke="${c}" stroke-width="3"/><path d="M${x},${Y + 14} Q${x},${Y} ${x + 14},${Y} L${x + 161},${Y} Q${x + 175},${Y} ${x + 175},${Y + 14} L${x + 175},${Y + 34} L${x},${Y + 34}Z" fill="${c}"/>
@@ -250,7 +283,7 @@ Object.assign(window.APP_SCENES, (() => {
           ${[[482, 284, 2], [698, 284, 2.8]].map(([x, y, d]) => at(x, y, 1, sparkle(0, 0, 0, '#fbbf24', 1.6), 's-in', delay(d))).join('')}
           ${label(540, 408, '¡No los confundas!', 3.6, '#7c2d12', 24)}`;
         },
-        // 2 · Versos y estrofas: en la hoja del cuaderno aparecen los versos de la estrofa 2 uno por uno; una llave los junta: ¡una estrofa!
+        // 4 · Versos y estrofas: en la hoja del cuaderno aparecen los versos de la estrofa 2 uno por uno; una llave los junta: ¡una estrofa!
         ({ at }) => {
           const versos = ['No les fue fácil', 'dormirse en la vigilia', 'cuando aún', 'reventaban los geranios', 'y el amor batía brazos', 'y palmas', 'y petardos.'];
           return `
