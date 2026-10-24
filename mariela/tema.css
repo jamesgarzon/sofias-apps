@@ -32,6 +32,7 @@ body[data-k-theme="light"] {
 @keyframes st-tilt { to { transform: rotate(var(--rot, 90deg)); } }
 
 /* ===================== «De memoria» y «Completa» (js/memoria.js) ===================== */
+.view-memoria { max-width: 860px; margin: 0 auto; }
 .mm-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 5px; border-radius: 999px; background: var(--k-sunk); margin-bottom: 12px; }
 .mm-tab { min-height: 46px; border: 0; border-radius: 999px; background: transparent; font-family: var(--k-font-h); font-weight: 600; font-size: 1.05rem; cursor: pointer; color: var(--k-ink-2); }
 .mm-tab[aria-selected="true"] { background: linear-gradient(180deg, var(--k-acc-top), var(--k-acc-bot)); color: var(--k-acc-ink); box-shadow: 0 3px 0 var(--k-acc-edge); }
@@ -127,3 +128,35 @@ body[data-k-theme="light"] {
 .mem-back { background: radial-gradient(circle at 50% 40%, #fb923c, #e11d48 75%); }
 .mem-front.clue { background: linear-gradient(180deg, #fffdf6, #fff1dc); color: #3a2216; border-color: #fdba74; }
 .pg-item { background: linear-gradient(180deg, #fffdf6, #ffeccc); color: #3a2216; box-shadow: 0 8px 0 #f59e0b, 0 18px 40px rgba(120, 60, 20, .28); }
+
+/* ----- historias de js/scenes-poema.js ----- */
+/* st-wing: ala de la paloma que aletea desde su base */
+.st-wing { transform-box: fill-box; transform-origin: 50% 100%; animation: st-wing .45s ease-in-out infinite alternate; }
+@keyframes st-wing { to { transform: scaleY(-.45); } }
+/* st-burst: petardo que revienta en el cielo una y otra vez (escena) */
+.st-burst { transform-box: fill-box; transform-origin: 50% 50%; animation: st-burst 2.8s ease-out infinite; }
+@keyframes st-burst { 0% { transform: scale(.15); opacity: 0; } 12% { opacity: 1; } 70% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.12); opacity: 0; } }
+/* st-boom: petardo que revienta una sola vez y queda brillando (historias) */
+.st-boom { transform-box: fill-box; transform-origin: 50% 50%; animation: st-boom 1s cubic-bezier(.2, .9, .3, 1.2) both; }
+@keyframes st-boom { 0% { transform: scale(.1); opacity: 0; } 15% { opacity: 1; } 100% { transform: scale(1); opacity: .95; } }
+
+/* ----- historias de js/scenes-bio1.js ----- */
+/* st-scribble: el lápiz en la mano se mueve como escribiendo (en bucle) */
+.st-scribble { transform-box: view-box; transform-origin: 0 0; animation: st-scribble 1.1s ease-in-out infinite; }
+@keyframes st-scribble { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(1.5px, -1.2px); } 50% { transform: translate(3px, 0); } 75% { transform: translate(1.5px, 1.2px); } }
+/* st-reveal: un renglón de texto aparece de izquierda a derecha, como si se escribiera */
+.st-reveal { animation: st-reveal 1s linear both; }
+@keyframes st-reveal { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+/* st-write3: el lápiz recorre tres renglones (anchos --w1, --w2, --w3; 30 px entre renglones), al ritmo de st-reveal cada 1,1 s */
+.st-write3 { transform-box: view-box; transform-origin: 0 0; animation: st-write3 3.3s linear both; }
+@keyframes st-write3 {
+  0% { transform: translate(0, 0); } 30.3% { transform: translate(var(--w1), 0); }
+  33.3% { transform: translate(0, var(--dy3, 30px)); } 63.6% { transform: translate(var(--w2), var(--dy3, 30px)); }
+  66.7% { transform: translate(0, calc(2 * var(--dy3, 30px))); } 97% { transform: translate(var(--w3), calc(2 * var(--dy3, 30px))); }
+  100% { transform: translate(var(--w3), calc(2 * var(--dy3, 30px))); }
+}
+
+/* ----- historias de js/scenes-bio2.js ----- */
+/* st-nosun: el sol baja hacia el horizonte… y vuelve a subir: ¡nunca se pone! (dos veces) */
+.st-nosun { transform-box: fill-box; animation: st-nosun 2.2s ease-in-out 2 both; }
+@keyframes st-nosun { 0%, 100% { transform: translateY(0); } 45%, 55% { transform: translateY(66px); } }

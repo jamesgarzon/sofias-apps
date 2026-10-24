@@ -1,4 +1,0 @@
-/* Animaciones st-* de las historias de js/scenes-bio2.js (BORRADOR: se pasan a tema.css al terminar). */
-/* st-nosun: el sol baja hacia el horizonte… y vuelve a subir: ¡nunca se pone! (dos veces) */
-.st-nosun { transform-box: fill-box; animation: st-nosun 2.2s ease-in-out 2 both; }
-@keyframes st-nosun { 0%, 100% { transform: translateY(0); } 45%, 55% { transform: translateY(66px); } }
