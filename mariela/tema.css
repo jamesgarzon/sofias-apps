@@ -160,3 +160,8 @@ body[data-k-theme="light"] {
 /* st-nosun: el sol baja hacia el horizonte… y vuelve a subir: ¡nunca se pone! (dos veces) */
 .st-nosun { transform-box: fill-box; animation: st-nosun 2.2s ease-in-out 2 both; }
 @keyframes st-nosun { 0%, 100% { transform: translateY(0); } 45%, 55% { transform: translateY(66px); } }
+
+/* ----- historias de js/scenes-datos2.js ----- */
+/* st-shake: el sonajero se sacude de lado a lado desde el agarre (en bucle) */
+.st-shake { transform-box: fill-box; transform-origin: 50% 100%; animation: st-shake .32s ease-in-out infinite alternate; }
+@keyframes st-shake { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
