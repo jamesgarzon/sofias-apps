@@ -23,7 +23,8 @@ window.APP_DATA = /*JSON*/{
   },
   "groups": [
     { "id": "poema", "name": "El poema «Mártires»", "emoji": "📜", "sub": "De Mariela Zuluaga · verso a verso", "gradient": "linear-gradient(135deg, #e11d48, #f97316 55%, #fbbf24)", "topics": ["estrofa1", "estrofa2", "estrofa3"] },
-    { "id": "bio", "name": "La biografía de Mariela", "emoji": "✍️", "sub": "¿Quién es? · Su vida · Sus obras · Mi opinión", "gradient": "linear-gradient(135deg, #0284c7, #6366f1 55%, #a855f7)", "topics": ["quien", "vida", "crecio", "importante", "obras", "opinion"] }
+    { "id": "bio", "name": "La biografía de Mariela", "emoji": "✍️", "sub": "¿Quién es? · Su vida · Sus obras · Mi opinión", "gradient": "linear-gradient(135deg, #0284c7, #6366f1 55%, #a855f7)", "topics": ["quien", "vida", "crecio", "importante", "obras", "opinion"] },
+    { "id": "datos", "name": "Datos de su vida y trayectoria", "emoji": "📋", "sub": "Profesión · Estudios · Trayectoria · Obras importantes", "gradient": "linear-gradient(135deg, #0f766e, #16a34a 55%, #84cc16)", "topics": ["profesion", "estudios", "trayectoria", "obrasimp"] }
   ],
   "topics": {
     "estrofa1": {
@@ -101,12 +102,12 @@ window.APP_DATA = /*JSON*/{
     },
     "obras": {
       "name": "Sus obras", "short": "Sus obras", "emoji": "📚", "color": "#db2777", "dark": "#500724", "reveal": "Cuentos, poemas y novelas",
-      "intro": "Ella ha escrito cuentos, poemas y novelas como «El país de los días eternos», «Gente que camina» y «Las cartas de Grillo».",
+      "intro": "Ella ha escrito cuentos, poemas y novelas como «El país de los días eternos», «Gente que camina» y «Las cantas de Grillo».",
       "hotspots": [
         { "emoji": "📚", "title": "Cuentos, poemas y novelas", "text": "Ella ha escrito cuentos, poemas y novelas. Muchas de sus obras son para niños y niñas." },
         { "emoji": "☀️", "title": "El país de los días eternos", "text": "Una de sus obras se llama «El país de los días eternos»." },
         { "emoji": "🚶", "title": "Gente que camina", "text": "Otra se llama «Gente que camina»: es una novela." },
-        { "emoji": "🦗", "title": "Las cartas de Grillo", "text": "Y otra se llama «Las cartas de Grillo»." }
+        { "emoji": "🦗", "title": "Las cantas de Grillo", "text": "Y otra se llama «Las cantas de Grillo»: son poemas para niños. Las cantas son cantos, ¡como los del grillo!" }
       ]
     },
     "opinion": {
@@ -118,11 +119,56 @@ window.APP_DATA = /*JSON*/{
         { "emoji": "📜", "title": "Lo que escribe", "text": "…porque me gusta lo que escribe, como sus poemas…" },
         { "emoji": "🌈", "title": "Grandes historias", "text": "…y cómo con su imaginación creó bonitas y grandes historias." }
       ]
+    },
+    "profesion": {
+      "name": "Profesión", "short": "Profesión", "emoji": "💼", "color": "#0d9488", "dark": "#042f2e", "chips": ["5 oficios"], "reveal": "Escritora, poeta, periodista, narradora y gestora cultural",
+      "marks": [{ "icon": "🙋‍♀️", "label": "Nombre", "text": "Mariela Zuluaga" }, { "icon": "📍", "label": "Nacimiento", "text": "Villavicencio, Meta, 1948" }],
+      "intro": "Es escritora, poeta, periodista, narradora y gestora cultural.",
+      "note": "En tu hoja, antes de la profesión van el nombre (Mariela Zuluaga) y el nacimiento: nació en Villavicencio, Meta, en 1948.",
+      "hotspots": [
+        { "emoji": "✍️", "title": "Escritora", "text": "Es escritora: escribe libros de cuentos, poemas y novelas." },
+        { "emoji": "📜", "title": "Poeta", "text": "Es poeta: escribe poemas, como «Mártires»." },
+        { "emoji": "📰", "title": "Periodista", "text": "Es periodista: cuenta lo que pasa en el periódico, la radio o la televisión." },
+        { "emoji": "🗣️", "title": "Narradora", "text": "Es narradora: una narradora cuenta historias." },
+        { "emoji": "🎪", "title": "Gestora cultural", "text": "Es gestora cultural: organiza actividades de arte y de lectura para la gente, como festivales, encuentros y talleres." }
+      ]
+    },
+    "estudios": {
+      "name": "Estudios", "short": "Estudios", "emoji": "🎓", "color": "#2563eb", "dark": "#172554", "reveal": "Lingüística y Literatura",
+      "intro": "Estudió Lingüística y Literatura en la Universidad Distrital Francisco José de Caldas.",
+      "hotspots": [
+        { "emoji": "🏛️", "title": "La universidad", "text": "Estudió en la Universidad Distrital Francisco José de Caldas, que queda en Bogotá." },
+        { "emoji": "🔤", "title": "Lingüística", "text": "Estudió Lingüística: la lingüística estudia las lenguas, cómo hablamos y cómo escribimos." },
+        { "emoji": "📚", "title": "Literatura", "text": "Y estudió Literatura: la literatura estudia los cuentos, los poemas y las novelas." }
+      ]
+    },
+    "trayectoria": {
+      "name": "Trayectoria", "short": "Trayectoria", "emoji": "🛤️", "color": "#ea580c", "dark": "#431407", "reveal": "Reportera, cronista y talleres",
+      "intro": "Durante muchos años trabajó como reportera y cronista en medios de comunicación. También participó en proyectos culturales y realizó talleres de lectura y escritura.",
+      "hotspots": [
+        { "emoji": "🎙️", "title": "Reportera", "text": "Durante muchos años trabajó como reportera en medios de comunicación: el periódico, la radio y la televisión." },
+        { "emoji": "🗒️", "title": "Cronista", "text": "También fue cronista: escribía crónicas, que son historias de verdad contadas con muchos detalles." },
+        { "emoji": "🎨", "title": "Proyectos culturales", "text": "También participó en proyectos culturales: actividades de arte, música y lectura para la comunidad." },
+        { "emoji": "📖", "title": "Talleres", "text": "Y realizó talleres de lectura y escritura, para que niños y grandes disfrutaran leyendo y escribiendo." }
+      ]
+    },
+    "obrasimp": {
+      "name": "Obras importantes", "short": "Obras importantes", "emoji": "📕", "color": "#be185d", "dark": "#500724", "chips": ["6 libros"], "reveal": "6 libros",
+      "intro": "Ha escrito libros como «El país de los días eternos», «Memorias y ladridos», «Las cantas de Grillo», «Sonajerías», «Gente que camina» y «La catalana».",
+      "note": "Truco: aprende los 6 títulos en orden, contándolos con los dedos.",
+      "hotspots": [
+        { "emoji": "☀️", "title": "El país de los días eternos", "text": "El primero de la lista: «El país de los días eternos»." },
+        { "emoji": "🐶", "title": "Memorias y ladridos", "text": "«Memorias y ladridos» es una novela para niños: unos perritos cuentan sus recuerdos." },
+        { "emoji": "🦗", "title": "Las cantas de Grillo", "text": "«Las cantas de Grillo» es un libro de poemas para niños." },
+        { "emoji": "🪇", "title": "Sonajerías", "text": "«Sonajerías» también es un libro de poemas para niños." },
+        { "emoji": "🚶", "title": "Gente que camina", "text": "«Gente que camina» es una novela." },
+        { "emoji": "💃", "title": "La catalana", "text": "«La catalana» es una novela sobre la vida de Rosa Bosch, la esposa del escritor colombiano Manuel Zapata Olivella." }
+      ]
     }
   },
   "texts": {
     "poema": {
-      "name": "El poema", "emoji": "📜", "title": "Mártires", "by": "Mariela Zuluaga", "say": "poema-titulo",
+      "name": "Poema", "all": "Todo el poema", "emoji": "📜", "title": "Mártires", "by": "Mariela Zuluaga", "say": "poema-titulo",
       "parts": [
         { "id": "e1", "topic": "estrofa1", "name": "Estrofa 1", "lines": ["poema-1-1", "poema-1-2"] },
         { "id": "e2", "topic": "estrofa2", "name": "Estrofa 2", "lines": ["poema-2-1", "poema-2-2", "poema-2-3", "poema-2-4", "poema-2-5", "poema-2-6", "poema-2-7"] },
@@ -130,13 +176,24 @@ window.APP_DATA = /*JSON*/{
       ]
     },
     "bio": {
-      "name": "La biografía", "emoji": "✍️", "title": "Biografía", "by": "Mariela Zuluaga", "say": "bio-titulo",
+      "name": "Biografía", "all": "Toda la biografía", "emoji": "✍️", "title": "Biografía", "by": "Mariela Zuluaga", "say": "bio-titulo",
       "parts": [
         { "id": "quien", "topic": "quien", "name": "¿Quién es?", "say": "bio-h-quien", "lines": ["bio-quien-1", "bio-quien-2", "bio-quien-3"] },
         { "id": "vida", "topic": "vida", "name": "Su vida", "say": "bio-h-vida", "lines": ["bio-vida-1", "bio-vida-2", "bio-vida-3", "bio-crecio-1", "bio-crecio-2"] },
         { "id": "importante", "topic": "importante", "name": "¿Por qué es importante?", "say": "bio-h-importante", "lines": ["bio-importante-1", "bio-importante-2", "bio-importante-3"] },
         { "id": "obras", "topic": "obras", "name": "Sus obras", "say": "bio-h-obras", "lines": ["bio-obras-1", "bio-obras-2", "bio-obras-3"] },
         { "id": "opinion", "topic": "opinion", "name": "Mi opinión", "say": "bio-h-opinion", "lines": ["bio-opinion-1", "bio-opinion-2", "bio-opinion-3"] }
+      ]
+    },
+    "datos": {
+      "name": "Datos", "all": "Toda la hoja", "emoji": "📋", "title": "Datos importantes", "by": "de su vida y trayectoria", "say": "datos-titulo",
+      "parts": [
+        { "id": "nombre", "topic": "quien", "name": "Nombre", "say": "datos-h-nombre", "lines": ["datos-nombre-1"] },
+        { "id": "nacimiento", "topic": "quien", "name": "Nacimiento", "say": "datos-h-nacimiento", "lines": ["datos-nacimiento-1"] },
+        { "id": "profesion", "topic": "profesion", "name": "Profesión", "say": "datos-h-profesion", "lines": ["datos-profesion-1", "datos-profesion-2"] },
+        { "id": "estudios", "topic": "estudios", "name": "Estudios", "say": "datos-h-estudios", "lines": ["datos-estudios-1", "datos-estudios-2"] },
+        { "id": "trayectoria", "topic": "trayectoria", "name": "Trayectoria", "say": "datos-h-trayectoria", "lines": ["datos-trayectoria-1", "datos-trayectoria-2", "datos-trayectoria-3", "datos-trayectoria-4"] },
+        { "id": "obras", "topic": "obrasimp", "name": "Obras importantes", "say": "datos-h-obras", "lines": ["datos-obras-1", "datos-obras-2", "datos-obras-3"] }
       ]
     }
   },
@@ -183,9 +240,27 @@ window.APP_DATA = /*JSON*/{
     { "id": "b12", "topic": "obras", "emoji": "🖋️", "q": "¿Qué ha escrito Mariela Zuluaga?", "opts": ["Cuentos, poemas y novelas", "Recetas de cocina", "Libros de matemáticas", "Diccionarios"], "why": "Ella ha escrito cuentos, poemas y novelas." },
     { "id": "b13", "topic": "obras", "emoji": "🔍", "q": "¿Cuál de estos libros es de Mariela Zuluaga?", "opts": ["Gente que camina", "Cien años de soledad", "El renacuajo paseador", "Harry Potter"], "why": "«Gente que camina» es de Mariela Zuluaga. «Cien años de soledad» es de Gabriel García Márquez y «El renacuajo paseador», de Rafael Pombo." },
     { "id": "b14", "topic": "obras", "emoji": "🧩", "q": "Completa el nombre de su obra: «El país de los días…»", "opts": ["eternos", "felices", "soleados", "largos"], "why": "«El país de los días eternos»." },
-    { "id": "b15", "topic": "obras", "emoji": "🧩", "q": "Completa el nombre de su obra: «Las cartas de…»", "opts": ["Grillo", "Sapo", "Pájaro", "Abuela"], "why": "«Las cartas de Grillo»." },
+    { "id": "b15", "topic": "obras", "emoji": "🧩", "q": "Completa el nombre de su obra: «Las cantas de…»", "opts": ["Grillo", "Sapo", "Pájaro", "Abuela"], "why": "«Las cantas de Grillo»: un libro de poemas para niños." },
     { "id": "b16", "topic": "opinion", "emoji": "🧩", "q": "Completa tu opinión: «Me gustó saber de su vida porque…»", "opts": ["me gusta lo que escribe", "es muy famosa", "vive muy lejos", "tiene muchos libros"], "why": "«Me gustó saber de su vida porque me gusta lo que escribe, como sus poemas…»" },
-    { "id": "b17", "topic": "opinion", "emoji": "🧩", "q": "Completa: «…y cómo con su imaginación creó…»", "opts": ["bonitas y grandes historias", "muchos dibujos", "una casa muy grande", "canciones de cuna"], "why": "«…y cómo con su imaginación creó bonitas y grandes historias.»" }
+    { "id": "b17", "topic": "opinion", "emoji": "🧩", "q": "Completa: «…y cómo con su imaginación creó…»", "opts": ["bonitas y grandes historias", "muchos dibujos", "una casa muy grande", "canciones de cuna"], "why": "«…y cómo con su imaginación creó bonitas y grandes historias.»" },
+    { "id": "b18", "topic": "quien", "emoji": "🗺️", "q": "Villavicencio queda en el departamento del…", "opts": ["Meta", "Valle del Cauca", "Antioquia", "Boyacá"], "why": "Nació en Villavicencio, Meta, en 1948." },
+    { "id": "d1", "topic": "profesion", "emoji": "💼", "q": "Además de escritora, poeta y periodista, Mariela es…", "opts": ["narradora y gestora cultural", "doctora y piloto", "cantante y bailarina", "científica y astronauta"], "why": "Es escritora, poeta, periodista, narradora y gestora cultural." },
+    { "id": "d2", "topic": "profesion", "emoji": "🤔", "q": "¿Qué hace una narradora?", "opts": ["Cuenta historias", "Arregla carros", "Siembra papas", "Pinta casas"], "why": "Una narradora cuenta historias." },
+    { "id": "d3", "topic": "profesion", "emoji": "🤔", "q": "¿Qué hace una gestora cultural?", "opts": ["Organiza actividades de arte y lectura", "Cura a los enfermos", "Maneja aviones", "Vende frutas en el mercado"], "why": "Una gestora cultural organiza festivales, encuentros y talleres de arte y lectura." },
+    { "id": "d4", "topic": "profesion", "emoji": "🔢", "q": "¿Cuántas profesiones dice tu hoja?", "opts": ["5", "3", "2", "8"], "why": "Escritora, poeta, periodista, narradora y gestora cultural: ¡5!" },
+    { "id": "d5", "topic": "estudios", "emoji": "🎒", "q": "¿Qué estudió Mariela Zuluaga?", "opts": ["Lingüística y Literatura", "Medicina", "Ingeniería", "Música"], "why": "Estudió Lingüística y Literatura." },
+    { "id": "d6", "topic": "estudios", "emoji": "🏫", "q": "¿En qué universidad estudió?", "opts": ["En la Universidad Distrital Francisco José de Caldas", "En la Universidad Nacional", "En la Universidad de Antioquia", "En la Universidad del Valle"], "why": "Estudió en la Universidad Distrital Francisco José de Caldas." },
+    { "id": "d7", "topic": "estudios", "emoji": "🧩", "q": "Completa: «Universidad Distrital Francisco José de…»", "opts": ["Caldas", "Paula Santander", "Nariño", "Bolívar"], "why": "Universidad Distrital Francisco José de Caldas." },
+    { "id": "d8", "topic": "trayectoria", "emoji": "💼", "q": "Durante muchos años trabajó como…", "opts": ["reportera y cronista", "cocinera y mesera", "piloto y azafata", "doctora y enfermera"], "why": "Durante muchos años trabajó como reportera y cronista en medios de comunicación." },
+    { "id": "d9", "topic": "trayectoria", "emoji": "🗺️", "q": "¿Dónde trabajó como reportera y cronista?", "opts": ["En medios de comunicación", "En un hospital", "En un aeropuerto", "En una panadería"], "why": "…en medios de comunicación: el periódico, la radio y la televisión." },
+    { "id": "d10", "topic": "trayectoria", "emoji": "🛠️", "q": "¿Qué talleres realizó?", "opts": ["De lectura y escritura", "De cocina", "De carpintería", "De natación"], "why": "Realizó talleres de lectura y escritura." },
+    { "id": "d11", "topic": "trayectoria", "emoji": "🧩", "q": "Completa: «También participó en…»", "opts": ["proyectos culturales", "carreras de carros", "partidos de fútbol", "concursos de baile"], "why": "También participó en proyectos culturales y realizó talleres de lectura y escritura." },
+    { "id": "d12", "topic": "obrasimp", "emoji": "🔍", "q": "¿Cuál de estos libros es de Mariela Zuluaga?", "opts": ["Memorias y ladridos", "El Principito", "Pinocho", "Caperucita Roja"], "why": "«Memorias y ladridos» es una novela para niños de Mariela Zuluaga." },
+    { "id": "d13", "topic": "obrasimp", "emoji": "🧩", "q": "Completa el título: «Memorias y…»", "opts": ["ladridos", "maullidos", "recuerdos", "aventuras"], "why": "«Memorias y ladridos»: ¡la cuentan unos perritos!" },
+    { "id": "d14", "topic": "obrasimp", "emoji": "🧩", "q": "Completa el título: «Gente que…»", "opts": ["camina", "canta", "corre", "sueña"], "why": "«Gente que camina» es una novela." },
+    { "id": "d15", "topic": "obrasimp", "emoji": "🔢", "q": "¿Cuántos libros nombra tu hoja en «Obras importantes»?", "opts": ["6", "3", "4", "10"], "why": "El país de los días eternos, Memorias y ladridos, Las cantas de Grillo, Sonajerías, Gente que camina y La catalana: ¡6!" },
+    { "id": "d16", "topic": "obrasimp", "emoji": "🔚", "q": "¿Cuál es el último libro de la lista?", "opts": ["La catalana", "Sonajerías", "Gente que camina", "Memorias y ladridos"], "why": "La lista termina: «…Gente que camina y La catalana»." },
+    { "id": "d17", "topic": "obrasimp", "emoji": "🔍", "q": "¿Cuáles son libros de poemas para niños?", "opts": ["Las cantas de Grillo y Sonajerías", "La catalana y Gente que camina", "El Principito y Pinocho", "Memorias y ladridos y La catalana"], "why": "«Las cantas de Grillo» y «Sonajerías» son poemas para niños." }
   ],
   "order": {
     "rounds": [
@@ -254,6 +329,33 @@ window.APP_DATA = /*JSON*/{
           { "e": "💜", "t": "como sus poemas,", "y": 3, "c": "#c026d3" },
           { "e": "💜", "t": "y cómo con su imaginación", "y": 4, "c": "#c026d3" },
           { "e": "💜", "t": "creó bonitas y grandes historias.", "y": 5, "c": "#c026d3" }
+        ] },
+      { "set": "datos", "title": "Ordena los datos como en tu hoja 📋", "top": "⬆ Primero", "bottom": "⬇ Al final", "say": "order-8",
+        "events": [
+          { "e": "📋", "t": "Nombre", "y": 1, "c": "#0f766e", "reveal": "Mariela Zuluaga" },
+          { "e": "📋", "t": "Nacimiento", "y": 2, "c": "#0f766e", "reveal": "Villavicencio, Meta, 1948" },
+          { "e": "📋", "t": "Profesión", "y": 3, "c": "#0f766e", "reveal": "Escritora, poeta, periodista…" },
+          { "e": "📋", "t": "Estudios", "y": 4, "c": "#0f766e", "reveal": "Lingüística y Literatura" },
+          { "e": "📋", "t": "Trayectoria", "y": 5, "c": "#0f766e", "reveal": "Reportera y cronista" },
+          { "e": "📋", "t": "Obras importantes", "y": 6, "c": "#0f766e", "reveal": "6 libros" }
+        ] },
+      { "set": "datos", "title": "Ordena las obras importantes 📕", "sub": "Como en tu hoja.", "top": "⬆ Primero", "bottom": "⬇ Último", "say": "order-9",
+        "events": [
+          { "e": "📕", "t": "El país de los días eternos", "y": 1, "c": "#be185d" },
+          { "e": "📕", "t": "Memorias y ladridos", "y": 2, "c": "#be185d" },
+          { "e": "📕", "t": "Las cantas de Grillo", "y": 3, "c": "#be185d" },
+          { "e": "📕", "t": "Sonajerías", "y": 4, "c": "#be185d" },
+          { "e": "📕", "t": "Gente que camina", "y": 5, "c": "#be185d" },
+          { "e": "📕", "t": "La catalana", "y": 6, "c": "#be185d" }
+        ] },
+      { "set": "datos", "title": "Arma la frase de los estudios 🎓", "sub": "Ordena los pedacitos.", "say": "order-10",
+        "events": [
+          { "e": "🎓", "t": "Estudió", "y": 1, "c": "#2563eb" },
+          { "e": "🎓", "t": "Lingüística y Literatura", "y": 2, "c": "#2563eb" },
+          { "e": "🎓", "t": "en la Universidad", "y": 3, "c": "#2563eb" },
+          { "e": "🎓", "t": "Distrital", "y": 4, "c": "#2563eb" },
+          { "e": "🎓", "t": "Francisco José", "y": 5, "c": "#2563eb" },
+          { "e": "🎓", "t": "de Caldas.", "y": 6, "c": "#2563eb" }
         ] }
     ]
   },
@@ -288,10 +390,23 @@ window.APP_DATA = /*JSON*/{
       { "topic": "obras", "e": "📝", "t": "Cuentos, poemas y novelas" },
       { "topic": "obras", "e": "📝", "t": "«El país de los días eternos»" },
       { "topic": "obras", "e": "📝", "t": "«Gente que camina»" },
-      { "topic": "obras", "e": "📝", "t": "«Las cartas de Grillo»" },
+      { "topic": "obras", "e": "📝", "t": "«Las cantas de Grillo»" },
       { "topic": "opinion", "e": "📝", "t": "Me gustó saber de su vida" },
       { "topic": "opinion", "e": "📝", "t": "Me gusta lo que escribe, como sus poemas" },
-      { "topic": "opinion", "e": "📝", "t": "Creó bonitas y grandes historias" }
+      { "topic": "opinion", "e": "📝", "t": "Creó bonitas y grandes historias" },
+      { "topic": "profesion", "e": "📋", "t": "Escritora" },
+      { "topic": "profesion", "e": "📋", "t": "Poeta" },
+      { "topic": "profesion", "e": "📋", "t": "Narradora" },
+      { "topic": "profesion", "e": "📋", "t": "Gestora cultural" },
+      { "topic": "estudios", "e": "📋", "t": "Lingüística y Literatura" },
+      { "topic": "estudios", "e": "📋", "t": "Universidad Distrital Francisco José de Caldas" },
+      { "topic": "trayectoria", "e": "📋", "t": "Reportera y cronista" },
+      { "topic": "trayectoria", "e": "📋", "t": "Medios de comunicación" },
+      { "topic": "trayectoria", "e": "📋", "t": "Proyectos culturales" },
+      { "topic": "trayectoria", "e": "📋", "t": "Talleres de lectura y escritura" },
+      { "topic": "obrasimp", "e": "📋", "t": "«Memorias y ladridos»" },
+      { "topic": "obrasimp", "e": "📋", "t": "«Sonajerías»" },
+      { "topic": "obrasimp", "e": "📋", "t": "«La catalana»" }
     ]
   },
   "clues": {
@@ -303,7 +418,11 @@ window.APP_DATA = /*JSON*/{
     "crecio": [["🎤", "Consiguió trabajo como periodista"], ["✏️", "Ayudó a personas a aprender a escribir y leer"]],
     "importante": [["⏳", "Dedicó parte de su vida a escribir"], ["💭", "Nos comparte su imaginación"]],
     "obras": [["🚶", "«Gente que camina»"], ["☀️", "«El país de los días eternos»"]],
-    "opinion": [["💜", "Me gustó saber de su vida"], ["🌈", "Creó bonitas y grandes historias"]]
+    "opinion": [["💜", "Me gustó saber de su vida"], ["🌈", "Creó bonitas y grandes historias"]],
+    "profesion": [["🎪", "Narradora y gestora cultural"], ["✍️", "Escritora, poeta y periodista"]],
+    "estudios": [["🔤", "Lingüística y Literatura"], ["🏛️", "Universidad Distrital Francisco José de Caldas"]],
+    "trayectoria": [["🎙️", "Reportera y cronista en medios de comunicación"], ["📖", "Talleres de lectura y escritura"]],
+    "obrasimp": [["🐶", "«Memorias y ladridos»"], ["🪇", "«Sonajerías» y «La catalana»"]]
   },
   "facts": [
     "¿Sabías que cada renglón de un poema se llama verso, y que un grupo de versos se llama estrofa?",
@@ -313,6 +432,8 @@ window.APP_DATA = /*JSON*/{
     "Truco: el poema empieza y termina con semillas: «se siembra con él semilla buena»… y al final, «y sembró sus semillas más temprano».",
     "Truco: en la estrofa 2 hay tres versos que empiezan con «y»: y el amor, y palmas, y petardos. ¡Cuéntalos con los dedos!",
     "¿Sabías que los geranios son flores que se siembran mucho en los balcones y las ventanas?",
+    "¿Sabías que «Memorias y ladridos» la cuentan unos perritos? ¡Es una novela para niños!",
+    "¿Sabías que la Universidad Distrital Francisco José de Caldas queda en Bogotá, la capital de Colombia?",
     "Truco para tu exposición: habla despacio, en voz alta y mirando a tus compañeros. ¡Lo vas a hacer muy bien!"
   ],
   "voice": {
@@ -371,10 +492,33 @@ window.APP_DATA = /*JSON*/{
     "bio-importante-3": "y así disfrutamos más la lectura.",
     "bio-obras-1": "Ella ha escrito cuentos, poemas y novelas",
     "bio-obras-2": "como «El país de los días eternos»,",
-    "bio-obras-3": "«Gente que camina» y «Las cartas de Grillo».",
+    "bio-obras-3": "«Gente que camina» y «Las cantas de Grillo».",
     "bio-opinion-1": "Me gustó saber de su vida",
     "bio-opinion-2": "porque me gusta lo que escribe, como sus poemas,",
     "bio-opinion-3": "y cómo con su imaginación creó bonitas y grandes historias.",
+    "datos-titulo": "Datos importantes de su vida y trayectoria.",
+    "datos-h-nombre": "Nombre.",
+    "datos-h-nacimiento": "Nacimiento.",
+    "datos-h-profesion": "Profesión.",
+    "datos-h-estudios": "Estudios.",
+    "datos-h-trayectoria": "Trayectoria.",
+    "datos-h-obras": "Obras importantes.",
+    "datos-nombre-1": "Mariela Zuluaga.",
+    "datos-nacimiento-1": "Nació en Villavicencio, Meta, en 1948.",
+    "datos-profesion-1": "Es escritora, poeta, periodista,",
+    "datos-profesion-2": "narradora y gestora cultural.",
+    "datos-estudios-1": "Estudió Lingüística y Literatura",
+    "datos-estudios-2": "en la Universidad Distrital Francisco José de Caldas.",
+    "datos-trayectoria-1": "Durante muchos años trabajó como reportera",
+    "datos-trayectoria-2": "y cronista en medios de comunicación.",
+    "datos-trayectoria-3": "También participó en proyectos culturales",
+    "datos-trayectoria-4": "y realizó talleres de lectura y escritura.",
+    "datos-obras-1": "Ha escrito libros como «El país de los días eternos»,",
+    "datos-obras-2": "«Memorias y ladridos», «Las cantas de Grillo»,",
+    "datos-obras-3": "«Sonajerías», «Gente que camina» y «La catalana».",
+    "order-8": "Ordena los datos como en tu hoja: del nombre a las obras importantes.",
+    "order-9": "Ordena las obras importantes como en tu hoja.",
+    "order-10": "Arma la frase de los estudios, pedacito a pedacito.",
     "ok-0": "¡Correcto!",
     "ok-1": "¡Excelente!",
     "ok-2": "¡Muy bien, Sofía!",

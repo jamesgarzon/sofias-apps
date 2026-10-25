@@ -38,12 +38,19 @@ window.MEMORIA_SCREENS = (() => {
   const near = (a, b) => { if (a === b) return true; const n = Math.min(a.length, b.length), tol = n >= 7 ? 2 : n >= 4 ? 1 : 0; return tol > 0 && Math.abs(a.length - b.length) <= tol && lev(a, b) <= tol; };
   const NUM = new Set('mil novecientos cuarenta y ocho'.split(' ').map(phon)); // «1948» dicho en palabras
   const hears = (t, h) => (/^\d+$/.test(t.plain) ? h === t.plain || NUM.has(h) : near(t.p, h));
+  const CAP = /^[A-ZÁÉÍÓÚÑ]/;
   function tokenize(s, start) {
-    return s.split(/\s+/).filter(Boolean).map((raw, k) => {
+    const toks = s.split(/\s+/).filter(Boolean).map((raw, k) => {
       const [, pre, core, post] = raw.match(/^([«"¿¡(]*)(.*?)([»".,;:!?)…]*)$/);
       return { i: start + k, pre, core, post, plain: plain(core), p: phon(core), first: k === 0 };
     });
+    // nombre propio o título: con mayúscula en medio del verso, entre «», o seguido de otra mayúscula («Mariela Zuluaga»)
+    toks.forEach((t, k) => { t.proper = CAP.test(t.core) && (k > 0 || /[«"]/.test(t.pre) || CAP.test(toks[1]?.core || '')); });
+    return toks;
   }
+  /** Cómo se escribe una opción de «Completa»: si falta la primera palabra del verso, todas empiezan con mayúscula;
+   *  si no, la primera palabra de un verso va en minúscula (salvo nombres propios). Así la mayúscula no delata la respuesta. */
+  const optText = (o, atStart) => { const w = o.proper || !o.first ? o.core : o.core.toLowerCase(); return atStart ? w[0].toUpperCase() + w.slice(1) : w; };
   /** Partes del texto `tid` ('all' = todas), con sus versos partidos en palabras numeradas en orden. */
   function build(tid, sel) {
     const T = TX[tid]; let n = 0;
@@ -126,7 +133,7 @@ window.MEMORIA_SCREENS = (() => {
 
     function renderNav() {
       $$('.mm-tab', v).forEach((b) => b.setAttribute('aria-selected', b.dataset.t === tid));
-      const T = TX[tid], chips = [...T.parts.map((p) => [p.id, p.name, K.TOPICS[p.topic].color]), ['all', tid === 'poema' ? 'Todo el poema' : 'Toda la biografía', '#f59e0b']];
+      const T = TX[tid], chips = [...T.parts.map((p) => [p.id, p.name, K.TOPICS[p.topic].color]), ['all', T.all, '#f59e0b']];
       $('.mm-parts', v).innerHTML = chips.map(([id, name, c]) => `<button class="mm-part-btn ${id === sel ? 'on' : ''}" data-s="${id}" style="--pc:${c}" aria-pressed="${id === sel}"><span class="mm-plant">${plant(memo[keyOf(id)] || 0)}</span><span>${esc(name)}</span></button>`).join('');
       const got = memo[keyOf()] || 0;
       $$('.mm-step', v).forEach((b) => { const n = +b.dataset.l; b.classList.toggle('on', n === lvl); b.classList.toggle('done', n <= got); b.setAttribute('aria-pressed', n === lvl); });
@@ -319,7 +326,7 @@ window.MEMORIA_SCREENS = (() => {
       const ctx = prev && prev.part === part ? `<p class="cp-prev">${lineText(prev)}</p>` : '';
       stage.innerHTML = R.type === 'word'
         ? `<div class="cp-card" style="--pc:${c}"><span class="cp-chip">${esc(part.name)}</span><h2 class="cp-q">¿Qué palabra falta?</h2>${ctx}<p class="cp-line">${lineText(L, R.t)}</p></div>
-           <div class="opts cp-opts">${R.opts.map((o, k) => `<button class="opt" data-o="${k}"><span class="opt-l">${'ABCD'[k]}</span><span>${esc(o.first ? o.core.toLowerCase() : o.core)}</span></button>`).join('')}</div><div class="fb-slot"></div>`
+           <div class="opts cp-opts">${R.opts.map((o, k) => `<button class="opt" data-o="${k}"><span class="opt-l">${'ABCD'[k]}</span><span>${esc(optText(o, R.t.first))}</span></button>`).join('')}</div><div class="fb-slot"></div>`
         : `<div class="cp-card" style="--pc:${c}"><span class="cp-chip">${esc(part.name)}</span><h2 class="cp-q">¿Qué sigue después de…?</h2>${ctx}<p class="cp-line">${lineText(L)}</p></div>
            <div class="opts cp-opts">${R.opts.map((o, k) => `<button class="opt" data-o="${k}"><span class="opt-l">${'ABC'[k]}</span><span>${esc(V[o.key])}</span></button>`).join('')}</div><div class="fb-slot"></div>`;
       lock = false;

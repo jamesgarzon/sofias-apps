@@ -5,6 +5,8 @@
 //   scenes-poema.js  estrofa1, estrofa2, estrofa3
 //   scenes-bio1.js   quien, vida, crecio
 //   scenes-bio2.js   importante, obras, opinion
+//   scenes-datos1.js profesion, estudios
+//   scenes-datos2.js trayectoria, obrasimp
 // Reglas: hs separados ≥110 unidades, sin tapar caras; lo animado va con at(..., 'a-clase').
 // Historias: con el zoom ×1,9 sobre la chispa (hx, hy) solo se ve x ∈ [0,474·hx, hx + 0,526·(800−hx)] e
 // y ∈ [0,474·hy, hy + 0,526·(500−hy)]; la persona va grande, haciendo la acción, en el centro de esa ventana.

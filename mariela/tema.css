@@ -33,7 +33,7 @@ body[data-k-theme="light"] {
 
 /* ===================== «De memoria» y «Completa» (js/memoria.js) ===================== */
 .view-memoria { max-width: 860px; margin: 0 auto; }
-.mm-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 5px; border-radius: 999px; background: var(--k-sunk); margin-bottom: 12px; }
+.mm-tabs { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; padding: 5px; border-radius: 999px; background: var(--k-sunk); margin-bottom: 12px; }
 .mm-tab { min-height: 46px; border: 0; border-radius: 999px; background: transparent; font-family: var(--k-font-h); font-weight: 600; font-size: 1.05rem; cursor: pointer; color: var(--k-ink-2); }
 .mm-tab[aria-selected="true"] { background: linear-gradient(180deg, var(--k-acc-top), var(--k-acc-bot)); color: var(--k-acc-ink); box-shadow: 0 3px 0 var(--k-acc-edge); }
 /* partes: cada una con su matica */
