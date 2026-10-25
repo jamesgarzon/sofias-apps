@@ -15,20 +15,22 @@ Object.assign(window.APP_SCENES, (() => {
   const pajaro = `${at(0, 0, 1, '<path d="M-14,-2 Q-7,-14 0,-2 Q7,-14 14,-2" stroke="#7c3aed" stroke-width="3.5" fill="none" stroke-linecap="round"/>', 'a-flap')}<circle r="4" fill="#7c3aed"/>`;
   // Lápiz con la punta en (0,0) hacia abajo, como en una mano derecha que escribe.
   const lapiz = `<g transform="rotate(35)"><rect x="-3" y="-30" width="6" height="22" rx="1" fill="#facc15"/><rect x="-3" y="-34" width="6" height="5" rx="1.5" fill="#f472b6"/><path d="M-3,-8 L0,0 L3,-8Z" fill="#f6d1a3"/><path d="M-1.2,-3 L0,0 L1.2,-3Z" fill="#3a2216"/></g>`;
-  // Carta (sobre) centrada en 0,0; con alitas que aletean si vuela.
-  const carta = (alas = false) => `${alas ? at(0, -9, 1, '<ellipse cx="-9" cy="-3" rx="10" ry="5" fill="#fff" stroke="#c4b5fd" stroke-width="1.5"/><ellipse cx="9" cy="-3" rx="10" ry="5" fill="#fff" stroke="#c4b5fd" stroke-width="1.5"/>', 'a-flap') : ''}
-    <rect x="-15" y="-10" width="30" height="20" rx="2" fill="#fffaf0" stroke="#c9b28a" stroke-width="1.5"/><path d="M-15,-10 L0,3 L15,-10" stroke="#c9b28a" stroke-width="1.5" fill="none"/><circle cy="2" r="3" fill="#e11d48"/>`;
-  // Grillo de pie (el de «Las cartas de Grillo»), patas en (0,0), ≈ 125 de alto; mira un poco a la derecha.
-  const grillo = (escribe = false) => `
+  // Nota musical (corchea) con la cabeza en (0,0).
+  const nota = (c = '#7c3aed') => `<ellipse cx="-1" cy="0" rx="6.5" ry="5" fill="${c}" transform="rotate(-20 -1 0)"/><path d="M4.5,-1 V-26 Q12,-22 15,-14" stroke="${c}" stroke-width="2.8" fill="none" stroke-linecap="round"/>`;
+  // Grillo de pie (el de «Las cantas de Grillo»), patas en (0,0), ≈ 125 de alto; mira un poco a la derecha.
+  // canta: abre la boca y levanta los brazos. También lo usa scenes-datos2.js («Obras importantes»), por eso va en SCN.
+  const grillo = (canta = false) => `
     <path d="M-12,-26 L-30,-54 L-20,-2 M12,-26 L30,-54 L22,-2" stroke="#3f6212" stroke-width="5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
     <path d="M-7,-14 L-9,0 M7,-14 L9,0" stroke="#3f6212" stroke-width="4" stroke-linecap="round"/>
     <ellipse cx="0" cy="-38" rx="17" ry="26" fill="#65a30d"/><ellipse cx="2" cy="-36" rx="9" ry="17" fill="#bef264"/>
-    <path d="M-12,-52 Q-24,-44 -24,-34" stroke="#3f6212" stroke-width="4" fill="none" stroke-linecap="round"/>
-    ${escribe ? at(13, -52, 1, `<path d="M0,0 Q12,6 18,18" stroke="#3f6212" stroke-width="4" fill="none" stroke-linecap="round"/><g transform="translate(19 20) rotate(-20)">${lapiz}</g>`, 'a-rock', 'animation-duration:.9s') : '<path d="M12,-52 Q24,-44 24,-34" stroke="#3f6212" stroke-width="4" fill="none" stroke-linecap="round"/>'}
+    ${canta ? '<path d="M-12,-52 Q-26,-60 -30,-74 M12,-52 Q26,-60 30,-74" stroke="#3f6212" stroke-width="4" fill="none" stroke-linecap="round"/>'
+    : '<path d="M-12,-52 Q-24,-44 -24,-34 M12,-52 Q24,-44 24,-34" stroke="#3f6212" stroke-width="4" fill="none" stroke-linecap="round"/>'}
     ${at(0, -88, 1, '<path d="M-5,0 Q-12,-26 -30,-34 M5,0 Q10,-28 30,-38" stroke="#3f6212" stroke-width="2.4" fill="none" stroke-linecap="round"/>', 'a-sway')}
     <circle cx="0" cy="-74" r="17" fill="#65a30d"/>
     <circle cx="-6" cy="-77" r="6.5" fill="#fff"/><circle cx="7" cy="-77" r="6.5" fill="#fff"/><circle cx="-4.5" cy="-77" r="3.4" fill="#1a1a1a"/><circle cx="8.5" cy="-77" r="3.4" fill="#1a1a1a"/><circle cx="-3.5" cy="-78.5" r="1.1" fill="#fff"/><circle cx="9.5" cy="-78.5" r="1.1" fill="#fff"/>
-    <circle cx="-11" cy="-68" r="3" fill="#fb7185" opacity=".45"/><circle cx="12" cy="-68" r="3" fill="#fb7185" opacity=".45"/><path d="M-4,-66 Q1,-62 6,-66" stroke="#1a2e05" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
+    <circle cx="-11" cy="-68" r="3" fill="#fb7185" opacity=".45"/><circle cx="12" cy="-68" r="3" fill="#fb7185" opacity=".45"/>
+    ${canta ? '<ellipse cx="1" cy="-64" rx="4.5" ry="5.5" fill="#1a2e05"/><ellipse cx="1" cy="-61.5" rx="2.6" ry="2" fill="#fb7185"/>' : '<path d="M-4,-66 Q1,-62 6,-66" stroke="#1a2e05" stroke-width="1.8" fill="none" stroke-linecap="round"/>'}`;
+  SCN.grillo = grillo;
   // Niños de las escenas (además de Sofía).
   const ninos = [
     { skin: '#f1c7a5', hair: '#9a6a3a', top: '#ef476f', bottom: '#264653', shoe: '#5b3a29' },
@@ -65,8 +67,8 @@ Object.assign(window.APP_SCENES, (() => {
   const arteGente = `<rect x="-60" y="-180" width="130" height="110" fill="#fef9c3"/><path d="M-60,-120 L-30,-140 L0,-126 L30,-146 L70,-122 L70,-100 L-60,-100Z" fill="#bbf7d0"/>
     <path d="M-60,-84 Q0,-96 70,-86 L70,-70 L-60,-70Z" fill="#d6b98c"/>
     ${person({ ...gente[2], x: -30, y: -82, s: 0.3, act: 'walk', delay: 0 })}${person({ ...gente[1], x: 2, y: -84, s: 0.3, act: 'walk', delay: -0.3 })}${person({ ...ninos[3], x: 30, y: -82, s: 0.24, act: 'walk', delay: -0.15 })}`;
-  const arteGrillo = `<rect x="-60" y="-180" width="130" height="110" fill="#ede9fe"/>${at(-14, -76, 0.72, grillo(false))}
-    ${at(32, -132, 1, carta(true), 'a-bob')}${at(40, -96, 0.7, carta(false))}`;
+  const arteGrillo = `<rect x="-60" y="-180" width="130" height="110" fill="#ede9fe"/>${at(-14, -76, 0.72, grillo(true))}
+    ${at(32, -130, 1.2, nota('#7c3aed'), 'a-bob')}${at(44, -98, 1, nota('#db2777'), 'a-bob', delay(-1))}`;
 
   // ---------- Mi opinión: el salón ----------
   const pupitre = (x) => `<rect x="${x - 52}" y="438" width="104" height="10" rx="3" fill="#d97706"/><rect x="${x - 46}" y="448" width="92" height="52" fill="#b45309"/><rect x="${x - 38}" y="456" width="76" height="3" fill="#92400e" opacity=".5"/>`;
@@ -142,7 +144,7 @@ Object.assign(window.APP_SCENES, (() => {
         ${at(140, 428, 0.85, maceta('#e11d48', '#fb7185'))}
         ${tapa(230, '#f59e0b', 'ob-c1', arteDias, ['El país de', 'los días', 'eternos'])}
         ${tapa(400, '#16a34a', 'ob-c2', arteGente, ['Gente', 'que camina'])}
-        ${tapa(570, '#7c3aed', 'ob-c3', arteGrillo, ['Las cartas', 'de Grillo'])}
+        ${tapa(570, '#7c3aed', 'ob-c3', arteGrillo, ['Las cantas', 'de Grillo'])}
         ${person({ ...mariela, x: 724, y: 474, s: 1.05, act: 'point', flip: true })}
         ${[[315, 250], [485, 236], [655, 254], [150, 330]].map(([x, y], i) => sparkle(x, y, i * 0.5, '#fde047', 1.3)).join('')}`,
       story: [
@@ -188,20 +190,17 @@ Object.assign(window.APP_SCENES, (() => {
               ${at(0, 0, 1, caminantes.map((p) => person({ ...p, y: 94, act: 'walk' })).join(''), 'st-move', `--dx:-240px;animation-duration:3.4s;animation-timing-function:ease-out;${delay(0.5)}`)}</g>`, 's-in')}
           ${label(400, 375, 'Gente que camina', 3.4, '#15803d', 19)}`;
         },
-        // 3 · «Las cartas de Grillo»: un grillo escribe cartas en su escritorio y las cartas salen volando con alitas
-        () => {
-          const vuelos = [[610, 190], [652, 244], [560, 164]];
-          return `
+        // 3 · «Las cantas de Grillo»: de noche, el grillo sube a su piedra y canta; las notas suben al cielo (son poemas para niños)
+        () => `<defs>${lin('st-ob3-sky', [[0, '#4c1d95'], [1, '#a78bfa']])}</defs>
           ${at(492, 258, 1, `<rect x="-190" y="-118" width="380" height="236" rx="14" fill="#fffaf0" stroke="#7c3aed" stroke-width="6"/>
-            <rect x="-180" y="-108" width="360" height="216" rx="10" fill="#ede9fe"/><path d="M-180,78 H180" stroke="#c4b5fd" stroke-width="3"/>
-            <g fill="#ddd6fe">${[[-150, -80], [-60, -96], [120, -84], [150, -30]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5"/>`).join('')}</g>`, 's-in')}
-          ${at(0, 0, 1, '<rect x="476" y="290" width="112" height="9" rx="3" fill="#b45309"/><rect x="484" y="299" width="7" height="37" fill="#92400e"/><rect x="573" y="299" width="7" height="37" fill="#92400e"/>', 's-fade', delay(0.3))}
-          ${at(448, 336, 1.3, grillo(true), 's-from-l', delay(0.2))}
-          ${at(0, 0, 1, '<path d="M478,290 L524,290 L519,283 L483,283Z" fill="#fffdf6" stroke="#d6c7a8"/>', 's-fade', delay(0.3))}${[0, 1].map((i) => `<path d="M${489 + i * 2},${287.5 - i * 2.6} q3,-2.5 6,0 t6,0 t6,0" pathLength="1" stroke="#475569" stroke-width="1.3" fill="none" class="s-draw" style="animation-duration:.8s;${delay(0.8 + i * 0.9)}"/>`).join('')}
-          ${at(554, 283, 1, carta(false), 's-in', delay(0.9))}
-          ${vuelos.map(([x, y], i) => at(x, y, 1, at(0, 0, 1, carta(true), 'a-bob', delay(-i * 0.7)), 'st-move', `--dx:${554 - x}px;--dy:${283 - y}px;--s0:.5;animation-duration:1.3s;${delay(1.5 + i * 0.9)}`)).join('')}
-          ${label(492, 371, 'Las cartas de Grillo', 3.8, '#6d28d9', 19)}`;
-        },
+            <rect x="-180" y="-108" width="360" height="216" rx="10" fill="url(#st-ob3-sky)"/>
+            <g fill="#fef9c3">${[[-150, -80], [-60, -92], [60, -70], [150, -86], [120, -30], [-120, -30]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.6"/>`).join('')}</g>
+            ${at(126, -66, 1, '<path d="M4,-18 A18,18 0 1,0 4,18 A13,13 0 1,1 4,-18Z" fill="#fde68a"/>')}
+            <path d="M-180,60 Q0,44 180,60 L180,108 L-180,108Z" fill="#4d7c0f"/><ellipse cx="-58" cy="74" rx="62" ry="18" fill="#a8a29e"/><ellipse cx="-70" cy="68" rx="30" ry="6" fill="#d6d3d1"/>`, 's-in')}
+          ${at(434, 334, 1, at(0, 0, 1.1, grillo(true), 'a-bob', 'animation-duration:1.2s'), 's-from-l', delay(0.3))}
+          ${[[470, 230, '#fde68a', 0], [500, 250, '#f9a8d4', 0.6], [530, 226, '#bef264', 1.2], [560, 246, '#fde68a', 1.8], [590, 228, '#f9a8d4', 2.4]].map(([x, y, c, d]) => at(x, y, 1.5, nota(c), 'a-rise', `animation-duration:2.6s;${delay(1.1 + d)}`)).join('')}
+          ${label(560, 300, '♪ cri, cri ♪', 1.4, '#6d28d9', 18)}
+          ${label(492, 371, 'Las cantas de Grillo', 3.4, '#6d28d9', 20)}`,
       ],
     },
 
