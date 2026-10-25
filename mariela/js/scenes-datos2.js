@@ -9,7 +9,7 @@ Object.assign(window.APP_SCENES, (() => {
   const corazon = (c = '#ec4899') => `<path d="M0,7 C-14,-3 -9,-15 0,-8 C9,-15 14,-3 0,7Z" fill="${c}"/>`;
   const nota = (c = '#7c3aed') => `<ellipse cx="-1" cy="0" rx="6.5" ry="5" fill="${c}" transform="rotate(-20 -1 0)"/><path d="M4.5,-1 V-26 Q12,-22 15,-14" stroke="${c}" stroke-width="2.8" fill="none" stroke-linecap="round"/>`;
   // Renglones escritos a mano (ondas) que se dibujan uno tras otro desde el instante d0.
-  const renglones = (x, y, w, n, gap, d0, c = '#475569') => [...Array(n)].map((_, i) => `<path d="M${x},${y + i * gap} q4,-4 8,0${' t8,0'.repeat(Math.max(0, Math.floor((w - (i === n - 1 ? 30 : 0)) / 8) - 1))}" pathLength="1" stroke="${c}" stroke-width="2.2" fill="none" stroke-linecap="round" class="s-draw" style="animation-duration:.55s;${delay(d0 + i * 0.45)}"/>`).join('');
+  const renglones = (x, y, w, n, gap, d0, c = '#475569') => [...Array(n)].map((_, i) => `<path d="M${x},${y + i * gap} q4,-4 8,0${' t8,0'.repeat(Math.max(0, Math.floor((w - (i === n - 1 ? 30 : 0)) / 8) - 1))}" pathLength="1" stroke="${c}" stroke-width="2.2" fill="none" class="s-draw" style="animation-duration:.55s;${delay(d0 + i * 0.45)}"/>`).join('');
   // Globo de diálogo: caja (x, y, w, h) con la colita hacia (tx, ty) y un texto corto.
   const globo = (x, y, w, h, tx, ty, t) => `<path d="M${x + 14},${y} H${x + w - 14} Q${x + w},${y} ${x + w},${y + 14} V${y + h - 14} Q${x + w},${y + h} ${x + w - 14},${y + h} H${tx + 14} L${tx},${ty} L${tx - 6},${y + h} H${x + 14} Q${x},${y + h} ${x},${y + h - 14} V${y + 14} Q${x},${y} ${x + 14},${y}Z" fill="#fff" stroke="#94a3b8" stroke-width="2"/>${txt(x + w / 2, y + h / 2 + 6, t, 17, '#334155')}`;
   // Micrófono de mano (el agarre en 0,0), inclinado hacia adelante, con el cubito del canal.
@@ -27,6 +27,12 @@ Object.assign(window.APP_SCENES, (() => {
   const diario = (head = 'NOTICIAS', w = 70, h = 46) => `<rect x="${-w / 2 + 3}" y="${-h / 2 + 3}" width="${w}" height="${h}" rx="2" fill="#000" opacity=".12"/><rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" rx="2" fill="#f8f5ee" stroke="#9ca3af" stroke-width="1.5"/>
     ${txt(0, -h / 2 + 12, head, 10, '#1f2937')}<path d="M${-w / 2 + 5},${-h / 2 + 16} H${w / 2 - 5}" stroke="#1f2937" stroke-width="1.5"/><rect x="${-w / 2 + 5}" y="${-h / 2 + 20}" width="${w * 0.36}" height="${h - 25}" fill="#bfe3ff"/>
     <g stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round">${[0, 1, 2].map((i) => `<path d="M${-w / 2 + 10 + w * 0.36},${-h / 2 + 24 + i * 7} H${w / 2 - 6}"/>`).join('')}</g>`;
+  // Cuatro llanero (la guitarrita del Llano) centrado en (0,0), con el mástil hacia arriba a la izquierda.
+  const cuatro = `<g transform="rotate(-50)"><rect x="-2.5" y="-42" width="5" height="32" rx="1.5" fill="#78350f"/><rect x="-4" y="-48" width="8" height="8" rx="2" fill="#451a03"/>
+    <ellipse cy="0" rx="12" ry="10" fill="#d97706"/><ellipse cy="-10" rx="9" ry="8" fill="#d97706"/><circle cy="-4" r="3.5" fill="#451a03"/><path d="M-1,-42 V8 M1,-42 V8" stroke="#fef3c7" stroke-width=".7"/></g>`;
+  // Músico que toca el cuatro (pies en x, y): el brazo derecho rasga las cuerdas y salen notas.
+  const musico = (o, notas = true) => `${person({ ...o, arm: 'out', act: 'idle' })}${at(o.x + 12 * o.s, o.y - 44 * o.s, o.s, cuatro)}
+    ${notas ? [0, 1, 2].map((i) => at(o.x + (24 + i * 10) * o.s, o.y - (70 + i * 6) * o.s, o.s, nota(['#7c3aed', '#db2777', '#0f766e'][i]), 'a-rise', `animation-duration:3s;${delay(-i)}`)).join('') : ''}`;
   // Casas de colores de la plaza (de x a x+w, con el techo en y y la base en 300).
   const casa = (x, w, y, c, ventanas = true) => `<rect x="${x}" y="${y}" width="${w}" height="${300 - y}" fill="${c}"/><rect x="${x - 4}" y="${y - 8}" width="${w + 8}" height="12" rx="2" fill="#c2410c"/>
     ${ventanas ? [...Array(Math.max(1, Math.floor(w / 46)))].map((_, i, a) => { const wx = x + (w / a.length) * (i + 0.5); return `<rect x="${wx - 11}" y="${y + 26}" width="22" height="28" rx="3" fill="#7dd3fc" stroke="#fff" stroke-width="3"/><rect x="${wx - 16}" y="${y + 26}" width="5" height="28" fill="#15803d"/><rect x="${wx + 11}" y="${y + 26}" width="5" height="28" fill="#15803d"/>`; }).join('') : ''}`;
@@ -97,7 +103,7 @@ Object.assign(window.APP_SCENES, (() => {
         <g stroke="#d4b183" stroke-width="2" opacity=".7"><path d="M0,350 H800 M0,400 H800 M0,456 H800"/>${[80, 230, 380, 530, 680].map((x) => `<path d="M${x},312 L${x - 30},500"/>`).join('')}</g>
         ${[[448, 312, '#3b82f6'], [574, 312, '#ef4444']].map(([x, y, c]) => `<path d="M${x - 9},${y} L${x - 7},${y - 16} L${x + 7},${y - 16} L${x + 9},${y}Z" fill="#94a3b8"/><ellipse cx="${x}" cy="${y - 16}" rx="7" ry="2.5" fill="${c}"/>`).join('')}
         ${person({ ...gente[4], x: 452, y: 318, s: 0.9, act: 'paint', item: 'brush' })}
-        ${person({ ...gente[0], x: 582, y: 334, s: 0.85, flip: true, arm: 'up', act: 'shake', item: 'stick', itemColor: '#e11d48' })}
+        ${musico({ ...gente[0], x: 590, y: 334, s: 0.85 })}
         <path d="M290,214 V392 M390,214 V392" stroke="#7c4a24" stroke-width="6"/><path d="M276,214 L404,214 L392,186 L288,186Z" fill="#e11d48"/>${[0, 1, 2, 3].map((i) => `<path d="M${296 + i * 26},186 L${306 + i * 26},186 L${300 + i * 26},214 L${290 + i * 26},214Z" fill="#fff"/>`).join('')}
         <path d="M296,228 H384" stroke="#475569" stroke-width="1.5"/>
         ${at(320, 260, 1, diario('NOTICIAS', 42, 56))}${at(366, 260, 1, diario('CRÓNICA', 42, 56))}
@@ -132,7 +138,7 @@ Object.assign(window.APP_SCENES, (() => {
           ${at(544, 286, 1, diario('CRÓNICA', 76, 60), 's-drop', delay(4.2))}
           ${label(256, 222, '¡Cronista!', 2, '#9a3412', 26)}
           ${label(446, 376, 'historias de verdad', 4.6, '#0f766e', 15)}`,
-        // 2 · Proyectos culturales: los vecinos pintan juntos un mural del Llano mientras otro toca las maracas
+        // 2 · Proyectos culturales: los vecinos pintan juntos un mural del Llano mientras otro toca el cuatro
         () => `
           ${at(0, 0, 1, telon(246, 90, 440, 280, 312, '#fff7ea'), 's-fade', 'animation-duration:.4s')}
           ${at(0, 0, 1, '<rect x="300" y="132" width="332" height="172" rx="6" fill="#fffdf6" stroke="#e7d7b8" stroke-width="4"/>', 's-fade', 'animation-duration:.4s')}
@@ -144,7 +150,7 @@ Object.assign(window.APP_SCENES, (() => {
           ${[[440, 168, '#7c3aed'], [470, 152, '#db2777'], [604, 160, '#0f766e']].map(([x, y, c], i) => at(x, y, 1.2, nota(c), 's-in', delay(3.6 + i * 0.25))).join('')}
           ${at(0, 0, 1, person({ ...gente[4], x: 318, y: 350, s: 1, act: 'paint', item: 'brush', delay: 0 }), 's-from-l')}
           ${at(0, 0, 1, person({ ...gente[3], x: 614, y: 350, s: 1, flip: true, act: 'dab', item: 'brush', delay: -0.5 }), 's-from-r')}
-          ${at(0, 0, 1, person({ ...gente[0], x: 468, y: 352, s: 0.95, arm: 'up', act: 'shake', item: 'stick', itemColor: '#e11d48' }), 's-up', delay(0.6))}
+          ${at(0, 0, 1, musico({ ...gente[0], x: 468, y: 352, s: 0.95 }), 's-up', delay(0.6))}
           ${label(466, 128, '¡Proyectos culturales!', 4.2, '#9a3412', 22)}`,
         // 3 · Talleres de lectura y escritura: en la carpa Mariela lee en voz alta; una niña lee, una abuela escribe y salen letras y corazones
         () => `
@@ -196,7 +202,7 @@ Object.assign(window.APP_SCENES, (() => {
             ${at(-104, 88, 1.35, perro('#d6a46a', '#8b5a2b'))}${at(40, 90, 1.15, perro('#f8fafc', '#94a3b8'))}`), 's-in')}
           ${[[x - 64, y - 32, 0.8], [x + 76, y - 34, 2.2]].map(([gx, gy, d], i) => at(gx, gy, 1, `<ellipse rx="54" ry="34" fill="#fff" stroke="#bae6fd" stroke-width="3"/><circle cx="${i ? -44 : -38}" cy="40" r="7" fill="#fff" stroke="#bae6fd" stroke-width="2.5"/>
             ${i ? `<path d="M-30,10 V-6 H-6 V10Z M-34,-5 L-18,-18 L-2,-5Z" fill="#f97316"/>${person({ ...gente[4], x: 22, y: 20, s: 0.36, act: 'none' })}${at(4, -14, 0.8, corazon())}` : `<circle cx="-18" cy="0" r="12" fill="#ef4444"/><path d="M-30,0 h24" stroke="#fff" stroke-width="2"/><path d="M8,6 l22,-12 M4,2 a4,4 0 1,1 4,4 M30,-10 a4,4 0 1,1 4,4" stroke="#fef3c7" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M8,6 l22,-12" stroke="#d6d3d1" stroke-width="5" stroke-linecap="round"/>`}`, 's-in', delay(d))).join('')}
-          ${label(x - 58, y + 32, '¡Guau!', 0.5, '#0369a1', 18)}${label(x + 104, y + 36, '¡Guau, guau!', 1.9, '#0369a1', 16)}
+          ${label(x - 24, y + 36, '¡Guau!', 0.5, '#0369a1', 18)}${label(x + 128, y + 64, '¡Guau!', 1.9, '#0369a1', 18)}
           ${label(x, y + 84, 'Memorias y ladridos', 3.4, '#0369a1', 20)}`; },
         // 2 · «Las cantas de Grillo»: de noche, el grillo canta sobre su piedra y las notas suben al cielo: ¡poemas para niños!
         () => { const [x, y] = centro(2); return `<defs>${lin('st-oi2', [[0, '#4c1d95'], [1, '#a78bfa']])}</defs>
