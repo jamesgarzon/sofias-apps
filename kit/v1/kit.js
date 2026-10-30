@@ -31,6 +31,7 @@ window.Kit = (() => {
       item: (i, n) => `Objeto ${i} de ${n}`, sortHint: 'Arrastra el objeto hasta su portal… ¡o toca el portal!', roundDone: '¡Ronda completa!', roundDoneText: (s, n, nx) => `Acertaste ${s} de ${n}. Ahora: ${nx}`, go: '¡Vamos! ➜',
       memSub: 'Voltea dos cartas: une cada tema 🎨 con su pista 🔍.', moves: (n) => `Jugadas: ${n}`, pairs: (d, n) => `Parejas: ${d} de ${n}`, memTitle: '¡Memoria de elefante! 🐘', memText: (n, m) => `Encontraste las ${n} parejas en <b>${m} jugadas</b>.`, card: (k) => `Carta ${k}`,
       ppTitle: 'PASAPORTE', ppWho: (s) => `Viajera: Sofía · ⭐ ${s} estrellas`, trophies: '🏆 Trofeos', playToWin: '¡Juega para ganarlo!', reset: 'Borrar mi progreso', resetConfirm: '¿Borrar los sellos, los trofeos y lo descubierto? Tus estrellas ⭐ se quedan.', perfect: 'perfectas', movesShort: 'jugadas', noStamp: 'sin sello',
+      lockedTitle: '¡Primero explora!', lockedText: 'Gana todos los sellos 🛂 del viaje para abrir los juegos.',
       games4: { quiz: ['❓', 'Quiz', 'Responde y gana estrellas'], order: ['🧩', 'Ordena', '¿Qué va primero?'], sort: ['🌀', 'Portales', '¿A dónde pertenece?'], memory: ['🃏', 'Memoria', 'Encuentra las parejas'] },
       voice: { 'ok-0': '¡Correcto!', 'ok-1': '¡Excelente!', 'ok-2': '¡Muy bien, Sofía!', 'ok-3': '¡Eso es!', 'ok-4': '¡Genial! Sabes mucho.', 'ok-5': '¡Perfecto!', 'bad-0': '¡Uy, casi!', 'bad-1': 'No era esa, ¡pero ahora ya lo sabes!', 'bad-2': '¡Ups! Mira cuál era la correcta.', win: '¡Lo lograste! ¡Lo hiciste increíble!', good: '¡Muy bien! Sigue practicando y serás experta.', stamp: '¡Descubriste todo! Ganaste un sello para tu pasaporte.', 'order-ok': '¡Orden perfecto!', 'order-bad': 'Algunas no están en su lugar. ¡Inténtalo otra vez!', sort: '¿A dónde pertenece? ¡Mándalo al portal correcto!', memory: 'Encuentra las parejas: cada tema con su pista.', pair: '¡Pareja encontrada!', passport: 'Este es tu pasaporte. Explora cada tema para ganar todos los sellos.' },
     },
@@ -51,6 +52,7 @@ window.Kit = (() => {
       item: (i, n) => `Item ${i} of ${n}`, sortHint: 'Drag the item to its portal… or tap the portal!', roundDone: 'Round complete!', roundDoneText: (s, n, nx) => `You got ${s} of ${n}. Next: ${nx}`, go: "Let's go! ➜",
       memSub: 'Flip two cards: match each topic 🎨 with its clue 🔍.', moves: (n) => `Moves: ${n}`, pairs: (d, n) => `Pairs: ${d} of ${n}`, memTitle: 'Elephant memory! 🐘', memText: (n, m) => `You found all ${n} pairs in <b>${m} moves</b>.`, card: (k) => `Card ${k}`,
       ppTitle: 'PASSPORT', ppWho: (s) => `Explorer: Sofia · ⭐ ${s} stars`, trophies: '🏆 Trophies', playToWin: 'Play to win it!', reset: 'Reset my progress', resetConfirm: 'Delete stamps, trophies and discoveries? Your stars ⭐ stay.', perfect: 'perfect', movesShort: 'moves', noStamp: 'no stamp yet',
+      lockedTitle: 'Explore first!', lockedText: 'Earn all the 🛂 stamps of the journey to unlock the games.',
       games4: { quiz: ['❓', 'Quiz', 'Answer and win stars'], order: ['🧩', 'In Order', 'What comes first?'], sort: ['🌀', 'Portals', 'Where does it belong?'], memory: ['🃏', 'Memory', 'Find the pairs'] },
       voice: { 'ok-0': 'Correct!', 'ok-1': 'Excellent!', 'ok-2': 'Great job, Sofia!', 'ok-3': "That's right!", 'ok-4': 'Awesome! You know a lot.', 'ok-5': 'Perfect!', 'bad-0': 'Oops, almost!', 'bad-1': "Not that one, but now you know!", 'bad-2': "Oops! Look at the right answer.", win: 'You did it! Amazing work!', good: 'Good job! Keep practicing.', stamp: 'You found everything! You earned a passport stamp.', 'order-ok': 'Perfect order!', 'order-bad': 'Some cards are not in place. Try again!', sort: 'Where does it belong? Send it to the right portal!', memory: 'Find the pairs: each topic with its clue.', pair: 'You found a pair!', passport: 'This is your passport. Explore every topic to earn all the stamps.' },
     },
@@ -268,6 +270,7 @@ window.Kit = (() => {
 
     // ---------- diálogos ----------
     function openOverlay(html, { onClose, light = false } = {}) {
+      overlay._wait = false;
       overlay.innerHTML = `<div class="backdrop ${light ? 'light' : ''}" data-close></div>${html}`;
       overlay.classList.add('show'); overlay._onClose = onClose || null;
       setTimeout(() => $('.btn, .set-btn', overlay)?.focus({ preventScroll: true }), 350);
@@ -275,16 +278,17 @@ window.Kit = (() => {
     }
     function closeOverlay(silent = false) {
       if (!overlay.classList.contains('show')) return;
-      overlay.classList.remove('show'); overlay.innerHTML = '';
+      overlay.classList.remove('show'); overlay.innerHTML = ''; overlay._wait = false;
       const f = overlay._onClose; overlay._onClose = null;
       if (f && !silent) f();
     }
-    overlay.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) { SFX.tap(); closeOverlay(); } });
-    addEventListener('keydown', (e) => { if (e.key === 'Escape') closeOverlay(); });
+    overlay.addEventListener('click', (e) => { if (e.target.closest('[data-close]') && !overlay._wait) { SFX.tap(); closeOverlay(); } });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !overlay._wait) closeOverlay(); });
 
     // ---------- navegación ----------
     const SCREENS = {};
     function go(name, params = {}) {
+      if (GAME_KEYS.includes(name) && !unlocked(params.set)) return lockedModal(params.set);
       stopVoice(); closeOverlay(true);
       $$('.warp, .fly-star, .ghost').forEach((n) => n.remove());
       app.innerHTML = '';
@@ -395,7 +399,17 @@ window.Kit = (() => {
       $$('[data-g]', overlay).forEach((b) => (b.onclick = () => { SFX.tap(); go(b.dataset.g, { set }); }));
     }
     const inSet = (tid, set) => set === 'a' || groupOf(tid)?.id === set;
-    const available = () => ['quiz', 'order', 'sort', 'memory'].filter((k) => ({ quiz: D.questions?.length, order: D.order?.rounds?.length, sort: D.sort?.items?.length, memory: D.clues && Object.keys(D.clues).length >= 3 })[k]);
+    // meta.strict: los juegos de un viaje se abren con todos sus sellos
+    const unlocked = (set = 'a') => !M.strict || GROUPS.filter((g) => set === 'a' || g.id === set).every((g) => g.topics.every((id) => stamps[id]));
+    function lockedModal(set = 'a') {
+      const gs = GROUPS.filter((g) => set === 'a' || g.id === set);
+      openOverlay(`<div class="modal"><div class="modal-emoji">🔒</div><h3>${T_.lockedTitle}</h3><p>${T_.lockedText}</p><div class="set-btns">
+        ${gs.map((g) => `<button class="set-btn" data-s="${g.id}" style="${jg(g)}"><span>${g.emoji}</span><div>${g.name}<small>${T_.stampsOf(g.topics.filter((id) => stamps[id]).length, g.topics.length)}</small></div></button>`).join('')}
+        </div><button class="btn-text" data-close>${T_.cancel}</button></div>`);
+      $$('[data-s]', overlay).forEach((b) => (b.onclick = () => { SFX.tap(); go('learn', { set: b.dataset.s }); }));
+    }
+    const GAME_KEYS = ['quiz', 'order', 'sort', 'memory'];
+    const available = () => GAME_KEYS.filter((k) => ({ quiz: D.questions?.length, order: D.order?.rounds?.length, sort: D.sort?.items?.length, memory: D.clues && Object.keys(D.clues).length >= 3 })[k]);
 
     // =================== INICIO ===================
     let owlStep = 0;
@@ -421,7 +435,8 @@ window.Kit = (() => {
       };
       const gTile = (k) => {
         const [em, name, sub] = GAMES[k], played = ['a', ...GROUPS.map((g) => g.id)].some((s) => best[`${k}-${s}`] != null);
-        return `<button class="game g-${k}" data-game="${k}">${played ? '<span class="g-best">🏅</span>' : ''}<span class="g-emoji">${em}</span><b>${name}</b><small>${sub}</small></button>`;
+        const badge = !GROUPS.some((g) => unlocked(g.id)) ? '🔒' : played ? '🏅' : '';
+        return `<button class="game g-${k}" data-game="${k}">${badge ? `<span class="g-best">${badge}</span>` : ''}<span class="g-emoji">${em}</span><b>${name}</b><small>${sub}</small></button>`;
       };
       const photos = Object.values(TOPICS).flatMap((t) => t.hotspots.filter((h) => h.photo).map((h) => h.photo));
       const [t1, ...tr] = M.title.split(' ');
@@ -529,6 +544,17 @@ window.Kit = (() => {
         });
         $('[data-say]', overlay).onclick = (ev) => say(T.hs(id, k), ev.currentTarget);
         if (first) addStars(1, $('.reward', overlay));
+        if (first && M.strict) { // la primera vez, «¡Entendido!» espera a que terminen la historia y la voz (tope 25 s)
+          const ok = $('.sheet [data-close]', overlay), t0 = Date.now();
+          const storyMs = Math.max(0, ...($('.story', zoom)?.getAnimations({ subtree: true }) || []).map((a) => a.effect.getComputedTiming().endTime).filter(Number.isFinite));
+          const minMs = Math.max(storyMs, cleanText(h.text).length * 50);
+          overlay._wait = true; ok.disabled = true;
+          const iv = setInterval(() => {
+            if (!overlay._wait) return clearInterval(iv);
+            const t = Date.now() - t0;
+            if (t > 25000 || (t > minMs && !$('[data-say]', overlay)?.classList.contains('speaking'))) { clearInterval(iv); overlay._wait = false; ok.disabled = false; ok.focus({ preventScroll: true }); }
+          }, 300);
+        }
         setTimeout(() => say(T.hs(id, k), $('[data-say]', overlay)), 380);
       }
       function stampCeremony(id) {
@@ -570,6 +596,7 @@ window.Kit = (() => {
         setTimeout(() => { if (v.isConnected && qs[i] === q) say(T.q(q), $('[data-say]', v)); }, 350);
       }
       function answer(btn) {
+        if ($('.opts', v).classList.contains('locked')) return;
         const q = qs[i], ok = btn.dataset.o === '0';
         $('.opts', v).classList.add('locked');
         $$('.opt', v).forEach((b) => b.classList.add(b.dataset.o === '0' ? 'right' : b === btn ? 'wrong' : 'dim'));
@@ -788,7 +815,7 @@ window.Kit = (() => {
     };
 
     // ---------- API para pantallas propias de la app ----------
-    const K = { D, M, T_, TOPICS, GROUPS, groupOf, go, say, sayChain, stopVoice, T, SFX, addStars, confetti, burst, celebrate, openOverlay, closeOverlay, results, warp, topbar, owlHTML, stampSVG, makeDraggable, flip, fmtYear, agoText, store, shuffle, pick, esc, NOW };
+    const K = { D, M, T_, TOPICS, GROUPS, groupOf, go, unlocked, say, sayChain, stopVoice, T, SFX, addStars, confetti, burst, celebrate, openOverlay, closeOverlay, results, warp, topbar, owlHTML, stampSVG, makeDraggable, flip, fmtYear, agoText, store, shuffle, pick, esc, NOW };
     Object.assign(SCREENS, cfg.screens || {});
     go('home');
     return K;

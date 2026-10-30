@@ -31,7 +31,7 @@ cp -r plantilla mi-app          # carpeta nueva junto a las demás
 
 | Clave | Contenido |
 |---|---|
-| `meta` | `id` (prefijo de localStorage: usar el nombre de la carpeta), `lang` (`es`/`en`), `title` (1.ª palabra y resto en dos colores), `subtitle`, `costume` (disfraz de Cronos), `theme` (`dark`/`light`), `sky` (`stars`/`bubbles`/`none`), `topicWord` («Etapa», «Tema»…), `greeting`, `tip`, `quizShip`, `cardBack`, `games` (renombrar juegos: `{"quiz": ["❓","Quiz del Chef","sub"]}`) |
+| `meta` | `id` (prefijo de localStorage: usar el nombre de la carpeta), `lang` (`es`/`en`), `title` (1.ª palabra y resto en dos colores), `subtitle`, `costume` (disfraz de Cronos), `theme` (`dark`/`light`), `strict` (`true` en apps nuevas: juegos cerrados hasta tener los sellos del viaje y la 1.ª vez cada chispa espera su historia y voz), `sky` (`stars`/`bubbles`/`none`), `topicWord` («Etapa», «Tema»…), `greeting`, `tip`, `quizShip`, `cardBack`, `games` (renombrar juegos: `{"quiz": ["❓","Quiz del Chef","sub"]}`) |
 | `groups` | `[{id, name, emoji, sub, gradient, topics: [ids]}]`. Con 1 grupo no hay selector; con 2+ aparece «¡Todo junto!». |
 | `topics` | `{id: {name, short, emoji, color, dark, intro, hotspots, year?, chips?, marks?, reveal?, note?}}` |
 | `topics.*.hotspots` | `[{emoji, title, text, photo?: {src, credit}}]` — uno por chispa de la escena, en el mismo orden que `hs`. `photo` (opcional) muestra una foto real en la tarjeta y su crédito en el inicio. |
@@ -99,7 +99,7 @@ Kit.start({
 });
 ```
 
-`K` trae: `go(screen, params)`, `topbar`, `say([clave, texto], botón?)`, `sayChain`, `stopVoice`, `T` (claves de voz: `T.v('clave')`, `T.topic(id)`…),
+`K` trae: `go(screen, params)`, `unlocked(set)` (¿tiene los sellos? úsalo en pantallas propias con puntaje), `topbar`, `say([clave, texto], botón?)`, `sayChain`, `stopVoice`, `T` (claves de voz: `T.v('clave')`, `T.topic(id)`…),
 `SFX` (`tap pop ding buzz soft whoosh arrive fanfare stamp flip portal place tick`), `addStars(n, el)`, `confetti`, `burst(el)`, `celebrate`,
 `openOverlay(html, {onClose, light})`, `closeOverlay`, `results({score, total, earned, again, title?, msg?})`, `warp({fromY?, toY?, name})`,
 `makeDraggable(el, {onTap, onDrop, canDrag})`, `flip(els, mutate)`, `owlHTML(clase)`, `stampSVG(id)`, `store`, `shuffle`, `pick`, `esc`, `TOPICS`, `GROUPS`, `D`, `M`.
@@ -122,4 +122,5 @@ Voces: español `es-CO-SalomeNeural` (-8 %), inglés `en-US-JennyNeural` (-10 %)
 ```bash
 python3 -m http.server 8765 &
 node kit/v1/tools/capturas.js http://localhost:8765/mi-app/ /tmp/capturas   # teléfono + tablet; falla si hay errores JS
+python3 kit/v1/tools/trampas.py mi-app                                       # respuestas regaladas (luego, el agente anti-trampas)
 ```

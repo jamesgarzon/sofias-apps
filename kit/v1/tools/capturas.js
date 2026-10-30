@@ -28,10 +28,15 @@ fs.mkdirSync(out, { recursive: true });
     const extras = await page.$$eval('[data-go]', (els) => els.map((e) => e.dataset.go).filter((g) => g !== 'passport'));
     await click('[data-journey]'); await page.waitForTimeout(3200); await shot('aprende');
     const nHs = await page.$$eval('.hs', (els) => els.length);
-    if (nHs) { await click('.hs[data-hs="0"]'); await page.waitForTimeout(1200); await shot('dato'); await click('.sheet [data-close]'); await page.waitForTimeout(500); }
+    if (nHs) { await click('.hs[data-hs="0"]'); await page.waitForTimeout(1200); await shot('dato'); await page.waitForSelector('.sheet [data-close]:not([disabled])', { timeout: 30000 }); await click('.sheet [data-close]'); await page.waitForTimeout(500); }
     // recorre todos los temas del primer grupo para ver cada escena con sus chispas
     const nOrbs = await page.$$eval('.orb', (els) => els.length);
     for (let k = 1; k < nOrbs; k++) { await click(`.orb[data-orb="${k}"]`); await page.waitForTimeout(3000); await shot(`aprende-${k + 1}`); }
+    if (await page.evaluate(() => APP_DATA.meta.strict)) { // con meta.strict: captura el candado y luego da todos los sellos para ver los juegos
+      await home(); const g = await page.$('[data-game]');
+      if (g) { await click('[data-game]'); await page.waitForTimeout(600); if (await page.$('.modal [data-s]') && !(await page.textContent('.modal-emoji')).includes('🔒')) await click('.modal [data-s]'); await page.waitForTimeout(600); await shot('juegos-bloqueados'); }
+      await page.evaluate(() => localStorage.setItem(`${APP_DATA.meta.id}-stamps`, JSON.stringify(Object.fromEntries(Object.keys(APP_DATA.topics).map((id) => [id, true])))));
+    }
     for (const game of ['quiz', 'order', 'sort', 'memory']) {
       await home();
       if (!(await page.$(`[data-game="${game}"]`))) continue;

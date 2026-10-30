@@ -9,6 +9,7 @@ window.APP_DATA = /*JSON*/{
     "subtitle": "Plantilla del kit · Los estados del agua",
     "costume": "cientifico",
     "theme": "light",
+    "strict": true,
     "topicWord": "Estado",
     "greeting": "¡Hola, Sofía! Soy Cronos, el científico. Tócame y te cuento secretos del agua.",
     "quizShip": "💧",

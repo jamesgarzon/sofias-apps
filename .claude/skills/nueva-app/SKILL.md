@@ -17,7 +17,7 @@ Referencias: `kit/v1/README.md` (API y esquema), `plantilla/` (app de ejemplo co
 ```bash
 cp -r plantilla <app>      # nombre corto, en minúsculas
 ```
-- `js/data.js`: `meta.id = "<app>"`, título, disfraz de Cronos según la materia (`viajero explorador cientifico doctor chef detective artista actor profe astronauta jardinero`), `theme` claro u oscuro según la estética.
+- `js/data.js`: `meta.id = "<app>"`, `meta.strict: true` (ya viene en la plantilla: juegos tras los sellos), título, disfraz de Cronos según la materia (`viajero explorador cientifico doctor chef detective artista actor profe astronauta jardinero`), `theme` claro u oscuro según la estética.
 - Llena preguntas (12–40, la 1.ª opción es la correcta, con `why`), rondas de Ordena, objetos de Portales y pistas de Memoria.
 - Cuida que los juegos **no regalen la respuesta**: emojis o colores iguales entre pregunta y opción, distractores absurdos en todas las preguntas, pistas de Memoria con el mismo emoji que el tema.
 - Borra o cambia la pantalla de ejemplo (termómetro) en `js/app.js`. Añade pantallas propias solo si aportan (ej.: `historia` tiene «Las dos líneas del tiempo»).
@@ -38,6 +38,7 @@ NODE_PATH=/opt/node22/lib/node_modules node kit/v1/tools/capturas.js http://loca
 ```
 - Abre las capturas (teléfono y tablet) y revísalas de verdad. La herramienta falla si hay errores de JavaScript.
 - Juega cada juego completo al menos una vez (los scripts de Playwright deben usar `click(..., { force: true })` porque los elementos animados nunca están quietos).
+- **Anti-trampas**: lanza el agente `anti-trampas` con la carpeta de la app y arregla todo lo 🔴 antes de publicar.
 - Valida el JSON: `python3 -c "import re,json;json.loads(re.search(r'/\*JSON\*/(.*)/\*END\*/',open('<app>/js/data.js').read(),re.S).group(1))"`.
 
 ## 5. Voz

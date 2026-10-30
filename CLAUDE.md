@@ -16,7 +16,8 @@ Apps educativas para Sofía (≈8 años). Hub en `index.html`, desplegado en Git
 - **Idioma**: según el curso (español o inglés: `meta.lang`). Textos de estudio literales de los apuntes de Sofía cuando los haya (es preparación de examen).
 - **Progreso**: estrellas ⭐ en `localStorage` con claves `<app>-stars`, `<app>-seen`, `<app>-stamps`, `<app>-best`.
 - **Voz**: mp3 pregenerados con `python3 ../kit/v1/gen_audio.py` (edge-tts instalado con pipx; `es-CO-SalomeNeural` -8 %, `en-US-JennyNeural` -10 %). Sin mp3 la app usa la mejor voz del dispositivo. Desde las sesiones en la nube edge-tts no funciona: lo corre James en su computador.
-- **Verificación**: antes de publicar, capturas en teléfono y tablet con `kit/v1/tools/capturas.js` y revisarlas; jugar cada juego completo.
+- **Sin trampas** (apps nuevas, desde noviembre 2026): `meta.strict: true` → los juegos se abren al tener los sellos del viaje y cada chispa, la primera vez, espera su historia y su voz.
+- **Verificación**: antes de publicar, capturas en teléfono y tablet con `kit/v1/tools/capturas.js` y revisarlas; jugar cada juego completo; pasar el agente `anti-trampas` (`.claude/agents/anti-trampas.md`).
 
 ## Apps anteriores
 
