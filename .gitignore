@@ -3,3 +3,7 @@ ruvector.db
 agentdb.rvf
 agentdb.rvf.lock
 __pycache__/
+.claude-flow/
+.swarm/
+.claude/.proven-config-version
+.claude/proven-config.json
