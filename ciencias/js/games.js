@@ -184,7 +184,7 @@ window.Games = (() => {
     if (L === 1) {
       const vow = [...W].map((c, i) => i).filter((i) => i > 0 && 'AEIOUY'.includes(W[i]));
       const gap = vow.length ? vow[Math.floor(Math.random() * vow.length)] : W.length - 1;
-      const opts = shuffle([W[gap], ...shuffle([...'AEIOU'].filter((c) => c !== W[gap])).slice(0, 2)]);
+      const opts = shuffle([W[gap], ...shuffle([...'AEIOUY'].filter((c) => c !== W[gap])).slice(0, 2)]);
       el.innerHTML = top + `<div class="word">${[...W].map((c, i) => `<span class="cell ${i === gap ? 'gap' : 'on'}">${i === gap ? '?' : c}</span>`).join('')}</div><p class="ask">Which letter is missing?</p><div class="opts three">${opts.map((c) => `<button class="opt letter" type="button">${c}</button>`).join('')}</div>`;
       listenBtn(); Sound.say(s.clue);
       el.querySelectorAll('.opt').forEach((b) => b.onclick = async () => {
@@ -238,6 +238,7 @@ window.Games = (() => {
       el.innerHTML = '';
       el.classList.remove('in'); void el.offsetWidth; el.classList.add('in');
       const r = await R[steps[i].type](el, steps[i]);
+      if (!el.isConnected) return res;
       Sound.stop();
       res.push(r);
       onScore?.(r);

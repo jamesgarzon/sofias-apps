@@ -240,7 +240,7 @@
     Sound.say(D.say.chest);
     $('.chest-big').onclick = (e) => {
       e.currentTarget.classList.add('open'); Sound.sfx('chest');
-      P.friends.push(f.id); keep('friends');
+      if (!P.friends.includes(f.id)) { P.friends.push(f.id); keep('friends'); }
       setTimeout(() => postcard(f, map), 900);
     };
   }
