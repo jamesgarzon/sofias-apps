@@ -47,7 +47,7 @@
     const b = $('[data-back]'); if (b) b.onclick = () => { Sound.stop(); Sound.sfx('pop'); back(); };
     $('[data-mute]').onclick = (e) => { e.currentTarget.textContent = Sound.toggle() ? '🔇' : '🔊'; };
   }
-  const go = (html) => { Sound.stop(); app.innerHTML = html; window.scrollTo(0, 0); };
+  const go = (html) => { Sound.stop(); Sound.hush(); app.innerHTML = html; window.scrollTo(0, 0); };
 
   // ---------- Inicio ----------
   function start() {
@@ -304,11 +304,15 @@
     const mv = $('.movie'), btn = $('[data-go]');
     btn.onclick = prize;
     const scenes = ['s1', 's2', 's3', 's4', 's5', 's6'];
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { mv.classList.add(...scenes); btn.disabled = false; Sound.say(D.say.didIt, 'spongy'); return; }
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { mv.classList.add(...scenes); btn.disabled = false; Sound.sfx('fanfare'); Sound.say(D.say.didIt, 'spongy'); return; }
     const at = (s, f) => setTimeout(() => mv.isConnected && f(), s * 1000);
     [0, 3.2, 8.6, 9.8, 11.4, 14.6].forEach((s, i) => at(s, () => mv.classList.add(scenes[i])));
     [[1.2, 'puffReady', 'teacher'], [4.2, 'goSpongy', 'cosmo'], [9.8, 'hmm', 'teacher'], [12.5, 'amazing', 'teacher'], [16, 'didIt', 'spongy']].forEach(([s, k, who]) => at(s, () => Sound.say(D.say[k], who)));
-    [[0, 'whoosh'], [8.6, 'whoosh'], [12.1, 'star'], [14.6, 'chest']].forEach(([s, k]) => at(s, () => Sound.sfx(k)));
+    Sound.music();
+    const fx = [[0, 'bubbles'], [8.6, 'whoosh'], [9.9, 'drumroll'], [11.4, 'puff'], [12.1, 'stamp'], [14.6, 'fanfare']];
+    for (let i = 0; i < 5; i++) fx.push([3.2 + i, 'scribble']);
+    for (let i = 0; i < 6; i++) fx.push([3.8 + i * 0.75, 'ding']);
+    fx.forEach(([s, k]) => at(s, () => Sound.sfx(k)));
     at(17, () => { btn.disabled = false; });
   }
   function prize() {
