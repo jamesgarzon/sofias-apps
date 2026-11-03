@@ -83,6 +83,11 @@ svg { display: block; }
 .chest-card.trip small { color: var(--ink); }
 .boost { color: var(--gold); font-size: 16px; white-space: nowrap; }
 .crew .span { grid-column: 1 / -1; }
+.chest-card.exam { border-color: #ff9fe0; background: #3b2a5e; }
+.chest-card.exam b { color: #ffd1f0; }
+.chest-card.exam small { color: var(--ink); }
+.trophy { font-size: 96px; line-height: 1; animation: pop .6s both; }
+.champ { color: var(--gold); font-size: 28px; text-align: center; }
 
 /* Parada */
 .stopview { display: flex; flex-direction: column; gap: 14px; }

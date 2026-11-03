@@ -25,6 +25,7 @@ VOICES = {  # voz, velocidad, tono
     "mars": ("en-US-GuyNeural", "-10%", "-5Hz"),
     "saturn": ("en-US-AriaNeural", "-10%", "+0Hz"),
     "uranus": ("en-US-EricNeural", "-10%", "+5Hz"),
+    "spongy": ("en-US-SteffanNeural", "+0%", "+30Hz"),
 }
 app = pathlib.Path(__file__).resolve().parent
 js = "global.window={};require(process.argv[1]);console.log(JSON.stringify(window.DATA))"
@@ -47,6 +48,8 @@ a = jobs["ava"].add
 for k, t in D["say"].items():
     if k == "hello":
         jobs["cosmo"].add(t)
+    elif k in ("exam", "examAgain", "prize"):
+        jobs["spongy"].add(t)
     elif k in ("mission", "noMission"):  # los dice el copiloto que esté volando
         for f in D["friends"]:
             jobs[f["id"]].add(t)

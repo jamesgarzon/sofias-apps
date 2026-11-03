@@ -30,6 +30,10 @@ window.DATA = {
     noMission: 'Nothing to practice. Great job!',
     trip: 'Choose a new co-pilot! The map starts again, and your co-pilot multiplies every new star.',
     newTrip: 'New trip! Visit every planet again and win more stars.',
+    // Estos tres los dice Spongy.
+    exam: 'This is my final exam! Answer everything without help. Get 7 out of 10 right to win the prize.',
+    examAgain: 'Almost! Study a little more and try again. You can do it!',
+    prize: 'Sofía, you worked so hard! You earned this prize!',
   },
 
   // Amigos: Cosmo vuela contigo desde el principio; los demás salen del cofre al juntar estrellas.
@@ -56,6 +60,9 @@ window.DATA = {
       card: 'Hello from Uranus! I am the seventh planet. I am between Saturn and Neptune.' },
     { id: 'sunny', name: 'Sunny', from: 'the Sun', x: 10, stars: 300, line: 'I am Sunny, the Sun. I am a star! I give light and heat.',
       card: 'Hello from the Sun! I am the main source of energy and light.' },
+    // El último: trae el examen final y, si lo pasa, el premio.
+    { id: 'spongy', name: 'Spongy', from: 'Planet Sponge', x: 10, stars: 1000, line: 'Hi Sofía! I am Spongy. I have a final exam for you!',
+      card: 'Hello from Planet Sponge! Pass my final exam and win a big prize!' },
   ],
 
   stops: [

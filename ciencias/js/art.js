@@ -249,8 +249,17 @@ let n = 0;
     <ellipse cx="-44" cy="20" rx="9" ry="6" fill="#ff8fc8" opacity=".6"/><ellipse cx="44" cy="20" rx="9" ry="6" fill="#ff8fc8" opacity=".6"/><path d="M-16 24 Q0 40 16 24" stroke="#1d2150" stroke-width="5" fill="none" stroke-linecap="round"/>`;
   const cosmo = `<g class="bob"><path d="M-20 -78 L-34 -104 M20 -78 L34 -104" stroke="#2bb673" stroke-width="6" stroke-linecap="round"/><circle cx="-34" cy="-106" r="9" fill="#ffc93c"/><circle cx="34" cy="-106" r="9" fill="#ffc93c"/>
     <ellipse cx="0" cy="70" rx="44" ry="30" fill="#2bb673"/><circle r="72" fill="#5de08f"/><circle cx="-30" cy="-30" r="10" fill="#8ff0b4" opacity=".7"/>${face}</g>`;
+  // Spongy: un planeta esponja cuadrado con anillo (el premio final).
+  const spongy = `<g class="bob"><ellipse cx="0" cy="52" rx="100" ry="20" fill="none" stroke="#7fd3ff" stroke-width="9" transform="rotate(-10 0 52)"/>
+    <rect x="-70" y="-80" width="140" height="150" rx="24" fill="#ffe14d" stroke="#d4ad1a" stroke-width="5"/>
+    ${[[-48, -60, 9], [42, -64, 7], [-56, -6, 6], [56, 8, 8], [-42, 44, 7], [38, 46, 6], [2, -68, 5], [-8, 60, 5]].map(([x, y, r]) => `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * 0.8}" fill="#b8a020" opacity=".5"/>`).join('')}
+    <g class="blink"><circle cx="-26" cy="-26" r="22" fill="#fff" stroke="#1d2150" stroke-width="3"/><circle cx="26" cy="-26" r="22" fill="#fff" stroke="#1d2150" stroke-width="3"/><circle cx="-22" cy="-24" r="10" fill="#4aa8ff"/><circle cx="22" cy="-24" r="10" fill="#4aa8ff"/><circle cx="-22" cy="-24" r="5" fill="#1d2150"/><circle cx="22" cy="-24" r="5" fill="#1d2150"/><circle cx="-19" cy="-28" r="2.5" fill="#fff"/><circle cx="25" cy="-28" r="2.5" fill="#fff"/></g>
+    <ellipse cx="-48" cy="10" rx="10" ry="7" fill="#ff8fa0" opacity=".7"/><ellipse cx="48" cy="10" rx="10" ry="7" fill="#ff8fa0" opacity=".7"/>
+    <path d="M-38 8 Q0 50 38 8 Q0 24 -38 8z" fill="#7a1f2b" stroke="#1d2150" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="-13" y="14" width="11" height="12" rx="2" fill="#fff" stroke="#1d2150" stroke-width="2"/><rect x="2" y="14" width="11" height="12" rx="2" fill="#fff" stroke="#1d2150" stroke-width="2"/>
+    <path d="M-100 52 A100 20 0 0 0 100 52" fill="none" stroke="#7fd3ff" stroke-width="9" transform="rotate(-10 0 52)"/></g>`;
   function friend(id, cls = '') {
-    const look = { cosmo: () => cosmo, sunny: () => globe('sun') + face, gaia: () => globe('earth') + face, luna: () => globe('moon') + face, jupi: () => globe('jupiter') + face, rocky: () => globe('mercury') + face, venus: () => globe('venus') + face, mars: () => globe('mars') + face, saturn: () => globe('saturn') + face, uranus: () => globe('uranus') + face }[id];
+    const look = { cosmo: () => cosmo, spongy: () => spongy, sunny: () => globe('sun') + face, gaia: () => globe('earth') + face, luna: () => globe('moon') + face, jupi: () => globe('jupiter') + face, rocky: () => globe('mercury') + face, venus: () => globe('venus') + face, mars: () => globe('mars') + face, saturn: () => globe('saturn') + face, uranus: () => globe('uranus') + face }[id];
     return `<svg class="friend ${cls}" viewBox="-110 -120 220 230" aria-hidden="true">${look()}</svg>`;
   }
 

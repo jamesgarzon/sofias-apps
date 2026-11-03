@@ -4,7 +4,7 @@ window.Sound = (() => {
   const have = {};
   for (const k in READY) have[k] = new Set(READY[k]);
   // Si no hay mp3: voz del dispositivo con un tono por personaje.
-  const SYS = { ava: [0.9, 1.05], slow: [0.7, 1.05], cosmo: [0.95, 1.6], luna: [0.85, 0.95], sunny: [0.95, 1.1], gaia: [0.85, 1], jupi: [0.8, 0.6], rocky: [1, 1.25], venus: [0.9, 1.15], mars: [0.9, 0.85], saturn: [0.9, 1], uranus: [0.95, 1.1] };
+  const SYS = { ava: [0.9, 1.05], slow: [0.7, 1.05], cosmo: [0.95, 1.6], luna: [0.85, 0.95], sunny: [0.95, 1.1], gaia: [0.85, 1], jupi: [0.8, 0.6], rocky: [1, 1.25], venus: [0.9, 1.15], mars: [0.9, 0.85], saturn: [0.9, 1], uranus: [0.95, 1.1], spongy: [1.05, 1.5] };
   const player = new Audio();
   let muted = false, token = 0, pending = [];
   try { muted = localStorage.getItem('ciencias-mute') === '1'; } catch (e) { /* sin almacenamiento */ }

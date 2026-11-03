@@ -8,7 +8,7 @@
   const load = (k, d) => { try { return JSON.parse(localStorage.getItem(`ciencias-${k}`)) ?? d; } catch (e) { return d; } };
   const save = (k, v) => { try { localStorage.setItem(`ciencias-${k}`, JSON.stringify(v)); } catch (e) { /* sin almacenamiento */ } };
   const P = { seen: load('seen', {}), stamps: load('stamps', {}), best: load('best', {}), friends: load('friends', ['cosmo']), missed: load('missed', []), write: load('write', {}),
-    pilot: load('pilot', 'cosmo'), bank: load('bank', 0) };
+    pilot: load('pilot', 'cosmo'), bank: load('bank', 0), prize: load('prize', false) };
   // Cada viaje nuevo (como un «rebirth») guarda las estrellas en `bank`; las del viaje se multiplican por la `x` del copiloto.
   const pilot = () => D.friends.find((f) => f.id === P.pilot);
   const stars = () => P.bank + Object.values(P.best).reduce((a, b) => a + b, 0) * pilot().x;
@@ -64,6 +64,7 @@
     const review = stamps() === D.stops.length, pl = pilot();
     go(header('Science Galaxy') + `<main class="map">
       ${P.best.review != null ? `<button class="chest-card trip" type="button" data-trip><span class="chest">🔄</span><b>New trip! 🚀</b><small>Choose a co-pilot that gives more stars.</small></button>` : ''}
+      ${P.friends.includes('spongy') ? `<button class="chest-card exam" type="button" data-exam><span class="chest">${P.prize ? '🏆' : '📝'}</span><b>${P.prize ? 'You are a champion!' : 'Final exam'}</b><small>${P.prize ? 'See your prize.' : 'Spongy has a final exam for you.'}</small></button>` : ''}
       ${fr ? `<button class="chest-card" type="button" data-chest><span class="chest">🎁</span><b>Open the chest!</b><small>A new friend is waiting.</small></button>` : ''}
       <div class="path">${D.stops.map((s, i) => {
         const ok = open(s), done = P.stamps[s.id];
@@ -88,6 +89,7 @@
     $('[data-crew]').onclick = crew;
     if (fr) $('[data-chest]').onclick = () => chest(fr);
     if (P.best.review != null) $('[data-trip]').onclick = trip;
+    if (P.friends.includes('spongy')) $('[data-exam]').onclick = () => (P.prize ? prize() : examIntro());
   }
 
   // ---------- Parada ----------
@@ -273,6 +275,36 @@
       ['bank', 'pilot', 'seen', 'stamps', 'best', 'write'].forEach(keep);
       Sound.sfx('chest'); map(); Sound.say(D.say.newTrip);
     };
+  }
+
+  // ---------- Examen final (Spongy, a las 1000 estrellas) ----------
+  function examIntro() {
+    go(header('Final exam', true) + `<main class="postcard"><div class="card-art">${Art.friend('spongy', 'big')}</div><div class="paper"><p>${esc(D.say.exam)}</p><small>— Spongy</small></div>
+      <div class="row"><button class="btn ghost" type="button" data-done>Not now</button><button class="btn" type="button" data-go>Start! 📝</button></div></main>`);
+    wire(map);
+    Sound.say(D.say.exam, 'spongy');
+    $('[data-done]').onclick = map;
+    $('[data-go]').onclick = finalExam;
+  }
+  async function finalExam() {
+    const list = Games.shuffle(reviewSteps());
+    const r = runner('Final exam', map);
+    const res = await Games.play(r.stage, list, { onStep: r.onStep });
+    if (!r.stage.isConnected) return;
+    trackMissed(list, res);
+    const got = res.reduce((a, x) => a + x[0], 0), max = res.reduce((a, x) => a + x[1], 0);
+    if (got >= Math.ceil(max * 0.7)) { P.prize = true; keep('prize'); return prize(); }
+    result(got, max, examIntro, map, `<p>You need ${Math.ceil(max * 0.7)} to win the prize.</p>`);
+    Sound.say(D.say.examAgain, 'spongy');
+  }
+  function prize() {
+    go(header('Your prize!', true) + `<main class="postcard"><div class="trophy">🏆</div><h2 class="champ">Science Galaxy Champion</h2><div class="card-art">${Art.friend('spongy', 'big')}</div>
+      <div class="paper"><p>${esc(D.say.prize)}</p><small>— Spongy</small></div><div class="party">${P.friends.map((f) => Art.friend(f)).join('')}</div>
+      <div class="row"><button class="btn ghost" type="button" data-again>🔊 Again</button><button class="btn" type="button" data-done>Back</button></div></main>`);
+    wire(map);
+    Sound.sfx('chest'); Sound.say(D.say.prize, 'spongy');
+    $('[data-again]').onclick = () => Sound.say(D.say.prize, 'spongy');
+    $('[data-done]').onclick = map;
   }
 
   start();
