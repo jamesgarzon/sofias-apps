@@ -273,6 +273,58 @@ svg { display: block; }
 @keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 .shake { animation: shake .3s; }
 
+/* Película del examen final: cada escena (s1…s6 en .movie) va mostrando lo suyo. */
+.movie-wrap { display: flex; flex-direction: column; gap: 12px; align-items: center; padding-top: 6px; }
+.movie-wrap .btn { width: 100%; }
+.movie { width: min(100%, calc((100dvh - 170px) * .625)); height: auto; border-radius: 24px; }
+.movie text { font-family: var(--display); font-weight: 700; }
+.movie .chalk { fill: #f4f6ff; font-size: 34px; letter-spacing: 2px; }
+.movie .say { fill: #1d2150; font-size: 18px; }
+.movie .line { fill: #2a2140; font-size: 15px; font-family: var(--body); }
+.movie .tick { fill: #2bb673; font-size: 20px; }
+.movie .gtitle { fill: #2a2140; font-size: 24px; } .movie .score { fill: #2bb673; font-size: 62px; } .movie .aplus { fill: #e5383b; font-size: 32px; }
+.movie .champion text { fill: #ffc93c; font-size: 52px; stroke: #1d2150; stroke-width: 6px; paint-order: stroke; }
+.movie .cup { font-size: 56px; }
+.movie :is(.bubble, .tick, .answers, .graded, .stamp, .champion, .cup, .confetti, .pal, .spikes, .sweat, .peek) { opacity: 0; }
+.movie :is(.bubble, .tick, .stamp, .champion, .cup, .hop, .t-body, .graded, .ans-in) { transform-box: fill-box; transform-origin: center; }
+.movie .bubble { transition: opacity .3s, transform .3s; transform: scale(.6); }
+.movie .t-float { transform: translateX(260px); }
+.movie.s1 .t-float { transform: none; animation: mSwim 1.4s ease-out both; }
+.movie.s1 .b1 { opacity: 1; transform: none; transition-delay: 1.2s; } .movie.s2 .b1 { opacity: 0; transition-delay: 0s; }
+.movie.s1 .sweat { opacity: 1; animation: drop 1.2s linear infinite; }
+.movie.s2 .pencil { transform-box: fill-box; transform-origin: 30% 90%; animation: mScribble .18s ease-in-out infinite alternate; }
+.movie.s2 .hand { transform-box: fill-box; transform-origin: 50% 100%; animation: orb 1.2s linear infinite; }
+.movie.s2 .answers { opacity: 1; transition: opacity .4s; } .movie.s2 .ans-in { animation: pop .5s both; }
+.movie.s2 .tick { animation: mTick .4s var(--td) both; }
+.movie.s2 .peek { opacity: 1; animation: mPeek 1s ease-out both; } .movie.s2 .b2 { opacity: 1; transform: none; transition-delay: 1s; }
+.movie.s3 .b2 { opacity: 0; transition-delay: 0s; } .movie.s3 :is(.pencil, .hand) { animation: none; } .movie.s3 .sweat { opacity: 0; animation: none; }
+.movie.s3 .ans-in { animation: mToTeacher 1.1s ease-in both; }
+.movie.s4 .answers { opacity: 0; }
+.movie.s4 .b3 { opacity: 1; transform: none; }
+.movie.s5 .b3 { opacity: 0; } .movie.s5 .spikes { opacity: 1; transition: opacity .2s; } .movie.s5 .t-body { animation: mPuff 1.2s ease-in-out both; }
+.movie.s5 .graded { opacity: 1; animation: pop .5s both; } .movie.s5 .stamp { opacity: 1; animation: mSlam .45s .7s cubic-bezier(.3, 1.6, .5, 1) both; }
+.movie.s5 .b4 { opacity: 1; transform: none; transition-delay: 1.1s; }
+.movie.s6 :is(.b4, .graded) { opacity: 0; transition: opacity .4s; animation: none; }
+.movie.s6 .confetti { opacity: 1; } .movie.s6 .cf { transform-box: fill-box; animation: mFall 2.6s linear var(--dl) infinite; }
+.movie.s6 .pal { opacity: 1; animation: mFly .8s calc(var(--i) * .12s) cubic-bezier(.2, 1.4, .5, 1) both; }
+.movie.s6 .hop { animation: jump .7s ease-in-out var(--hd) infinite; }
+.movie.s6 .champion { opacity: 1; animation: mChamp .7s cubic-bezier(.3, 1.6, .5, 1) both; } .movie.s6 .board { opacity: .25; transition: opacity .5s; }
+.movie.s6 .jumpwrap { animation: jump .8s ease-in-out infinite; } .movie.s6 .cup { opacity: 1; animation: pop .6s both; } .movie.s6 :is(.pencil, .arm) { opacity: 0; }
+.movie.s6 .b5 { opacity: 1; transform: none; transition-delay: 1.4s; }
+.movie.s6 .t-body { animation: mWiggle .6s ease-in-out infinite alternate; }
+.movie.s6 :is(.peek, .clock, .spikes) { opacity: 0; transition: opacity .3s; }
+@keyframes mSwim { from { transform: translateX(260px); } }
+@keyframes mScribble { from { transform: rotate(-10deg) translateX(-3px); } to { transform: rotate(8deg) translateX(3px); } }
+@keyframes mTick { from { opacity: 0; transform: scale(2.5); } to { opacity: 1; transform: none; } }
+@keyframes mPeek { from { transform: translateY(60px); } }
+@keyframes mToTeacher { to { transform: translate(250px, -40px) scale(.3) rotate(20deg); opacity: 0; } }
+@keyframes mPuff { 35% { transform: scale(1.55); } 60% { transform: scale(1.45); } }
+@keyframes mSlam { from { opacity: 0; transform: scale(3) rotate(-30deg); } to { opacity: 1; transform: rotate(-12deg); } }
+@keyframes mFall { to { transform: translate(var(--dx), 680px) rotate(var(--dr)); } }
+@keyframes mFly { from { transform: translate(calc(var(--from) * 260px), 120px) scale(.4); } }
+@keyframes mChamp { from { transform: scale(0) rotate(-10deg); } }
+@keyframes mWiggle { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }

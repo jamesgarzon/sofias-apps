@@ -287,5 +287,67 @@ let n = 0;
 
   function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
 
-  return { body, globe, place, stars, scene, story, friend, icon, stopIcon, moonPhase, rocket, esc };
+  // Película del examen final: Spongy lo presenta y lo gana. app.js va poniendo las clases s1…s6 en .movie.
+  function examMovie(say) {
+    const F = (id, x, y, w) => friend(id).replace('<svg class="friend ', `<svg x="${x}" y="${y}" width="${w}" height="${(w * 230 / 220).toFixed(1)}" class="friend `);
+    const bubble = (cls, x, y, w, text, tail = 'left') => `<g class="bubble ${cls}"><rect x="${x}" y="${y}" width="${w}" height="40" rx="14" fill="#fff"/>
+      <path d="M${tail === 'left' ? x + 18 : x + w - 18} ${y + 38} l${tail === 'left' ? -8 : 8} 14 l${tail === 'left' ? 16 : -16} -14z" fill="#fff"/>
+      <text x="${x + w / 2}" y="${y + 27}" text-anchor="middle" class="say">${esc(text)}</text></g>`;
+    // La profesora: pez globo crema con gorra de marinero (dibujo propio). Al inflarse salen las púas.
+    const teacher = `<g class="spikes">${Array.from({ length: 18 }, (_, i) => { const a = (i / 18) * Math.PI * 2; return `<path d="M${(Math.cos(a) * 44).toFixed(1)} ${(Math.sin(a) * 44).toFixed(1)} L${(Math.cos(a) * 62).toFixed(1)} ${(Math.sin(a) * 62).toFixed(1)}" stroke="#c9ab6e" stroke-width="6" stroke-linecap="round"/>`; }).join('')}</g>
+      <path d="M40 4 L68 -16 Q62 4 68 24z" fill="#f1e3bf" stroke="#b89a5a" stroke-width="3" stroke-linejoin="round"/>
+      <circle r="46" fill="#f6e9c8" stroke="#b89a5a" stroke-width="4"/>
+      <ellipse cx="0" cy="22" rx="30" ry="18" fill="#fff8e6"/>
+      ${[[-30, -16, 4], [28, -18, 4], [-34, 12, 3.5], [32, 14, 3.5], [-18, -30, 3], [18, -30, 3]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#d9bf86"/>`).join('')}
+      <path d="M-46 6 q-16 -6 -18 10 q10 2 18 -2z" fill="#f1e3bf" stroke="#b89a5a" stroke-width="2.5"/>
+      <ellipse cx="-15" cy="-8" rx="12" ry="14" fill="#fff" stroke="#1d2150" stroke-width="2.5"/><ellipse cx="15" cy="-8" rx="12" ry="14" fill="#fff" stroke="#1d2150" stroke-width="2.5"/>
+      <circle cx="-13" cy="-5" r="6.5" fill="#3a8fd6"/><circle cx="17" cy="-5" r="6.5" fill="#3a8fd6"/><circle cx="-13" cy="-5" r="3" fill="#1d2150"/><circle cx="17" cy="-5" r="3" fill="#1d2150"/>
+      <path d="M-24 -18 l-6 -6 M-16 -22 l-2 -8 M-8 -21 l2 -7 M24 -18 l6 -6 M16 -22 l2 -8 M8 -21 l-2 -7" stroke="#1d2150" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M-9 16 q4 -5 9 -1 q5 -4 9 1 q-4 8 -9 8 q-5 0 -9 -8z" fill="#e5383b" stroke="#a4161a" stroke-width="1.5"/>
+      <ellipse cx="-28" cy="10" rx="7" ry="4" fill="#ff8fa0" opacity=".6"/><ellipse cx="28" cy="10" rx="7" ry="4" fill="#ff8fa0" opacity=".6"/>
+      <path d="M-30 -36 Q-28 -62 0 -64 Q28 -62 30 -36z" fill="#2f63c0"/><rect x="-32" y="-40" width="64" height="9" rx="4" fill="#fff"/><path d="M-26 -31 Q0 -24 26 -31 L22 -27 Q0 -20 -22 -27z" fill="#1d2150"/>
+      <path d="M0 -58 l3 6 l7 1 l-5 5 l1 7 l-6 -3 l-6 3 l1 -7 l-5 -5 l7 -1z" fill="#ffc93c" transform="translate(0 4) scale(.7)"/>`;
+    const confetti = Array.from({ length: 46 }, (_, i) => {
+      const c = ['#ffc93c', '#5ce1e6', '#ff8fc8', '#7cf29a', '#ff7a59', '#b48cff'][i % 6];
+      return `<rect class="cf" x="${(i * 83) % 400}" y="-20" width="${8 + (i % 3) * 3}" height="${12 + (i % 2) * 6}" rx="2" fill="${c}" style="--dl:${(i % 12) * 0.18}s;--dx:${((i % 7) - 3) * 18}px;--dr:${(i % 5) * 160 + 200}deg"/>`;
+    }).join('');
+    const party = ['cosmo', 'luna', 'gaia', 'rocky', 'jupi', 'venus', 'mars', 'saturn', 'uranus', 'sunny'].map((id, i) => {
+      const row = i < 5 ? 0 : 1, col = i % 5;
+      return `<g class="pal" style="--i:${i};--from:${col < 2.5 ? -1 : 1}"><g class="hop" style="--hd:${(i % 4) * 0.15}s">${F(id, 14 + col * 76 + row * 20, row ? 566 : 500, 62)}</g></g>`;
+    }).join('');
+    return `<svg class="movie" viewBox="0 0 400 640" role="img" aria-label="Spongy takes the final exam and wins">
+      <defs><linearGradient id="mwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#26307a"/><stop offset="1" stop-color="#151d55"/></linearGradient>
+      <clipPath id="mw1"><circle cx="64" cy="250" r="40"/></clipPath><clipPath id="mw2"><circle cx="336" cy="250" r="40"/></clipPath></defs>
+      <rect width="400" height="640" fill="url(#mwall)"/>
+      <rect y="470" width="400" height="170" fill="#2b2160"/><path d="M0 470 H400" stroke="#4a3a8f" stroke-width="4"/>
+      ${[[64, 250, 'mw1', 'cosmo'], [336, 250, 'mw2', 'luna']].map(([cx, cy, clip, id]) => `<circle cx="${cx}" cy="${cy}" r="46" fill="#9aa6d8"/><circle cx="${cx}" cy="${cy}" r="40" fill="#070b2a"/>
+        <g clip-path="url(#${clip})">${stars(400, 640, 30, 9)}<g class="peek">${F(id, cx - 30, cy - 4, 60)}</g></g>`).join('')}
+      <g class="board"><rect x="96" y="40" width="208" height="122" rx="10" fill="#8a5a33"/><rect x="106" y="50" width="188" height="102" rx="6" fill="#1f4d3a"/>
+        <text x="200" y="96" text-anchor="middle" class="chalk">FINAL</text><text x="200" y="136" text-anchor="middle" class="chalk">EXAM</text></g>
+      <g class="clock"><circle cx="200" cy="200" r="20" fill="#fff" stroke="#9aa6d8" stroke-width="4"/><path class="hand" d="M200 200 V186" stroke="#1d2150" stroke-width="3" stroke-linecap="round"/><circle cx="200" cy="200" r="3" fill="#1d2150"/></g>
+      <g class="champion"><text x="200" y="118" text-anchor="middle">CHAMPION!</text></g>
+      <g class="spongy"><g class="jumpwrap">${F('spongy', 130, 312, 140)}
+        <path class="arm" d="M262 424 Q284 430 292 452" stroke="#ffe14d" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <g class="pencil"><rect x="286" y="440" width="8" height="34" rx="2" fill="#ffc93c" transform="rotate(28 290 457)"/><path d="M299 486 l-4 9 l-5 -7z" fill="#1d2150"/></g>
+        <text class="cup" x="200" y="300" text-anchor="middle">🏆</text></g>
+        <path class="sweat" d="M282 330 q-8 12 0 16 q8 -4 0 -16z" fill="#7fd3ff"/></g>
+      <g class="desk"><rect x="96" y="466" width="208" height="22" rx="6" fill="#c98a4b"/><rect x="110" y="488" width="14" height="60" fill="#a06a35"/><rect x="276" y="488" width="14" height="60" fill="#a06a35"/>
+        <path d="M168 462 l58 -2 l6 8 l-60 2z" fill="#fff"/></g>
+      <g class="answers"><g class="ans-in"><rect x="14" y="300" width="150" height="160" rx="10" fill="#fff8e6"/>
+        ${['Spheres', 'Landscapes', 'The Sun', 'Planets', 'The Moon', 'Seasons'].map((t, i) => `<text x="28" y="${330 + i * 22}" class="line">${t}</text><text x="146" y="${331 + i * 22}" text-anchor="end" class="tick" style="--td:${0.6 + i * 0.75}s">✓</text>`).join('')}</g></g>
+      <g class="teacher"><g class="t-float"><g transform="translate(310 310)"><g class="t-body">${teacher}</g></g></g></g>
+      <g class="graded"><rect x="20" y="200" width="230" height="200" rx="14" fill="#fff8e6"/><text x="135" y="250" text-anchor="middle" class="gtitle">Spongy’s exam</text>
+        <text x="118" y="318" text-anchor="middle" class="score">100%</text>
+        <g class="stamp"><circle cx="196" cy="364" r="32" fill="none" stroke="#e5383b" stroke-width="6"/><text x="196" y="376" text-anchor="middle" class="aplus">A+</text></g></g>
+      ${bubble('b1', 150, 210, 210, say.puffReady, 'right')}
+      ${bubble('b2', 8, 182, 130, say.goSpongy)}
+      ${bubble('b3', 210, 210, 120, say.hmm, 'right')}
+      ${bubble('b4', 140, 140, 230, say.amazing, 'right')}
+      ${bubble('b5', 70, 150, 260, `${say.didIt} 🎉`)}
+      <g class="partywrap">${party}</g>
+      <g class="confetti">${confetti}</g>
+    </svg>`;
+  }
+
+  return { body, globe, place, stars, scene, story, friend, icon, stopIcon, moonPhase, rocket, esc, examMovie };
 })();

@@ -293,16 +293,32 @@
     if (!r.stage.isConnected) return;
     trackMissed(list, res);
     const got = res.reduce((a, x) => a + x[0], 0), max = res.reduce((a, x) => a + x[1], 0);
-    if (got >= Math.ceil(max * 0.7)) { P.prize = true; keep('prize'); return prize(); }
+    if (got >= Math.ceil(max * 0.7)) { P.prize = true; keep('prize'); return examMovie(); }
     result(got, max, examIntro, map, `<p>You need ${Math.ceil(max * 0.7)} to win the prize.</p>`);
     Sound.say(D.say.examAgain, 'spongy');
+  }
+  // Al pasar el examen: la película de Spongy y luego el premio.
+  function examMovie() {
+    go(header('Final exam', true) + `<main class="movie-wrap">${Art.examMovie(D.say)}<button class="btn" type="button" data-go disabled>See my prize 🏆</button></main>`);
+    wire(map);
+    const mv = $('.movie'), btn = $('[data-go]');
+    btn.onclick = prize;
+    const scenes = ['s1', 's2', 's3', 's4', 's5', 's6'];
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { mv.classList.add(...scenes); btn.disabled = false; Sound.say(D.say.didIt, 'spongy'); return; }
+    const at = (s, f) => setTimeout(() => mv.isConnected && f(), s * 1000);
+    [0, 3.2, 8.6, 9.8, 11.4, 14.6].forEach((s, i) => at(s, () => mv.classList.add(scenes[i])));
+    [[1.2, 'puffReady', 'teacher'], [4.2, 'goSpongy', 'cosmo'], [9.8, 'hmm', 'teacher'], [12.5, 'amazing', 'teacher'], [16, 'didIt', 'spongy']].forEach(([s, k, who]) => at(s, () => Sound.say(D.say[k], who)));
+    [[0, 'whoosh'], [8.6, 'whoosh'], [12.1, 'star'], [14.6, 'chest']].forEach(([s, k]) => at(s, () => Sound.sfx(k)));
+    at(17, () => { btn.disabled = false; });
   }
   function prize() {
     go(header('Your prize!', true) + `<main class="postcard"><div class="trophy">🏆</div><h2 class="champ">Science Galaxy Champion</h2><div class="card-art">${Art.friend('spongy', 'big')}</div>
       <div class="paper"><p>${esc(D.say.prize)}</p><small>— Spongy</small></div><div class="party">${P.friends.map((f) => Art.friend(f)).join('')}</div>
-      <div class="row"><button class="btn ghost" type="button" data-again>🔊 Again</button><button class="btn" type="button" data-done>Back</button></div></main>`);
+      <div class="row"><button class="btn ghost" type="button" data-again>🔊 Again</button><button class="btn" type="button" data-done>Back</button></div>
+      <button class="btn ghost" type="button" data-movie>↺ Watch the exam again</button></main>`);
     wire(map);
     Sound.sfx('chest'); Sound.say(D.say.prize, 'spongy');
+    $('[data-movie]').onclick = examMovie;
     $('[data-again]').onclick = () => Sound.say(D.say.prize, 'spongy');
     $('[data-done]').onclick = map;
   }

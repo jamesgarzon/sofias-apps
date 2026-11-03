@@ -30,10 +30,16 @@ window.DATA = {
     noMission: 'Nothing to practice. Great job!',
     trip: 'Choose a new co-pilot! The map starts again, and your co-pilot multiplies every new star.',
     newTrip: 'New trip! Visit every planet again and win more stars.',
-    // Estos tres los dice Spongy.
+    // Estos cuatro los dice Spongy.
     exam: 'This is my final exam! Answer everything without help. Get 7 out of 10 right to win the prize.',
     examAgain: 'Almost! Study a little more and try again. You can do it!',
     prize: 'Sofía, you worked so hard! You earned this prize!',
+    didIt: 'We did it, Sofía!',
+    // La película del examen: la profesora y Cosmo.
+    puffReady: 'Final exam! Ready?',
+    hmm: 'Hmm…',
+    amazing: 'A+! 100%! Amazing!',
+    goSpongy: 'Go, Spongy!',
   },
 
   // Amigos: Cosmo vuela contigo desde el principio; los demás salen del cofre al juntar estrellas.
