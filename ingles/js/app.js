@@ -281,7 +281,7 @@
     };
   }
 
-  // ---------- Examen final (Juana, a las 1000 estrellas) ----------
+  // ---------- Examen final (Juana, la última mascota) ----------
   function examIntro() {
     go(header('Final exam', true) + `<main class="postcard"><div class="card-art">${Art.friend('juana', 'big')}</div><div class="paper"><p>${esc(D.say.exam)}</p><small>— Juana</small></div>
       <div class="row"><button class="btn ghost" type="button" data-done>Not now</button><button class="btn" type="button" data-go>Start! 📝</button></div></main>`);

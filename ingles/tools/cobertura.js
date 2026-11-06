@@ -56,7 +56,8 @@ const first = D.friends.filter((f) => f.stars).sort((a, b) => a.stars - b.stars)
 if (first.stars < 45) errs.push(`${first.name} sale con ${first.stars} ⭐: tocando al azar se ganan ~40`);
 sim.get(1).forEach((g, i) => g.length > 3 && errs.push(`al 100 %, el día ${i + 1} trae ${g.length} mascotas`));
 const juanaDay = sim.get(0.8).findIndex((g) => g.includes('juana')) + 1;
-if (!juanaDay || juanaDay > 3) errs.push(`al 80 %, Juana llega el día ${juanaDay || 'nunca'}`);
+if (!juanaDay || juanaDay > 5) errs.push(`al 80 %, Juana llega el día ${juanaDay || 'nunca'}`);
+if (D.friends.at(-1).id !== 'juana' || D.friends.some((f) => f.id !== 'juana' && f.stars >= D.friends.at(-1).stars)) errs.push('Juana debe ser la última');
 
 console.log(`${Object.keys(D.ws).length} preguntas del taller · ${max} estrellas posibles por día`);
 for (const [p, days] of sim) console.log(`  al ${p * 100} %: ` + days.map((g, i) => `día ${i + 1}: ${g.join(', ') || '—'}`).join(' · '));

@@ -48,7 +48,7 @@ a = jobs["ava"].add
 for k, t in D["say"].items():
     if k == "hello":
         jobs["biscuit"].add(t)
-    elif k in ("mission", "noMission"):  # los dice la mascota que esté ayudando (Juana no ayuda)
+    elif k in ("mission", "noMission"):  # los dice la mascota que esté ayudando
         for f in D["friends"]:
             if "x" in f:
                 jobs[f["id"]].add(t)

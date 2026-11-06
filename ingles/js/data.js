@@ -28,7 +28,7 @@ window.DATA = {
   noMission: 'Nothing to practice. Great job!',
   trip: 'Choose a new helper pet! The town starts again, and your pet multiplies every new star.',
   newTrip: 'New day! Visit every place again and win more stars.',
-  // Juana (la perrita de Sofía) llega a las 1000 ⭐ con el examen final; si lo pasa, su película y el premio.
+  // Juana (la perrita de Sofía) es la última, a las 2800 ⭐, con el examen final; si lo pasa, su película y el premio.
   exam: 'Woof! This is my final exam! Answer everything without help. Get 28 out of 40 to win the prize.',
   examAgain: 'Almost! Study a little more and try again. You can do it!',
   prize: 'Sofía, you worked so hard! You earned this prize!',
@@ -54,17 +54,17 @@ window.DATA = {
   card: 'Sweep the floor! Mop the floor! Vacuum the floor!' },
   { id: 'shelly', name: 'Shelly', kind: 'Turtle', x: 6, stars: 800, line: 'I am Shelly, the turtle.',
   card: 'I feel very tired. I should go to sleep early tonight.' },
-  // Juana no es ayudante (no tiene `x`): trae el examen final y el premio.
-  { id: 'juana', name: 'Juana', kind: 'Sofía’s dog', stars: 1000, line: 'Woof! I am Juana, Sofía’s dog. I have a final exam for you!',
-  card: 'Pass my final exam and win a big prize! Woof!' },
-  { id: 'nibbles', name: 'Nibbles', kind: 'Hamster', x: 7, stars: 1200, line: 'I am Nibbles, the hamster.',
+  { id: 'nibbles', name: 'Nibbles', kind: 'Hamster', x: 7, stars: 1000, line: 'I am Nibbles, the hamster.',
   card: 'How many pills are there? None!' },
-  { id: 'daisy', name: 'Daisy', kind: 'Pony', x: 8, stars: 1700, line: 'I am Daisy, the pony.',
+  { id: 'daisy', name: 'Daisy', kind: 'Pony', x: 8, stars: 1300, line: 'I am Daisy, the pony.',
   card: 'I have a sore throat. It hurts when I swallow.' },
-  { id: 'bamboo', name: 'Bamboo', kind: 'Panda', x: 9, stars: 2300, line: 'I am Bamboo, the panda.',
+  { id: 'bamboo', name: 'Bamboo', kind: 'Panda', x: 9, stars: 1700, line: 'I am Bamboo, the panda.',
   card: 'Make the bed and put away toys. Clean your bedroom!' },
-  { id: 'sparkle', name: 'Sparkle', kind: 'Unicorn', x: 10, stars: 3000, line: 'I am Sparkle, the unicorn!',
+  { id: 'sparkle', name: 'Sparkle', kind: 'Unicorn', x: 10, stars: 2200, line: 'I am Sparkle, the unicorn!',
   card: 'You worked so hard! You are a super helper!' },
+  // Juana, la perrita de Sofía, es la última: la mejor ayudante y trae el examen final y el premio.
+  { id: 'juana', name: 'Juana', kind: 'Sofía’s dog', x: 11, stars: 2800, line: 'Woof! I am Juana, Sofía’s dog. I have a final exam for you!',
+  card: 'Pass my final exam and win a big prize! Woof!' },
   ],
 
   stops: [

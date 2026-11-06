@@ -29,7 +29,7 @@ svg { display: block; }
 
 /* Encabezado */
 .top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 10px; padding: max(12px, env(safe-area-inset-top, 0px)) 0 12px; background: var(--bg); }
-.top h1 { flex: 1; font-size: 22px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top h1 { flex: 1; font-size: clamp(17px, 5vw, 22px); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .logo { font-size: 28px; }
 .pill { background: var(--panel); border: 2px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 16px; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
@@ -333,6 +333,10 @@ svg { display: block; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+@media (max-width: 380px) {
+  .top { gap: 8px; }
+  .pill { padding: 6px 8px; font-size: 15px; }
 }
 @media (min-width: 700px) {
   .opts:not(.two):not(.three) { grid-template-columns: 1fr 1fr; }
