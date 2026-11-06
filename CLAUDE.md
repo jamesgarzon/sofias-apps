@@ -23,6 +23,8 @@ Apps educativas para Sofía (≈8 años). Hub en `index.html`, desplegado en Git
 
 Las apps hechas antes del kit (`teatro/`, `dog-presentation/`, `economia/`, …) son de un solo `index.html` con fotos de Wikimedia y audio propio (`gen_audio.py` en su carpeta). No se migran todas: se renuevan con el kit una por una cuando Sofía vaya a usarlas para un examen. `historia/` es la app original del estándar (no usa el kit, pero el kit salió de ella).
 
+`ingles/` («Helper Town», repaso de Inglés del 4.º periodo) reutiliza el motor de `ciencias/` (James pidió libertad creativa y «al nivel de la de ciencias»): mismos archivos y juegos, más Write it con frases y letras revueltas del taller (`mix`) y el juego «Build the sentence».
+
 `space/` («Space Mission», planetas en inglés + presentación sobre la Tierra) tampoco usa el kit: James pidió libertad creativa. Es vanilla con `js/data.js` (contenido), `js/art.js` (SVG), `js/voice.js`, `js/app.js` y `js/talk.js` (estudio de la presentación); su `gen_audio.py` genera mp3 con Jenny (guía) y Ana (frases de la charla), nombrados por hash del texto.
 
 ## Deploy
